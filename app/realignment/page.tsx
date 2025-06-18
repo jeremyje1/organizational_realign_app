@@ -37,19 +37,10 @@ export default function RealignmentWizardPage() {
   };
 
   return (
-    <div
-      className="max-w-3xl mx-auto py-10 px-4"
-      role="region"
-      aria-labelledby="wizard-heading"
-    >
-      <h1
-        id="wizard-heading"
-        className="text-2xl font-semibold mb-6"
-        aria-label="Wizard Title"
-      >
+    <div className="max-w-3xl mx-auto py-10 px-4" role="region" aria-labelledby="wizard-heading">
+      <h1 id="wizard-heading" className="text-2xl font-semibold mb-6">
         Organizational Realignment Wizard
       </h1>
-
       <div className="mb-4 text-sm text-muted-foreground">
         Step {step + 1} of {steps.length}: {steps[step]}
       </div>
