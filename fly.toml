@@ -1,4 +1,0 @@
-app = "ora-api"
-
-[build]
-  dockerfile = "apps/api/Dockerfile"
