@@ -1,0 +1,80 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Organization {
+  id              String            @id @default(uuid())
+  name            String
+  mission         String
+  units           Unit[]
+  strategicPillars StrategicPillar[]
+}
+
+model Unit {
+  id             String   @id @default(uuid())
+  organizationId String
+  name           String
+  parentUnitId   String?
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  parent         Unit?        @relation("UnitToParent", fields: [parentUnitId], references: [id])
+  children       Unit[]       @relation("UnitToParent")
+  positions      Position[]
+  strategicLinks UnitStrategicPillar[]
+}
+
+model Position {
+  id       String  @id @default(uuid())
+  unitId   String
+  title    String
+  FTE      Int
+  personId String?
+
+  unit   Unit   @relation(fields: [unitId], references: [id])
+  person Person @relation(fields: [personId], references: [id])
+}
+
+model Person {
+  id        String     @id @default(uuid())
+  firstName String
+  lastName  String
+  email     String     @unique
+  positions Position[]
+}
+
+model StrategicPillar {
+  id             String                @id @default(uuid())
+  organizationId String
+  name           String
+  description    String
+  kpis           KPI[]
+  unitLinks      UnitStrategicPillar[]
+
+  organization   Organization          @relation(fields: [organizationId], references: [id])
+}
+
+model KPI {
+  id       String          @id @default(uuid())
+  pillarId String
+  metric   String
+  target   Float
+
+  pillar   StrategicPillar @relation(fields: [pillarId], references: [id])
+}
+
+model UnitStrategicPillar {
+  unitId   String
+  pillarId String
+
+  unit   Unit            @relation(fields: [unitId], references: [id])
+  pillar StrategicPillar @relation(fields: [pillarId], references: [id])
+
+  @@id([unitId, pillarId])
+}
