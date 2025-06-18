@@ -1,6 +1,7 @@
-# .dockerignore – keep only what you truly want to skip
+cat > .dockerignore <<'EOF'
 node_modules
 .next
 dist
 .DS_Store
 *.log
+EOF
