@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Point Next to the apps/ folder you just created
-  experimental: {
-    appDir: 'apps',
-  },
+  appDir: 'apps',      // <- top-level, no "experimental"
 };
 
 export default nextConfig;
