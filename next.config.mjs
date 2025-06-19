@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Point Next to the apps/ folder you just created
   experimental: {
-    appDir: 'apps'   // <-- points Next.js to apps/
-  }
+    appDir: 'apps',
+  },
 };
+
 export default nextConfig;
