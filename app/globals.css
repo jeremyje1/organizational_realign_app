@@ -1,9 +1,70 @@
-/* Tailwind base, component, and utility layers */
+/* ---------------------------------------------------------------------
+   Tailwind layers
+   ------------------------------------------------------------------ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* App‑wide custom styles here */
+/* ---------------------------------------------------------------------
+   Global element defaults
+   ------------------------------------------------------------------ */
+html {
+  /* full-height layout + design tokens */
+  @apply h-full bg-background text-foreground antialiased;
+}
+
 body {
-  @apply bg-white text-gray-900 antialiased;
+  /* let the body grow to fill the page and stack flex children */
+  @apply min-h-full flex flex-col;
+}
+
+/* ---------------------------------------------------------------------
+   Typography tweaks
+   ------------------------------------------------------------------ */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-semibold leading-tight text-foreground;
+}
+
+p {
+  @apply leading-relaxed;
+}
+
+a {
+  @apply text-primary underline-offset-2 transition-colors hover:underline;
+}
+
+/* ---------------------------------------------------------------------
+   Forms
+   ------------------------------------------------------------------ */
+input[type='text'],
+input[type='email'],
+input[type='password'],
+textarea,
+select {
+  @apply w-full rounded-md border border-neutral-300 bg-white
+         px-3 py-2 text-foreground placeholder-neutral-500
+         focus:outline-none focus:ring-2 focus:ring-primary;
+}
+
+/* ---------------------------------------------------------------------
+   Utility class examples
+   ------------------------------------------------------------------ */
+.container {
+  /* consistent spacing container; tweak as you like */
+  @apply mx-auto max-w-6xl px-4 sm:px-6 lg:px-8;
+}
+
+/* ---------------------------------------------------------------------
+   Component seeds (optional – remove if unused)
+   ------------------------------------------------------------------ */
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-md
+         bg-primary px-4 py-2 text-sm font-medium text-primary-foreground
+         transition-colors hover:bg-primary/90 active:bg-primary/80;
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center gap-2 rounded-md
+         border border-primary bg-transparent px-4 py-2 text-sm font-medium
+         text-primary transition-colors hover:bg-primary/10 active:bg-primary/20;
 }
