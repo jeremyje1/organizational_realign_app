@@ -1,7 +1,4 @@
-"use client";
-
-import Label from "@/components/ui/label";
-import Textarea from "@/components/ui/textarea";
+import Input from "@/components/ui/input";
 import { RealignmentFormData } from "@/lib/types";
 
 interface Props {
@@ -11,16 +8,12 @@ interface Props {
 
 export default function Step2({ data, onChange }: Props) {
   return (
-    <div className="space-y-6">
-      <div>
-        <Label htmlFor="proposedChange">Proposed Change</Label>
-        <Textarea
-          id="proposedChange"
-          rows={4}
-          value={data.proposedChange}
-          onChange={(e) => onChange("proposedChange", e.target.value)}
-        />
-      </div>
+    <div className="space-y-4">
+      <label className="block text-sm font-medium mb-1">Scenario</label>
+      <Input
+        value={data.scenario}
+        onChange={(e) => onChange("scenario", e.target.value)}
+      />
     </div>
   );
 }

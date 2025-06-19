@@ -1,46 +1,46 @@
+"use client";
+
 import { useState } from "react";
 import Step1 from "@/components/wizard/Step1";
 import Step2 from "@/components/wizard/Step2";
+import Step3 from "@/components/wizard/Step3";
+import Step4 from "@/components/wizard/Step4";
+import Button from "@/components/ui/button";
 import { RealignmentFormData } from "@/lib/types";
 
 export default function RealignmentPage() {
   const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState<RealignmentFormData>({
+  const [data, setData] = useState<RealignmentFormData>({
     orgName: "",
     unitName: "",
-    /* …other initial fields… */
+    scenario: "",
+    notes: "",
   });
 
-  /** update a single field */
-  const handleChange = (
-    field: keyof RealignmentFormData,
-    value: string
-  ) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
+  const update = (field: keyof RealignmentFormData, value: string) =>
+    setData((prev) => ({ ...prev, [field]: value }));
+
+  const steps = [
+    <Step1 key={0} data={data} onChange={update} />,
+    <Step2 key={1} data={data} onChange={update} />,
+    <Step3 key={2} data={data} onChange={update} />,
+    <Step4 key={3} data={data} />,
+  ];
 
   return (
-    <main className="mx-auto max-w-3xl space-y-8 p-6">
-      {step === 0 && <Step1 data={formData} onChange={handleChange} />}
-      {step === 1 && <Step2 data={formData} onChange={handleChange} />}
+    <main className="mx-auto max-w-3xl space-y-8 p-8">
+      {steps[step]}
 
-      <div className="flex justify-end gap-2">
-        {step > 0 && (
-          <button
-            className="rounded bg-muted px-4 py-2"
-            onClick={() => setStep((s) => s - 1)}
-          >
-            Back
-          </button>
-        )}
-        {step < 1 && (
-          <button
-            className="rounded bg-primary px-4 py-2 text-background"
-            onClick={() => setStep((s) => s + 1)}
-          >
-            Next
-          </button>
-        )}
+      <div className="flex justify-between pt-6">
+        <Button disabled={step === 0} onClick={() => setStep((s) => s - 1)}>
+          Back
+        </Button>
+        <Button
+          onClick={() => setStep((s) => s + 1)}
+          disabled={step === steps.length - 1}
+        >
+          {step === steps.length - 2 ? "Review" : "Next"}
+        </Button>
       </div>
     </main>
   );

@@ -35,7 +35,7 @@ model Position {
   unitId   String
   title    String
   FTE      Int
-  personId String?
+  personId String
 
   unit   Unit   @relation(fields: [unitId], references: [id])
   person Person @relation(fields: [personId], references: [id])
