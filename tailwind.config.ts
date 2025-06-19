@@ -1,14 +1,15 @@
 // tailwind.config.ts
-import type { Config } from 'tailwindcss';
+import { type Config } from 'tailwindcss';
 
-export default {
+const config: Config = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',        // page‑directory files
-    './lib/**/*.{js,ts,jsx,tsx}',        // shared utilities
-    './apps/**/*.{js,ts,jsx,tsx,mdx}',   // all app-dir workspaces
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './lib/**/*.{js,ts,jsx,tsx}',
+    './apps/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: ['bg-background', 'text-foreground'],
   theme: {
     extend: {
       colors: {
@@ -20,6 +21,8 @@ export default {
     },
   },
   plugins: [
-    require('tailwindcss-animate'),
+    require('tailwindcss-animate'), // make sure this package is installed
   ],
-} satisfies Config;
+};
+
+export default config;
