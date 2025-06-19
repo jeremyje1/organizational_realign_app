@@ -1,15 +1,17 @@
 // tailwind.config.ts
 import { type Config } from 'tailwindcss';
 
-const config: Config = {
-  content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './lib/**/*.{js,ts,jsx,tsx}',
-    './apps/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-  safelist: ['bg-background', 'text-foreground'],
+const config = {
+  content: {
+    files: [
+      './app/**/*.{js,ts,jsx,tsx,mdx}',
+      './components/**/*.{js,ts,jsx,tsx,mdx}',
+      './pages/**/*.{js,ts,jsx,tsx,mdx}',
+      './lib/**/*.{js,ts,jsx,tsx}',
+      './apps/**/*.{js,ts,jsx,tsx,mdx}',
+    ],
+    safelist: ['bg-background', 'text-foreground'],
+  },
   theme: {
     extend: {
       colors: {
@@ -21,8 +23,8 @@ const config: Config = {
     },
   },
   plugins: [
-    require('tailwindcss-animate'), // make sure this package is installed
+    require('tailwindcss-animate'),
   ],
-};
+} satisfies Config;
 
 export default config;
