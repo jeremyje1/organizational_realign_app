@@ -1,8 +1,0 @@
-/* Tailwind v4 base reset + utilities */
-@import "tailwindcss/preflight";
-@tailwind utilities;
-
-/* App‑wide custom styles here */
-body {
-  @apply bg-white text-gray-900 antialiased;
-}

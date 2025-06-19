@@ -1,14 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
+// middleware.ts
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
-  // Example middleware logic: redirect to /realignment if root is accessed
-  if (request.nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/realignment", request.url));
-  }
-
+// Very light example – returns every request untouched.
+export function middleware(_req: NextRequest) {
   return NextResponse.next();
 }
 
+/**
+ * Optional matcher — prevents middleware from running on static assets.
+ * Adjust or remove if you need different behaviour.
+ */
 export const config = {
-  matcher: ["/"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
