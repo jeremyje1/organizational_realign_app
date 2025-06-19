@@ -1,9 +1,7 @@
-/ ** @type {import('postcss').ProcessOptions} * /
-export default {
+/** @type {import('postcss').Config} */
+module.exports = {
   plugins: {
-    // Tailwind CSS v4 PostCSS plugin
-    '@tailwindcss/postcss': {},
-    // Add vendor prefixes automatically
-    autoprefixer: {},
+    tailwindcss: {},   // loads Tailwind’s PostCSS plugin
+    autoprefixer: {},  // adds vendor prefixes
   },
 };
