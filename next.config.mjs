@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  appDir: 'apps',
+  // no options needed – Root Directory will be “apps”
 };
 
 export default nextConfig;
