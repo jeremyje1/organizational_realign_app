@@ -18,11 +18,9 @@ const mockOrganizations = {
   },
 };
 
-export async function GET(
-  request: NextRequest,
-  context: { params: { orgId: string } }
-) {
-  const orgId = context.params.orgId;
+export async function GET(req: NextRequest, context: any) {
+  const orgId = context.params?.orgId;
+
   const org = (mockOrganizations as Record<string, any>)[orgId];
 
   if (!org) {
