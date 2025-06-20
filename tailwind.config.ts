@@ -1,22 +1,11 @@
-// @ts-nocheck
-import plugin from "tailwindcss/plugin";
-import type { Config } from "tailwindcss";
-import defaultTheme from "tailwindcss/defaultTheme";
-
-export default {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   content: [
-    { files: ["./app/**/*.{ts,tsx}"], relative: true },
-    { files: ["./components/**/*.{ts,tsx}"], relative: true },
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
   ],
-  safelist: ["bg-background", "text-foreground", "text-primary"],
   theme: {
-    extend: {
-      fontFamily: {
-        sans: ["InterVariable", ...defaultTheme.fontFamily.sans],
-      },
-    },
+    extend: {},
   },
-  plugins: [
-    plugin(function () {}), // keep if you need future helpers
-  ],
-} satisfies Config;
+  plugins: [],
+};
