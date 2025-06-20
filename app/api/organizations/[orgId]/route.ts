@@ -1,10 +1,14 @@
 // app/api/organizations/[orgId]/route.ts
-import { NextRequest, NextResponse } from "next/server";
 
+import { NextResponse } from "next/server";
+
+/**
+ * Temporary stub that just echoes the orgId back.
+ * Replace with a real DB/service call later.
+ */
 export async function GET(
-  _req: NextRequest,
-  { params }: { params: { orgId: string } },
+  _req: Request,
+  { params }: { params: { orgId: string } }
 ) {
-  // TODO: swap in real DB/service call later
   return NextResponse.json({ orgId: params.orgId });
 }
