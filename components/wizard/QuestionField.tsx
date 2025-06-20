@@ -1,71 +1,67 @@
 "use client";
 
-import { Question } from "@/lib/questions";
-import { ChangeEvent } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectItem } from "@/components/ui/select";
-import FileDrop from "@/components/ui/file-drop";
+import { Question } from "@/lib/questions";
 
-type Props = {
-  q: Question;
-  value: unknown;
-  onChange: (v: any) => void;
-};
+interface Props {
+  question: Question;
+  value: string | number | File | null;
+  onChange: (value: string | number | File | null) => void;
+}
 
-export default function QuestionField({ q, value, onChange }: Props) {
-  switch (q.type) {
+export default function QuestionField({ question, value, onChange }: Props) {
+  switch (question.type) {
     case "text":
       return (
-        <div className="space-y-1">
-          <label className="font-medium">{q.prompt}</label>
-          <Textarea
-            value={value as string ?? ""}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-              onChange(e.target.value)
-            }
-            required={q.required}
-          />
-        </div>
+        <Input
+          placeholder={question.label}
+          value={(value as string) ?? ""}
+          onChange={(e) => onChange(e.target.value)}
+        />
       );
 
-    case "number":
+    case "textarea":
       return (
-        <div className="space-y-1">
-          <label className="font-medium">{q.prompt}</label>
-          <Input
-            type="number"
-            value={value as number ?? ""}
-            onChange={(e) => onChange(Number(e.target.value))}
-            required={q.required}
-          />
-        </div>
+        <Textarea
+          placeholder={question.label}
+          value={(value as string) ?? ""}
+          onChange={(e) => onChange(e.target.value)}
+          rows={4}
+        />
       );
 
     case "select":
       return (
-        <div className="space-y-1">
-          <label className="font-medium">{q.prompt}</label>
-          <Select
-            value={(value as string) ?? ""}
-            onValueChange={onChange}
-            required={q.required}
-          >
-            {q.options?.map((o) => (
-              <SelectItem key={o.value} value={o.value}>
-                {o.label}
+        <Select
+          value={(value as string) ?? ""}
+          onValueChange={(v) => onChange(v)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder={question.label} />
+          </SelectTrigger>
+          <SelectContent>
+            {question.options!.map((opt) => (
+              <SelectItem key={opt} value={opt}>
+                {opt}
               </SelectItem>
             ))}
-          </Select>
-        </div>
+          </SelectContent>
+        </Select>
       );
 
     case "file":
       return (
-        <FileDrop
-          label={q.prompt}
-          file={value as File | null}
-          onFile={onChange}
+        <input
+          type="file"
+          onChange={(e) => onChange(e.target.files?.[0] ?? null)}
         />
       );
 
