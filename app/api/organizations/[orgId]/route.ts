@@ -7,8 +7,9 @@ import { NextResponse } from "next/server";
  * Replace with a real DB/service call later.
  */
 export async function GET(
-  _req: Request,
-  { params }: { params: { orgId: string } }
+  request: Request,
+  context: any
 ) {
-  return NextResponse.json({ orgId: params.orgId });
+  const { orgId } = context.params;
+  return NextResponse.json({ orgId });
 }
