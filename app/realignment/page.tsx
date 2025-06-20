@@ -1,47 +1,83 @@
 "use client";
 
-import { useState } from "react";
-import Step1 from "@/components/wizard/Step1";
-import Step2 from "@/components/wizard/Step2";
-import Step3 from "@/components/wizard/Step3";
-import Step4 from "@/components/wizard/Step4";
+import { useState, useTransition } from "react";
+import Step from "@/components/wizard/Step";
+import { questionsByPillar } from "@/lib/questions";
 import Button from "@/components/ui/button";
-import { RealignmentFormData } from "@/lib/types";
+import { RealignmentFormData, emptyForm } from "@/lib/types";
 
 export default function RealignmentPage() {
   const [step, setStep] = useState(0);
-  const [data, setData] = useState<RealignmentFormData>({
-    orgName: "",
-    unitName: "",
-    scenario: "",
-    notes: "",
-  });
+  const [data, setData] = useState<RealignmentFormData>(emptyForm);
+  const [isPending, startTransition] = useTransition();
 
-  const update = (field: keyof RealignmentFormData, value: string) =>
-    setData((prev) => ({ ...prev, [field]: value }));
+  const update = (delta: Partial<RealignmentFormData>) =>
+    setData((prev) => ({ ...prev, ...delta }));
 
-  const steps = [
-    <Step1 key={0} data={data} onChange={update} />,
-    <Step2 key={1} data={data} onChange={update} />,
-    <Step3 key={2} data={data} onChange={update} />,
-    <Step4 key={3} data={data} />,
-  ];
+  /* -------------------------------------------------- */
+  /**
+   * Final submit: POST the accumulated answers to our API route.
+   */
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/realignment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        if (!res.ok) throw new Error("Request failed");
+        // TODO: replace alerts with toast UI
+        alert("Realignment questionnaire submitted! We’ll be in touch.");
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong. Please try again.");
+      }
+    });
+  };
+  /* -------------------------------------------------- */
+
+  const pillars = Object.keys(questionsByPillar);          // ["Academic Affairs", …]
+  const isLast  = step === pillars.length - 1;
 
   return (
-    <main className="mx-auto max-w-3xl space-y-8 p-8">
-      {steps[step]}
+    <form
+      onSubmit={handleSubmit}
+      className="mx-auto max-w-3xl space-y-8 p-8"
+    >
+      <Step
+        pillar={pillars[step]}
+        questions={questionsByPillar[pillars[step]]}
+        data={data}
+        onChange={update}
+      />
 
       <div className="flex justify-between pt-6">
-        <Button disabled={step === 0} onClick={() => setStep((s) => s - 1)}>
+        <Button
+          type="button"
+          disabled={step === 0 || isPending}
+          onClick={() => setStep(step - 1)}
+        >
           Back
         </Button>
-        <Button
-          onClick={() => setStep((s) => s + 1)}
-          disabled={step === steps.length - 1}
-        >
-          {step === steps.length - 2 ? "Review" : "Next"}
-        </Button>
+
+        {isLast ? (
+          <Button type="submit" disabled={isPending}>
+            {isPending ? "Submitting…" : "Submit"}
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            onClick={() => setStep((s) => s + 1)}
+            disabled={isPending}
+          >
+            {step === pillars.length - 2 ? "Review" : "Next"}
+          </Button>
+        )}
       </div>
-    </main>
+    </form>
   );
 }
