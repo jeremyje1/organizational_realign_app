@@ -1,4 +1,4 @@
-import Input from "@/components/ui/input"; // default export
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableCaption,
