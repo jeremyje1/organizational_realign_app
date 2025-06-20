@@ -1,2 +1,5 @@
-import Step1 from "@/components/wizard/Step1";
-import Step2 from "@/components/wizard/Step2";
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  return NextResponse.json({ unit: "demo" });
+}

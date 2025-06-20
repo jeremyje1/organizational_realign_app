@@ -1,14 +1,25 @@
+"use client";
+
 export default function HomePage() {
+  const handleLogin = () => {
+    const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
+    const redirectUri = encodeURIComponent(
+      "https://organizational-realign-app.vercel.app/api/auth/callback"
+    );
+    const scope = "read:user user:email";
+
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+  };
+
   return (
-    <main className="max-w-xl mx-auto py-10 px-4 text-center">
-      <h1 className="text-3xl font-bold mb-4">Organizational Realignment App</h1>
-      <p className="mb-6">Start your alignment assessment below.</p>
-      <a
-        href="/realignment"
-        className="inline-block rounded bg-blue-600 px-6 py-3 text-white font-semibold hover:bg-blue-700"
+    <main className="p-6 max-w-xl mx-auto text-center">
+      <h1 className="text-2xl font-bold mb-6">Welcome to NorthPath</h1>
+      <button
+        onClick={handleLogin}
+        className="bg-black text-white px-6 py-3 rounded"
       >
-        Launch Realignment Wizard
-      </a>
+        Sign in with GitHub
+      </button>
     </main>
   );
 }
