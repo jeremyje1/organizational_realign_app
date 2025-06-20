@@ -1,68 +1,71 @@
 "use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Question } from "@/lib/questions";
+import { Input }     from "@/components/ui/input";
+import { Textarea }  from "@/components/ui/textarea";
+import { Select, SelectTrigger, SelectContent, SelectItem }
+  from "@/components/ui/select";
+
+import { Question }  from "@/lib/types";
 
 interface Props {
   question: Question;
-  value: string | number | File | null;
-  onChange: (value: string | number | File | null) => void;
+  value:    any;
+  onChange: (v: any) => void;
 }
 
 export default function QuestionField({ question, value, onChange }: Props) {
+  const wrap = "space-y-1";
+
   switch (question.type) {
     case "text":
+    case "number":
       return (
-        <Input
-          placeholder={question.label}
-          value={(value as string) ?? ""}
-          onChange={(e) => onChange(e.target.value)}
-        />
+        <div className={wrap}>
+          <label className="font-medium">{question.label}</label>
+          <Input
+            type={question.type}
+            value={value ?? ""}
+            onChange={e => onChange(e.target.value)}
+          />
+        </div>
       );
 
     case "textarea":
       return (
-        <Textarea
-          placeholder={question.label}
-          value={(value as string) ?? ""}
-          onChange={(e) => onChange(e.target.value)}
-          rows={4}
-        />
+        <div className={wrap}>
+          <label className="font-medium">{question.label}</label>
+          <Textarea
+            value={value ?? ""}
+            onChange={e => onChange(e.target.value)}
+          />
+        </div>
       );
 
     case "select":
       return (
-        <Select
-          value={(value as string) ?? ""}
-          onValueChange={(v) => onChange(v)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder={question.label} />
-          </SelectTrigger>
-          <SelectContent>
-            {question.options!.map((opt) => (
-              <SelectItem key={opt} value={opt}>
-                {opt}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className={wrap}>
+          <label className="font-medium">{question.label}</label>
+
+          <Select value={value ?? ""} onValueChange={onChange}>
+            <SelectTrigger className="w-full" />
+            <SelectContent>
+              {question.options?.map(opt => (
+                <SelectItem key={opt} value={opt}>
+                  {opt}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       );
 
     case "file":
       return (
-        <input
-          type="file"
-          onChange={(e) => onChange(e.target.files?.[0] ?? null)}
-        />
+        <div className={wrap}>
+          <label className="font-medium">{question.label}</label>
+          <Input type="file"
+                 onChange={e => onChange(e.target.files?.[0] ?? null)} />
+        </div>
       );
 
     default:
