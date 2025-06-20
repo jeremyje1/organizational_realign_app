@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/button";
 import Step from "@/components/wizard/Step";
 import { questionnaire } from "@/lib/questions";
 import { emptyForm, RealignmentFormData } from "@/lib/types";
