@@ -1,180 +1,132 @@
-// lib/questions.ts
-export type Question = {
-  id: string;
-  prompt: string;
-  type: "text" | "number" | "select" | "file";
-  /** Optional list of <option, label> for selects */
-  options?: { value: string; label: string }[];
-  /** If present, the question displays only when this returns true */
-  showWhen?: (sector: string) => boolean;
-  required?: boolean;
-};
+// ──────────────────── Wizard Question Types ────────────────────
+export type QuestionType = "text" | "number" | "textarea" | "select" | "file";
 
-export type Pillar = {
+export interface SelectOption {
+  /** actual value submitted */
+  value: string;
+  /** human‑readable label shown in UI */
+  label: string;
+}
+
+export interface Question {
+  /** unique field identifier (becomes key on RealignmentFormData) */
   id: string;
   label: string;
+  type: QuestionType;
+  /** only for `select` questions */
+  options?: SelectOption[];
+}
+
+export interface Pillar {
+  /** short machine‑friendly id (also used as step id) */
+  id: string;
+  /** Section title shown to the user */
+  title: string;
+  /** ordered list of questions */
   questions: Question[];
+}
+
+/** primitive or file value captured for each answer */
+export type Scalar = string | number | File | null;
+
+export type RealignmentFormData = {
+  /** dynamic keys for every `id` in the questionnaire map to a scalar */
+  [key: string]: Scalar;
 };
 
-/** Helper for higher-ed‐only questions */
-const isHigherEd = (sector: string) => sector === "higher-ed";
-
-/** Master questionnaire */
+// ──────────────────── Wizard Questionnaire Data ────────────────────
+/**
+ * Each pillar represents one step of the wizard.  
+ * Feel free to expand or reorder later – but make sure every `id`
+ * is unique across all pillars and every question’s `id` is unique
+ * across the entire questionnaire.
+ */
 export const questionnaire: Pillar[] = [
   {
-    id: "mission",
-    label: "Mission & Strategy",
+    id: "org_info",
+    title: "Organization Information",
     questions: [
       {
-        id: "missionAlignment",
-        prompt: "How does student-success show up in your current strategic plan?",
+        id: "orgName",
+        label: "Organization name",
         type: "text",
-        required: true,
       },
-    ],
-  },
-  {
-    id: "academic",
-    label: "Academic Affairs / Instruction",
-    questions: [
       {
-        id: "overlap",
-        prompt:
-          "Which instructional units have overlapping curricula or competition?",
+        id: "unitName",
+        label: "Unit / Division name (if applicable)",
         type: "text",
-        showWhen: isHigherEd, // only ask higher-ed clients
       },
       {
-        id: "adjunctRatio",
-        prompt: "Full-time vs adjunct faculty ratio (approximate % adjunct)?",
-        type: "number",
-        showWhen: isHigherEd,
-      },
-    ],
-  },
-  {
-    id: "studentAffairs",
-    label: "Student Affairs / Services",
-    questions: [
-      {
-        id: "painPoints",
-        prompt:
-          "List the top three student-services pain points (e.g., wait times, duplication).",
-        type: "text",
-        showWhen: isHigherEd,
-      },
-      {
-        id: "equityCenters",
-        prompt: "Do you operate equity / accessibility centers on campus?",
+        id: "scenario",
+        label: "Which best describes your realignment scenario?",
         type: "select",
         options: [
-          { value: "yes", label: "Yes" },
-          { value: "no", label: "No" },
+          { value: "growth", label: "Growth / Expansion" },
+          { value: "consolidation", label: "Consolidation / Downsizing" },
+          { value: "new_unit", label: "Standing‑up a new unit" },
         ],
-        showWhen: isHigherEd,
+      },
+      {
+        id: "notes",
+        label: "Anything else we should know at this stage?",
+        type: "textarea",
       },
     ],
   },
+
   {
-    id: "budget",
-    label: "Budget & Finance",
+    id: "student_affairs",
+    title: "Student Affairs",
     questions: [
       {
-        id: "budgetUpload",
-        prompt:
-          "Upload your latest divisional budget worksheet (or provide headline numbers).",
-        type: "file",
-        required: false,
+        id: "studentServicesStrengths",
+        label: "What are the current strengths of student services?",
+        type: "textarea",
       },
       {
-        id: "deficit",
-        prompt: "Projected budget deficit (USD, if any) for next fiscal year?",
+        id: "studentServicesChallenges",
+        label: "What challenges are you facing in student services?",
+        type: "textarea",
+      },
+    ],
+  },
+
+  {
+    id: "academic_affairs",
+    title: "Academic / Instruction",
+    questions: [
+      {
+        id: "instructionalModalities",
+        label: "Which instructional modalities are in scope?",
+        type: "select",
+        options: [
+          { value: "in_person", label: "In‑person" },
+          { value: "online", label: "Online / Hybrid" },
+          { value: "both", label: "Both in‑person and online" },
+        ],
+      },
+      {
+        id: "facultyInvolvement",
+        label: "How involved is faculty governance in the redesign?",
+        type: "textarea",
+      },
+    ],
+  },
+
+  {
+    id: "budget_facilities",
+    title: "Budget & Facilities",
+    questions: [
+      {
+        id: "fiscalYearBudget",
+        label: "Current fiscal‑year budget (USD)",
         type: "number",
       },
-    ],
-  },
-  {
-    id: "facilities",
-    label: "Facilities & Operations",
-    questions: [
       {
-        id: "utilization",
-        prompt:
-          "What % of classroom or office space is ≤ 60 % utilized during peak hours?",
-        type: "number",
-        showWhen: isHigherEd,
-      },
-      {
-        id: "capitalProjects",
-        prompt:
-          "List major capital projects currently in flight (name, $ size, completion year).",
-        type: "text",
-      },
-    ],
-  },
-  {
-    id: "people",
-    label: "HR / People & Collective Bargaining",
-    questions: [
-      {
-        id: "unions",
-        prompt:
-          "Which collective-bargaining units represent employees in the affected areas?",
-        type: "text",
-      },
-      {
-        id: "vacancyRate",
-        prompt: "Current vacancy rate for positions in scope (%).",
-        type: "number",
-      },
-    ],
-  },
-  {
-    id: "tech",
-    label: "Technology & Data",
-    questions: [
-      {
-        id: "shadowSystems",
-        prompt:
-          "Which units maintain their own shadow databases or spreadsheets to track work?",
-        type: "text",
-      },
-    ],
-  },
-  {
-    id: "culture",
-    label: "Culture & Change Readiness",
-    questions: [
-      {
-        id: "changeScore",
-        prompt:
-          "On a scale of 1–5, rate staff willingness to adopt new org structures.",
-        type: "number",
-        required: true,
-      },
-    ],
-  },
-  {
-    id: "governance",
-    label: "Processes & Governance",
-    questions: [
-      {
-        id: "workflowStall",
-        prompt:
-          "Which cross-unit workflows routinely stall and why? (Brief bullets are fine.)",
-        type: "text",
+        id: "spaceConstraints",
+        label: "Do you have any facility or space constraints?",
+        type: "textarea",
       },
     ],
   },
 ];
-
-/** Map of pillar label → its question list.
- *  Useful for the wizard so we can iterate steps dynamically.
- */
-export const questionsByPillar: Record<string, Question[]> = questionnaire.reduce(
-  (acc, pillar) => {
-    acc[pillar.label] = pillar.questions;
-    return acc;
-  },
-  {} as Record<string, Question[]>
-);
