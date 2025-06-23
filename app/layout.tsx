@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Providers } from "./providers";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "Organizational Realignment Tool",
@@ -15,13 +15,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="theme-color" content="#1e40af" />
-        <meta property="og:title" content="Organizational Realignment Tool" />
-        <meta property="og:description" content="Propose and manage realignment scenarios." />
-        <meta property="og:image" content="/og-image.png" />
-      </head>
       <body className="min-h-screen bg-gray-50 text-gray-800 font-sans antialiased">
         <Providers>
           <nav className="bg-white shadow-sm px-6 py-3 mb-6" role="navigation" aria-label="Main navigation">
