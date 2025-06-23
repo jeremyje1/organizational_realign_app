@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { cookieStore } from "@/lib/supabase-cookies";
 import type { Database } from "@/types/supabase";
+import { cookieStore } from "@/lib/supabase-cookies";   // <- NEW
 
 const supabase = createServerClient<Database>(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_ANON_KEY!,
-  { cookies: cookieStore }
+  { cookies: cookieStore }                              // <- NEW
 );
 
 /* ---------- POST /api/survey ---------- */
@@ -22,10 +22,11 @@ export async function POST(request: Request) {
 
   const { error } = await supabase
     .from("surveys")
-    .insert({ user_id: userId, data });
+    .insert(
+      [{ user_id: userId, data }] as Database["public"]["Tables"]["surveys"]["Insert"][]
+    );
 
   if (error) return NextResponse.json({ error }, { status: 400 });
-
   return NextResponse.json({ ok: true });
 }
 
@@ -44,10 +45,9 @@ export async function GET(request: Request) {
   const { data, error } = await supabase
     .from("surveys")
     .select("*")
-    .eq("user_id", userId as string)
+    .eq("user_id", userId)
     .single();
 
   if (error) return NextResponse.json({ error }, { status: 400 });
-
   return NextResponse.json({ survey: data });
 }

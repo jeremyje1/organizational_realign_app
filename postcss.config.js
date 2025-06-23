@@ -1,7 +1,7 @@
-/ ** @type {import('postcss').Config} * /
+/** @type {import('postcss').Config} */
 module.exports = {
   plugins: {
-    // CSS nesting via PostCSS plugin (avoids Tailwind sub‑path error)
+    // the order matters
     'postcss-nesting': {},
     tailwindcss: {},
     autoprefixer: {},

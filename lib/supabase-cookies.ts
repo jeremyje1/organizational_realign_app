@@ -1,45 +1,25 @@
-// lib/supabase-cookies.ts
 import { cookies } from "next/headers";
-import type {
-  CookieMethodsServer,
-  CookieOptionsWithName,
-} from "@supabase/ssr";
+import type { CookieMethodsServer } from "@supabase/ssr";
 
 /**
- * Adapter that lets @supabase/ssr read & write cookies
- * using Next.js' built-in headers() helpers.
+ * Minimal bridge that turns Next.js `cookies()` into the
+ * `CookieMethodsServer` interface expected by @supabase/ssr 0.6.x
  */
 export const cookieStore: CookieMethodsServer = {
   /* ---------- read ---------- */
-  get(name) {
-    const c = cookies().get(name);
-    return c ? c.value : undefined;
-  },
-
-  getAll() {
-    return cookies()
+  get: (name) => cookies().get(name)?.value,
+  getAll: () =>
+    cookies()
       .getAll()
-      .map(({ name, value }) => ({ name, value }));
-  },
+      .map(({ name, value }) => ({ name, value })),
 
   /* ---------- write ---------- */
-  set(name, value, options = {}) {
-    const opts: CookieOptionsWithName = {
-      name,
-      value,
-      path: "/",
-      ...options,
-    };
-    cookies().set(opts);
+  set: (name, value, options) => {
+    cookies().set({ name, value, ...options });
   },
 
   /* ---------- delete ---------- */
-  remove(name, options = {}) {
-    const opts: CookieOptionsWithName = {
-      name,
-      path: "/",
-      ...options,
-    };
-    cookies().delete(opts);
+  remove: (name, options) => {
+    cookies().delete(name, options);
   },
 };
