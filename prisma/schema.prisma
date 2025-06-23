@@ -1,41 +1,28 @@
-// prisma/schema.prisma
+// prisma/schema.prisma  (overwrite everything)
+
 generator client {
   provider = "prisma-client-js"
 }
 
-/**
- * Points Prisma at your Neon (or local) Postgres database.
- * The env var already exists in .env.local and on Vercel.
- */
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL")   // already in .env.local and on Vercel
 }
 
-/* ------------  Domain models  ------------ */
+/* --- your two domain tables (plus NextAuth later) --- */
 
-/**
- * A Workspace owns many Surveys
- */
 model Workspace {
-  id         String   @id @default(uuid())
-  name       String
-  createdAt  DateTime @default(now())
-
-  surveys    Survey[]
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  surveys   Survey[]
 }
 
-/**
- * One survey record per user per workspace (for now).
- * `data` holds the JSON blob from the questionnaire.
- */
 model Survey {
   id          String   @id @default(uuid())
   user_id     String
   data        Json
   createdAt   DateTime @default(now())
-
-  // OPTIONAL: tie to a workspace
-  workspaceId String?      @map("workspace_id")
-  workspace   Workspace?   @relation(fields: [workspaceId], references: [id])
+  workspaceId String?    @map("workspace_id")
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id])
 }
