@@ -1,14 +1,13 @@
 import { cookies } from "next/headers";
-import { createServerClient } from "@supabase/ssr";
-
-import { Database } from "@/types/supabase";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import type { Database } from "@/types/supabase";
 
 /**
- * Returns a typed Supabase client that works inside Server Components / Route Handlers.
- * We proxy the standard cookie helpers so Supabase auth can persist the session
- * without breaking Next.js App‑Router streaming.
+ * Return a typed Supabase client that works inside **Server Components** /
+ * **Route Handlers** while safely persisting the auth session via cookies.
  */
 export function createSupabaseServerClient() {
+  // `cookies()` is synchronous in the App‑Router and returns a mutable cookie store.
   const cookieStore = cookies();
 
   return createServerClient<Database>(
@@ -16,11 +15,30 @@ export function createSupabaseServerClient() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get: (name: string) => cookieStore.get(name)?.value,
-        set: (name: string, value: string, options: any) =>
-          cookieStore.set({ name, value, ...options }),
-        remove: (name: string, options: any) =>
-          cookieStore.set({ name, value: "", ...options, maxAge: -1 }),
+        /**
+         * Supabase occasionally calls `get(name)` directly, so we expose it.
+         */
+        get: (name: string) => cookieStore.get(name),
+
+        /**
+         * Called by Supabase every request to parse its own auth cookies.
+         */
+        getAll: () => cookieStore.getAll(),
+
+        /**
+         * When Supabase signs in / refreshes a session it needs to *set*
+         * the auth cookies.  We delegate to Next.js’ cookie store.
+         */
+        set: (name: string, value: string, options?: CookieOptions) => {
+          cookieStore.set(name, value, { path: "/", ...options });
+        },
+
+        /**
+         * Clearing a cookie is just `set` with `maxAge: -1`.
+         */
+        remove: (name: string, options?: CookieOptions) => {
+          cookieStore.set(name, "", { path: "/", maxAge: -1, ...options });
+        },
       },
     }
   );
