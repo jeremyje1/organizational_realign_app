@@ -6,7 +6,14 @@ import SummaryCard from "@/components/results/SummaryCard";
 import RoleList from "@/components/results/RoleList";
 import PriorityMatrix from "@/components/results/PriorityMatrix";
 
-export default async function AdminResultsPage({ params }: { params: { id: string } }) {
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
+export default function AdminResultsPage(props: Props) {
+  const { id } = props.params;
   const [record, setRecord] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -15,7 +22,7 @@ export default async function AdminResultsPage({ params }: { params: { id: strin
       const { data, error } = await supabase
         .from("realignments")
         .select("*")
-        .eq("id", params.id)
+        .eq("id", id)
         .single();
 
       if (error) {
@@ -28,7 +35,7 @@ export default async function AdminResultsPage({ params }: { params: { id: strin
     };
 
     fetchData();
-  }, [params.id]);
+  }, [id]);
 
   if (loading) return <div className="p-6">Loading...</div>;
   if (!record) return <div className="p-6 text-red-600">No record found.</div>;
