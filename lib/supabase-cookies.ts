@@ -1,32 +1,45 @@
-import { cookies as nextCookies } from "next/headers";
+// lib/supabase-cookies.ts
+import { cookies } from "next/headers";
 import type {
-  CookieOptionsWithName,
   CookieMethodsServer,
+  CookieOptionsWithName,
 } from "@supabase/ssr";
 
+/**
+ * Adapter that lets @supabase/ssr read & write cookies
+ * using Next.js' built-in headers() helpers.
+ */
 export const cookieStore: CookieMethodsServer = {
-  /**
-   * Read a cookie value (or undefined)
-   */
-  get(name: string) {
-    return nextCookies().get(name)?.value;
+  /* ---------- read ---------- */
+  get(name) {
+    const c = cookies().get(name);
+    return c ? c.value : undefined;
   },
 
-  /**
-   * Set / overwrite a cookie
-   */
-  set(
-    name: string,
-    value: string,
-    options?: CookieOptionsWithName /* path, maxAge, etc. */
-  ) {
-    nextCookies().set({ name, value, ...options });
+  getAll() {
+    return cookies()
+      .getAll()
+      .map(({ name, value }) => ({ name, value }));
   },
 
-  /**
-   * Delete a cookie
-   */
-  remove(name: string, options?: CookieOptionsWithName) {
-    nextCookies().delete({ name, ...options });
+  /* ---------- write ---------- */
+  set(name, value, options = {}) {
+    const opts: CookieOptionsWithName = {
+      name,
+      value,
+      path: "/",
+      ...options,
+    };
+    cookies().set(opts);
+  },
+
+  /* ---------- delete ---------- */
+  remove(name, options = {}) {
+    const opts: CookieOptionsWithName = {
+      name,
+      path: "/",
+      ...options,
+    };
+    cookies().delete(opts);
   },
 };
