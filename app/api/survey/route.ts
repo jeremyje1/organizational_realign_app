@@ -1,50 +1,39 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { cookieStore } from "@/lib/supabase-cookies";
+import type { Database } from "@/types/supabase";
 
-import { Database } from "@/types/supabase";
+const supabase = createServerClient<Database>(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_ANON_KEY!,
+  { cookies: cookieStore }
+);
 
-export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const { data: surveyData } = body as { data: unknown };
+/* ---------- POST /api/survey ---------- */
+export async function POST(request: Request) {
+  const { data, userId } = await request.json();
 
-  const supabase = createServerClient<Database>(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_ANON_KEY!,
-    { cookies }
-  );
-
-  const {
-    data,
-    error,
-  } = await supabase.from("surveys").upsert(
-    {
-      user_id: body.userId,          // make sure your payload includes this
-      data: surveyData,
-    },
-    { onConflict: "user_id" }        // keeps one row per user
-  );
+  const { error } = await supabase
+    .from("surveys")
+    .insert({ user_id: userId, data });
 
   if (error) return NextResponse.json({ error }, { status: 400 });
-  return NextResponse.json({ data });
+
+  return NextResponse.json({ ok: true });
 }
 
-export async function GET() {
-  const supabase = createServerClient<Database>(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_ANON_KEY!,
-    { cookies }
-  );
+/* ---------- GET /api/survey?userId=... ---------- */
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const userId = searchParams.get("userId");
 
-  const {
-    data,
-    error,
-  } = await supabase
+  const { data, error } = await supabase
     .from("surveys")
-    .select("data")
-    .eq("user_id", (await supabase.auth.getUser()).data.user?.id)
+    .select("*")
+    .eq("user_id", userId)
     .single();
 
   if (error) return NextResponse.json({ error }, { status: 400 });
-  return NextResponse.json({ data: data?.data ?? null });
+
+  return NextResponse.json({ survey: data });
 }
