@@ -1,9 +1,8 @@
 /** @type {import('postcss').Config} */
 module.exports = {
-  plugins: {
-    // the order matters
-    'postcss-nesting': {},
-    tailwindcss: {},
-    autoprefixer: {},
-  },
+  plugins: [
+    require("@tailwindcss/postcss"),   // Tailwind 4 plugin
+    require("postcss-nesting"),
+    require("autoprefixer"),
+  ],
 };

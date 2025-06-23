@@ -1,25 +1,27 @@
 import { cookies } from "next/headers";
 import type { CookieMethodsServer } from "@supabase/ssr";
+import type { CookieOptions } from "@supabase/ssr";
 
 /**
- * Minimal bridge that turns Next.js `cookies()` into the
- * `CookieMethodsServer` interface expected by @supabase/ssr 0.6.x
+ * Adapter that satisfies `CookieMethodsServer` for @supabase/ssr 0.6.x
+ * using the async Next.js 14/15 `cookies()` API.
  */
 export const cookieStore: CookieMethodsServer = {
   /* ---------- read ---------- */
-  get: (name) => cookies().get(name)?.value,
-  getAll: () =>
-    cookies()
-      .getAll()
-      .map(({ name, value }) => ({ name, value })),
-
-  /* ---------- write ---------- */
-  set: (name, value, options) => {
-    cookies().set({ name, value, ...options });
+  async getAll() {
+    const c = await cookies();
+    return c.getAll().map(({ name, value }) => ({ name, value }));
   },
 
-  /* ---------- delete ---------- */
-  remove: (name, options) => {
-    cookies().delete(name, options);
+  /* ---------- write ---------- */
+  async setAll(cookiesToSet: {
+    name: string;
+    value: string;
+    options?: CookieOptions;
+  }[]) {
+    const c = await cookies();
+    cookiesToSet.forEach(({ name, value, options }) =>
+      c.set({ name, value, ...options })
+    );
   },
 };
