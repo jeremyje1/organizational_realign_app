@@ -359,7 +359,6 @@ const ReportPDF = ({
 );
 
 export default function ResultsPage() {
-  if (typeof window === "undefined") return null;
 
   const { data: session } = useSession();
   const surveyData = loadSurveyData();
