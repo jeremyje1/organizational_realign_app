@@ -7,9 +7,9 @@ import { supabase } from "@/lib/supabase";
 
 import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, Image, pdf } from "@react-pdf/renderer";
 
-import SummaryCard from "@/components/results/SummaryCard";
-import RoleList from "@/components/results/RoleList";
-import PriorityMatrix from "@/components/results/PriorityMatrix";
+import { SummaryCard } from "@/components/results/SummaryCard";
+import { RoleList } from "@/components/results/RoleList";
+import { PriorityMatrix } from "@/components/results/PriorityMatrix";
 
 const pdfStyles = StyleSheet.create({
   page: { padding: 30, position: "relative", flexDirection: "column", justifyContent: "flex-start" },

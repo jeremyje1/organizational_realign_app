@@ -1,4 +1,10 @@
 
+// --------------------------------------------------------------------------------------
+// DO NOT MODIFY THIS FILE WITHOUT APPROVAL
+// This file contains the finalized NorthPath assessment question bank.
+// If updates are required, consult the lead systems strategist before committing changes.
+// --------------------------------------------------------------------------------------
+
 
 export type Question = {
   id: string;

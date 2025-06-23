@@ -3,7 +3,7 @@
 "use client";
 import { Bar } from "react-chartjs-2";
 
-export function SummaryCard({
+export default function SummaryCard({
   redundancy,
   aiReadiness,
   savings,
