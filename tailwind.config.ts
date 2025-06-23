@@ -1,9 +1,10 @@
+// tailwind.config.ts
 import type { Config } from "tailwindcss";
 
-const config: Config = {
+export default {
   content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",        // ✅ all App-router files
+    "./components/**/*.{ts,tsx}", // ✅ any colocated UI
   ],
   theme: {
     extend: {
@@ -12,12 +13,14 @@ const config: Config = {
         sky: "#E6F1FF",
         gold: "#F5C249",
       },
-    },
-    fontFamily: {
-      sans: ["Inter", "sans-serif"],
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+      },
     },
   },
-  plugins: [],
-};
-
-export default config;
+  plugins: [
+    require("@tailwindcss/forms"),      // ➊ nicer form controls
+    require("@tailwindcss/typography"), // ➋ prose styling (optional)
+    require("tailwindcss-animate"),     // ➌ convenience animate classes
+  ],
+} satisfies Config;
