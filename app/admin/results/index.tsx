@@ -20,7 +20,7 @@ interface RealignmentRecord {
   redundancy?: number;
   ai_readiness?: number;
   estimated_savings?: number;
-  created_at: string;
+  created_at: string | Date;
   user_email?: string;
   consultant_comment?: string;
 }
@@ -96,7 +96,7 @@ export default function AdminResultsListPage() {
         <select
           className="input w-full sm:w-52"
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
+          onChange={(e) => setSortBy(e.target.value as "created_at" | "redundancy" | "savings")}
         >
           <option value="created_at">Newest</option>
           <option value="redundancy">Redundancy Score</option>
@@ -105,7 +105,7 @@ export default function AdminResultsListPage() {
         <select
           className="input w-full sm:w-52"
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
+          onChange={(e) => setStatusFilter(e.target.value as "all" | "complete" | "incomplete")}
         >
           <option value="all">All Statuses</option>
           <option value="complete">Complete</option>
@@ -121,7 +121,7 @@ export default function AdminResultsListPage() {
               r.redundancy ?? "",
               r.ai_readiness ?? "",
               r.estimated_savings ?? "",
-              r.created_at,
+              typeof r.created_at === "string" ? r.created_at : r.created_at.toISOString(),
               r.user_email || "",
               r.consultant_comment || "",
             ]);
@@ -176,17 +176,19 @@ export default function AdminResultsListPage() {
               <li
                 key={record.id}
                 className={`border-2 p-4 rounded shadow-sm bg-white dark:bg-gray-800 ${
-                  record.estimated_savings >= 250000
+                  record.estimated_savings && record.estimated_savings >= 250000
                     ? "border-green-500"
                     : !(record.redundancy && record.ai_readiness && record.estimated_savings)
                     ? "border-yellow-400"
                     : "border-gray-200"
-                } ${record.ai_readiness >= 75 ? "font-semibold" : ""}`}
+                } ${record.ai_readiness && record.ai_readiness >= 75 ? "font-semibold" : ""}`}
               >
                 <p className="font-medium">{record.name}</p>
                 <p className="text-sm text-gray-600">Org Type: {record.org_type}</p>
                 <p className="text-xs text-gray-500">
-                  Submitted: {typeof window !== "undefined" ? new Date(record.created_at).toLocaleDateString() : ""}
+                  Submitted: {typeof window !== "undefined" && record.created_at
+                    ? new Date(record.created_at).toLocaleDateString()
+                    : ""}
                 </p>
                 <p className="text-xs text-gray-500">Email: {record.user_email}</p>
                 <Link href={`/admin/results/${record.id}`} className="text-blue-600 hover:underline text-sm mt-2 inline-block">

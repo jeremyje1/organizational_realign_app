@@ -1,8 +1,6 @@
+"use client";
 
-
- "use client";
-
-export default function RoleList({ roles }: { roles: { id: string; name: string; tag?: string }[] }) {
+export function RoleList({ roles }: { roles: { id: string; name: string; tag?: string }[] }) {
   return (
     <div className="mt-6">
       {roles.map((role) => (
