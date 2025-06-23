@@ -7,9 +7,9 @@ import { supabase } from "@/lib/supabase";
 
 import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, Image, pdf } from "@react-pdf/renderer";
 
-import { SummaryCard } from "@/components/results/SummaryCard";
-import { RoleList } from "@/components/results/RoleList";
-import { PriorityMatrix } from "@/components/results/PriorityMatrix";
+import SummaryCard from "@/components/results/SummaryCard";
+import RoleList from "@/components/results/RoleList";
+import PriorityMatrix from "@/components/results/PriorityMatrix";
 
 const pdfStyles = StyleSheet.create({
   page: { padding: 30, position: "relative", flexDirection: "column", justifyContent: "flex-start" },
@@ -381,7 +381,7 @@ export default function ResultsPage() {
       id: r.id,
       value: r.tag === "redundant" ? 2 : r.tag === "open" ? 4 : 3,
     }));
-    const budget = Number(surveyData?.budget || 1000000);
+    const budget = Number((surveyData as any)?.budget || 1000000);
 
     setRedundancy(computeRedundancy(answers));
     setAiReadiness(computeAiReadiness(answers));

@@ -1,6 +1,6 @@
 "use client";
 
-export function PriorityMatrix() {
+export default function PriorityMatrix() {
   return (
     <div className="card mt-6">
       <h2 className="text-lg font-semibold mb-2">Action Priority Matrix (Impact vs. Effort)</h2>

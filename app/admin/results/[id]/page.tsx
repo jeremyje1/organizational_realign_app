@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { SummaryCard } from "@/components/results/SummaryCard";
-import { RoleList } from "@/components/results/RoleList";
-import { PriorityMatrix } from "@/components/results/PriorityMatrix";
+import SummaryCard from "@/components/results/SummaryCard";
+import RoleList from "@/components/results/RoleList";
+import PriorityMatrix from "@/components/results/PriorityMatrix";
 
-export default function AdminResultsPage({ params }: { params: { id: string } }) {
+export default async function AdminResultsPage({ params }: { params: { id: string } }) {
   const [record, setRecord] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
