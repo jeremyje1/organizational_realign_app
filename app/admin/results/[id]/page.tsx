@@ -6,7 +6,7 @@ import SummaryCard from "@/components/results/SummaryCard";
 import RoleList from "@/components/results/RoleList";
 import PriorityMatrix from "@/components/results/PriorityMatrix";
 
-export default function AdminResultsPage({
+export default async function AdminResultsPage({
   params,
 }: {
   params: { id: string };
