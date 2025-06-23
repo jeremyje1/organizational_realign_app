@@ -1,27 +1,23 @@
-// tailwind.config.ts
 import type { Config } from "tailwindcss";
 
-const config = {
+const config: Config = {
   content: [
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
   ],
   theme: {
     extend: {
       colors: {
-        midnight:  "#0E1A2B",     // dark navy
-        sky:       "#E6F1FF",     // light sky
-        gold:      "#F5C249",     // accent
-      },
-      fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui"],
+        midnight: "#0E1A2B",
+        sky: "#E6F1FF",
+        gold: "#F5C249",
       },
     },
+    fontFamily: {
+      sans: ["Inter", "sans-serif"],
+    },
   },
-  plugins: [
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/forms"),
-  ],
-} satisfies Config;
+  plugins: [],
+};
 
 export default config;
