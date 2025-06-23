@@ -13,6 +13,13 @@ const supabase = createServerClient<Database>(
 export async function POST(request: Request) {
   const { data, userId } = await request.json();
 
+  if (!userId) {
+    return NextResponse.json(
+      { error: "Missing userId in request body" },
+      { status: 400 },
+    );
+  }
+
   const { error } = await supabase
     .from("surveys")
     .insert({ user_id: userId, data });
@@ -27,10 +34,17 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get("userId");
 
+  if (!userId) {
+    return NextResponse.json(
+      { error: "Missing userId query param" },
+      { status: 400 },
+    );
+  }
+
   const { data, error } = await supabase
     .from("surveys")
     .select("*")
-    .eq("user_id", userId)
+    .eq("user_id", userId as string)
     .single();
 
   if (error) return NextResponse.json({ error }, { status: 400 });
