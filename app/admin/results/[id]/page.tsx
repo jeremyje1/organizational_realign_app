@@ -6,14 +6,12 @@ import SummaryCard from "@/components/results/SummaryCard";
 import RoleList from "@/components/results/RoleList";
 import PriorityMatrix from "@/components/results/PriorityMatrix";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
-
-export default function AdminResultsPage(props: Props) {
-  const { id } = props.params;
+export default function AdminResultsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { id } = params;
   const [record, setRecord] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
