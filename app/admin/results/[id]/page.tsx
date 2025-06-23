@@ -6,7 +6,11 @@ import SummaryCard from "@/components/results/SummaryCard";
 import RoleList from "@/components/results/RoleList";
 import PriorityMatrix from "@/components/results/PriorityMatrix";
 
-export default async function AdminResultsPage({ params }: { params: { id: string } }) {
+interface AdminPageProps {
+  params: { id: string };
+}
+
+export default function AdminResultsPage({ params }: AdminPageProps) {
   const [record, setRecord] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
