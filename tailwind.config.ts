@@ -1,18 +1,24 @@
-import type { Config } from "tailwindcss";
-import colors from "tailwindcss/colors";
+import type { Config } from 'tailwindcss'
+import colors from 'tailwindcss/colors'
+import plugin from 'tailwindcss/plugin'
 
-export default {
+const config = {
   content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
+    './app/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
   ],
   theme: {
     extend: {
-      //  <── add this block
+      // publish “gray-*” again by re‑exporting neutral
       colors: {
-        gray: colors.neutral,  // alias old `gray-*` classes to `neutral-*`
+        gray: colors.neutral,
       },
     },
   },
-  plugins: [],
-} satisfies Config;
+  plugins: [
+    // let Tailwind know the alias is intentional (suppresses warnings)
+    plugin(function () {}),
+  ],
+} satisfies Config
+
+export default config

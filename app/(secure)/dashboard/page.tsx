@@ -1,32 +1,20 @@
-// app/api/auth/[...nextauth]/route.ts
-import NextAuth, {
-  type NextAuthOptions,
-  getServerSession,   // helper for server components / RSCs
-} from "next-auth";
+// app/(secure)/dashboard/page.tsx
+import { auth } from '@/app/api/auth/[...nextauth]/route'
+import { redirect } from 'next/navigation'
 
-import GitHubProvider from "next-auth/providers/github";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+export default async function DashboardPage() {
+  const session = await auth()
 
-const prisma = new PrismaClient();
+  if (!session) {
+    redirect('/login')
+  }
 
-export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
-  providers: [
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
-    }),
-  ],
-  session: {
-    // _Must_ be the literal string so TS infers `'database'`
-    strategy: "database" as const,
-  },
-};
-
-// ---- Route handlers (required in the App Router) ----
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
-
-// ---- Convenience helper for server components ----
-export const auth = () => getServerSession(authOptions);
+  return (
+    <main className="min-h-screen bg-neutral-50 p-8">
+      <h1 className="text-2xl font-semibold">
+        Welcome, {session.user?.name ?? 'user'}!
+      </h1>
+      {/* …your dashboard content… */}
+    </main>
+  )
+}
