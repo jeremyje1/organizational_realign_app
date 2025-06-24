@@ -1,32 +1,19 @@
-// app/api/auth/[...nextauth]/route.ts
-import NextAuth, {
-  type NextAuthOptions,
-  getServerSession,   // helper for server components / RSCs
-} from "next-auth";
+import NextAuth from "next-auth/next";
+import Github from "next-auth/providers/github";
+import { getServerSession, type NextAuthOptions } from "next-auth";
 
-import GitHubProvider from "next-auth/providers/github";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
-
-export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+const authConfig: NextAuthOptions = {
   providers: [
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
+    Github({
+      clientId: process.env.GITHUB_ID ?? "",
+      clientSecret: process.env.GITHUB_SECRET ?? "",
     }),
   ],
-  session: {
-    // _Must_ be the literal string so TS infers `'database'`
-    strategy: "database" as const,
-  },
+  session: { strategy: "jwt" },
 };
 
-// ---- Route handlers (required in the App Router) ----
-const handler = NextAuth(authOptions);
+const handler = NextAuth(authConfig);
 export { handler as GET, handler as POST };
 
-// ---- Convenience helper for server components ----
-export const auth = () => getServerSession(authOptions);
+// helper for Server Components / RSC pages
+export const auth = () => getServerSession(authConfig);
