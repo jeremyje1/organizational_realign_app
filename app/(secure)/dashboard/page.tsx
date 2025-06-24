@@ -1,25 +1,32 @@
-// app/dashboard/page.tsx
-"use client";
+// app/api/auth/[...nextauth]/route.ts
+import NextAuth, {
+  type NextAuthOptions,
+  getServerSession,   // helper for server components / RSCs
+} from "next-auth";
 
-import { useSession, signIn } from "next-auth/react";
+import GitHubProvider from "next-auth/providers/github";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
 
-export default function DashboardPage() {
-  const { data: session } = useSession();
+const prisma = new PrismaClient();
 
-  return (
-    <main className="p-6 text-center">
-      <h1 className="text-2xl font-bold mb-4">Welcome to NorthPath</h1>
+export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    }),
+  ],
+  session: {
+    // _Must_ be the literal string so TS infers `'database'`
+    strategy: "database" as const,
+  },
+};
 
-      {session ? (
-        <p className="mb-6">Signed in as {session.user?.email}</p>
-      ) : (
-        <button
-          onClick={() => signIn("github")}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Sign in with GitHub
-        </button>
-      )}
-    </main>
-  );
-}
+// ---- Route handlers (required in the App Router) ----
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
+
+// ---- Convenience helper for server components ----
+export const auth = () => getServerSession(authOptions);
