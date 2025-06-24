@@ -7,9 +7,7 @@ module.exports = {
   theme: {
     extend: {
       // alias old gray-* utilities → neutral-*
-      colors: {
-        gray: require("tailwindcss/colors").neutral,
-      },
+      colors: { gray: require("tailwindcss/colors").neutral },
     },
   },
   plugins: [],
