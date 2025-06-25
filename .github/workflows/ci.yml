@@ -11,27 +11,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1.  Grab the repo
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2.  Set up Node + pnpm cache
-      - name: Use Node 20.x
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
 
-      # 3.  Install deps
-      - name: Install pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: false
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # 4.  Type-check & lint
-      - name: Type-check
+      - name: Type‑check
         run: pnpm exec tsc --noEmit
-      - name: ESLint
+
+      - name: Lint
         run: pnpm run lint
