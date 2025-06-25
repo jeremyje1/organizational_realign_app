@@ -2,6 +2,7 @@ import '../globals.css';
 import type { Metadata } from "next";
 import Link from 'next/link';
 import type { ReactNode } from "react";
+import AuthButton from "@/components/AuthButton";
 
 export const metadata: Metadata = {
   title: "NorthPath – Organizational Realignment",
@@ -17,12 +18,12 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <body className="flex min-h-full flex-col">
         {/* ---------- Navbar ---------- */}
-        <header className="border-b bg-white">
+        <header className="border-b bg-white shadow-sm sticky top-0 z-20">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-            <Link href="/" className="font-bold text-lg">
+            <Link href="/" className="font-bold text-lg text-zinc-900">
               NorthPath
             </Link>
-            {/* auth buttons come in Step 2 */}
+            <AuthButton />
           </div>
         </header>
 
