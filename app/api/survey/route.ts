@@ -6,27 +6,29 @@ import {
   type CookieOptions,
 } from '@supabase/ssr';
 
-// Build a server‑side Supabase client that can read & write cookies
-const cookieStore = nextCookies();
-
-const supabase = createServerClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  {
-    cookies: {
-      get: (name) => cookieStore.get(name)?.value,
-      set: (name: string, value: string, options?: CookieOptions) => {
-        cookieStore.set({ name, value, ...(options ?? {}) });
-      },
-      remove: (name: string, options?: CookieOptions) => {
-        cookieStore.delete({ name, ...(options ?? {}) });
-      },
-    },
-  },
-);
-
 /** POST /survey – persists survey answers */
 export async function POST(req: NextRequest) {
+
+  // Build a fresh Supabase client **inside** the request scope so that
+  // the cookies helper receives the current request/response context.
+  const cookieStore = nextCookies();
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get: (name) => cookieStore.get(name)?.value,
+        set: (name: string, value: string, options?: CookieOptions) => {
+          cookieStore.set({ name, value, ...(options ?? {}) });
+        },
+        remove: (name: string, options?: CookieOptions) => {
+          cookieStore.delete({ name, ...(options ?? {}) });
+        },
+      },
+    },
+  );
+
   const body = await req.json();
 
   const { error } = await supabase
