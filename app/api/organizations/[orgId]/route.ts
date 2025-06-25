@@ -1,12 +1,21 @@
-// lib/auth.ts
-import { getServerSession } from 'next-auth';
+import { prisma } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
 /**
- * Server‑side helper that returns the current session.
- * Wraps `getServerSession` so you can import a stable
- * function from '@/lib/auth' in API routes and RSCs.
+ * GET /api/organizations/[orgId]
+ * Returns the organization (or 404) based on the dynamic route param.
  */
-export const auth = () => getServerSession();
+export async function GET(
+  _req: Request,
+  { params }: { params: { orgId: string } }
+) {
+  const org = await prisma.organization.findUnique({
+    where: { id: params.orgId },
+  });
 
-/** Legacy alias for older routes */
-export const getSession = auth;
+  if (!org) {
+    return NextResponse.json({ error: 'Organization not found' }, { status: 404 });
+  }
+
+  return NextResponse.json(org);
+}
