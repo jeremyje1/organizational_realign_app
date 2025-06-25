@@ -1,83 +1,64 @@
-"use client";
+import React from 'react';
+import { Role as BaseRole, RoleTag } from '@/types/types';
 
-import { useState, useEffect } from "react";
-import { loadRoleData, saveRoleData } from "@/lib/storage";
-import type { Role } from "@/types/types";
+// Extend the base Role so OrgEditor knows about the “tag” field
+interface Role extends BaseRole {
+  tag: RoleTag;
+}
 
-export default function OrgEditor() {
-  const [roles, setRoles] = useState<Role[]>([]);
+import { Select, SelectItem } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 
-  useEffect(() => {
-    const loaded = loadRoleData();
-    setRoles(loaded.length ? loaded : [
-      { id: "1", name: "Dean of Instruction", tag: "critical" },
-      { id: "2", name: "Director of Advising", tag: "" },
-    ]);
-  }, []);
+interface OrgEditorProps {
+  roles: Role[];
+  onChange: (roles: Role[]) => void;
+}
 
-  useEffect(() => {
-    saveRoleData(roles);
-  }, [roles]);
+const TAGS: RoleTag[] = ['critical', 'nice-to-have', 'optional'];
 
-  const updateRole = (index: number, key: keyof Role, value: string) => {
-    const updated = [...roles];
-    if (key === "tag") {
-      updated[index][key] = value as Role["tag"];
-    } else {
-      updated[index][key] = value;
-    }
-    setRoles(updated);
+export default function OrgEditor({ roles, onChange }: OrgEditorProps) {
+  const updateRole = <K extends keyof Role>(
+    idx: number,
+    key: K,
+    value: Role[K],
+  ) => {
+    const next = [...roles];
+    next[idx] = { ...next[idx], [key]: value };
+    onChange(next);
   };
 
-  const addRole = () => {
-    setRoles([
+  const addRole = () =>
+    onChange([
       ...roles,
-      { id: Date.now().toString(), name: "", tag: "" as Role["tag"] },
+      { id: crypto.randomUUID(), name: '', tag: 'optional' },
     ]);
-  };
-
-  const removeRole = (index: number) => {
-    const updated = [...roles];
-    updated.splice(index, 1);
-    setRoles(updated);
-  };
 
   return (
-    <section className="mt-6">
-      <h2 className="text-xl font-semibold mb-4">Roles</h2>
-      {roles.map((role, index) => (
-        <div key={role.id} className="mb-3 p-3 border rounded bg-white">
+    <div className="space-y-4">
+      {roles.map((role, idx) => (
+        <div key={role.id} className="flex items-center gap-4">
           <input
-            type="text"
-            className="w-full p-2 mb-2 border rounded"
-            placeholder="Role name"
+            className="flex-1 rounded border px-3 py-2"
             value={role.name}
-            onChange={(e) => updateRole(index, "name", e.target.value)}
+            placeholder="Role title"
+            onChange={(e) => updateRole(idx, 'name', e.target.value)}
           />
-          <select
-            className="w-full p-2 mb-2 border rounded"
+
+          <Select
             value={role.tag}
-            onChange={(e) => updateRole(index, "tag", e.target.value)}
+            onValueChange={(v) => updateRole(idx, 'tag', v as RoleTag)}
           >
-            <option value="">Select tag</option>
-            <option value="critical">Mission-Critical</option>
-            <option value="open">Open</option>
-            <option value="redundant">Redundant</option>
-          </select>
-          <button
-            className="text-red-600 text-sm underline"
-            onClick={() => removeRole(index)}
-          >
-            Remove
-          </button>
+            <SelectItem value="">Select tag…</SelectItem>
+            {TAGS.map((tag) => (
+              <SelectItem key={tag} value={tag}>
+                {tag}
+              </SelectItem>
+            ))}
+          </Select>
         </div>
       ))}
-      <button
-        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
-        onClick={addRole}
-      >
-        Add Role
-      </button>
-    </section>
+
+      <Button onClick={addRole}>+ Add role</Button>
+    </div>
   );
 }

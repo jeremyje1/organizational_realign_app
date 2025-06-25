@@ -1,19 +1,8 @@
-import NextAuth from "next-auth/next";
-import Github    from "next-auth/providers/github";
-import { getServerSession, type NextAuthOptions } from "next-auth";
+// lib/auth.ts
+import { getServerSession } from 'next-auth';
 
-export const authOptions: NextAuthOptions = {
-  providers: [
-    Github({
-      clientId:     process.env.GITHUB_ID     ?? "",
-      clientSecret: process.env.GITHUB_SECRET ?? "",
-    }),
-  ],
-  session: { strategy: "jwt" },
-};
+/** Get current user session (server only) */
+export const auth = () => getServerSession();
 
-const handler = NextAuth(authOptions);      // API-route handler
-export default handler;
-
-/** helper usable in Server Components */
-export const auth = () => getServerSession(authOptions);
+/** compatibility for old code */
+export const getSession = auth;

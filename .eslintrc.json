@@ -1,6 +1,12 @@
+// .eslintrc.json
 {
-  "extends": [
-    "next/core-web-vitals",
-    "next/typescript"
-  ]
+  "root": true,
+  "extends": ["next", "next/core-web-vitals", "eslint:recommended"],
+  "plugins": ["@typescript-eslint"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off"
+  }
 }

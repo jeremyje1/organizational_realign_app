@@ -1,37 +1,41 @@
+/* ------------------------------------------------------------------
+   app/realignment/page.tsx
+   Client-side page that displays survey data after realignment.
+------------------------------------------------------------------- */
 "use client";
 
 import { useEffect, useState } from "react";
-import { loadSurveyData }       from "@/lib/storage";
+import { loadSurveyData }      from "@/lib/storage";
 
-type OrgData = { name: string; orgType: string };
+/** Shape of the data saved by `saveSurveyData` */
+interface OrgData {
+  name:    string;
+  orgType: string;
+  /** keep any extra keys without losing type-safety */
+  [key: string]: unknown;
+}
 
 export default function RealignmentPage() {
   const [orgData, setOrgData] = useState<OrgData | null>(null);
 
-  /* hydrate once on mount */
+  /* Load data once on mount */
   useEffect(() => {
-    setOrgData(loadSurveyData() ?? null);
+    loadSurveyData().then((data) => {
+      setOrgData(data as OrgData | null);
+    });
   }, []);
 
   if (!orgData) {
-    return (
-      <main className="p-6 text-neutral-500">
-        No survey data yet.
-      </main>
-    );
+    return <p className="text-center">Loading…</p>;
   }
 
   return (
-    <main className="p-6 space-y-4">
-      <h1 className="text-2xl font-semibold">
-        Realignment – {orgData.name}
-      </h1>
+    <main className="mx-auto max-w-4xl space-y-4 p-6">
+      <h1 className="text-2xl font-semibold">Organisational realignment</h1>
 
-      <p className="text-neutral-600">
-        Organisation type: {orgData.orgType}
-      </p>
-
-      {/* …rest of the UI… */}
+      <pre className="rounded bg-neutral-50 p-4 text-sm">
+        {JSON.stringify(orgData, null, 2)}
+      </pre>
     </main>
   );
 }

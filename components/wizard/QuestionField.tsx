@@ -1,74 +1,60 @@
-"use client";
+import React from 'react';
+import type { Question } from '@/types/types';
 
-import { Input }     from "@/components/ui/input";
-import { Textarea }  from "@/components/ui/textarea";
-import { Select, SelectTrigger, SelectContent, SelectItem }
-  from "@/components/ui/select";
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 
-import { Question }  from "@/lib/types";
-
-interface Props {
-  question: Question;
-  value:    any;
-  onChange: (v: any) => void;
+interface QuestionFieldProps {
+  q: Question;
+  value?: string;
+  onChange: (v: string) => void;
 }
 
-export default function QuestionField({ question, value, onChange }: Props) {
-  const wrap = "space-y-1";
-
-  switch (question.type) {
-    case "text":
-    case "number":
-      return (
-        <div className={wrap}>
-          <label className="font-medium">{question.label}</label>
-          <Input
-            type={question.type}
-            value={value ?? ""}
-            onChange={e => onChange(e.target.value)}
-          />
-        </div>
-      );
-
-    case "textarea":
-      return (
-        <div className={wrap}>
-          <label className="font-medium">{question.label}</label>
-          <Textarea
-            value={value ?? ""}
-            onChange={e => onChange(e.target.value)}
-          />
-        </div>
-      );
-
-    case "select":
-      return (
-        <div className={wrap}>
-          <label className="font-medium">{question.label}</label>
-
-          <Select value={value ?? ""} onValueChange={onChange}>
-            <SelectTrigger className="w-full" />
-            <SelectContent>
-              {question.options?.map(opt => (
-                <SelectItem key={opt} value={opt}>
-                  {opt}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      );
-
-    case "file":
-      return (
-        <div className={wrap}>
-          <label className="font-medium">{question.label}</label>
-          <Input type="file"
-                 onChange={e => onChange(e.target.files?.[0] ?? null)} />
-        </div>
-      );
-
-    default:
-      return null;
+/**
+ * Renders an input field that matches the question’s declared type.
+ * Currently supports:
+ *   • type === 'text'
+ *   • type === 'select'  (expects `q.options: string[]`)
+ * Extend this when you add more question kinds.
+ */
+export default function QuestionField({
+  q,
+  value,
+  onChange,
+}: QuestionFieldProps) {
+  // ───── text question ─────
+  if (q.type === 'text') {
+    return (
+      <Input
+        value={value ?? ''}
+        onChange={(e) => onChange(e.currentTarget.value)}
+        placeholder={(q as any).placeholder ?? ''}
+        required={(q as any).required}
+      />
+    );
   }
+
+  // ───── select question ─────
+  if (q.type === 'select' && Array.isArray(q.options)) {
+    return (
+      <Select value={value ?? ''} onValueChange={onChange}>
+        <SelectTrigger />
+        <SelectContent>
+          {q.options.map((opt) => (
+            <SelectItem key={opt} value={opt}>
+              {opt}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    );
+  }
+
+  // fallback (should never hit)
+  return null;
 }
