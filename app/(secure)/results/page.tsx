@@ -1,31 +1,47 @@
-// app/results/page.tsx
-"use client";
+// app/(secure)/results/page.tsx
+import { Suspense } from 'react';
+import { auth } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 
-import { useSession } from "next-auth/react";
-import { useState, useEffect, useRef } from "react";
+/** ----------------------------------------------------------------
+ *  SEO / social metadata
+ * ----------------------------------------------------------------*/
+export const metadata = {
+  title: 'Results | NorthPath',
+  description: 'See your organizational realignment results',
+};
 
-export default function ResultsPage() {
-  const { data: session } = useSession();
-  const [summary, setSummary] = useState<string | null>(null);
-  const mounted = useRef(false);
+/** ----------------------------------------------------------------
+ *  Async server component that fetches session + summary
+ * ----------------------------------------------------------------*/
+async function ResultsContent() {
+  const session = await auth();
+  if (!session) redirect('/login');
 
-  useEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true;
-      // Simulated results generation
-      setSummary("Your realignment results are ready!");
-    }
-  }, []);
+  // Simulate async generation of summary
+  await new Promise((res) => setTimeout(res, 800));
+  const summary = 'Your realignment results are ready!';
 
   return (
     <main className="p-6 text-center">
       <h1 className="text-2xl font-bold mb-4">Results</h1>
-      {session ? (
-        <p className="mb-4">Welcome back, {session.user?.email}</p>
-      ) : (
-        <p className="mb-4">You&apos;re viewing this as a guest.</p>
-      )}
+
+      <p className="mb-4">
+        Welcome back, {session.user?.email ?? 'user'}
+      </p>
+
       <div className="text-lg text-gray-700">{summary}</div>
     </main>
+  );
+}
+
+/** ----------------------------------------------------------------
+ *  Wrapper component with Suspense + loading fallback
+ * ----------------------------------------------------------------*/
+export default function ResultsPage() {
+  return (
+    <Suspense fallback={<p className="p-6 text-center">Loading results…</p>}>
+      <ResultsContent />
+    </Suspense>
   );
 }
