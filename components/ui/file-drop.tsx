@@ -7,7 +7,8 @@ import { cn } from '@/lib/utils';
 interface FileDropProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   /** Fires when files are selected or dropped */
-  onFiles?: (files: FileList) => void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onFiles?: (_files: FileList) => void;
 }
 
 export function FileDrop({
@@ -49,7 +50,7 @@ export function FileDrop({
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
       className={cn(
-        'flex h-32 cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-neutral-300 text-center text-sm text-neutral-500 hover:bg-neutral-50',
+        'flex h-32 cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-neutral-300 text-center text-sm text-neutral-500 hover:bg-gray-50',
         className,
       )}
     >
