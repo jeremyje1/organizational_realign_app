@@ -10,7 +10,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        gray: colors.neutral,
+        gray: colors.gray,        // restore canonical gray palette
+        neutral: colors.neutral,  // keep neutral available too
       },
     },
   },
