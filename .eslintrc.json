@@ -1,12 +1,13 @@
-// .eslintrc.json
 {
-  "root": true,
-  "extends": ["next", "next/core-web-vitals", "eslint:recommended"],
+  "extends": ["next/core-web-vitals"],
   "plugins": ["@typescript-eslint"],
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
   "rules": {
-    "react/react-in-jsx-scope": "off"
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ]
   }
 }
