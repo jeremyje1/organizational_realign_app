@@ -1,4 +1,11 @@
-declare module '@simplewebauthn/server';
-declare module '@solana/wallet-standard-features';
-declare module 'nodemailer';
-declare module 'nodemailer/*';
+declare module "*.svg" {
+  import * as React from "react";
+  export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
+  const src: string;
+  export default src;
+}
+
+declare module "*.png" {
+  const src: string;
+  export default src;
+}
