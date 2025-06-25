@@ -1,6 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import Link from "next/link";
 import Providers from "./providers";
+import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Organizational Realignment Tool",
@@ -11,7 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <html lang="en">
@@ -20,49 +22,44 @@ export default function RootLayout({
           <nav className="bg-white shadow-sm px-6 py-3 mb-6" role="navigation" aria-label="Main navigation">
             <ul className="flex space-x-4 text-sm font-medium text-gray-700">
               <li>
-                <a
+                <Link
                   href="/dashboard"
-                  aria-current="page"
                   className="hover:text-blue-600 focus:outline-none focus-visible:ring-2 ring-blue-500 rounded"
                 >
                   Dashboard
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/survey"
-                  aria-current="page"
                   className="hover:text-blue-600 focus:outline-none focus-visible:ring-2 ring-blue-500 rounded"
                 >
                   Survey
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/realignment"
-                  aria-current="page"
                   className="hover:text-blue-600 focus:outline-none focus-visible:ring-2 ring-blue-500 rounded"
                 >
                   Realignment
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/results"
-                  aria-current="page"
                   className="hover:text-blue-600 focus:outline-none focus-visible:ring-2 ring-blue-500 rounded"
                 >
                   Results
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/workspaces"
-                  aria-current="page"
                   className="hover:text-blue-600 focus:outline-none focus-visible:ring-2 ring-blue-500 rounded"
                 >
                   Workspaces
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>

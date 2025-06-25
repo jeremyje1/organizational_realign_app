@@ -1,10 +1,5 @@
 import React from 'react';
-import { Role as BaseRole, RoleTag } from '@/types/types';
-
-// Extend the base Role so OrgEditor knows about the “tag” field
-interface Role extends BaseRole {
-  tag: RoleTag;
-}
+import type { Role, RoleTag } from '@/types/types';
 
 import { Select, SelectItem } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';

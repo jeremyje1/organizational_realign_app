@@ -22,7 +22,7 @@ export default function SurveyPage() {
   return (
     <main className="px-4 py-6 sm:px-6 max-w-xl mx-auto">
       <h1 className="text-3xl font-bold mb-2">Begin Your Realignment</h1>
-      <p className="text-sm text-gray-600 mb-6">Tell us about the organization you're restructuring.</p>
+      <p className="text-sm text-gray-600 mb-6">Tell us about the organization you&apos;re restructuring.</p>
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">Organization Name:</label>
         <input

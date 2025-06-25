@@ -15,7 +15,7 @@ export default function HomePage() {
 
   return (
     <main className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-4">
-      {/* ---------- Top nav ---------- */}
+      {/* ---------- Top nav ---------- */}
       <header className="w-full max-w-5xl mx-auto flex items-center justify-between py-6">
         <h1 className="text-2xl font-extrabold tracking-tight text-midnight">
           NorthPath

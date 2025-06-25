@@ -1,42 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
-import { getSession } from '@/lib/auth'
+// lib/auth.ts
+import { getServerSession } from 'next-auth';
 
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: { orgId: string } }
-) {
-  const session = await getSession()
-  if (!session || !session.user)
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+/**
+ * Server‑side helper that returns the current session.
+ * Wraps `getServerSession` so you can import a stable
+ * function from '@/lib/auth' in API routes and RSCs.
+ */
+export const auth = () => getServerSession();
 
-  const org = await prisma.organization.findUnique({
-    where: { id: params.orgId }
-  })
-  if (!org) return NextResponse.json({ error: 'Not found' }, { status: 404 })
-  return NextResponse.json(org)
-}
-
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { orgId: string } }
-) {
-  const session = await getSession()
-  if (!session || !session.user)
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const data = await req.json()
-
-  try {
-    const org = await prisma.organization.update({
-      where: { id: params.orgId },
-      data
-    })
-    return NextResponse.json(org)
-  } catch (err) {
-    return NextResponse.json(
-      { error: 'Update failed' },
-      { status: 500 }
-    )
-  }
-}
+/** Legacy alias for older routes */
+export const getSession = auth;

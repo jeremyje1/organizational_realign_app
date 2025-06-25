@@ -33,8 +33,8 @@ export default function QuestionField({
       <Input
         value={value ?? ''}
         onChange={(e) => onChange(e.currentTarget.value)}
-        placeholder={(q as any).placeholder ?? ''}
-        required={(q as any).required}
+        placeholder={q.placeholder ?? ''}
+        required={q.required}
       />
     );
   }

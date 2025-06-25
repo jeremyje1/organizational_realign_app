@@ -2,11 +2,11 @@ import { cookies } from 'next/headers';
 import type { CookieMethodsServerDeprecated, CookieOptions } from '@supabase/ssr';
 
 export const cookieMethods: CookieMethodsServerDeprecated = {
-  get: (name) => cookies().get(name)?.value,
-  set: (name, value, options) => {
+  get: (name: string) => cookies().get(name)?.value,
+  set: (name: string, value: string, options?: CookieOptions) => {
     cookies().set({ name, value, ...(options ?? {}) });
   },
-  remove: (name, options) => {
+  remove: (name: string, options?: CookieOptions) => {
     cookies().delete({ name, ...(options ?? {}) });
   },
 };

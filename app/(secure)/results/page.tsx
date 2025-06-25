@@ -23,7 +23,7 @@ export default function ResultsPage() {
       {session ? (
         <p className="mb-4">Welcome back, {session.user?.email}</p>
       ) : (
-        <p className="mb-4">You're viewing this as a guest.</p>
+        <p className="mb-4">You&apos;re viewing this as a guest.</p>
       )}
       <div className="text-lg text-gray-700">{summary}</div>
     </main>
