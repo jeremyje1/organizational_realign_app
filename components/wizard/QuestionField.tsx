@@ -11,8 +11,9 @@ import {
 
 interface QuestionFieldProps {
   q: Question;
-  value?: string;
-  onChange: (v: string) => void;
+  selected?: string;
+  /** fires when user picks / types a new value */
+  onChange: (_value: string) => void;
 }
 
 /**
@@ -24,14 +25,14 @@ interface QuestionFieldProps {
  */
 export default function QuestionField({
   q,
-  value,
+  selected,
   onChange,
 }: QuestionFieldProps) {
   // ───── text question ─────
   if (q.type === 'text') {
     return (
       <Input
-        value={value ?? ''}
+        value={selected ?? ''}
         onChange={(e) => onChange(e.currentTarget.value)}
         placeholder={q.placeholder ?? ''}
         required={q.required}
@@ -42,7 +43,7 @@ export default function QuestionField({
   // ───── select question ─────
   if (q.type === 'select' && Array.isArray(q.options)) {
     return (
-      <Select value={value ?? ''} onValueChange={onChange}>
+      <Select value={selected ?? ''} onValueChange={onChange}>
         <SelectTrigger />
         <SelectContent>
           {q.options.map((opt) => (

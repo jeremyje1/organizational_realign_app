@@ -1,36 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Role, RoleTag } from '@/types/types';
 
 import { Select, SelectItem } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 
 interface OrgEditorProps {
-  roles: Role[];
-  onChange: (roles: Role[]) => void;
+  initialRoles?: Role[];
+  onChange: (_roles: Role[]) => void;
 }
 
 const TAGS: RoleTag[] = ['critical', 'nice-to-have', 'optional'];
 
-export default function OrgEditor({ roles, onChange }: OrgEditorProps) {
+export default function OrgEditor({
+  initialRoles = [],
+  onChange,
+}: OrgEditorProps) {
+  const [roleList, setRoleList] = useState<Role[]>(initialRoles);
+
   const updateRole = <K extends keyof Role>(
     idx: number,
     key: K,
     value: Role[K],
   ) => {
-    const next = [...roles];
-    next[idx] = { ...next[idx], [key]: value };
-    onChange(next);
+    setRoleList((prev) => {
+      const next = [...prev];
+      next[idx] = { ...next[idx], [key]: value };
+      onChange(next);
+      return next;
+    });
   };
 
   const addRole = () =>
-    onChange([
-      ...roles,
-      { id: crypto.randomUUID(), name: '', tag: 'optional' },
-    ]);
+    setRoleList((prev) => {
+      const newRole: Role = {
+        id: crypto.randomUUID(),
+        name: '',
+        tag: 'optional' as RoleTag,
+      };
+      const next: Role[] = [...prev, newRole];
+      onChange(next);
+      return next;
+    });
 
   return (
     <div className="space-y-4">
-      {roles.map((role, idx) => (
+      {roleList.map((role, idx) => (
         <div key={role.id} className="flex items-center gap-4">
           <input
             className="flex-1 rounded border px-3 py-2"

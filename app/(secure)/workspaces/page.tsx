@@ -264,7 +264,7 @@ export default function HistoryPage() {
         Object.entries(grouped).map(([date, group]) => (
           <section
             key={date}
-            className="mb-8 border rounded-lg bg-neutral-50 p-4 shadow-sm"
+            className="mb-8 border rounded-lg bg-gray-50 p-4 shadow-sm"
           >
             <h3 className="text-md font-semibold text-gray-700 mb-2">{date}</h3>
 

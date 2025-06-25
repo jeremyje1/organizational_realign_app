@@ -15,6 +15,9 @@ export interface BaseQuestion {
   prompt:      string;
   required?:   boolean;
   placeholder?: string;
+  /** Legacy keys supported for backward‑compat */
+  label?: string;
+  text?:  string;
 }
 
 export interface TextQuestion extends BaseQuestion {
@@ -31,6 +34,8 @@ export type Question = TextQuestion | SelectQuestion;
 /* ───── Pillar grouping ───── */
 export interface Pillar {
   id:        string;
-  title:     string;
+  title?:    string;
+  /** Legacy fallback heading */
+  name?:     string;
   questions: Question[];
 }

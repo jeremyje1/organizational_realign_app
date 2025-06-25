@@ -33,7 +33,7 @@ export default function RealignmentPage() {
     <main className="mx-auto max-w-4xl space-y-4 p-6">
       <h1 className="text-2xl font-semibold">Organisational realignment</h1>
 
-      <pre className="rounded bg-neutral-50 p-4 text-sm">
+      <pre className="rounded bg-gray-50 p-4 text-sm">
         {JSON.stringify(orgData, null, 2)}
       </pre>
     </main>
