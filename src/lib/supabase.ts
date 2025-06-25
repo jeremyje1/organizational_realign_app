@@ -1,11 +1,10 @@
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@/types/supabase'
-
 /**
- * Browser‑side Supabase client.
- * (On the server we use `@/lib/supabase‑cookies` so auth cookies are forwarded.)
+ * Lightweight browser client – used in the “/app” layer.
+ * The server-side client (with cookies) already lives in src/lib/supabase-cookies.ts
  */
-export const supabase = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+import { createBrowserClient } from '@supabase/ssr';
+
+export const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
+);

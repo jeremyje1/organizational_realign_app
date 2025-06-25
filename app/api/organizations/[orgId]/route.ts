@@ -1,31 +1,42 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/db'
+import { getSession } from '@/lib/auth'
 
-const mockOrganizations = {
-  "northpath-hcc": {
-    id: "northpath-hcc",
-    name: "Northpath at HCC",
-    departments: [
-      { id: "dept-1", name: "Academic Affairs" },
-      { id: "dept-2", name: "Student Services" },
-    ],
-    createdAt: "2024-01-01T00:00:00Z",
-  },
-  "northpath-demo": {
-    id: "northpath-demo",
-    name: "Demo College Org",
-    departments: [],
-    createdAt: "2024-02-01T00:00:00Z",
-  },
-};
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: { orgId: string } }
+) {
+  const session = await getSession()
+  if (!session || !session.user)
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-export async function GET(req: NextRequest, context: any) {
-  const orgId = context.params?.orgId;
+  const org = await prisma.organization.findUnique({
+    where: { id: params.orgId }
+  })
+  if (!org) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  return NextResponse.json(org)
+}
 
-  const org = (mockOrganizations as Record<string, any>)[orgId];
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { orgId: string } }
+) {
+  const session = await getSession()
+  if (!session || !session.user)
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  if (!org) {
-    return NextResponse.json({ error: "Organization not found" }, { status: 404 });
+  const data = await req.json()
+
+  try {
+    const org = await prisma.organization.update({
+      where: { id: params.orgId },
+      data
+    })
+    return NextResponse.json(org)
+  } catch (err) {
+    return NextResponse.json(
+      { error: 'Update failed' },
+      { status: 500 }
+    )
   }
-
-  return NextResponse.json(org);
 }

@@ -1,31 +1,57 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["dom", "dom.iterable", "es2022"],
-    "jsx": "preserve",
+    /* ==== language basics ==== */
+    "target": "es2021",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es2021"
+    ],
     "module": "esnext",
     "moduleResolution": "bundler",
-    "types": ["node"],
     "strict": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "isolatedModules": true,
-    "incremental": true,
-    "allowJs": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "forceConsistentCasingInFileNames": true,
+    /* ==== path aliases & react ==== */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@app/*": [
+        "./app/*"
+      ]
     },
-    "plugins": [{ "name": "next" }]
+    "types": [
+      "node",
+      "react",
+      "react-dom"
+    ],
+    /* ==== JSX / TSX ==== */
+    "jsx": "preserve",
+    "jsxImportSource": "react",
+    /* ==== incremental ==== */
+    "allowJs": false,
+    "incremental": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
-, "tailwind.config.ts"  ],
-  "exclude": ["node_modules"]
+    "types/**/*.d.ts",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

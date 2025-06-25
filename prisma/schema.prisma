@@ -1,28 +1,28 @@
-// prisma/schema.prisma  (overwrite everything)
+// prisma/schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")   // already in .env.local and on Vercel
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  name          String?
+  organizations Organization[] @relation("OrganizationOwner")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
-/* --- your two domain tables (plus NextAuth later) --- */
-
-model Workspace {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  surveys   Survey[]
-}
-
-model Survey {
+model Organization {
   id          String   @id @default(uuid())
-  user_id     String
-  data        Json
+  name        String
+  description String?
+  owner       User     @relation("OrganizationOwner", fields: [ownerId], references: [id])
+  ownerId     String
   createdAt   DateTime @default(now())
-  workspaceId String?    @map("workspace_id")
-  workspace   Workspace? @relation(fields: [workspaceId], references: [id])
+  updatedAt   DateTime @updatedAt
 }

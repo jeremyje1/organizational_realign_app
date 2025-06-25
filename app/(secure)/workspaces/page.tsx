@@ -213,7 +213,7 @@ export default function HistoryPage() {
       {filteredVersions.length > 0 && (
         <>
           {Object.entries(grouped).map(([date, group]) => (
-            <div key={date} className="mb-8 border rounded-lg bg-gray-50 p-4 shadow-sm">
+            <div key={date} className="mb-8 border rounded-lg bg-neutral-50 p-4 shadow-sm">
               <h3 className="text-md font-semibold text-gray-700 mb-2">{date}</h3>
               <ul className="space-y-4">
                 {group.map((v, index) => {
