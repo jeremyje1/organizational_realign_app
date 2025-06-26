@@ -110,14 +110,6 @@ export const questionBank: Question[] = [
   { id: 'CEW_05', section: 'Continuing Education & Workforce Development', prompt: `Revenue share between college and external trainers is transparent and standardized.`, type: 'likert' },
   { id: 'CEW_06', section: 'Continuing Education & Workforce Development', prompt: `Credential completion and job‑placement data are tracked for CE learners.`, type: 'likert' },
   { id: 'CEW_07', section: 'Continuing Education & Workforce Development', prompt: `Contract training is priced using full‑cost recovery models.`, type: 'likert' },
-  { id: 'CEW_08', section: 'Continuing Education & Workforce Development', prompt: `CE operations use the same student‑information system as credit programs.`, type: 'likert' },
-  { id: 'DEI_01', section: 'Diversity, Equity & Inclusion', prompt: `DEI goals are embedded in the strategic plan with measurable KPIs.`, type: 'likert' },
-  { id: 'DEI_02', section: 'Diversity, Equity & Inclusion', prompt: `Disaggregated student‑success dashboards are reviewed each term.`, type: 'likert' },
-  { id: 'DEI_03', section: 'Diversity, Equity & Inclusion', prompt: `Bias audits are conducted on AI or algorithmic tools in use.`, type: 'likert', tags: ['AI'] },
-  { id: 'DEI_04', section: 'Diversity, Equity & Inclusion', prompt: `Hiring committees receive structured‑interview guides to reduce bias.`, type: 'likert' },
-  { id: 'DEI_05', section: 'Diversity, Equity & Inclusion', prompt: `Redundant affinity programs or committees exist with overlapping missions.`, type: 'likert' },
-  { id: 'DEI_06', section: 'Diversity, Equity & Inclusion', prompt: `Training completion rates for DEI workshops exceed 85 %.`, type: 'likert' },
-  { id: 'DEI_07', section: 'Diversity, Equity & Inclusion', prompt: `Budget allocations for DEI initiatives are tracked and publicly reported.`, type: 'likert' },
-  { id: 'DEI_08', section: 'Diversity, Equity & Inclusion', prompt: `Campus‑climate surveys are repeated on a two‑year cycle.`, type: 'likert' },
+  { id: 'CEW_08', section: 'Continuing Education & Workforce Development', prompt: `CE operations use the same student‑information system as credit programs.`, type: 'likert' }
 ];
 export default { questionBank };
