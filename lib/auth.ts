@@ -1,8 +1,7 @@
-// lib/auth.ts
-import { getServerSession } from 'next-auth';
-
-/** Get current user session (server only) */
-export const auth = () => getServerSession();
-
-/** compatibility for old code */
-export const getSession = auth;
+/**
+ * Stubbed auth module.
+ * Next‑Auth has been removed; this placeholder exists
+ * so legacy imports (`import { auth } from '@/lib/auth'`) don’t break.
+ * Remove after all code is migrated to Supabase helpers.
+ */
+export {};

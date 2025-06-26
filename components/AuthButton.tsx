@@ -1,40 +1,51 @@
-"use client";
+'use client';
 
-import { signIn, signOut, useSession } from "next-auth/react";
-import Image from "next/image";
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 
+/**
+ * AuthButton — Supabase version
+ * ● If user is signed in → shows avatar (if any), name, and “Sign out”
+ * ● If not signed in → shows “Sign in with Google” button
+ */
 export default function AuthButton() {
-  const { data: session, status } = useSession();
+  const supabase = useSupabaseClient();
+  const user = useUser();
 
-  if (status === "loading") return null;
-  if (!session)
+  const handleSignIn = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin },
+    });
+  };
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+  };
+
+  if (user)
     return (
-      <button
-        onClick={() => signIn("github")}
-        className="rounded bg-black px-3 py-1 text-white"
-      >
-        Sign in with GitHub
-      </button>
+      <div className="flex items-center gap-2">
+        {user.user_metadata?.avatar_url && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={user.user_metadata.avatar_url as string}
+            alt="avatar"
+            className="h-6 w-6 rounded-full"
+          />
+        )}
+        <span className="text-sm">{user.user_metadata?.name ?? user.email}</span>
+        <button onClick={handleSignOut} className="rounded border px-2 py-1 text-xs">
+          Sign out
+        </button>
+      </div>
     );
 
   return (
-    <div className="flex items-center gap-2">
-      {session.user?.image && (
-        <Image
-          src={session.user.image}
-          alt="avatar"
-          width={24}
-          height={24}
-          className="h-6 w-6 rounded-full"
-        />
-      )}
-      <span className="text-sm">{session.user?.name}</span>
-      <button
-        onClick={() => signOut()}
-        className="rounded border px-2 py-1 text-xs"
-      >
-        Sign out
-      </button>
-    </div>
+    <button
+      onClick={handleSignIn}
+      className="rounded bg-black px-3 py-1 text-white"
+    >
+      Sign in with Google
+    </button>
   );
 }
