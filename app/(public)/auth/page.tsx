@@ -1,17 +1,13 @@
-
-
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase-browser';
 import { useState } from 'react';
 
 /**
- * Public Auth page – allows users to sign‑in either
- * with a magic‑link email or their Google account.
+ * Public Auth page – allows users to sign in
+ * with a magic‑link email or Google account.
  */
 export default function AuthPage() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -32,56 +28,63 @@ export default function AuthPage() {
 
   const signInWithGoogle = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+    setMessage(null);
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    });
     if (error) {
       setMessage(error.message);
-      setLoading(false);
     }
-    // On success, Supabase will redirect back to the site automatically
+    setLoading(false);
   };
 
-  // ───────── UI ───────────────────────────────────────────────
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+    <main className="flex min-h-screen items-center justify-center bg-zinc-50 px-4">
       <div className="mx-auto w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow">
-        <h1 className="text-center text-2xl font-semibold text-gray-800">
-          Sign in to Organizational&nbsp;Realign
+        <h1 className="text-center text-2xl font-semibold text-zinc-800">
+          Sign in to Organizational Realign
         </h1>
 
         {/* Email sign‑in */}
         <div className="space-y-3">
-          <label className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-zinc-700"
+          >
             Work email
           </label>
           <input
+            id="email"
             type="email"
-            className="w-full rounded border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+            className="w-full rounded border border-zinc-300 px-3 py-2 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
             placeholder="you@company.com"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <button
             onClick={signInWithEmail}
             disabled={loading || !email}
             className="w-full rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 disabled:opacity-50"
           >
-            {loading ? 'Sending…' : 'Send magic link'}
+            {loading ? 'Sending…' : 'Send Magic Link'}
           </button>
         </div>
 
         {/* Divider */}
         <div className="flex items-center">
-          <span className="flex-grow border-t border-gray-200" />
-          <span className="mx-3 text-xs uppercase text-gray-400">Or</span>
-          <span className="flex-grow border-t border-gray-200" />
+          <span className="flex-grow border-t border-zinc-200" />
+          <span className="mx-3 text-xs uppercase text-zinc-400">Or</span>
+          <span className="flex-grow border-t border-zinc-200" />
         </div>
 
         {/* Google sign‑in */}
         <button
           onClick={signInWithGoogle}
           disabled={loading}
-          className="flex w-full items-center justify-center gap-2 rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2 rounded border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-50"
         >
+          {/* Google logo */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 48 48"
