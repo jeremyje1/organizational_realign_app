@@ -45,6 +45,30 @@ export type Database = {
         }
         Relationships: []
       }
+      questions: {
+        Row: {
+          id: string
+          prompt: string | null
+          section: string
+          tags: string[] | null
+          type: string | null
+        }
+        Insert: {
+          id: string
+          prompt?: string | null
+          section: string
+          tags?: string[] | null
+          type?: string | null
+        }
+        Update: {
+          id?: string
+          prompt?: string | null
+          section?: string
+          tags?: string[] | null
+          type?: string | null
+        }
+        Relationships: []
+      }
       realignments: {
         Row: {
           created_at: string | null
