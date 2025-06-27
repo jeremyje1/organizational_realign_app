@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import Link from "next/link";
+import Link from 'next/link';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 export default function HomePage() {
-  const handleLogin = () => {
-    const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
-    const redirectUri = encodeURIComponent(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`
-    );
-    const scope = "read:user user:email";
+  const supabase = useSupabaseClient();
 
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+  const handleLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: { redirectTo: `${window.location.origin}/dashboard` },
+    });
   };
 
   return (
-    <main className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-4">
+    <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-4">
       {/* ---------- Top nav ---------- */}
-      <header className="w-full max-w-5xl mx-auto flex items-center justify-between py-6">
+      <header className="mx-auto flex w-full max-w-5xl items-center justify-between py-6">
         <h1 className="text-2xl font-extrabold tracking-tight text-midnight">
           NorthPath
         </h1>
@@ -42,25 +42,25 @@ export default function HomePage() {
 
       {/* ---------- Hero ---------- */}
       <section className="text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4">
+        <h2 className="mb-4 text-4xl font-bold md:text-5xl">
           Organizational&nbsp;Realignment&nbsp;Tool
         </h2>
-        <p className="max-w-xl text-lg text-slate-600 mb-8">
+        <p className="mb-8 max-w-xl text-lg text-slate-600">
           Guide your institution through smart restructuring&nbsp;&amp;
           AI‑ready design — in weeks, not months.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <button
             onClick={handleLogin}
-            className="bg-midnight text-white font-semibold px-6 py-3 rounded-md hover:bg-midnight/90 transition"
+            className="rounded-md bg-midnight px-6 py-3 font-semibold text-white transition hover:bg-midnight/90"
           >
             Sign in with GitHub
           </button>
 
           <Link
             href="/survey"
-            className="border border-midnight text-midnight font-medium px-6 py-3 rounded-md hover:bg-midnight hover:text-white transition"
+            className="rounded-md border border-midnight px-6 py-3 font-medium text-midnight transition hover:bg-midnight hover:text-white"
           >
             Explore as guest
           </Link>
@@ -68,8 +68,8 @@ export default function HomePage() {
       </section>
 
       {/* ---------- Footer ---------- */}
-      <footer className="w-full mt-auto py-6 text-center text-xs text-slate-500">
-        Organizational&nbsp;Realignment&nbsp;Tool&nbsp;v1.0&nbsp;—{" "}
+      <footer className="mt-auto w-full py-6 text-center text-xs text-slate-500">
+        Organizational&nbsp;Realignment&nbsp;Tool&nbsp;v1.0&nbsp;—{' '}
         <Link
           href="mailto:jeremy@northpathstrategies.org"
           className="underline hover:text-gold"

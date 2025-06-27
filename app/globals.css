@@ -6,4 +6,15 @@
 html,
 body {
   @apply min-h-full bg-gray-50 text-zinc-900 antialiased;
+  /* Optional tweaks */
+  font-family: var(--font-inter, ui-sans-serif, system-ui);
+  scroll-behavior: smooth;
+}
+
+/* Dark‑mode palette */
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    @apply bg-zinc-900 text-zinc-100;
+  }
 }

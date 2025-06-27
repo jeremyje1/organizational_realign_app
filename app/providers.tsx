@@ -1,20 +1,36 @@
-/* -----------------------------------------------------------
+/* ------------------------------------------------------------------
    app/providers.tsx
-   Wraps the client side in a Next-Auth <SessionProvider>.
------------------------------------------------------------- */
+   Global client‑side context wrapper (Supabase Auth)
+------------------------------------------------------------------- */
 "use client";
 
-import { SessionProvider } from "next-auth/react";
-import type { ReactNode }  from "react";
+import { createBrowserClient } from "@supabase/ssr";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import type { ReactNode } from "react";
+import type { Database } from "@/types/supabase";
 
 interface ProvidersProps {
   children: ReactNode;
 }
 
+/* ──────────────────────────────────────────────────────────────
+   Create one Supabase browser client for the entire session.
+   The generic <Database> keeps row‑level types accurate.
+   The client is memo‑safe because this module is executed once.
+─────────────────────────────────────────────────────────────── */
+const supabase = createBrowserClient<Database>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
 /**
- * Global client-side providers
- * (Add other context providers here if the app grows.)
+ * Wrap the entire client tree so that hooks like useUser()
+ * from @supabase/auth-helpers-react can access session / auth state.
  */
 export default function Providers({ children }: ProvidersProps) {
-  return <SessionProvider>{children}</SessionProvider>;
+  return (
+    <SessionContextProvider supabaseClient={supabase}>
+      {children}
+    </SessionContextProvider>
+  );
 }
