@@ -1,20 +1,15 @@
+// lib/supabase-browser.ts
+// ──────────────────────────────────────────────────────────────
+// Typed Supabase client for *browser* (React Client Components).
+// Reads project URL + anon key from NEXT_PUBLIC_SUPABASE_* env vars
+// at build time; this avoids hard‑coding values in the codebase.
+
 'use client';
 
-import { createBrowserClient } from '@supabase/ssr';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/types/supabase';
 
-/** Singleton browser-side Supabase client */
-export const supabase = createBrowserClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  {
-    auth: {
-      // keep existing session persistence
-      persistSession: true,
-      // enable PKCE flow required for OAuth in Edge/RSC
-      flowType: 'pkce',
-    },
-  },
-);
-
-/** Optional factory if you want a fresh client instance */
-export const createSupabaseBrowser = () => supabase;
+export const supabase = createClientComponentClient<Database>({
+  supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+});

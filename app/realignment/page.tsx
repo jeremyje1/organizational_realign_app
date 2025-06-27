@@ -4,24 +4,34 @@
    the organisational‑realignment workflow.
 ------------------------------------------------------------------- */
 
-import { createClient } from "@/lib/supabase-client";
+import { supabase } from "@/lib/supabase-client";
 
-export default async function RealignmentPage() {
-  // Server‑side Supabase client (no API keys exposed in the browser)
-  const supabase = createClient();
+/**
+ * Accepts an optional `slug` via URL query: /realignment?slug=hcc
+ */
+export default async function RealignmentPage({
+  searchParams,
+}: {
+  searchParams?: { slug?: string };
+}) {
+  const slug = searchParams?.slug;
 
-  // Pull the first institution record — adjust the query as needed
-  const { data: institution, error } = await supabase
+  // Build query: if slug provided, filter by it; else take first record
+  const query = supabase
     .from("institutions")
-    .select("name, orgType")
-    .limit(1)
-    .single();
+    .select("name, org_type")
+    .limit(1);
+
+  const { data: institution, error } = slug
+    ? await query.eq("slug", slug).single()
+    : await query.single();
 
   if (error) {
-    // Basic fallback; you could surface a prettier error component
     return (
       <main className="mx-auto max-w-4xl px-6 py-10">
-        <h1 className="mb-4 text-2xl font-semibold">Organisational realignment</h1>
+        <h1 className="mb-4 text-2xl font-semibold">
+          Organisational realignment
+        </h1>
         <p className="rounded bg-red-50 p-4 text-red-700">
           Could not load data: {error.message}
         </p>
@@ -40,7 +50,7 @@ export default async function RealignmentPage() {
         </p>
         <p>
           <span className="font-semibold">Type:&nbsp;</span>
-          {institution?.orgType ?? "—"}
+          {institution?.org_type ?? "—"}
         </p>
       </div>
     </section>

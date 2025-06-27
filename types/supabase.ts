@@ -18,6 +18,7 @@ export type Database = {
           headcount: number
           id: string
           name: string
+          org_type: string | null
           owner_user_id: string
           slug: string
         }
@@ -29,6 +30,7 @@ export type Database = {
           headcount: number
           id?: string
           name: string
+          org_type?: string | null
           owner_user_id: string
           slug: string
         }
@@ -40,6 +42,7 @@ export type Database = {
           headcount?: number
           id?: string
           name?: string
+          org_type?: string | null
           owner_user_id?: string
           slug?: string
         }

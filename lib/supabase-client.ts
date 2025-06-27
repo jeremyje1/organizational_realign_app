@@ -1,14 +1,18 @@
-import { createBrowserClient } from '@supabase/ssr';
-import { Database } from '@/types/supabase';        // ← generate via `supabase gen types typescript --schema public`
+// lib/supabase-client.ts
+// ──────────────────────────────────────────────────────────────
+// Server‑side Supabase helper for **Server Components** / route handlers.
+// It injects Next.js cookies & headers so Row‑Level Security sees the
+// authenticated user, and it falls back to the env vars for URL + key.
 
-export const supabase = createBrowserClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { cookies, headers } from 'next/headers';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/types/supabase'; // generated – do not edit
 
-// Expose the client globally so we can inspect it in DevTools
-if (typeof window !== 'undefined') {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  window.supabase = supabase;
-}
+// NOTE: Non‑null assertions (!) are OK here because they will
+//       throw at boot if the env vars are missing.
+export const supabase = createServerComponentClient<Database>({
+  cookies,
+  headers,
+  supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+});

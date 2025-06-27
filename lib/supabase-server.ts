@@ -3,21 +3,24 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import type { Database } from "@/types/supabase";
 
 /**
- * Return a typed Supabase client that works inside **Server Components** /
- * **Route Handlers** while safely persisting the auth session via cookies.
+ * Lazy‑initialised, typed Supabase client for Server Components / Route Handlers.
+ * Keeps auth session in App‑Router cookies without exposing credentials.
  */
-export async function createSupabaseServerClient() {
-  // `cookies()` is synchronous in the App‑Router and returns a mutable cookie store.
-  const cookieStore = await cookies();
+let _supabase: ReturnType<typeof createServerClient<Database>> | undefined;
 
-  return createServerClient<Database>(
+export function supabaseServer() {
+  if (_supabase) return _supabase;
+
+  const cookieStore = cookies(); // sync accessor in Next 14+
+
+  _supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         get(name: string) {
           const cookie = cookieStore.get(name);
-          return cookie ? cookie.value : null;
+          return cookie?.value ?? null;
         },
         set(name: string, value: string, options?: CookieOptions) {
           cookieStore.set(name, value, { path: "/", ...options });
@@ -28,4 +31,12 @@ export async function createSupabaseServerClient() {
       },
     }
   );
+
+  return _supabase;
 }
+
+// In a server component
+// const { data: institution } = await supabaseServer()
+//   .from("institutions")
+//   .select("name, org_type")
+//   .single();
