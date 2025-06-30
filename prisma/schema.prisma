@@ -26,3 +26,30 @@ model Organization {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+/// Stores each survey instance a user completes
+model Survey {
+  id          String    @id @default(uuid())
+  userId      String    @map("user_id")
+  startedAt   DateTime  @default(now()) @map("started_at")
+  completedAt DateTime? @map("completed_at")
+
+  // Relations
+  answers Answer[]
+
+  @@index([userId])
+}
+
+/// Stores individual answers tied to a Survey
+model Answer {
+  id        String   @id @default(uuid())
+  surveyId  String   @map("survey_id")
+  question  String
+  valueInt  Int?
+  valueText String?
+
+  // Relations
+  survey Survey @relation(fields: [surveyId], references: [id])
+
+  @@index([surveyId])
+}

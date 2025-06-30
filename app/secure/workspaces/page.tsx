@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic';
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabase-browser';          // browser-side client
 import { useParams, useRouter } from 'next/navigation';
+import type { Route } from 'next';
 import { saveSurveyData, saveRoleData } from '@/lib/storage';
 
 import {
@@ -113,7 +114,7 @@ export default function HistoryPage() {
 
     saveSurveyData({ name: data.name, orgType: data.org_type });
     saveRoleData((data.roles as unknown as Role[]) ?? []);
-    router.push('/results');
+    router.push('/results' as Route);
   };
 
   const renderDiff = (a?: unknown, b?: unknown) => {

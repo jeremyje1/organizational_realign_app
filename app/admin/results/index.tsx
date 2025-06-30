@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import { createClient } from "@supabase/supabase-js";
+import type { User } from "@supabase/supabase-js";
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
+// Client-side Supabase user state
+const [user, setUser] = useState<User | null>(null);
+
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from "chart.js";
 
@@ -26,13 +29,22 @@ interface RealignmentRecord {
 }
 
 export default function AdminResultsListPage() {
-  const { data: session } = useSession();
   const [records, setRecords] = useState<RealignmentRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState<"created_at" | "redundancy" | "savings">("created_at");
   const [statusFilter, setStatusFilter] = useState<"all" | "complete" | "incomplete">("all");
   const [visibleCount, setVisibleCount] = useState(10);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user: u }, error }) => {
+      if (error) {
+        console.error("Auth error:", error.message);
+      } else {
+        setUser(u);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -44,7 +56,7 @@ export default function AdminResultsListPage() {
     fetchRecords();
   }, []);
 
-  if (!session?.user?.email || !session.user.email.endsWith("@northpathstrategies.org")) {
+  if (!user?.email?.endsWith("@northpathstrategies.org")) {
     return <div className="p-6 text-red-600">Access denied: Consultants only.</div>;
   }
 
