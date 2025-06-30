@@ -1,16 +1,18 @@
-import { cookies } from "next/headers";
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
+'use server';
+
+import { cookies } from 'next/headers';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 /**
- * Lazy‑initialised, typed Supabase client for Server Components / Route Handlers.
- * Keeps auth session in App‑Router cookies without exposing credentials.
+ * Lazy-initialised, typed Supabase client for Server Components / Route Handlers.
+ * Keeps auth session in App-Router cookies without exposing credentials.
  */
 let _supabase: ReturnType<typeof createServerClient> | undefined;
 
-export function supabaseServer() {
+function createSupabaseServer() {
   if (_supabase) return _supabase;
 
-  const cookieStore = cookies(); // sync accessor in Next 14+
+  const cookieStore = cookies(); // sync accessor in Next 14+
 
   _supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -22,20 +24,17 @@ export function supabaseServer() {
           return cookie?.value ?? null;
         },
         set(name: string, value: string, options?: CookieOptions) {
-          cookieStore.set(name, value, { path: "/", ...options });
+          cookieStore.set(name, value, { path: '/', ...options });
         },
         remove(name: string, options?: CookieOptions) {
-          cookieStore.set(name, "", { path: "/", maxAge: -1, ...options });
+          cookieStore.set(name, '', { path: '/', maxAge: -1, ...options });
         },
       },
-    }
+    },
   );
 
   return _supabase;
 }
 
-// In a server component
-// const { data: institution } = await supabaseServer()
-//   .from("institutions")
-//   .select("name, org_type")
-//   .single();
+/** Typed singleton Supabase client for server-side use */
+export const supabase = createSupabaseServer();
