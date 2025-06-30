@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Question } from '@/data/questionBank';   // reuse the interface
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-browser';
 
 export function useQuestions() {
   const [questions, setQuestions] = useState<Question[] | null>(null);

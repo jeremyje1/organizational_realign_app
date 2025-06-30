@@ -2,10 +2,12 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["public", "auth"]
 }
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 model User {
@@ -15,6 +17,8 @@ model User {
   organizations Organization[] @relation("OrganizationOwner")
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+
+  @@schema("auth")
 }
 
 model Organization {
@@ -25,6 +29,8 @@ model Organization {
   ownerId     String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@schema("public")
 }
 
 /// Stores each survey instance a user completes
@@ -38,6 +44,7 @@ model Survey {
   answers Answer[]
 
   @@index([userId])
+  @@schema("public")
 }
 
 /// Stores individual answers tied to a Survey
@@ -52,4 +59,28 @@ model Answer {
   survey Survey @relation(fields: [surveyId], references: [id])
 
   @@index([surveyId])
+  @@schema("public")
+}
+
+/// Existing Supabase questions table (managed outside Prisma)
+model Question {
+  id       Int     @id
+  section  Int?
+  prompt   String?
+  kind     String?
+  scale    Int?
+
+  @@map("questions")
+  @@schema("public")
+  @@ignore
+}
+
+/// Supabase's internal migration history table (leave untouched)
+model SchemaMigration {
+  version     String   @id
+  inserted_at DateTime
+
+  @@map("schema_migrations")
+  @@schema("public")
+  @@ignore
 }

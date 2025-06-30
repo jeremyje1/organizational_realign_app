@@ -4,7 +4,8 @@
    the organisational‑realignment workflow.
 ------------------------------------------------------------------- */
 
-import { supabase } from "@/lib/supabase-client";
+
+import { supabase } from '@/lib/supabase-server';
 
 /**
  * Accepts an optional `slug` via URL query: /realignment?slug=hcc

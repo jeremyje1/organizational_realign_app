@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useQuestions } from './useQuestions';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-browser';
 
 export function useSurvey(userId: string | null) {
   const { questions, loading } = useQuestions();
