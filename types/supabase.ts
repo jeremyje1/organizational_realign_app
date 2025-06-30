@@ -42,6 +42,38 @@ export type Database = {
         }
         Relationships: []
       }
+      answers: {
+        Row: {
+          id: string
+          question: string
+          survey_id: string
+          value_int: number | null
+          value_text: string | null
+        }
+        Insert: {
+          id?: string
+          question: string
+          survey_id: string
+          value_int?: number | null
+          value_text?: string | null
+        }
+        Update: {
+          id?: string
+          question?: string
+          survey_id?: string
+          value_int?: number | null
+          value_text?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_answers_survey"
+            columns: ["survey_id"]
+            isOneToOne: false
+            referencedRelation: "surveys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       institutions: {
         Row: {
           budget: number
