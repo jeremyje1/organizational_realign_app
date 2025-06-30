@@ -85,9 +85,6 @@ export default function HistoryPage() {
 
   const handleRestore = async (v: Version) => {
 
-      'Optional: add a note about why you’re restoring this version:',
-    );
-
     const { data, error } = await supabase
       .from('realignments')
       .insert([
