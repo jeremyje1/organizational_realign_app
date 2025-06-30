@@ -1,9 +1,45 @@
 "use client";
 
 import Link from "next/link";
+
+function ResultsPage() {
+  const [tab, setTab] = useState<"overview" | "detail">("overview");
+
+  // ————————————————————————————
+  //  everything that was previously top-level JSX     
+  //  is now returned from this component              
+  // ————————————————————————————
+  return (
 import { useEffect, useState } from "react";
+
+function ResultsPage() {
+  const [tab, setTab] = useState<"overview" | "detail">("overview");
+
+  // ————————————————————————————
+  //  everything that was previously top-level JSX     
+  //  is now returned from this component              
+  // ————————————————————————————
+  return (
 import { createClient } from "@supabase/supabase-js";
+
+function ResultsPage() {
+  const [tab, setTab] = useState<"overview" | "detail">("overview");
+
+  // ————————————————————————————
+  //  everything that was previously top-level JSX     
+  //  is now returned from this component              
+  // ————————————————————————————
+  return (
 import type { User } from "@supabase/supabase-js";
+
+function ResultsPage() {
+  const [tab, setTab] = useState<"overview" | "detail">("overview");
+
+  // ————————————————————————————
+  //  everything that was previously top-level JSX     
+  //  is now returned from this component              
+  // ————————————————————————————
+  return (
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -12,7 +48,25 @@ const supabase = createClient(
 const [user, setUser] = useState<User | null>(null);
 
 import { Bar } from "react-chartjs-2";
+
+function ResultsPage() {
+  const [tab, setTab] = useState<"overview" | "detail">("overview");
+
+  // ————————————————————————————
+  //  everything that was previously top-level JSX     
+  //  is now returned from this component              
+  // ————————————————————————————
+  return (
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from "chart.js";
+
+function ResultsPage() {
+  const [tab, setTab] = useState<"overview" | "detail">("overview");
+
+  // ————————————————————————————
+  //  everything that was previously top-level JSX     
+  //  is now returned from this component              
+  // ————————————————————————————
+  return (
 
 ChartJS.register(BarElement, CategoryScale, LinearScale);
 
@@ -220,4 +274,6 @@ export default function AdminResultsListPage() {
       )}
     </main>
   );
+}  );
 }
+export default ResultsPage;

@@ -84,7 +84,7 @@ export default function HistoryPage() {
   /* --- handlers -------------------------------------------------------- */
 
   const handleRestore = async (v: Version) => {
-    const note = window.prompt(
+
       'Optional: add a note about why you’re restoring this version:',
     );
 
