@@ -1,17 +1,13 @@
-/ ** @type {import('next').NextConfig} * /
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
 
-  // ─── Opt‑in Next.js features ───────────────────────────────
+  // ─── Opt‑in features you actually need ─────────────
   experimental: {
-    // keep your existing opts
-    typedRoutes: true,
-    topLevelAwait: true,
-    // ensure the `/app` directory is enabled
-    appDir: true,
+    // keep typed routes if you use them
+    typedRoutes: true
   },
 
-  // ─── Image domains (Google avatars, etc.) ──────────────────
   images: {
     domains: ['lh3.googleusercontent.com'],
   },
