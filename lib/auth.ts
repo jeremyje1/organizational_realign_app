@@ -3,7 +3,7 @@
 // Server-side auth() helper for Server Components.
 // Uses Supabase to get the current session and throws if unauthenticated.
 
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-server';   // ← switched helper
 import type { Session } from '@supabase/auth-helpers-nextjs';
 
 /**
