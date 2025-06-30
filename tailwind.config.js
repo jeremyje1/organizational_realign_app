@@ -1,15 +1,15 @@
-/ ** @type {import('tailwindcss').Config} */
+/** @type {import('tailwindcss').Config} */
 const colors = require('tailwindcss/colors');
 
 module.exports = {
-    safelist: [n    "bg-neutral-50",n  ],  content: [
+  content: [
     './app/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './lib/**/*.{ts,tsx}',
   ],
   safelist: [
     // Legacy gray-* utilities still used in codebase
-    'bg-gray-50',
+    'bg-neutral-50',
   ],
   theme: {
     extend: {
