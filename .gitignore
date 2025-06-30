@@ -44,3 +44,9 @@ next-env.d.ts
 # Local secrets
 .env*
 
+# ----------------------------------------
+# archives we never want in Git
+*.zip
+*.tgz
+*.tar.gz
+*.tar
