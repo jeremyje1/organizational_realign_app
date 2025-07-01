@@ -3,7 +3,7 @@
 // Server-side auth() helper for Server Components.
 // Uses Supabase to get the current session and throws if unauthenticated.
 
-import { supabase } from '@/lib/supabase-server';   // ← switched helper
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 import type { Session } from '@supabase/auth-helpers-nextjs';
 
 /**
@@ -11,6 +11,7 @@ import type { Session } from '@supabase/auth-helpers-nextjs';
  * Throws an error if there is no session or on failure.
  */
 export async function auth(): Promise<Session> {
+  const supabase = createSupabaseServerClient();
   const {
     data: { session },
     error,

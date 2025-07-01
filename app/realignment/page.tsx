@@ -5,7 +5,7 @@
 ------------------------------------------------------------------- */
 
 
-import { supabase } from '@/lib/supabase-server';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 
 /**
  * Accepts an optional `slug` via URL query: /realignment?slug=hcc
@@ -18,6 +18,7 @@ export default async function RealignmentPage({
   const slug = searchParams?.slug;
 
   // Build query: if slug provided, filter by it; else take first record
+  const supabase = createSupabaseServerClient();
   const query = supabase
     .from("institutions")
     .select("name, org_type")

@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-gray-50 text-gray-800 font-sans antialiased">
+      <body className="min-h-screen bg-neutral-50 text-gray-800 font-sans antialiased">
         <Providers>
           <nav className="bg-white shadow-sm px-6 py-3 mb-6" role="navigation" aria-label="Main navigation">
             <ul className="flex space-x-4 text-sm font-medium text-gray-700">

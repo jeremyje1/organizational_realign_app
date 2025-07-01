@@ -1,20 +1,16 @@
-'use server';
+
 
 import { cookies } from 'next/headers';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 /**
- * Lazy-initialised, typed Supabase client for Server Components / Route Handlers.
- * Keeps auth session in App-Router cookies without exposing credentials.
+ * Creates a typed Supabase client using the current request's cookies.
+ * Call this within server actions, Route Handlers or Server Components.
  */
-let _supabase: ReturnType<typeof createServerClient> | undefined;
+export function createSupabaseServerClient() {
+  const cookieStore = cookies();
 
-function createSupabaseServer() {
-  if (_supabase) return _supabase;
-
-  const cookieStore = cookies(); // sync accessor in Next 14+
-
-  _supabase = createServerClient(
+  return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -32,9 +28,4 @@ function createSupabaseServer() {
       },
     },
   );
-
-  return _supabase;
 }
-
-/** Typed singleton Supabase client for server-side use */
-export const supabase = createSupabaseServer();
