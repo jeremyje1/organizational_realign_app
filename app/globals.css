@@ -5,7 +5,7 @@
 /* custom global tweaks */
 html,
 body {
-  @apply min-h-full bg-gray-50 text-zinc-900 antialiased;
+  @apply min-h-full bg-neutral-50 text-zinc-900 antialiased;
   /* Optional tweaks */
   font-family: var(--font-inter, ui-sans-serif, system-ui);
   scroll-behavior: smooth;
