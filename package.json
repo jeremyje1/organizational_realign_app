@@ -4,12 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "NEXT_DISABLE_TURBOPACK=1 ts-node --transpile-only server.ts",
-    "build": "next build --no-lint && tsc --project tsconfig.server.json",
-    "vercel-build": "prisma generate && next build --no-lint && tsc --project tsconfig.server.json",
+    "build": "next build",
+    "vercel-build": "prisma generate && next build",
     "postinstall": "prisma generate",
-    "start": "NODE_ENV=production node dist/server.js",
-    "lint": "next lint",
-    "deploy": "prisma generate && NEXT_PUBLIC_DEPLOYMENT_MODE=production NODE_OPTIONS=--max-old-space-size=4096 NEXT_TELEMETRY_DISABLED=1 NEXT_DISABLE_ESLINT=1 next build || true && tsc --project tsconfig.server.json --skipLibCheck || true"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@auth/core": "^0.40.0",
