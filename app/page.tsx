@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
@@ -456,6 +457,83 @@ export default function HomePage() {
                 <div className="ml-4">
                   <h4 className="font-bold text-slate-900">Jessica Martinez</h4>
                   <p className="text-sm text-slate-600">VP Operations, Global Solutions</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Founder Bio Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div className="lg:order-2">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-slate-600/20 rounded-2xl transform rotate-3"></div>
+                  <div className="relative rounded-2xl shadow-xl bg-gradient-to-br from-slate-100 to-slate-200 h-96 w-80 mx-auto flex items-center justify-center">
+                    {/* Replace this div with your actual Image component once photo is added */}
+                    <div className="text-center">
+                      <div className="w-24 h-24 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span className="text-white text-3xl font-bold">JE</span>
+                      </div>
+                      <p className="text-slate-600 text-sm">Professional Photo</p>
+                      <p className="text-slate-500 text-xs">Coming Soon</p>
+                    </div>
+                  </div>
+                  {/* Uncomment when photo is ready:
+                  <Image
+                    src="/images/jeremy-estrella-founder.jpg"
+                    alt="Jeremy Estrella, Founder of NorthPath Strategies"
+                    width={400}
+                    height={500}
+                    className="relative rounded-2xl shadow-xl object-cover"
+                    priority
+                  />
+                  */}
+                </div>
+              </div>
+              
+              <div className="lg:order-1">
+                <div className="mb-6">
+                  <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                    Meet Our Founder
+                  </span>
+                </div>
+                
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                  Jeremy Estrella
+                </h2>
+                <h3 className="text-xl text-blue-600 font-semibold mb-6">
+                  Founder, NorthPath Strategies
+                </h3>
+                
+                <div className="space-y-4 text-slate-700 leading-relaxed">
+                  <p>
+                    Jeremy Estrella is a higher education strategist and systems architect with over 15 years of experience leading institutional transformation across some of the nation's largest and most complex colleges. He is the founder of NorthPath Strategies, a consulting firm that helps institutions streamline operations, realign organizational structures, and implement student-centered strategies that drive measurable improvements in retention, completion, and institutional performance.
+                  </p>
+                  
+                  <p>
+                    Jeremy's vision for NorthPath Strategies emerged from a consistent observation throughout his career: <strong>outdated, siloed, and bureaucratic organizational structures often stood in the way of student success.</strong> He saw firsthand how unclear lines of responsibility, delayed decisions, and misaligned policy implementation negatively impacted students; causing breakdowns in advising, financial aid confusion, and a lack of timely support when students needed it most.
+                  </p>
+                  
+                  <p>
+                    Motivated by a commitment to operational clarity and student impact, Jeremy played a key leadership role in one of the largest structural reorganizations in the country, helping to transform the largest institution of higher education in the state of Oregon. His efforts guided the transition from fragmented multi-campus operations to a unified model, resulting in reduced duplication, more responsive services, and a consistent student experience across all locations.
+                  </p>
+                  
+                  <p>
+                    Known for his ability to cut through complexity and focus teams on actionable outcomes, Jeremy works with executive leaders, department chairs, and frontline staff to design structures that support, not obstruct, the student journey. <strong>NorthPath Strategies was founded to help institutions identify what's not working, build better systems, and move forward with purpose and confidence.</strong>
+                  </p>
+                </div>
+
+                <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
+                    <Link href="/contact">Schedule a Consultation</Link>
+                  </Button>
+                  <Button size="lg" variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50" asChild>
+                    <Link href="/about">Learn More About Our Approach</Link>
+                  </Button>
                 </div>
               </div>
             </div>
