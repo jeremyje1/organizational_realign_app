@@ -2,19 +2,18 @@
 
 import { useUser } from "@supabase/auth-helpers-react";
 import { useSurvey } from "@/hooks/useSurvey";
-import LikertInput from "@/components/LikertInput";
-import NumericInput from "@/components/NumericInput";
-import { SelectInput } from "@/components/SelectInput";
 import PublicNavigation from "@/components/PublicNavigation";
-import QuestionTooltip, { QuestionHelpIcon } from "@/components/QuestionTooltip";
-import { ChevronLeft, ChevronRight, CheckCircle2, AlertCircle, Clock, Target, BookOpen, Building2, User, LogOut } from 'lucide-react';
+import QuestionCard from "@/components/QuestionCard";
+import SectionHeader from "@/components/SectionHeader";
+import SurveyNavigation from "@/components/SurveyNavigation";
+import { CheckCircle2, AlertCircle, Clock, Target, BookOpen, Building2, User, LogOut } from 'lucide-react';
 import { useState, useEffect } from "react";
 import { consultancyAreas } from "@/data/comprehensiveQuestionBank";
 import { supabase } from "@/lib/supabase-browser";
 import Link from "next/link";
 
 export default function SurveyPage() {
-  // Get user from Supabase auth (handles cases where Supabase isn&apos;t configured)
+  // Get user from Supabase auth (handles cases where Supabase isn't configured)
   const user = useUser();
   
   // Check for Supabase configuration
@@ -59,8 +58,8 @@ export default function SurveyPage() {
     setIsNavigating(false);
   }, [sectionIdx]);
 
-  const handleAnswer = async (questionId: string, value: number | null, text?: string) => {
-    await saveAnswer(questionId, value, text);
+  const handleAnswer = async (questionId: string, value?: number | null, stringValue?: string) => {
+    await saveAnswer(questionId, value ?? null, stringValue);
     setAnsweredQuestions(prev => new Set([...prev, questionId]));
   };
 
@@ -304,7 +303,7 @@ export default function SurveyPage() {
                 <AlertCircle className="h-5 w-5 text-amber-400" />
                 <div>
                   <p className="text-sm font-medium text-amber-200">Demo Mode</p>
-                  <p className="text-xs text-amber-300/80">Your progress won&apos;t be saved</p>
+                  <p className="text-xs text-amber-300/80">Your progress won't be saved</p>
                 </div>
               </div>
               <Link 
@@ -318,305 +317,84 @@ export default function SurveyPage() {
         </div>
       )}
       
-      {/* Enhanced Progress Header */}
-      <div className="card mx-4 mt-4 mb-6 sticky top-4 z-10 backdrop-blur-lg bg-slate-800/90 border-slate-600/50">
-        <div className="max-w-4xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  getQuestionProgress() === 100 
-                    ? 'bg-gradient-to-br from-emerald-400 to-teal-400' 
-                    : 'bg-gradient-to-br from-purple-400 to-pink-400'
-                }`}>
-                  {getQuestionProgress() === 100 ? (
-                    <CheckCircle2 className="h-5 w-5 text-white" />
-                  ) : (
-                    <span className="text-white font-semibold text-sm">{sectionIdx + 1}</span>
-                  )}
-                </div>
-                <div>
-                  <span className="font-semibold text-slate-100">{section}</span>
-                  <div className="text-sm text-slate-400">
-                    Section {sectionIdx + 1} of {sections.length}
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="text-right">
-              <div className="text-sm text-slate-400 mb-1">Overall Progress</div>
-              <div className="text-lg font-semibold text-slate-200">
-                {Math.round(getOverallProgress())}%
-              </div>
-            </div>
-          </div>
-
-          {/* Enhanced progress bars */}
-          <div className="space-y-3">
-            <div>
-              <div className="flex justify-between text-xs text-slate-400 mb-1">
-                <span>Current Section</span>
-                <span>{answeredQuestions.size} of {sectionQuestions.length} answered</span>
-              </div>
-              <div className="bg-slate-700/30 rounded-full h-2">
-                <div 
-                  className="bg-gradient-to-r from-emerald-400 to-teal-400 h-2 rounded-full transition-all duration-500"
-                  style={{width: `${getQuestionProgress()}%`}}
-                ></div>
-              </div>
-            </div>
-            
-            <div>
-              <div className="flex justify-between text-xs text-slate-400 mb-1">
-                <span>Total Progress</span>
-                <span>{sections.length} sections</span>
-              </div>
-              <div className="bg-slate-700/30 rounded-full h-1.5">
-                <div 
-                  className="bg-gradient-to-r from-purple-400 to-pink-400 h-1.5 rounded-full transition-all duration-500"
-                  style={{width: `${getOverallProgress()}%`}}
-                ></div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Institution Type & Consultancy Information */}
-          {selectedInstitutionType && (
-            <div className="mt-6 p-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-400/30 rounded-xl">
-              <div className="flex items-center gap-3 mb-3">
-                <Building2 className="h-5 w-5 text-purple-400" />
-                <span className="font-semibold text-purple-200">Selected Institution Type</span>
-              </div>
-              <p className="text-slate-300 mb-3">
-                {selectedInstitutionType.split('-').map(word => 
-                  word.charAt(0).toUpperCase() + word.slice(1)
-                ).join(' ')}
-              </p>
-              
-              <div className="mt-4">
-                <h4 className="text-sm font-medium text-purple-200 mb-2">Available Consultancy Services:</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {consultancyAreas[selectedInstitutionType]?.map((area, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-sm text-slate-300">
-                      <div className="w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
-                      {area}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+      {/* Section Header Component */}
+      <div className="sticky top-0 z-10 px-4 pt-4">
+        <SectionHeader
+          sectionTitle={section}
+          sectionIndex={sectionIdx}
+          totalSections={sections.length}
+          answeredQuestions={answeredQuestions.size}
+          totalQuestions={sectionQuestions.length}
+          estimatedTimeMinutes={Math.max(1, Math.ceil(sectionQuestions.length * 0.5))}
+        />
       </div>
 
-      <main className={`max-w-4xl mx-auto px-4 py-8 space-y-8 flex-1 transition-all duration-300 ${
-        isNavigating ? 'opacity-70 scale-98' : 'opacity-100 scale-100'
-      }`}>
-        {/* Validation Message */}
-        {showValidation && (
-          <div className="card p-4 bg-amber-900/20 border border-amber-500/30 animate-shake">
-            <div className="flex items-center gap-3">
-              <AlertCircle className="text-amber-400 h-5 w-5 flex-shrink-0" />
-              <div>
-                <h3 className="text-amber-300 font-medium">Please complete all questions</h3>
-                <p className="text-amber-200/70 text-sm">
-                  {sectionQuestions.length - answeredQuestions.size} question{sectionQuestions.length - answeredQuestions.size !== 1 ? 's' : ''} still need{sectionQuestions.length - answeredQuestions.size === 1 ? 's' : ''} to be answered before continuing.
-                </p>
+      {/* Institution Type Information */}
+      {selectedInstitutionType && (
+        <div className="max-w-4xl mx-auto px-4 mb-6">
+          <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-400/30 rounded-xl p-6">
+            <div className="flex items-center gap-3 mb-3">
+              <Building2 className="h-5 w-5 text-purple-400" />
+              <span className="font-semibold text-purple-200">Selected Institution Type</span>
+            </div>
+            <p className="text-slate-300 mb-3">
+              {selectedInstitutionType.split('-').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+              ).join(' ')}
+            </p>
+            
+            <div className="mt-4">
+              <h4 className="text-sm font-medium text-purple-200 mb-2">Available Consultancy Services:</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {consultancyAreas[selectedInstitutionType]?.map((area, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-sm text-slate-300">
+                    <div className="w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
+                    {area}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
-        )}
-
-        {/* Questions Section */}
-        <div className="card p-8 animate-slide-up">
-          <div className="space-y-8">
-            {sectionQuestions.map((q, index) => {
-              const isAnswered = answeredQuestions.has(q.id);
-              const needsAttention = showValidation && !isAnswered;
-              
-              return (
-                <div 
-                  key={q.id} 
-                  id={`question-${q.id}`}
-                  className={`space-y-4 p-6 rounded-xl border transition-all duration-300 ${
-                    needsAttention 
-                      ? 'bg-amber-900/10 border-amber-500/50 question-card shadow-amber-500/20 shadow-lg' 
-                      : isAnswered
-                      ? 'bg-emerald-900/10 border-emerald-500/30 question-card'
-                      : 'bg-slate-800/30 border-slate-600/20 hover:border-slate-500/30 question-card'
-                  }`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold transition-all duration-300 ${
-                      isAnswered 
-                        ? 'bg-gradient-to-br from-emerald-400 to-teal-400 scale-110' 
-                        : needsAttention
-                        ? 'bg-gradient-to-br from-amber-400 to-orange-400 animate-pulse'
-                        : 'bg-gradient-to-br from-purple-400 to-pink-400'
-                    }`}>
-                      {isAnswered ? '✓' : index + 1}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-start gap-3 mb-4">
-                        <p className="font-medium text-slate-100 text-lg leading-relaxed flex-1">
-                          {q.text}
-                        </p>
-                        {q.tooltip && (q.tooltip.explanation || (q.tooltip.examples && q.tooltip.examples.length > 0)) && (
-                          <QuestionTooltip
-                            title={q.text}
-                            explanation={q.tooltip.explanation}
-                            examples={q.tooltip.examples}
-                            position="left"
-                            size="md"
-                          >
-                            <QuestionHelpIcon className="h-5 w-5 mt-1" />
-                          </QuestionTooltip>
-                        )}
-                      </div>
-                      
-                      <div className="mt-4">
-                        {q.type === "likert" ? (
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-sm text-slate-400 mb-3">
-                              <span>Strongly Disagree</span>
-                              <span>Strongly Agree</span>
-                            </div>
-                            <LikertInput onSelect={(v) => handleAnswer(q.id, v)} />
-                          </div>
-                        ) : q.type === "number" ? (
-                          <NumericInput onSubmit={(v) => handleAnswer(q.id, v)} />
-                        ) : q.type === "select" && q.options ? (
-                          <div className="space-y-3">
-                            {q.id === 'INST_TYPE' && (
-                              <div className="mb-6 p-4 bg-purple-500/10 border border-purple-400/30 rounded-lg">
-                                <div className="flex items-center gap-2 mb-2">
-                                  <Building2 className="h-5 w-5 text-purple-400" />
-                                  <span className="text-purple-200 font-medium">Institution Type Selection</span>
-                                </div>
-                                <p className="text-sm text-purple-300/80">
-                                  This selection will customize the assessment questions to your organization type and provide relevant consultancy recommendations.
-                                </p>
-                              </div>
-                            )}
-                            <SelectInput
-                              options={q.options}
-                              type="select"
-                              placeholder={q.id === 'INST_TYPE' ? "Choose your organization type..." : "Select an option..."}
-                              onSelect={(selectedOption) => {
-                                const optionText = typeof selectedOption === 'string' 
-                                  ? selectedOption 
-                                  : q.options?.[selectedOption] || '';
-                                handleAnswer(q.id, null, optionText);
-                              }}
-                            />
-                          </div>
-                        ) : q.type === "multi-select" && q.options ? (
-                          <div className="space-y-3">
-                            <p className="text-sm text-slate-400 mb-3">Select all that apply:</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                              {q.options.map((option, idx) => {
-                                const isSelected = multiSelectAnswers.get(q.id)?.has(idx) || false;
-                                return (
-                                  <label 
-                                    key={idx} 
-                                    className={`flex items-center space-x-3 p-4 rounded-lg border cursor-pointer transition-all duration-200 ${
-                                      isSelected 
-                                        ? 'bg-purple-500/10 border-purple-400/50 text-purple-200' 
-                                        : 'bg-slate-700/30 border-slate-600/50 hover:bg-slate-700/50 hover:border-slate-500/50 text-slate-200'
-                                    }`}
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      checked={isSelected}
-                                      onChange={(e) => handleMultiSelectAnswer(q.id, idx, e.target.checked)}
-                                      className="rounded border-slate-500 text-purple-400 focus:ring-purple-400 focus:ring-offset-slate-800 transition-all duration-200"
-                                    />
-                                    <span className="font-medium">{option}</span>
-                                  </label>
-                                );
-                              })}
-                            </div>
-                            {multiSelectAnswers.get(q.id)?.size && (
-                              <div className="text-sm text-emerald-400 flex items-center gap-2 mt-2">
-                                <CheckCircle2 className="h-4 w-4" />
-                                {multiSelectAnswers.get(q.id)?.size} option{multiSelectAnswers.get(q.id)?.size !== 1 ? 's' : ''} selected
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <input 
-                            type="text" 
-                            onChange={(e) => e.target.value.trim() && handleAnswer(q.id, null, e.target.value)}
-                            className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
-                            placeholder="Enter your answer..."
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
         </div>
+      )}
 
-        {/* Enhanced Navigation */}
-        <div className="card p-6 bg-slate-800/50 backdrop-blur-sm">
-          <div className="flex justify-between items-center">
-            <div className="text-sm text-slate-400 flex items-center gap-2">
-              <BookOpen className="h-4 w-4" />
-              {sectionQuestions.length} question{sectionQuestions.length !== 1 ? 's' : ''} in this section
-            </div>
+      <main className={`max-w-4xl mx-auto px-4 pb-32 space-y-6 flex-1 transition-all duration-300 ${
+        isNavigating ? 'opacity-70 scale-98' : 'opacity-100 scale-100'
+      }`}>
+        
+        {/* Questions using QuestionCard Component */}
+        <div className="space-y-6">
+          {sectionQuestions.map((question, index) => {
+            const isAnswered = answeredQuestions.has(question.id);
+            const needsAttention = showValidation && !isAnswered;
             
-            <div className="flex gap-3">
-              {sectionIdx > 0 && (
-                <button
-                  className="px-6 py-3 bg-slate-700/50 hover:bg-slate-600/50 text-slate-200 rounded-lg border border-slate-600/50 hover:border-slate-500/50 transition-all duration-200 flex items-center gap-2 btn-hover-lift"
-                  onClick={handlePrevious}
-                  disabled={isNavigating}
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                  Previous
-                </button>
-              )}
-              
-              <button
-                className={`px-8 py-3 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl btn-hover-lift ${
-                  answeredQuestions.size === sectionQuestions.length
-                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white'
-                    : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white'
-                }`}
-                onClick={handleNext}
-                disabled={isNavigating}
-              >
-                {sectionIdx < sections.length - 1 ? 'Next Section' : 'Complete Assessment'}
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-          
-          {/* Section navigation breadcrumb */}
-          <div className="flex items-center justify-center mt-4 pt-4 border-t border-slate-600/30">
-            <div className="flex items-center space-x-2">
-              {sections.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSectionIdx(idx)}
-                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                    idx === sectionIdx 
-                      ? 'bg-gradient-to-r from-purple-400 to-pink-400 scale-125' 
-                      : idx < sectionIdx 
-                      ? 'bg-gradient-to-r from-emerald-400 to-teal-400' 
-                      : 'bg-slate-600/50 hover:bg-slate-500/50'
-                  }`}
-                  title={sections[idx]}
+            return (
+              <div key={question.id} id={`question-${question.id}`}>
+                <QuestionCard
+                  question={question}
+                  index={index}
+                  isAnswered={isAnswered}
+                  needsAttention={needsAttention}
+                  multiSelectAnswers={multiSelectAnswers}
+                  onAnswer={handleAnswer}
+                  onMultiSelectAnswer={handleMultiSelectAnswer}
                 />
-              ))}
-            </div>
-          </div>
+              </div>
+            );
+          })}
         </div>
       </main>
+
+      {/* Survey Navigation Component */}
+      <SurveyNavigation
+        canGoNext={true}
+        canGoPrevious={sectionIdx > 0}
+        onNext={handleNext}
+        onPrevious={handlePrevious}
+        isLastSection={sectionIdx >= sections.length - 1}
+        showValidation={showValidation}
+        unansweredCount={sectionQuestions.length - answeredQuestions.size}
+      />
     </div>
   );
 }
