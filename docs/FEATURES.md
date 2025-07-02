@@ -10,3 +10,4 @@
 | **Collaboration & Commenting** | Inline comments, @mentions, and decision logs for governance transparency. | P2 |
 | **Export & Reporting** | Generate PDF/PowerPoint reports and data exports (CSV, JSON). | P1 |
 | **SSO Integration** | Leverage northpathstrategies.org authentication (Auth0) for seamless access. | P0 |
+| **SSO Integration** | Leverage northpathstrategies.org authentication (Auth0) for seamless access. | P0 |

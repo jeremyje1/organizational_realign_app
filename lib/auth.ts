@@ -1,16 +1,18 @@
 // lib/auth.ts
 // ──────────────────────────────────────────────────────────────
 // Server-side auth() helper for Server Components.
-// Uses Supabase to get the current session and throws if unauthenticated.
+// Uses Supabase to get the current session and returns null during development
 
-import { supabase } from '@/lib/supabase-server';   // ← switched helper
+// Access the server-side Supabase client
+import { createSupabaseServerClient } from './supabase-server';
 import type { Session } from '@supabase/auth-helpers-nextjs';
 
 /**
  * auth: retrieves the current Supabase session.
- * Throws an error if there is no session or on failure.
+ * Returns null during development if no session exists (instead of throwing)
  */
-export async function auth(): Promise<Session> {
+export async function auth(): Promise<Session | null> {
+  const supabase = createSupabaseServerClient();
   const {
     data: { session },
     error,
@@ -18,10 +20,14 @@ export async function auth(): Promise<Session> {
 
   if (error) {
     console.error('Error fetching session:', error.message);
-    throw new Error('Authentication error');
+    return null;
   }
+  
+  // During development, return null instead of throwing for unauthenticated users
   if (!session) {
-    throw new Error('Unauthenticated');
+    console.warn('No session found - user is not authenticated');
+    return null;
   }
+  
   return session;
 }

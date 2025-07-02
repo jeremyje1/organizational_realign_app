@@ -11,3 +11,12 @@
 | Auth | **Auth0** Universal Login → northpathstrategies.org | SSO + MFA |
 | CI/CD | GitHub Actions → Vercel Preview & Fly.io Deploy | PR previews, automated tests |
 | Testing | Vitest + Playwright | Unit + e2e coverage |
+
+---
+
+## Additional Notes
+
+- **PostCSS:** Uses `@tailwindcss/postcss` and `autoprefixer` for CSS processing.
+- **Shared UI:** Imports global theme from `@northpath-ui/theme` for branding consistency.
+- **API Integration:** RESTful endpoints via NestJS, with plans for GraphQL support.
+- **Monitoring:** Vercel and Fly.io dashboards, Sentry for error tracking.

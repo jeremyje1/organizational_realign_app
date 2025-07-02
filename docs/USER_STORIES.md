@@ -4,5 +4,5 @@
 
 *As a* **Department Chair**, *I want* to compare staffing levels across proposed scenarios so that I can advocate for equitable resources.
 
-*As an* **Estrella Strategy Group Consultant*, *I want* to export a presentation of recommended structures so that I can facilitate board approval meetings.
+*As a* **NorthPath Strategies Consultant**, *I want* to export a presentation of recommended structures so that I can facilitate board approval meetings.
 

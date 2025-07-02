@@ -33,6 +33,14 @@ model Unit {
   positions       Position[]
   strategicLinks  UnitStrategicPillar[]
 
+  // Example query:
+  // Find all child units for a given unit
+  // SELECT * FROM units WHERE parent_unit_id = '<unit_id>';
+
+  // Example mutation:
+  // Add a new child unit
+  // INSERT INTO units (organization_id, name, parent_unit_id) VALUES (...);
+
   @@map("units")
 }
 
@@ -46,6 +54,14 @@ model Position {
   // Relations
   unit     Unit    @relation(fields: [unitId], references: [id])
   person   Person? @relation(fields: [personId], references: [id])
+
+  // Example query:
+  // Find all positions in a unit
+  // SELECT * FROM positions WHERE unit_id = '<unit_id>';
+
+  // Example mutation:
+  // Assign a person to a position
+  // UPDATE positions SET person_id = '<person_id>' WHERE id = '<position_id>';
 
   @@map("positions")
 }

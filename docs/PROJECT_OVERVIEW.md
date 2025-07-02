@@ -7,9 +7,9 @@ The **Organizational Realignment App (ORA)** is a web‑based decision‑support
 
 The app surfaces insights from surveys, org‑charts, and performance metrics to recommend structural adjustments that maximize student success and operational efficiency.
 
-| Stakeholder | Primary Goal |
-|-------------|--------------|
-| College Presidents & VPs | Make informed restructuring decisions |
-| Department Chairs | Model impact on reporting lines & resources |
-| Consultants (Estrella Strategy Group) | Facilitate data‑driven workshops |
+| Stakeholder                          | Primary Goal                                 |
+|--------------------------------------|----------------------------------------------|
+| College Presidents & VPs             | Make informed restructuring decisions        |
+| Department Chairs                    | Model impact on reporting lines & resources  |
+| Consultants (NorthPath Strategies)    | Facilitate data‑driven workshops             |
 
