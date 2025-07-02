@@ -5,6 +5,7 @@ export interface ReportData {
   institutionName?: string;
   assessmentDate: string;
   generatedBy?: string;
+  includeAI?: boolean;
 }
 
 export class PDFReportGenerator {
@@ -35,6 +36,32 @@ export class PDFReportGenerator {
     return this.pdf.output('blob');
   }
 
+  async generateComprehensiveReport(data: ReportData): Promise<Blob> {
+    await this.createEnhancedCoverPage(data);
+    await this.createTableOfContents();
+    
+    if (data.includeAI && data.analysis.executiveSummary) {
+      await this.createAIExecutiveSummary(data.analysis);
+      await this.createAIKeyFindings(data.analysis);
+      await this.createRiskAssessment(data.analysis);
+      await this.createImplementationRoadmap(data.analysis);
+      await this.createCostBenefitAnalysis(data.analysis);
+      await this.createBenchmarkComparison(data.analysis);
+    } else {
+      await this.createExecutiveSummary(data.analysis.executiveSummary);
+    }
+    
+    await this.createKeyMetrics(data.analysis);
+    await this.createRecommendations(data.analysis.recommendations);
+    await this.createSectionAnalysis(data.analysis.sectionsAnalysis);
+    await this.createAIRoadmap(data.analysis.aiImplementationPlan);
+    await this.createTransformationPlan(data.analysis.transformationRoadmap);
+    await this.createAppendix();
+    await this.addPageNumbers();
+
+    return this.pdf.output('blob');
+  }
+
   private async createCoverPage(data: ReportData) {
     // Header
     this.pdf.setFontSize(28);
@@ -58,7 +85,7 @@ export class PDFReportGenerator {
     this.pdf.setFontSize(12);
     this.pdf.setFont('helvetica', 'italic');
     this.pdf.text('Powered by OREA (Organizational Realignment Engine Algorithm)', this.margin, 135);
-    this.pdf.text('NorthPath Strategies AI-Powered Analysis', this.margin, 145);
+    this.pdf.text('Northpath Strategies AI-Powered Analysis', this.margin, 145);
 
     // Key metrics preview
     const { organizationalHealth, aiReadinessScore, redundancyIndex } = data.analysis;
@@ -76,7 +103,124 @@ export class PDFReportGenerator {
     // Footer
     this.pdf.setFontSize(10);
     this.pdf.text('Confidential - For Internal Use Only', this.margin, 270);
-    this.pdf.text('© 2025 NorthPath Strategies', this.pageWidth - 80, 270);
+    this.pdf.text('© 2025 Northpath Strategies', this.pageWidth - 80, 270);
+
+    this.addNewPage();
+  }
+
+  private async createEnhancedCoverPage(data: ReportData) {
+    // Professional header with logo space
+    this.pdf.setFillColor(25, 43, 81); // Professional dark blue
+    this.pdf.rect(0, 0, this.pageWidth, 60, 'F');
+    
+    this.pdf.setTextColor(255, 255, 255);
+    this.pdf.setFontSize(32);
+    this.pdf.setFont('helvetica', 'bold');
+    this.pdf.text('ORGANIZATIONAL', this.margin, 30);
+    this.pdf.text('REALIGNMENT REPORT', this.margin, 45);
+
+    // Reset text color
+    this.pdf.setTextColor(0, 0, 0);
+    
+    // Institution name with enhanced styling
+    if (data.institutionName) {
+      this.pdf.setFontSize(24);
+      this.pdf.setFont('helvetica', 'bold');
+      this.pdf.text(data.institutionName, this.margin, 85);
+    }
+
+    // AI-Enhanced badge if applicable
+    if (data.includeAI) {
+      this.pdf.setFillColor(138, 43, 226); // Purple for AI
+      this.pdf.roundedRect(this.margin, 95, 80, 15, 3, 3, 'F');
+      this.pdf.setTextColor(255, 255, 255);
+      this.pdf.setFontSize(10);
+      this.pdf.setFont('helvetica', 'bold');
+      this.pdf.text('AI-ENHANCED ANALYSIS', this.margin + 5, 105);
+      this.pdf.setTextColor(0, 0, 0);
+    }
+
+    // Assessment details
+    this.pdf.setFontSize(14);
+    this.pdf.setFont('helvetica', 'normal');
+    this.pdf.text(`Assessment Date: ${new Date(data.assessmentDate).toLocaleDateString()}`, this.margin, 130);
+    this.pdf.text(`Report Generated: ${new Date().toLocaleDateString()}`, this.margin, 145);
+    this.pdf.text(`Generated for: ${data.generatedBy || 'Organization Leadership'}`, this.margin, 160);
+
+    // Key metrics preview with enhanced design
+    const { organizationalHealth, aiReadinessScore, redundancyIndex } = data.analysis;
+    
+    this.pdf.setFillColor(248, 249, 250);
+    this.pdf.rect(this.margin, 175, this.pageWidth - 2 * this.margin, 60, 'F');
+    this.pdf.setDrawColor(220, 221, 225);
+    this.pdf.rect(this.margin, 175, this.pageWidth - 2 * this.margin, 60);
+
+    this.pdf.setFontSize(16);
+    this.pdf.setFont('helvetica', 'bold');
+    this.pdf.text('EXECUTIVE SUMMARY', this.margin + 10, 190);
+
+    this.pdf.setFontSize(12);
+    this.pdf.setFont('helvetica', 'normal');
+    const healthColor = organizationalHealth >= 80 ? [34, 197, 94] : organizationalHealth >= 60 ? [251, 146, 60] : [239, 68, 68];
+    const aiColor = aiReadinessScore >= 80 ? [34, 197, 94] : aiReadinessScore >= 60 ? [251, 146, 60] : [239, 68, 68];
+    
+    this.pdf.setTextColor(healthColor[0], healthColor[1], healthColor[2]);
+    this.pdf.text(`Organizational Health: ${Math.round(organizationalHealth)}/100`, this.margin + 10, 205);
+    
+    this.pdf.setTextColor(aiColor[0], aiColor[1], aiColor[2]);
+    this.pdf.text(`AI Readiness Score: ${Math.round(aiReadinessScore)}/100`, this.margin + 10, 220);
+    
+    this.pdf.setTextColor(0, 0, 0);
+    this.pdf.text(`Optimization Potential: ${Math.round(redundancyIndex)}%`, this.margin + 10, 235);
+
+    // Professional footer
+    this.pdf.setFontSize(10);
+    this.pdf.setFont('helvetica', 'italic');
+    this.pdf.text('Powered by OREA (Organizational Realignment Engine Algorithm)', this.margin, 255);
+    this.pdf.text('Northpath Strategies - Strategic Organizational Consulting', this.margin, 265);
+    
+    this.pdf.setFont('helvetica', 'normal');
+    this.pdf.text('CONFIDENTIAL - For Internal Use Only', this.margin, 280);
+    this.pdf.text('© 2025 Northpath Strategies', this.pageWidth - 80, 280);
+
+    this.addNewPage();
+  }
+
+  private async createTableOfContents() {
+    this.addSectionHeader('Table of Contents');
+    
+    const contents = [
+      { title: 'Executive Summary', page: 3 },
+      { title: 'Key Performance Metrics', page: 4 },
+      { title: 'Priority Recommendations', page: 5 },
+      { title: 'Detailed Section Analysis', page: 6 },
+      { title: 'AI Implementation Roadmap', page: 7 },
+      { title: 'Transformation Strategy', page: 8 },
+      { title: 'Cost-Benefit Analysis', page: 9 },
+      { title: 'Industry Benchmarks', page: 10 },
+      { title: 'Risk Assessment', page: 11 },
+      { title: 'Implementation Timeline', page: 12 },
+      { title: 'Appendix', page: 13 }
+    ];
+
+    contents.forEach((item, index) => {
+      const y = this.currentY + (index * 12);
+      this.pdf.setFontSize(12);
+      this.pdf.text(item.title, this.margin, y);
+      
+      // Draw dots
+      const dotsStart = this.margin + 120;
+      const dotsEnd = this.pageWidth - 40;
+      this.pdf.setFontSize(8);
+      let dotX = dotsStart;
+      while (dotX < dotsEnd) {
+        this.pdf.text('.', dotX, y);
+        dotX += 3;
+      }
+      
+      this.pdf.setFontSize(12);
+      this.pdf.text(item.page.toString(), this.pageWidth - 30, y);
+    });
 
     this.addNewPage();
   }
@@ -110,6 +254,41 @@ export class PDFReportGenerator {
     this.addText(`High Priority Items: ${executiveSummary.actionRequired.high}`);
     this.addText(executiveSummary.actionRequired.description);
 
+    this.addNewPage();
+  }
+
+  private async createAIExecutiveSummary(analysis: any) {
+    this.addSectionHeader('AI-Enhanced Executive Summary');
+    
+    if (analysis.executiveSummary) {
+      this.addText(analysis.executiveSummary);
+      this.addSpacing(10);
+    }
+    
+    this.addSubheader('AI-Generated Insights');
+    this.addText('This analysis leverages advanced artificial intelligence to provide deeper insights into your organizational structure, efficiency patterns, and strategic opportunities.');
+    
+    this.addNewPage();
+  }
+
+  private async createAIKeyFindings(analysis: any) {
+    this.addSectionHeader('Key Findings');
+    
+    if (analysis.keyFindings && Array.isArray(analysis.keyFindings)) {
+      analysis.keyFindings.forEach((finding: string, index: number) => {
+        this.pdf.setFontSize(12);
+        this.pdf.setFont('helvetica', 'bold');
+        this.pdf.text(`${index + 1}.`, this.margin, this.currentY);
+        
+        this.pdf.setFont('helvetica', 'normal');
+        const lines = this.pdf.splitTextToSize(finding, this.pageWidth - 2 * this.margin - 10);
+        this.pdf.text(lines, this.margin + 10, this.currentY);
+        
+        this.currentY += lines.length * 6 + 5;
+        this.checkPageSpace(10);
+      });
+    }
+    
     this.addNewPage();
   }
 
@@ -230,35 +409,109 @@ export class PDFReportGenerator {
     this.addNewPage();
   }
 
+  private async createCostBenefitAnalysis(analysis: any) {
+    this.addSectionHeader('Cost-Benefit Analysis');
+    
+    if (analysis.costBenefitAnalysis) {
+      const cba = analysis.costBenefitAnalysis;
+      
+      this.addSubheader('Financial Impact Summary');
+      this.addText(`Total Implementation Cost: $${cba.totalImplementationCost?.toLocaleString() || 'N/A'}`);
+      this.addText(`Expected Annual Savings: $${cba.expectedAnnualSavings?.toLocaleString() || 'N/A'}`);
+      this.addText(`Payback Period: ${cba.paybackPeriodMonths || 'N/A'} months`);
+      this.addText(`5-Year ROI: ${cba.fiveYearROI || 'N/A'}%`);
+      this.addText(`Risk-Adjusted ROI: ${cba.riskAdjustedROI || 'N/A'}%`);
+    }
+    
+    this.addNewPage();
+  }
+
+  private async createBenchmarkComparison(analysis: any) {
+    this.addSectionHeader('Industry Benchmarks');
+    
+    if (analysis.benchmarkComparison) {
+      const benchmark = analysis.benchmarkComparison;
+      
+      this.addSubheader('Peer Comparison');
+      this.addText(benchmark.peerComparison);
+      this.addSpacing(10);
+      
+      this.addSubheader('Performance Metrics vs Industry Standards');
+      
+      if (benchmark.industryStandards) {
+        benchmark.industryStandards.forEach((metric: any) => {
+          this.addText(`${metric.metric}:`);
+          this.addText(`  Your Score: ${metric.yourScore}`);
+          this.addText(`  Industry Average: ${metric.industryAverage}`);
+          this.addText(`  Top Performers: ${metric.topPerformers}`);
+          this.addSpacing(5);
+        });
+      }
+    }
+    
+    this.addNewPage();
+  }
+
+  private async createRiskAssessment(analysis: any) {
+    this.addSectionHeader('Risk Assessment');
+    
+    if (analysis.riskAssessment) {
+      this.addText(analysis.riskAssessment);
+    }
+    
+    this.addNewPage();
+  }
+
+  private async createImplementationRoadmap(analysis: any) {
+    this.addSectionHeader('Implementation Roadmap');
+    
+    if (analysis.implementationRoadmap) {
+      analysis.implementationRoadmap.forEach((phase: any) => {
+        this.addSubheader(`${phase.phase.toUpperCase()} (${phase.timeframe})`);
+        this.addText(`Priority: ${phase.priority.toUpperCase()}`);
+        
+        if (phase.initiatives) {
+          phase.initiatives.forEach((initiative: any) => {
+            this.pdf.setFontSize(11);
+            this.pdf.setFont('helvetica', 'bold');
+            this.pdf.text(`• ${initiative.title}`, this.margin + 5, this.currentY);
+            this.currentY += 6;
+            
+            this.pdf.setFont('helvetica', 'normal');
+            this.pdf.setFontSize(10);
+            this.addText(`  ${initiative.description}`);
+            this.addText(`  Expected ROI: ${initiative.expectedROI}% | Cost: $${initiative.implementationCost.toLocaleString()} | Risk Level: ${initiative.riskLevel}/10`);
+            this.addSpacing(3);
+          });
+        }
+        
+        this.addSpacing(10);
+      });
+    }
+    
+    this.addNewPage();
+  }
+
   private async createAppendix() {
     this.addSectionHeader('Appendix');
-
+    
     this.addSubheader('Methodology');
-    this.addText('This assessment utilizes the OREA (Organizational Realignment Engine Algorithm),');
-    this.addText('a proprietary AI-powered analysis system that combines:');
-    this.addText('• Entropy-based redundancy detection');
-    this.addText('• Multi-dimensional efficiency scoring');
-    this.addText('• AI readiness assessment with risk adjustment');
-    this.addText('• Dynamic resource allocation optimization');
-    this.addText('• Predictive transformation modeling');
-
-    this.addSpacing(10);
-
-    this.addSubheader('About NorthPath Strategies');
-    this.addText('NorthPath Strategies specializes in higher education organizational');
-    this.addText('transformation, combining strategic consulting with cutting-edge AI analytics');
-    this.addText('to help institutions optimize their operations and embrace digital innovation.');
-
-    this.addSpacing(10);
-
-    this.addSubheader('Next Steps');
-    this.addText('1. Schedule a consultation to discuss your results');
-    this.addText('2. Develop a detailed implementation plan');
-    this.addText('3. Begin pilot programs for high-ROI recommendations');
-    this.addText('4. Monitor progress and adjust strategies as needed');
-
+    this.addText('This analysis was conducted using the Organizational Realignment Engine Algorithm (OREA), which evaluates organizational efficiency, AI readiness, and optimization opportunities across multiple dimensions.');
+    
     this.addSpacing(5);
-    this.addText('Contact: consultation@northpathstrategies.org');
+    
+    this.addSubheader('Data Sources');
+    this.addText('• Assessment responses from key stakeholders');
+    this.addText('• Industry benchmarking data');
+    this.addText('• Best practice frameworks');
+    this.addText('• AI capability assessments');
+    
+    this.addSpacing(5);
+    
+    this.addSubheader('Scoring Methodology');
+    this.addText('Scores are calculated using weighted averages across response categories, with additional algorithms for consistency checking and outlier detection.');
+    
+    this.addNewPage();
   }
 
   private addSectionHeader(title: string) {
@@ -305,6 +558,17 @@ export class PDFReportGenerator {
     this.pdf.addPage();
     this.currentY = this.margin;
   }
+
+  private addPageNumbers() {
+    const pageCount = this.pdf.internal.getNumberOfPages();
+    
+    for (let i = 1; i <= pageCount; i++) {
+      this.pdf.setPage(i);
+      this.pdf.setFontSize(10);
+      this.pdf.setFont('helvetica', 'normal');
+      this.pdf.text(`Page ${i} of ${pageCount}`, this.pageWidth - 40, this.pageHeight - 10);
+    }
+  }
 }
 
 export async function generatePDFReport(analysisData: any, institutionName?: string): Promise<Blob> {
@@ -314,7 +578,7 @@ export async function generatePDFReport(analysisData: any, institutionName?: str
     analysis: analysisData,
     institutionName: institutionName || 'Your Institution',
     assessmentDate: analysisData.generatedAt || new Date().toISOString(),
-    generatedBy: 'NorthPath Strategies AI Assessment'
+    generatedBy: 'Northpath Strategies AI Assessment'
   };
 
   return await generator.generateReport(reportData);

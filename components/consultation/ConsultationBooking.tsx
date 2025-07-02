@@ -34,9 +34,11 @@ import {
 interface ConsultationBookingProps {
   assessmentId: string;
   trigger?: React.ReactNode;
+  premiumTier?: 'basic' | 'premium' | 'enterprise';
+  isPremium?: boolean;
 }
 
-export function ConsultationBooking({ assessmentId, trigger }: ConsultationBookingProps) {
+export function ConsultationBooking({ assessmentId, trigger, premiumTier = 'basic', isPremium = false }: ConsultationBookingProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -64,21 +66,36 @@ export function ConsultationBooking({ assessmentId, trigger }: ConsultationBooki
       title: 'Strategic Planning Session',
       description: 'Deep-dive strategic discussion with senior consultant',
       duration: '90 minutes',
-      icon: <BookOpen className="h-5 w-5" />
+      icon: <BookOpen className="h-5 w-5" />,
+      premium: false,
+      included: true
     },
     {
       value: 'implementation',
       title: 'Implementation Planning',
       description: 'Tactical planning session for recommendation execution',
       duration: '60 minutes',
-      icon: <CheckCircle className="h-5 w-5" />
+      icon: <CheckCircle className="h-5 w-5" />,
+      premium: true,
+      included: isPremium
     },
     {
       value: 'follow-up',
       title: 'Follow-up Consultation',
       description: 'Progress review and ongoing support',
       duration: '45 minutes',
-      icon: <MessageSquare className="h-5 w-5" />
+      icon: <MessageSquare className="h-5 w-5" />,
+      premium: false,
+      included: true
+    },
+    {
+      value: 'executive-briefing',
+      title: 'Executive Briefing',
+      description: 'C-suite presentation of findings and recommendations',
+      duration: '120 minutes',
+      icon: <Video className="h-5 w-5" />,
+      premium: true,
+      included: premiumTier === 'enterprise'
     }
   ];
 
@@ -92,8 +109,8 @@ export function ConsultationBooking({ assessmentId, trigger }: ConsultationBooki
   const urgencyLevels = [
     { value: 'low', label: 'Low - Within 2 weeks', color: 'bg-blue-100 text-blue-800' },
     { value: 'medium', label: 'Medium - Within 1 week', color: 'bg-yellow-100 text-yellow-800' },
-    { value: 'high', label: 'High - Within 2-3 days', color: 'bg-orange-100 text-orange-800' },
-    { value: 'urgent', label: 'Urgent - Within 24 hours', color: 'bg-red-100 text-red-800' }
+    { value: 'high', label: 'High - Within 2-3 days', color: 'bg-orange-100 text-orange-800', premium: true },
+    { value: 'urgent', label: 'Urgent - Within 24 hours', color: 'bg-red-100 text-red-800', premium: true }
   ];
 
   const timeSlots = [

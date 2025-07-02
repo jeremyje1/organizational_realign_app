@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 import AuthButton from "@/components/AuthButton";
 
 export const metadata: Metadata = {
-  title: "NorthPath – Organizational Realignment",
-  description: "Realign your org, quickly.",
+  title: "Northpath Strategies – Organizational Realignment",
+  description: "Strategic organizational realignment and transformation.",
 };
 
 export default function SecureLayout({
@@ -18,8 +18,13 @@ export default function SecureLayout({
       {/* ---------- Navbar ---------- */}
       <header className="border-b bg-white shadow-sm sticky top-0 z-20">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <Link href="/" className="font-bold text-lg text-zinc-900">
-            NorthPath
+          <Link href="/" className="flex items-center">
+            <img 
+              src="/logo.svg"
+              alt="Northpath Strategies" 
+              className="h-8 w-8 mr-2"
+            />
+            <span className="font-bold text-lg text-blue-900">Northpath Strategies</span>
           </Link>
           <AuthButton />
         </div>
@@ -30,9 +35,9 @@ export default function SecureLayout({
       </main>
 
       <footer className="border-t bg-white py-4 text-center text-sm text-zinc-500">
-        Organizational Realignment Tool v1.0 —{" "}
+        Organizational Realignment Tool v1.0 © {new Date().getFullYear()} Northpath Strategies —{" "}
         <a
-          href="mailto:feedback@northpath.io"
+          href="mailto:feedback@northpathstrategies.org"
           className="font-medium underline"
         >
           Send Feedback

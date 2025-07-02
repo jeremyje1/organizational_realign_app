@@ -4,18 +4,25 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AnalysisResults } from '../../../components/results/AnalysisResults';
 import { InteractiveInsights } from '../../../components/results/InteractiveInsights';
+import { AIAnalysisResults } from '../../../components/results/AIAnalysisResults';
 import { AssessmentComments } from '../../../components/collaboration/AssessmentComments';
 import { ConsultationBooking } from '../../../components/consultation/ConsultationBooking';
+import { PremiumUpgrade } from '../../../components/payments/PremiumUpgrade';
 import { Button } from '../../../components/ui/button';
-import { Brain, Download, Share2, BookOpen, CheckCircle, Target, AlertTriangle } from 'lucide-react';
+import { Brain, Download, Share2, BookOpen, CheckCircle, Target, AlertTriangle, Sparkles, Crown } from 'lucide-react';
 
 function ResultsPageContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session');
   const [analysis, setAnalysis] = useState<any>(null);
+  const [aiAnalysis, setAiAnalysis] = useState<any>(null);
   const [assessmentId, setAssessmentId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [aiLoading, setAiLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showAIAnalysis, setShowAIAnalysis] = useState(false);
+  const [showPremiumUpgrade, setShowPremiumUpgrade] = useState(false);
+  const [userPremiumStatus, setUserPremiumStatus] = useState<'basic' | 'premium' | 'enterprise'>('basic');
 
   useEffect(() => {
     if (!sessionId) {
@@ -33,6 +40,37 @@ function ResultsPageContent() {
         }
         const assessmentData = await assessmentResponse.json();
         setAssessmentId(assessmentData.assessment.id);
+
+        // Check if this is a return from payment
+        const urlParams = new URLSearchParams(window.location.search);
+        const premiumParam = urlParams.get('premium');
+        const stripeSessionId = urlParams.get('session');
+        
+        if (premiumParam === 'true' && stripeSessionId) {
+          // Verify payment and get premium status
+          try {
+            const paymentResponse = await fetch(`/api/payments/create-session?session_id=${stripeSessionId}`);
+            if (paymentResponse.ok) {
+              const paymentData = await paymentResponse.json();
+              if (paymentData.success && paymentData.session.paymentStatus === 'paid') {
+                const planTier = paymentData.session.metadata?.plan;
+                if (planTier) {
+                  setUserPremiumStatus(planTier === 'enterprise' ? 'enterprise' : 'premium');
+                  
+                  // Check for pending upgrade callback
+                  const pendingUpgrade = sessionStorage.getItem('pendingUpgrade');
+                  if (pendingUpgrade) {
+                    sessionStorage.removeItem('pendingUpgrade');
+                    // Automatically trigger AI analysis for premium users
+                    setTimeout(() => handleAIAnalysis(), 1000);
+                  }
+                }
+              }
+            }
+          } catch (paymentError) {
+            console.log('Payment verification failed:', paymentError);
+          }
+        }
 
         // Then get the analysis
         const response = await fetch('/api/analysis', {
@@ -52,6 +90,17 @@ function ResultsPageContent() {
 
         const data = await response.json();
         setAnalysis(data.analysis);
+
+        // Check if AI analysis is available
+        try {
+          const aiResponse = await fetch(`/api/analysis/ai-enhanced?assessmentId=${assessmentData.assessment.id}`);
+          if (aiResponse.ok) {
+            const aiData = await aiResponse.json();
+            setAiAnalysis(aiData.analysis);
+          }
+        } catch (aiError) {
+          console.log('AI analysis not available yet:', aiError);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -63,8 +112,68 @@ function ResultsPageContent() {
   }, [sessionId]);
 
   const handleDownloadReport = async () => {
-    // TODO: Implement PDF report generation
-    console.log('Downloading report...');
+    if (!assessmentId) return;
+    
+    try {
+      const response = await fetch('/api/reports/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          assessmentId,
+          includeAI: !!aiAnalysis 
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate report');
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = `organizational-analysis-report-${assessmentId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Report download error:', error);
+    }
+  };
+
+  const handleAIAnalysis = async () => {
+    if (!assessmentId || aiLoading) return;
+    
+    setAiLoading(true);
+    try {
+      const response = await fetch('/api/analysis/ai-enhanced', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          assessmentId,
+          analysisData: analysis 
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate AI analysis');
+      }
+
+      const data = await response.json();
+      setAiAnalysis(data.analysis);
+      setShowAIAnalysis(true);
+    } catch (err) {
+      console.error('AI analysis error:', err);
+      // Could add error toast here
+    } finally {
+      setAiLoading(false);
+    }
   };
 
   if (loading) {
@@ -190,6 +299,17 @@ function ResultsPageContent() {
             </div>
             
             <div className="flex items-center space-x-3">
+              {!aiAnalysis && (
+                <Button 
+                  onClick={handleAIAnalysis}
+                  disabled={aiLoading}
+                  className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 disabled:opacity-50"
+                >
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  {aiLoading ? 'Generating AI Insights...' : 'AI Enhanced Analysis'}
+                </Button>
+              )}
+              
               <Button 
                 variant="outline" 
                 onClick={handleDownloadReport}
@@ -210,6 +330,8 @@ function ResultsPageContent() {
               {assessmentId && (
                 <ConsultationBooking 
                   assessmentId={assessmentId}
+                  premiumTier={userPremiumStatus}
+                  isPremium={userPremiumStatus !== 'basic'}
                   trigger={
                     <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
                       <BookOpen className="h-4 w-4 mr-2" />
@@ -223,6 +345,54 @@ function ResultsPageContent() {
         </div>
       </div>
 
+      {/* AI Enhanced Analysis */}
+      {(aiAnalysis || showAIAnalysis) && (
+        <div className="px-4 pb-8">
+          <div className="card mb-6">
+            <div className="max-w-7xl mx-auto px-6 py-8">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-violet-400 to-purple-400 rounded-full flex items-center justify-center">
+                    <Sparkles className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-slate-100">AI Enhanced Analysis</h2>
+                    <p className="text-slate-300">Advanced insights powered by artificial intelligence</p>
+                  </div>
+                </div>
+                
+                {aiAnalysis && (
+                  <Button 
+                    variant="outline"
+                    onClick={() => setShowAIAnalysis(!showAIAnalysis)}
+                    className="bg-slate-700/50 hover:bg-slate-600/50 text-slate-200 border-slate-600/50"
+                  >
+                    {showAIAnalysis ? 'Hide AI Analysis' : 'Show AI Analysis'}
+                  </Button>
+                )}
+              </div>
+              
+              {showAIAnalysis && aiAnalysis && (
+                <AIAnalysisResults analysis={aiAnalysis} />
+              )}
+              
+              {showAIAnalysis && aiLoading && (
+                <div className="text-center py-12">
+                  <div className="flex items-center justify-center mb-4">
+                    <Sparkles className="h-8 w-8 text-violet-400 animate-pulse" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-slate-100 mb-2">Generating AI Insights</h3>
+                  <p className="text-slate-300">Our AI is analyzing your assessment data to provide enhanced insights...</p>
+                  <div className="mt-4 bg-slate-700/50 rounded-full h-2 max-w-md mx-auto">
+                    <div className="bg-gradient-to-r from-violet-400 to-purple-400 h-2 rounded-full animate-pulse" style={{ width: '70%' }}></div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Interactive Insights Dashboard */}
       <div className="px-4 pb-8">
         {analysis.strategicInsights && analysis.performanceMetrics && (
@@ -233,6 +403,94 @@ function ResultsPageContent() {
           />
         )}
       </div>
+
+      {/* Premium Upgrade Section */}
+      {userPremiumStatus === 'basic' && !aiAnalysis && (
+        <div className="px-4 pb-8">
+          <div className="card">
+            <div className="max-w-7xl mx-auto px-6 py-12">
+              <div className="text-center mb-8">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-400 rounded-full flex items-center justify-center">
+                    <Crown className="h-6 w-6 text-white" />
+                  </div>
+                </div>
+                <h2 className="text-3xl font-bold text-slate-100 mb-4">Unlock Advanced Analysis</h2>
+                <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-6">
+                  Get deeper insights with AI-powered analysis, comprehensive reports, and expert consultation.
+                </p>
+                <Button 
+                  onClick={() => setShowPremiumUpgrade(true)}
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-lg px-8 py-3"
+                >
+                  <Crown className="h-5 w-5 mr-2" />
+                  Upgrade to Premium
+                </Button>
+              </div>
+              
+              {/* Feature Preview */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-slate-800/50 border border-slate-600/50 rounded-lg p-6 text-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-violet-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Sparkles className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">AI Enhanced Analysis</h3>
+                  <p className="text-slate-300 text-sm">
+                    Advanced AI insights with predictive recommendations and strategic roadmaps
+                  </p>
+                </div>
+                
+                <div className="bg-slate-800/50 border border-slate-600/50 rounded-lg p-6 text-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Download className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Comprehensive Reports</h3>
+                  <p className="text-slate-300 text-sm">
+                    Professional PDF reports with implementation timelines and ROI analysis
+                  </p>
+                </div>
+                
+                <div className="bg-slate-800/50 border border-slate-600/50 rounded-lg p-6 text-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <BookOpen className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Expert Consultation</h3>
+                  <p className="text-slate-300 text-sm">
+                    Priority access to strategy sessions with higher education experts
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Premium Upgrade Modal */}
+      {showPremiumUpgrade && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+            <Button
+              onClick={() => setShowPremiumUpgrade(false)}
+              variant="outline"
+              className="absolute top-4 right-4 z-10 bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border-slate-600 h-8 w-8 p-0"
+            >
+              ✕
+            </Button>
+            <PremiumUpgrade 
+              assessmentId={assessmentId || ''}
+              trigger={<div />}
+              onUpgradeSuccess={(tier: string) => {
+                setUserPremiumStatus(tier as 'basic' | 'premium' | 'enterprise');
+                setShowPremiumUpgrade(false);
+                // Trigger AI analysis for premium users
+                if (tier !== 'basic') {
+                  handleAIAnalysis();
+                }
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Analysis Results */}
       <div className="px-4 pb-8">
@@ -257,6 +515,8 @@ function ResultsPageContent() {
             {assessmentId && (
               <ConsultationBooking 
                 assessmentId={assessmentId}
+                premiumTier={userPremiumStatus}
+                isPremium={userPremiumStatus !== 'basic'}
                 trigger={
                   <Button className="w-full max-w-md mx-auto bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
                     <BookOpen className="h-4 w-4 mr-2" />
@@ -291,6 +551,8 @@ function ResultsPageContent() {
               {assessmentId && (
                 <ConsultationBooking 
                   assessmentId={assessmentId}
+                  premiumTier={userPremiumStatus}
+                  isPremium={userPremiumStatus !== 'basic'}
                   trigger={
                     <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700">
                       Schedule Call

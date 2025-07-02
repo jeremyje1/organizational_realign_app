@@ -96,6 +96,27 @@ model Question {
   @@ignore
 }
 
+/// Tracks user collaboration activities for analytics
+model CollaborationEvent {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  assessmentId String?  @map("assessment_id")
+  teamId       String?  @map("team_id")
+  type         String   // EDIT, COMMENT, VIEW
+  section      String?  // Section of the assessment
+  metadata     Json?    // Additional data specific to event type
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([assessmentId])
+  @@index([teamId])
+  @@index([type])
+  @@index([createdAt])
+  @@map("collaboration_events")
+  @@schema("public")
+}
+
 /// Supabase's internal migration history table (leave untouched)
 model SchemaMigration {
   version     String   @id

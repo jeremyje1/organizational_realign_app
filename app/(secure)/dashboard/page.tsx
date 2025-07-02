@@ -21,7 +21,7 @@ import {
  *  ① SEO / social metadata
  * ----------------------------------------------------------------*/
 export const metadata = {
-  title: 'Dashboard | NorthPath',
+  title: 'Dashboard | Northpath Strategies',
   description: 'Your private organizational dashboard',
 };
 
@@ -57,7 +57,7 @@ function WelcomeBanner({ user }: { user: Session['user'] }) {
 function QuickActions() {
   return (
     <div className="card p-6 mb-8">
-      <h2 className="text-xl font-semibold text-slate-100 mb-6 flex items-center gap-2">
+      <h2 className="flex items-center gap-2 text-lg font-semibold text-slate-200 mb-4">
         <Target className="h-5 w-5 text-purple-400" />
         Quick Actions
       </h2>
@@ -82,10 +82,10 @@ function QuickActions() {
         <Button 
           variant="outline"
           className="h-20 bg-slate-700/30 hover:bg-slate-600/50 text-slate-200 border-slate-600/50 flex flex-col items-center justify-center gap-2"
-          onClick={() => window.location.href = '/secure/scenarios'}
+          onClick={() => window.location.href = '/teams'}
         >
-          <TrendingUp className="h-6 w-6" />
-          <span>Scenario Models</span>
+          <Users className="h-6 w-6" />
+          <span>Team Dashboard</span>
         </Button>
         
         <Button 

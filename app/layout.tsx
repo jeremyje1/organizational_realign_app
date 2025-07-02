@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Providers from "./providers";
 import type { ReactNode } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Organizational Realignment Tool",
@@ -20,6 +21,7 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
+        <Toaster />
       </body>
     </html>
   );

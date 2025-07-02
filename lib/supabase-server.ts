@@ -9,8 +9,8 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 export function createSupabaseServerClient() {
   const cookieStore = cookies();
 
-return createServerClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
@@ -28,3 +28,6 @@ return createServerClient(
     },
   );
 }
+
+// Alias for backward compatibility with existing code
+export const createClient = createSupabaseServerClient;

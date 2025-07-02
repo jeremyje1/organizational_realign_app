@@ -20,11 +20,11 @@ export default function HomePage() {
       {/* ---------- Top nav ---------- */}
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between py-6 px-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center shadow-lg border border-white/20">
-            <span className="text-white font-bold text-lg">NP</span>
+          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
+            <img src="/logo.svg" alt="Northpath Strategies" className="w-8 h-8" />
           </div>
           <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-100">
-            NorthPath
+            Northpath Strategies
           </h1>
         </div>
 

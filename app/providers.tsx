@@ -8,6 +8,7 @@ import { createBrowserClient } from "@supabase/ssr";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import type { ReactNode } from "react";
 import type { Database } from "@/types/supabase";
+import { SocketProvider } from "@/lib/socket-client";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -30,7 +31,9 @@ const supabase = createBrowserClient<Database>(
 export default function Providers({ children }: ProvidersProps) {
   return (
     <SessionContextProvider supabaseClient={supabase}>
-      {children}
+      <SocketProvider>
+        {children}
+      </SocketProvider>
     </SessionContextProvider>
   );
 }

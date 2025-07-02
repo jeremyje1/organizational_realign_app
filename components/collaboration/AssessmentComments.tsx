@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
@@ -9,7 +11,9 @@ import {
   Send, 
   Reply, 
   MoreVertical,
-  Calendar
+  Calendar,
+  Wifi,
+  WifiOff
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -17,6 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
+import { useSocket } from '@/lib/socket-client';
 
 interface Comment {
   id: string;
@@ -41,7 +46,8 @@ export function AssessmentComments({ assessmentId, section }: AssessmentComments
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-
+  const { socket, connected, joinAssessment, sendComment } = useSocket();
+  
   const fetchComments = useCallback(async () => {
     setLoading(true);
     try {
@@ -59,7 +65,34 @@ export function AssessmentComments({ assessmentId, section }: AssessmentComments
 
   useEffect(() => {
     fetchComments();
-  }, [assessmentId, fetchComments]);
+    
+    // Join the assessment room when component mounts
+    if (assessmentId) {
+      joinAssessment(assessmentId);
+    }
+    
+    // Set up socket listeners for real-time comments
+    if (socket) {
+      const handleNewComment = (comment: Comment) => {
+        // Only add the comment if it's for the current section or if no section filter is applied
+        if (!section || comment.section === section) {
+          setComments(prev => {
+            // Check if we already have this comment (to avoid duplicates)
+            if (prev.some(c => c.id === comment.id)) {
+              return prev;
+            }
+            return [...prev, comment];
+          });
+        }
+      };
+      
+      socket.on('comment-added', handleNewComment);
+      
+      return () => {
+        socket.off('comment-added', handleNewComment);
+      };
+    }
+  }, [assessmentId, fetchComments, joinAssessment, section, socket]);
 
   const submitComment = async () => {
     if (!newComment.trim()) return;
@@ -77,8 +110,14 @@ export function AssessmentComments({ assessmentId, section }: AssessmentComments
 
       if (response.ok) {
         const data = await response.json();
-        setComments(prev => [...prev, data.comment]);
+        const comment = data.comment;
+        
+        // Add to local state
+        setComments(prev => [...prev, comment]);
         setNewComment('');
+        
+        // Broadcast to other users via socket
+        sendComment(assessmentId, comment);
       }
     } catch (error) {
       console.error('Failed to submit comment:', error);
@@ -120,13 +159,28 @@ export function AssessmentComments({ assessmentId, section }: AssessmentComments
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <MessageSquare className="h-5 w-5" />
-          Comments {section && `- ${section}`}
-        </CardTitle>
-        <CardDescription>
-          Collaborate with your team on this assessment
-        </CardDescription>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <MessageSquare className="h-5 w-5" />
+              Comments {section && `- ${section}`}
+              {connected ? (
+                <Badge variant="outline" className="ml-2 flex items-center gap-1 bg-green-50 text-green-700 border-green-200">
+                  <Wifi className="h-3 w-3" />
+                  Real-time
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="ml-2 flex items-center gap-1 bg-amber-50 text-amber-700 border-amber-200">
+                  <WifiOff className="h-3 w-3" />
+                  Offline
+                </Badge>
+              )}
+            </CardTitle>
+            <CardDescription>
+              Collaborate with your team on this assessment
+            </CardDescription>
+          </div>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* New Comment Form */}

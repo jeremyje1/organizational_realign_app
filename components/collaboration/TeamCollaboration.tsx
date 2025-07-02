@@ -28,7 +28,9 @@ import {
   Share2, 
   Calendar,
   Shield,
-  Eye
+  Eye,
+  Edit3,
+  ExternalLink
 } from 'lucide-react';
 
 interface Team {
@@ -228,13 +230,19 @@ export function TeamCollaboration({ assessmentId }: TeamCollaborationProps) {
           </Dialog>
 
           {assessmentId && (
-            <Dialog open={isShareOpen} onOpenChange={setIsShareOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2">
-                  <Share2 className="h-4 w-4" />
-                  Share Assessment
-                </Button>
-              </DialogTrigger>
+            <>
+              <Button variant="default" className="flex items-center gap-2" onClick={() => window.location.href = `/assessments/${assessmentId}/collaborate`}>
+                <Edit3 className="h-4 w-4" />
+                Collaborate in Real-time
+              </Button>
+              
+              <Dialog open={isShareOpen} onOpenChange={setIsShareOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <Share2 className="h-4 w-4" />
+                    Share Assessment
+                  </Button>
+                </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Share Assessment</DialogTitle>
@@ -285,6 +293,7 @@ export function TeamCollaboration({ assessmentId }: TeamCollaborationProps) {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
+            </>
           )}
         </div>
       </div>
