@@ -55,15 +55,6 @@ export async function GET(request: NextRequest) {
             gte: startDate,
           },
         },
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-            },
-          },
-        },
         orderBy: {
           createdAt: 'asc',
         },

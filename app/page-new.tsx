@@ -99,23 +99,38 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
+                
+                <div className="absolute top-4 right-4 w-12 h-12 bg-blue-600/20 rounded-full flex items-center justify-center">
+                  <BarChart3 className="h-6 w-6 text-blue-400" />
+                </div>
               </div>
             </div>
           </div>
         </div>
+        
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
-      {/* Stats Section */}
+      {/* Social Proof Section */}
       <section className="py-16 bg-slate-50">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+              Trusted by Forward-Thinking Organizations
+            </h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">
+              Strategic consulting expertise across industries, from startups to Fortune 500 companies
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-200">
               <div className="text-3xl font-bold text-blue-800 mb-2">150+</div>
               <div className="text-slate-600 text-sm">Organizations Transformed</div>
             </div>
             <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-200">
               <div className="text-3xl font-bold text-blue-800 mb-2">89%</div>
-              <div className="text-slate-600 text-sm">Efficiency Improvements</div>
+              <div className="text-slate-600 text-sm">Report Improved Efficiency</div>
             </div>
             <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-200">
               <div className="text-3xl font-bold text-blue-800 mb-2">$2.4M</div>
@@ -152,8 +167,8 @@ export default function HomePage() {
                     <div className="w-2 h-2 rounded-full bg-red-500"></div>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900">Operational Inefficiencies</h3>
-                    <p className="text-slate-600">Duplicated processes and unclear roles leading to confusion and delays</p>
+                    <h3 className="font-semibold text-slate-900">Communication Breakdowns</h3>
+                    <p className="text-slate-600">Silos prevent effective collaboration and knowledge sharing</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
@@ -161,15 +176,15 @@ export default function HomePage() {
                     <div className="w-2 h-2 rounded-full bg-red-500"></div>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900">Communication Breakdowns</h3>
-                    <p className="text-slate-600">Siloed departments and poor information flow hampering decision-making</p>
+                    <h3 className="font-semibold text-slate-900">Inefficient Processes</h3>
+                    <p className="text-slate-600">Outdated workflows that don't support current business objectives</p>
                   </div>
                 </div>
               </div>
             </div>
             
             <div>
-              <div className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl p-8 border border-blue-100">
+              <div className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl p-8 border border-slate-200">
                 <h3 className="text-2xl font-bold text-slate-900 mb-6">Our Proven Solution</h3>
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
@@ -227,7 +242,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-lg font-semibold mb-3 text-slate-900">AI Analysis</h3>
               <p className="text-slate-600 text-sm">
-                Advanced algorithms identify patterns, gaps, and opportunities for improvement
+                Advanced pattern recognition and data analysis to identify root causes and opportunities
               </p>
             </div>
             
@@ -237,7 +252,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-lg font-semibold mb-3 text-slate-900">Strategic Planning</h3>
               <p className="text-slate-600 text-sm">
-                Expert consultants develop customized realignment strategies based on insights
+                Expert-guided session to develop a customized transformation roadmap
               </p>
             </div>
             
@@ -270,102 +285,150 @@ export default function HomePage() {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Platform Features</h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              Powerful tools and insights to support your organizational transformation journey.
+              Advanced technology meets strategic expertise to deliver unprecedented insights and results.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="border-slate-200 hover:shadow-lg transition-shadow">
               <CardHeader>
-                <BarChart3 className="h-8 w-8 text-blue-600 mb-2" />
-                <CardTitle>AI-Enhanced Analysis</CardTitle>
-                <CardDescription>Advanced algorithms identify patterns and opportunities</CardDescription>
+                <Brain className="h-8 w-8 text-blue-600 mb-2" />
+                <CardTitle className="text-slate-900">AI-Enhanced Analysis</CardTitle>
+                <CardDescription className="text-slate-600">Advanced insights powered by cutting-edge AI technology</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
                   <li className="flex items-start">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Pattern recognition</span>
+                    <span className="text-slate-600">Pattern recognition and trend analysis</span>
                   </li>
                   <li className="flex items-start">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Gap analysis</span>
+                    <span className="text-slate-600">Predictive recommendations</span>
                   </li>
                   <li className="flex items-start">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Optimization recommendations</span>
+                    <span className="text-slate-600">Real-time insights dashboard</span>
                   </li>
                 </ul>
               </CardContent>
             </Card>
 
-            <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="border-slate-200 hover:shadow-lg transition-shadow">
               <CardHeader>
                 <Users className="h-8 w-8 text-blue-600 mb-2" />
-                <CardTitle>Team Collaboration</CardTitle>
-                <CardDescription>Multi-stakeholder input and collaborative planning</CardDescription>
+                <CardTitle className="text-slate-900">Team Collaboration</CardTitle>
+                <CardDescription className="text-slate-600">Collaborative assessment and planning tools</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
                   <li className="flex items-start">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Multi-user assessments</span>
+                    <span className="text-slate-600">Multi-stakeholder assessments</span>
                   </li>
                   <li className="flex items-start">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Role-based access controls</span>
+                    <span className="text-slate-600">Real-time collaboration features</span>
                   </li>
                   <li className="flex items-start">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Real-time collaboration</span>
+                    <span className="text-slate-600">Secure data sharing</span>
                   </li>
                 </ul>
               </CardContent>
             </Card>
 
-            <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="border-slate-200 hover:shadow-lg transition-shadow">
               <CardHeader>
                 <Calendar className="h-8 w-8 text-blue-600 mb-2" />
-                <CardTitle>Expert Consultations</CardTitle>
-                <CardDescription>Connect with organizational alignment specialists</CardDescription>
+                <CardTitle className="text-slate-900">Expert Consultations</CardTitle>
+                <CardDescription className="text-slate-600">Direct access to strategic alignment specialists</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
                   <li className="flex items-start">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>One-on-one expert sessions</span>
+                    <span className="text-slate-600">One-on-one expert sessions</span>
                   </li>
                   <li className="flex items-start">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Implementation guidance</span>
+                    <span className="text-slate-600">Implementation guidance</span>
                   </li>
                   <li className="flex items-start">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Strategic planning support</span>
+                    <span className="text-slate-600">Strategic planning support</span>
                   </li>
                 </ul>
               </CardContent>
             </Card>
 
-            <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="border-slate-200 hover:shadow-lg transition-shadow">
               <CardHeader>
                 <Shield className="h-8 w-8 text-blue-600 mb-2" />
-                <CardTitle>Enterprise Security</CardTitle>
-                <CardDescription>Secure infrastructure for sensitive organizational data</CardDescription>
+                <CardTitle className="text-slate-900">Enterprise Security</CardTitle>
+                <CardDescription className="text-slate-600">Bank-level security for sensitive organizational data</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
                   <li className="flex items-start">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Enterprise-grade encryption</span>
+                    <span className="text-slate-600">End-to-end encryption</span>
                   </li>
                   <li className="flex items-start">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Compliance standards</span>
+                    <span className="text-slate-600">SOC 2 compliance</span>
                   </li>
                   <li className="flex items-start">
                     <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Data privacy protection</span>
+                    <span className="text-slate-600">Regular security audits</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-slate-200 hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <BarChart3 className="h-8 w-8 text-blue-600 mb-2" />
+                <CardTitle className="text-slate-900">Comprehensive Reports</CardTitle>
+                <CardDescription className="text-slate-600">Executive-ready analysis and recommendations</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <span className="text-slate-600">Executive summary reports</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <span className="text-slate-600">Interactive dashboards</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <span className="text-slate-600">Data visualization</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-slate-200 hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <Target className="h-8 w-8 text-blue-600 mb-2" />
+                <CardTitle className="text-slate-900">Implementation Tracking</CardTitle>
+                <CardDescription className="text-slate-600">Monitor progress and measure results</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <span className="text-slate-600">Progress tracking tools</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <span className="text-slate-600">Milestone achievements</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <span className="text-slate-600">ROI measurement</span>
                   </li>
                 </ul>
               </CardContent>
@@ -422,15 +485,15 @@ export default function HomePage() {
               </div>
               <Quote className="h-6 w-6 text-slate-400 mb-4" />
               <p className="text-slate-700 mb-6">
-                "The AI-powered analysis revealed optimization opportunities that saved us $1.2M annually. The ROI on this assessment exceeded all our expectations."
+                "The collaborative features allowed our global team to participate meaningfully. The insights we gained fundamentally changed how we structure our organization."
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold">
-                  MR
+                  MC
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-bold text-slate-900">Michael Rodriguez</h4>
-                  <p className="text-sm text-slate-600">CFO, Regional University</p>
+                  <h4 className="font-bold text-slate-900">Michael Chen</h4>
+                  <p className="text-sm text-slate-600">CEO, Growth Ventures</p>
                 </div>
               </div>
             </div>

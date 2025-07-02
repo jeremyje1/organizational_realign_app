@@ -29,12 +29,12 @@ jest.mock('@supabase/auth-helpers-nextjs', () => ({
 
 jest.mock('@/lib/assessment-db', () => ({
   AssessmentDB: {
-    findAssessmentById: jest.fn(),
-    getCollaborators: jest.fn(),
-    checkCollaboratorAccess: jest.fn(),
-    checkCollaboratorRole: jest.fn(),
-    addCollaborator: jest.fn(),
-    removeCollaborator: jest.fn()
+    findAssessmentById: jest.fn<() => Promise<any>>(),
+    getCollaborators: jest.fn<() => Promise<any>>(),
+    checkCollaboratorAccess: jest.fn<() => Promise<any>>(),
+    checkCollaboratorRole: jest.fn<() => Promise<any>>(),
+    addCollaborator: jest.fn<() => Promise<any>>(),
+    removeCollaborator: jest.fn<() => Promise<any>>()
   }
 }));
 
@@ -50,8 +50,8 @@ describe('Collaborators API', () => {
   const mockAssessment = {
     id: 'test-assessment-id',
     user_id: 'test-user-id',
-    tier: 'TEAM',
-    status: 'IN_PROGRESS',
+    tier: 'TEAM' as const,
+    status: 'IN_PROGRESS' as const,
     created_at: new Date(),
     updated_at: new Date()
   };
@@ -61,7 +61,7 @@ describe('Collaborators API', () => {
       id: 'collab1',
       assessment_id: 'test-assessment-id',
       email: 'collaborator1@example.com',
-      role: 'ADMIN',
+      role: 'ADMIN' as const,
       invited_at: new Date(),
       joined_at: new Date()
     },
@@ -69,7 +69,7 @@ describe('Collaborators API', () => {
       id: 'collab2',
       assessment_id: 'test-assessment-id',
       email: 'collaborator2@example.com',
-      role: 'VIEWER',
+      role: 'VIEWER' as const,
       invited_at: new Date(),
       joined_at: null
     }
@@ -78,19 +78,20 @@ describe('Collaborators API', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     
-    // Default mock implementations
-    (AssessmentDB.findAssessmentById as jest.Mock).mockResolvedValue(mockAssessment);
-    (AssessmentDB.getCollaborators as jest.Mock).mockResolvedValue(mockCollaborators);
-    (AssessmentDB.checkCollaboratorAccess as jest.Mock).mockResolvedValue(true);
-    (AssessmentDB.checkCollaboratorRole as jest.Mock).mockResolvedValue(true);
-    (AssessmentDB.addCollaborator as jest.Mock).mockResolvedValue({
+    // Default mock implementations with proper typing
+    const mockAssessmentDB = AssessmentDB as jest.Mocked<typeof AssessmentDB>;
+    mockAssessmentDB.findAssessmentById.mockResolvedValue(mockAssessment);
+    mockAssessmentDB.getCollaborators.mockResolvedValue(mockCollaborators);
+    mockAssessmentDB.checkCollaboratorAccess.mockResolvedValue(true);
+    mockAssessmentDB.checkCollaboratorRole.mockResolvedValue(true);
+    mockAssessmentDB.addCollaborator.mockResolvedValue({
       id: 'new-collab',
       assessment_id: 'test-assessment-id',
       email: 'new@example.com',
       role: 'COLLABORATOR',
       invited_at: new Date()
     });
-    (AssessmentDB.removeCollaborator as jest.Mock).mockResolvedValue(undefined);
+    mockAssessmentDB.removeCollaborator.mockResolvedValue(undefined);
   });
 
   afterEach(() => {

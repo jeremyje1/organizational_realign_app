@@ -39,9 +39,10 @@ interface Comment {
 interface AssessmentCommentsProps {
   assessmentId: string;
   section?: string;
+  isReadOnly?: boolean;
 }
 
-export function AssessmentComments({ assessmentId, section }: AssessmentCommentsProps) {
+export function AssessmentComments({ assessmentId, section, isReadOnly = false }: AssessmentCommentsProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(false);

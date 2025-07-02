@@ -560,7 +560,7 @@ export class PDFReportGenerator {
   }
 
   private addPageNumbers() {
-    const pageCount = this.pdf.internal.getNumberOfPages();
+    const pageCount = this.pdf.getNumberOfPages();
     
     for (let i = 1; i <= pageCount; i++) {
       this.pdf.setPage(i);

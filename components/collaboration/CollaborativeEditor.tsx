@@ -128,7 +128,7 @@ export function CollaborativeEditor({
       await onSave(content);
       
       // Broadcast the edit to other users
-      sendEdit(assessmentId, section, { content }, version + 1);
+      sendEdit(assessmentId, section, { content });
       setVersion(prev => prev + 1);
       setHasChanges(false);
     } catch (error) {

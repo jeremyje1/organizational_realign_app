@@ -99,6 +99,7 @@ export function CollaborativeAssessment({
                   <AssessmentComments
                     assessmentId={assessmentId}
                     section={section}
+                    isReadOnly={readOnly}
                   />
                 </div>
               </TabsContent>
