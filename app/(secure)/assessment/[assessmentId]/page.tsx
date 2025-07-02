@@ -1,4 +1,4 @@
-// app/(secure)/assessment/[assessmentId]/page.tsx
+// app/(secure)/assessment/[id]/page.tsx
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -28,11 +28,11 @@ export default async function AssessmentDetailPage({
   } = await supabase.auth.getSession();
   
   if (!session) {
-    redirect('/auth/login?redirectTo=/assessment/' + params.assessmentId);
+    redirect('/auth/login?redirectTo=/assessment/' + params.id);
   }
   
   // Get assessment data
-  const assessment = await AssessmentDB.findAssessmentById(params.assessmentId);
+  const assessment = await AssessmentDB.findAssessmentById(params.id);
   
   if (!assessment) {
     redirect('/not-found');
@@ -56,7 +56,7 @@ export default async function AssessmentDetailPage({
     }
     
     // Check collaborator access
-    const hasAccess = await AssessmentDB.checkCollaboratorAccess(params.assessmentId, profile.email);
+    const hasAccess = await AssessmentDB.checkCollaboratorAccess(params.id, profile.email);
     
     if (!hasAccess) {
       // No access, redirect to not found page
@@ -64,7 +64,7 @@ export default async function AssessmentDetailPage({
     }
     
     // Get collaborator role
-    const collaborators = await AssessmentDB.getCollaborators(params.assessmentId);
+    const collaborators = await AssessmentDB.getCollaborators(params.id);
     const collaborator = collaborators.find(c => c.email === profile.email);
     collaboratorRole = collaborator?.role || 'VIEWER';
   }
@@ -144,7 +144,7 @@ export default async function AssessmentDetailPage({
               {assessment.status === 'PENDING' && (
                 <div className="mt-6">
                   <Button asChild>
-                    <Link href={`/assessment/start/${params.assessmentId}`}>
+                    <Link href={`/assessment/start/${params.id}`}>
                       Start Assessment
                     </Link>
                   </Button>
@@ -154,7 +154,7 @@ export default async function AssessmentDetailPage({
               {assessment.status === 'IN_PROGRESS' && (
                 <div className="mt-6">
                   <Button asChild>
-                    <Link href={`/assessment/continue/${params.assessmentId}`}>
+                    <Link href={`/assessment/continue/${params.id}`}>
                       Continue Assessment
                     </Link>
                   </Button>
@@ -164,7 +164,7 @@ export default async function AssessmentDetailPage({
               {assessment.status === 'COMPLETED' && (
                 <div className="mt-6">
                   <Button asChild>
-                    <Link href={`/assessment/${params.assessmentId}/results`}>
+                    <Link href={`/assessment/${params.id}/results`}>
                       View Results
                     </Link>
                   </Button>
@@ -174,7 +174,7 @@ export default async function AssessmentDetailPage({
               {assessment.status === 'ANALYZED' && (
                 <div className="mt-6">
                   <Button asChild>
-                    <Link href={`/assessment/${params.assessmentId}/results`}>
+                    <Link href={`/assessment/${params.id}/results`}>
                       View AI Analysis
                     </Link>
                   </Button>
@@ -183,7 +183,7 @@ export default async function AssessmentDetailPage({
             </div>
             
             <CollaboratorManagement 
-              assessmentId={params.assessmentId} 
+              assessmentId={params.id} 
               isOwner={isOwner}
               userRole={isOwner ? 'ADMIN' : collaboratorRole}
             />
@@ -202,7 +202,7 @@ export default async function AssessmentDetailPage({
             
             {(assessment.status === 'COMPLETED' || assessment.status === 'ANALYZED' || assessment.status === 'DELIVERED') && (
               <Button asChild>
-                <Link href={`/assessment/${params.assessmentId}/responses`}>
+                <Link href={`/assessment/${params.id}/responses`}>
                   View Responses
                 </Link>
               </Button>
@@ -227,7 +227,7 @@ export default async function AssessmentDetailPage({
                   Upgrade to a premium tier to get AI-powered insights and recommendations.
                 </p>
                 <Button asChild>
-                  <Link href={`/assessment/${params.assessmentId}/upgrade`}>
+                  <Link href={`/assessment/${params.id}/upgrade`}>
                     Upgrade to Premium
                   </Link>
                 </Button>
@@ -236,7 +236,7 @@ export default async function AssessmentDetailPage({
             
             {(assessment.status === 'ANALYZED' || assessment.status === 'DELIVERED') && (
               <Button asChild>
-                <Link href={`/assessment/${params.assessmentId}/analysis`}>
+                <Link href={`/assessment/${params.id}/analysis`}>
                   View Analysis
                 </Link>
               </Button>
@@ -246,7 +246,7 @@ export default async function AssessmentDetailPage({
         
         <TabsContent value="collaboration" className="space-y-4">
           <AssessmentComments 
-            assessmentId={params.assessmentId}
+            assessmentId={params.id}
             isReadOnly={collaboratorRole === 'VIEWER' && !isOwner}
           />
         </TabsContent>
