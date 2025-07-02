@@ -10,6 +10,10 @@ export interface Question {
   institutionTypes: InstitutionType[];
   priority?: 'high' | 'medium' | 'low';
   options?: string[]; // For select/multi-select questions
+  tooltip?: {
+    explanation?: string;
+    examples?: string[];
+  };
 }
 
 // Institution type selection question
@@ -28,7 +32,16 @@ export const institutionTypeQuestion: Question = {
     'Nonprofit Organization',
     'Government Agency',
     'Corporate/Business Organization'
-  ]
+  ],
+  tooltip: {
+    explanation: 'Select the organizational type that best describes your institution. This helps customize the assessment questions to your specific context and regulatory environment.',
+    examples: [
+      'Community College: Two-year institutions focused on local workforce development',
+      'Public University: State-funded research universities with diverse programs',
+      'Healthcare: Hospitals, health systems, medical centers, or clinics',
+      'Nonprofit: Mission-driven organizations exempt from federal income tax'
+    ]
+  }
 };
 
 export const comprehensiveQuestionBank: Question[] = [
@@ -43,7 +56,16 @@ export const comprehensiveQuestionBank: Question[] = [
     type: 'likert',
     institutionTypes: ['community-college', 'public-university', 'private-university', 'healthcare', 'nonprofit', 'government', 'corporate'],
     priority: 'high',
-    tags: ['LEADERSHIP']
+    tags: ['LEADERSHIP'],
+    tooltip: {
+      explanation: 'An accurate organizational chart shows clear reporting relationships, spans of control, and authority structures. It should be updated within the last 12 months.',
+      examples: [
+        'Chart shows direct reporting relationships without gaps or confusion',
+        'All positions and departments are represented accurately',
+        'Recent restructuring or role changes are reflected',
+        'Temporary assignments and acting roles are clearly marked'
+      ]
+    }
   },
   { 
     id: 'GL_02', 
@@ -52,7 +74,16 @@ export const comprehensiveQuestionBank: Question[] = [
     type: 'likert',
     institutionTypes: ['community-college', 'public-university', 'private-university', 'healthcare', 'nonprofit', 'government', 'corporate'],
     priority: 'high',
-    tags: ['LEADERSHIP']
+    tags: ['LEADERSHIP'],
+    tooltip: {
+      explanation: 'Each role should have clear boundaries for what decisions they can make independently, what requires approval, and what must be escalated to higher levels.',
+      examples: [
+        'Department heads can approve expenses up to $5,000',
+        'Faculty can modify syllabi but need approval for major curriculum changes',
+        'Managers have hiring authority for staff positions but not faculty',
+        'Emergency procedures specify who can make urgent decisions'
+      ]
+    }
   },
   { 
     id: 'GL_03', 
@@ -60,7 +91,16 @@ export const comprehensiveQuestionBank: Question[] = [
     prompt: 'Cross-functional teams effectively break down organizational silos.', 
     type: 'likert',
     institutionTypes: ['community-college', 'public-university', 'private-university', 'healthcare', 'nonprofit', 'government', 'corporate'],
-    priority: 'medium'
+    priority: 'medium',
+    tooltip: {
+      explanation: 'Silos occur when departments work in isolation without collaboration. Cross-functional teams bring together people from different areas to work on shared goals and improve communication.',
+      examples: [
+        'Regular interdepartmental project teams for major initiatives',
+        'Joint committees with representatives from multiple divisions',
+        'Shared KPIs that require departments to collaborate',
+        'Cross-training programs that build understanding across units'
+      ]
+    }
   },
   { 
     id: 'GL_04', 
@@ -68,6 +108,15 @@ export const comprehensiveQuestionBank: Question[] = [
     prompt: 'Leadership regularly reviews performance metrics tied to strategic goals.', 
     type: 'likert',
     institutionTypes: ['community-college', 'public-university', 'private-university', 'healthcare', 'nonprofit', 'government', 'corporate'],
+    tooltip: {
+      explanation: 'Strategic alignment requires measuring what matters. Leadership should have regular review cycles (monthly/quarterly) where they assess progress on key performance indicators linked to organizational objectives.',
+      examples: [
+        'Monthly dashboard reviews with enrollment, retention, and completion rates',
+        'Quarterly budget variance analysis against strategic priorities',
+        'Annual strategic plan progress assessments',
+        'Weekly safety and quality metrics reviews in healthcare settings'
+      ]
+    },
     priority: 'high',
     tags: ['LEADERSHIP']
   },

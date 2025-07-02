@@ -15,6 +15,10 @@ export type Question = {
   type: "likert" | "select" | "multi-select" | "number" | "text";
   options?: string[];
   conditional?: { dependsOn: string; value: string };
+  tooltip?: {
+    explanation?: string;
+    examples?: string[];
+  };
 };
 
 function adaptQuestion(q: ComprehensiveQuestion): Question {
@@ -23,7 +27,8 @@ function adaptQuestion(q: ComprehensiveQuestion): Question {
     text: q.prompt,
     area: q.section,
     type: q.type === 'numeric' ? 'number' : q.type,
-    options: q.options
+    options: q.options,
+    tooltip: q.tooltip
   };
 }
 
@@ -32,14 +37,22 @@ export function useQuestions(institutionType?: InstitutionType) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('useQuestions effect triggered with institutionType:', institutionType);
+    
     if (institutionType) {
       // Filter questions for specific institution type
       const filteredQuestions = getQuestionsForInstitution(institutionType);
       const adaptedQuestions = filteredQuestions.map(adaptQuestion);
+      
+      console.log('Filtered questions for', institutionType, ':', filteredQuestions.length);
+      console.log('First few questions:', filteredQuestions.slice(0, 3));
+      console.log('Adapted questions:', adaptedQuestions.length);
+      
       setQuestions(adaptedQuestions);
     } else {
       // Show only institution type question initially
       const adaptedQuestion = adaptQuestion(institutionTypeQuestion);
+      console.log('Showing institution type question:', adaptedQuestion);
       setQuestions([adaptedQuestion]);
     }
     setLoading(false);

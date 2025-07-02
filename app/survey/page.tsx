@@ -6,12 +6,24 @@ import LikertInput from "@/components/LikertInput";
 import NumericInput from "@/components/NumericInput";
 import { SelectInput } from "@/components/SelectInput";
 import PublicNavigation from "@/components/PublicNavigation";
-import { ChevronLeft, ChevronRight, CheckCircle2, AlertCircle, Clock, Target, BookOpen, Building2 } from 'lucide-react';
+import QuestionTooltip, { QuestionHelpIcon } from "@/components/QuestionTooltip";
+import { ChevronLeft, ChevronRight, CheckCircle2, AlertCircle, Clock, Target, BookOpen, Building2, User, LogOut } from 'lucide-react';
 import { useState, useEffect } from "react";
 import { consultancyAreas } from "@/data/comprehensiveQuestionBank";
+import { supabase } from "@/lib/supabase-browser";
+import Link from "next/link";
 
 export default function SurveyPage() {
+  // Get user from Supabase auth (handles cases where Supabase isn&apos;t configured)
   const user = useUser();
+  
+  // Check for Supabase configuration
+  useEffect(() => {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      console.warn('Supabase not configured - running in demo mode');
+    }
+  }, []);
+
   const {
     loading,
     section,
@@ -23,6 +35,15 @@ export default function SurveyPage() {
     setSectionIdx,
     saveAnswer
   } = useSurvey(user?.id ?? null);
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      window.location.href = '/auth';
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   // Track answered questions in current section and multi-select values
   const [answeredQuestions, setAnsweredQuestions] = useState<Set<string>>(new Set());
@@ -247,6 +268,56 @@ export default function SurveyPage() {
     <div className="min-h-screen flex flex-col elegant-bg">
       <PublicNavigation />
       
+      {/* User Authentication Status */}
+      {user && (
+        <div className="bg-slate-800/50 border-b border-slate-600/30">
+          <div className="max-w-4xl mx-auto px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full flex items-center justify-center">
+                  <User className="h-4 w-4 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-200">
+                    {user.user_metadata?.name || user.email}
+                  </p>
+                  <p className="text-xs text-slate-400">Survey progress is being saved</p>
+                </div>
+              </div>
+              <button
+                onClick={handleSignOut}
+                className="flex items-center space-x-2 text-slate-400 hover:text-slate-200 transition-colors"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="text-sm">Sign out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {!user && (
+        <div className="bg-amber-500/10 border-b border-amber-400/30">
+          <div className="max-w-4xl mx-auto px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <AlertCircle className="h-5 w-5 text-amber-400" />
+                <div>
+                  <p className="text-sm font-medium text-amber-200">Demo Mode</p>
+                  <p className="text-xs text-amber-300/80">Your progress won&apos;t be saved</p>
+                </div>
+              </div>
+              <Link 
+                href="/auth" 
+                className="text-sm text-amber-200 hover:text-amber-100 underline transition-colors"
+              >
+                Sign in to save progress
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Enhanced Progress Header */}
       <div className="card mx-4 mt-4 mb-6 sticky top-4 z-10 backdrop-blur-lg bg-slate-800/90 border-slate-600/50">
         <div className="max-w-4xl mx-auto px-6 py-4">
@@ -387,7 +458,22 @@ export default function SurveyPage() {
                       {isAnswered ? '✓' : index + 1}
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-slate-100 text-lg leading-relaxed mb-4">{q.text}</p>
+                      <div className="flex items-start gap-3 mb-4">
+                        <p className="font-medium text-slate-100 text-lg leading-relaxed flex-1">
+                          {q.text}
+                        </p>
+                        {q.tooltip && (q.tooltip.explanation || (q.tooltip.examples && q.tooltip.examples.length > 0)) && (
+                          <QuestionTooltip
+                            title={q.text}
+                            explanation={q.tooltip.explanation}
+                            examples={q.tooltip.examples}
+                            position="left"
+                            size="md"
+                          >
+                            <QuestionHelpIcon className="h-5 w-5 mt-1" />
+                          </QuestionTooltip>
+                        )}
+                      </div>
                       
                       <div className="mt-4">
                         {q.type === "likert" ? (

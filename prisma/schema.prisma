@@ -37,11 +37,13 @@ model Organization {
 model Survey {
   id          String    @id @default(uuid())
   userId      String    @map("user_id")
+  institutionType String? @map("institution_type")
   startedAt   DateTime  @default(now()) @map("started_at")
   completedAt DateTime? @map("completed_at")
 
   // Relations
   answers Answer[]
+  responses SurveyResponse[]
 
   @@index([userId])
   @@schema("public")
@@ -59,6 +61,25 @@ model Answer {
   survey Survey @relation(fields: [surveyId], references: [id])
 
   @@index([surveyId])
+  @@schema("public")
+}
+
+/// New table for survey responses (matches our app's needs)
+model SurveyResponse {
+  id            String   @id @default(uuid())
+  userId        String   @map("user_id")
+  surveyId      String?  @map("survey_id")
+  questionId    String   @map("question_id")
+  numericAnswer Int?     @map("numeric_answer")
+  textAnswer    String?  @map("text_answer")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // Relations
+  survey Survey? @relation(fields: [surveyId], references: [id])
+
+  @@index([userId])
+  @@index([questionId])
+  @@map("survey_responses")
   @@schema("public")
 }
 
