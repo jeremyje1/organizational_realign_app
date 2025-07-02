@@ -26,12 +26,13 @@ export function ScenarioEditor({ baselineAssessment }: ScenarioEditorProps) {
       let newValue = response.value;
 
       // Tech investment boosts AI and IT scores
-      if (response.tags?.includes('AI') || response.section.includes('Information Technology')) {
+      if ((response.tags && response.tags.includes('AI')) || 
+          (response.section && response.section.includes('Information Technology'))) {
         newValue = Math.min(5, response.value + (techInvestment / 100) * 1.5);
       }
 
       // Budget cuts negatively impact most areas
-      if (budgetAdjustment < -10 && !response.tags?.includes('AI')) {
+      if (budgetAdjustment < -10 && !(response.tags && response.tags.includes('AI'))) {
         newValue = Math.max(1, response.value + (budgetAdjustment / 100) * 0.5);
       }
 

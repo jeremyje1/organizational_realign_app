@@ -5,27 +5,27 @@
     {
       "questionId": "LEADERSHIP_CLARITY",
       "value": 3.5,
-      "category": "leadership"
+      "section": "Leadership"
     },
     {
       "questionId": "STRATEGIC_ALIGNMENT",
       "value": 4.0,
-      "category": "strategy"
+      "section": "Strategy"
     },
     {
       "questionId": "COMMUNICATION_EFFECTIVENESS",
       "value": 2.8,
-      "category": "communication"
+      "section": "Communication"
     },
     {
       "questionId": "RESOURCE_ALLOCATION",
       "value": 3.2,
-      "category": "resources"
+      "section": "Resources"
     },
     {
       "questionId": "TEAM_DYNAMICS",
       "value": 3.8,
-      "category": "culture"
+      "section": "Culture"
     }
   ],
   "metadata": {
