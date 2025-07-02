@@ -19,59 +19,50 @@ export function PremiumUpgrade({ assessmentId, trigger, currentPlan = 'basic', o
 
   const plans = [
     {
-      id: 'ai-enhanced',
-      name: 'AI-Enhanced Analysis',
-      price: '$299',
-      originalPrice: '$499',
-      popular: true,
-      description: 'Advanced AI insights and strategic recommendations',
+      id: 'basic',
+      name: 'Basic Assessment',
+      price: '$1,999',
+      description: 'Essential assessment for small teams and departments',
       icon: <Sparkles className="h-6 w-6" />,
       features: [
-        'AI-powered insights and recommendations',
-        'Advanced implementation roadmap',
-        'Cost-benefit analysis with ROI projections',
-        'Industry benchmarking comparison',
-        'Risk assessment and mitigation strategies',
-        'Priority consultation scheduling',
-        'Enhanced PDF report generation'
+        'Up to 25 team members',
+        'Basic AI analysis',
+        'PDF report',
+        'Email support'
       ],
-      cta: 'Upgrade to AI Analysis'
+      cta: 'Get Started with Basic'
     },
     {
-      id: 'comprehensive',
-      name: 'Comprehensive Professional',
-      price: '$499',
-      originalPrice: '$799',
-      description: 'Complete executive-ready analysis package',
+      id: 'team',
+      name: 'Team Assessment',
+      price: '$3,999',
+      popular: true,
+      description: 'Comprehensive assessment for medium to large teams',
       icon: <Crown className="h-6 w-6" />,
       features: [
-        'Everything in AI-Enhanced',
-        'Executive-ready branded PDF report',
-        'Custom organizational branding',
-        '60-minute strategy consultation',
-        'Implementation support and guidance',
-        'Follow-up assessment in 6 months',
-        'Priority email support'
+        'Unlimited team members',
+        'Advanced AI analysis',
+        'Custom PDF report',
+        'Priority support',
+        'Team collaboration features'
       ],
-      cta: 'Get Comprehensive Analysis'
+      cta: 'Upgrade to Team'
     },
     {
       id: 'enterprise',
-      name: 'Enterprise Transformation',
-      price: '$1,999',
-      originalPrice: '$2,999',
-      description: 'Full organizational transformation support',
+      name: 'Enterprise Assessment',
+      price: '$8,999',
+      description: 'Full organizational transformation package',
       icon: <Building className="h-6 w-6" />,
       features: [
-        'Everything in Comprehensive',
-        'Multi-stakeholder assessment support',
-        'Team collaboration features',
-        'Ongoing consultation support (3 months)',
-        'Custom integration and API access',
+        'Unlimited teams & departments',
+        'Premium AI analysis',
+        'Consulting session included',
+        'Implementation support',
         'Dedicated success manager',
-        'Quarterly progress reviews'
+        'Custom integration options'
       ],
-      cta: 'Start Enterprise Program'
+      cta: 'Get Enterprise Package'
     }
   ];
 
@@ -185,7 +176,6 @@ export function PremiumUpgrade({ assessmentId, trigger, currentPlan = 'basic', o
                 <div className="mb-4">
                   <div className="flex items-baseline space-x-2">
                     <span className="text-3xl font-bold text-slate-100">{plan.price}</span>
-                    <span className="text-sm text-slate-400 line-through">{plan.originalPrice}</span>
                   </div>
                   <p className="text-sm text-slate-300 mt-1">{plan.description}</p>
                 </div>

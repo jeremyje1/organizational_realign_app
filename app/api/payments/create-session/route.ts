@@ -21,43 +21,40 @@ export async function POST(request: NextRequest) {
 
     // Define pricing plans
     const plans = {
-      'ai-enhanced': {
-        priceId: process.env.STRIPE_AI_ENHANCED_PRICE_ID!,
-        name: 'AI-Enhanced Analysis',
-        price: 29900, // $299.00
+      'basic': {
+        priceId: process.env.STRIPE_BASIC_PRICE_ID!,
+        name: 'Basic Assessment',
+        price: 199900, // $1,999.00
         features: [
-          'AI-powered insights and recommendations',
-          'Advanced implementation roadmap',
-          'Cost-benefit analysis',
-          'Industry benchmarking',
-          'Risk assessment',
-          'Priority consultation scheduling'
+          'Up to 25 team members',
+          'Basic AI analysis',
+          'PDF report',
+          'Email support'
         ]
       },
-      'comprehensive': {
-        priceId: process.env.STRIPE_COMPREHENSIVE_PRICE_ID!,
-        name: 'Comprehensive Professional Report',
-        price: 49900, // $499.00
+      'team': {
+        priceId: process.env.STRIPE_TEAM_PRICE_ID!,
+        name: 'Team Assessment',
+        price: 399900, // $3,999.00
         features: [
-          'Everything in AI-Enhanced',
-          'Executive-ready PDF report',
-          'Custom branding',
-          '60-minute strategy consultation',
-          'Implementation support',
-          'Follow-up assessment in 6 months'
+          'Unlimited team members',
+          'Advanced AI analysis',
+          'Custom PDF report',
+          'Priority support',
+          'Team collaboration features'
         ]
       },
       'enterprise': {
         priceId: process.env.STRIPE_ENTERPRISE_PRICE_ID!,
-        name: 'Enterprise Transformation Package',
-        price: 199900, // $1,999.00
+        name: 'Enterprise Assessment',
+        price: 899900, // $8,999.00
         features: [
-          'Everything in Comprehensive',
-          'Multi-stakeholder assessments',
-          'Team collaboration features',
-          'Ongoing consultation support',
-          'Custom integration options',
-          'Dedicated success manager'
+          'Unlimited teams & departments',
+          'Premium AI analysis',
+          'Consulting session included',
+          'Implementation support',
+          'Dedicated success manager',
+          'Custom integration options'
         ]
       }
     };

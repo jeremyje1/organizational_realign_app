@@ -14,41 +14,40 @@ export const getStripe = () => {
 
 // Assessment pricing tiers
 export const ASSESSMENT_PRODUCTS = {
-  INDIVIDUAL: {
-    name: 'Individual Assessment',
-    description: 'Comprehensive organizational assessment for single leader',
-    price: 350000, // $3,500 in cents
+  BASIC: {
+    name: 'Basic Assessment',
+    description: 'Essential assessment for small teams and departments',
+    price: 199900, // $1,999 in cents
     features: [
-      'Complete organizational assessment',
-      'AI-powered analysis',
-      'Professional PDF report',
-      'Implementation roadmap',
+      'Up to 25 team members',
+      'Basic AI analysis',
+      'PDF report',
       'Email support'
     ]
   },
   TEAM: {
     name: 'Team Assessment',
-    description: 'Collaborative assessment for leadership teams',
-    price: 850000, // $8,500 in cents
+    description: 'Comprehensive assessment for medium to large teams',
+    price: 399900, // $3,999 in cents
     features: [
-      'Everything in Individual',
-      'Up to 10 team collaborators',
-      'Real-time collaboration',
-      'Team discussion features',
-      'Priority support'
+      'Unlimited team members',
+      'Advanced AI analysis',
+      'Custom PDF report',
+      'Priority support',
+      'Team collaboration features'
     ]
   },
   ENTERPRISE: {
     name: 'Enterprise Assessment',
-    description: 'Full institutional assessment with consultation',
-    price: 1500000, // $15,000 in cents
+    description: 'Full organizational transformation package',
+    price: 899900, // $8,999 in cents
     features: [
-      'Everything in Team',
-      'Unlimited collaborators',
-      'Data import capabilities',
-      '2-hour strategy consultation',
-      'Implementation planning session',
-      'Direct advisor access'
+      'Unlimited teams & departments',
+      'Premium AI analysis',
+      'Consulting session included',
+      'Implementation support',
+      'Dedicated success manager',
+      'Custom integration options'
     ]
   }
 } as const;
