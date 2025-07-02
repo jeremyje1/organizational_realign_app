@@ -1,21 +1,24 @@
 /* ------------------------------------------------------------------
    app/realignment/page.tsx
-   Enhanced realignment survey with semantic structure, accessibility,
-   and responsive design following WCAG 2.2 AA standards
+   Enhanced realignment survey with comprehensive question bank,
+   semantic structure, accessibility, and responsive design
 ------------------------------------------------------------------- */
 
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
 import { ChevronRight, AlertCircle, CheckCircle2, Building2, Target, HelpCircle } from 'lucide-react';
+import { 
+  comprehensiveQuestionBank, 
+  institutionTypeQuestion, 
+  getQuestionsForInstitution, 
+  getSectionsForInstitution,
+  type InstitutionType,
+  type Question as ComprehensiveQuestion
+} from '@/data/comprehensiveQuestionBank';
 
-interface RealignmentQuestion {
-  id: string;
-  title: string;
-  description: string;
-  type: 'radio' | 'checkbox' | 'text' | 'textarea';
-  options?: string[];
-  required: boolean;
+// Extend the comprehensive question interface for the realignment context
+interface RealignmentQuestion extends ComprehensiveQuestion {
   help?: {
     title: string;
     content: string;
@@ -39,111 +42,72 @@ export default function RealignmentPage({
   const mainContentRef = useRef<HTMLElement>(null);
   
   // Form state management
-  const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
+  const [answers, setAnswers] = useState<Record<string, string | string[] | number>>({});
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
+  const [selectedInstitutionType, setSelectedInstitutionType] = useState<InstitutionType | null>(null);
+  const [currentSection, setCurrentSection] = useState<string>('Institution Type');
 
-  // Enhanced realignment questions with help content
-  const realignmentQuestions: RealignmentQuestion[] = [
-    {
-      id: 'current_challenges',
-      title: 'Current Organizational Challenges',
-      description: 'What are the primary challenges your organization is currently facing?',
-      type: 'checkbox',
-      options: [
-        'Communication silos between departments',
-        'Inefficient decision-making processes',
-        'Resource allocation issues',
-        'Technology integration challenges',
-        'Staff retention and recruitment',
-        'Strategic alignment issues'
-      ],
-      required: true,
-      help: {
-        title: 'Understanding Organizational Challenges',
-        content: 'Identifying current challenges helps us prioritize areas for improvement and develop targeted solutions.',
-        examples: [
-          'Communication issues often manifest as delayed information flow between teams',
-          'Decision-making inefficiencies can include unclear approval processes',
-          'Resource allocation problems may involve budget constraints or skill gaps'
-        ]
-      }
-    },
-    {
-      id: 'realignment_scope',
-      title: 'Realignment Scope',
-      description: 'Which areas of your organization require realignment?',
-      type: 'radio',
-      options: [
-        'Entire organizational structure',
-        'Specific departments only',
-        'Leadership and governance',
-        'Operational processes',
-        'Technology and systems'
-      ],
-      required: true,
-      help: {
-        title: 'Determining Realignment Scope',
-        content: 'The scope of realignment affects the timeline, resources, and approach we\'ll recommend.',
-        examples: [
-          'Entire structure changes involve comprehensive organizational redesign',
-          'Department-specific changes focus on particular areas of concern',
-          'Leadership realignment affects decision-making and governance structures'
-        ]
-      }
-    },
-    {
-      id: 'timeline_preference',
-      title: 'Implementation Timeline',
-      description: 'What is your preferred timeline for implementing organizational changes?',
-      type: 'radio',
-      options: [
-        'Immediate (1-3 months)',
-        'Short-term (3-6 months)',
-        'Medium-term (6-12 months)',
-        'Long-term (12+ months)'
-      ],
-      required: true,
-      help: {
-        title: 'Timeline Considerations',
-        content: 'Implementation timelines should balance urgency with change management best practices.',
-        examples: [
-          'Immediate changes work best for urgent operational issues',
-          'Medium-term timelines allow for proper stakeholder engagement',
-          'Long-term approaches enable comprehensive cultural transformation'
-        ]
-      }
-    },
-    {
-      id: 'success_metrics',
-      title: 'Success Metrics',
-      description: 'How will you measure the success of the organizational realignment?',
-      type: 'textarea',
-      required: true,
-      help: {
-        title: 'Defining Success Metrics',
-        content: 'Clear success metrics help track progress and ensure the realignment achieves its intended goals.',
-        examples: [
-          'Employee satisfaction scores and retention rates',
-          'Operational efficiency metrics and cost reductions',
-          'Customer satisfaction and service delivery improvements'
-        ]
-      }
+  // Get questions based on selected institution type
+  const getFilteredQuestions = (): RealignmentQuestion[] => {
+    if (!selectedInstitutionType) {
+      // Always start with institution type selection
+      return [institutionTypeQuestion];
     }
-  ];
+    
+    // Get comprehensive questions for selected institution type
+    const institutionQuestions = getQuestionsForInstitution(selectedInstitutionType);
+    
+    // Add help content to questions that have tooltips
+    return institutionQuestions.map(question => ({
+      ...question,
+      help: question.tooltip ? {
+        title: `Understanding: ${question.prompt}`,
+        content: question.tooltip.explanation || 'This question helps assess your organization\'s current state in this area.',
+        examples: question.tooltip.examples || []
+      } : undefined
+    }));
+  };
 
+  const realignmentQuestions = getFilteredQuestions();
+  const sections = selectedInstitutionType ? getSectionsForInstitution(selectedInstitutionType) : ['Institution Type'];
+  
   const totalQuestions = realignmentQuestions.length;
   const answeredCount = Object.keys(answers).filter(key => {
     const answer = answers[key];
-    return answer && (Array.isArray(answer) ? answer.length > 0 : answer.trim() !== '');
+    return answer !== undefined && answer !== null && 
+           (Array.isArray(answer) ? answer.length > 0 : 
+            typeof answer === 'string' ? answer.trim() !== '' : 
+            typeof answer === 'number' ? true : false);
   }).length;
-  const progressPercentage = (answeredCount / totalQuestions) * 100;
+  const progressPercentage = totalQuestions > 0 ? (answeredCount / totalQuestions) * 100 : 0;
 
   // Skip to main content handler
   const skipToMainContent = () => {
     mainContentRef.current?.focus();
+  };
+
+  // Handle institution type selection
+  const handleInstitutionTypeChange = (institutionType: string) => {
+    const mappedType = mapInstitutionType(institutionType);
+    setSelectedInstitutionType(mappedType);
+    setAnswers({ INST_TYPE: institutionType }); // Keep the display value
+    setCurrentSection('Governance & Leadership'); // Move to first section after selection
+  };
+
+  // Map display strings to InstitutionType enum
+  const mapInstitutionType = (displayValue: string): InstitutionType => {
+    const mapping: Record<string, InstitutionType> = {
+      'Community College': 'community-college',
+      'Public University/State University': 'public-university',
+      'Private University/College': 'private-university',
+      'Healthcare Organization/Hospital System': 'healthcare',
+      'Nonprofit Organization': 'nonprofit',
+      'Government Agency': 'government',
+      'Corporate/Business Organization': 'corporate'
+    };
+    return mapping[displayValue] || 'corporate';
   };
 
   // Form validation
@@ -151,11 +115,13 @@ export default function RealignmentPage({
     const newErrors: FormErrors = {};
     
     realignmentQuestions.forEach(question => {
-      if (question.required) {
+      // Institution type is always required
+      if (question.id === 'INST_TYPE' || question.priority === 'high') {
         const answer = answers[question.id];
-        if (!answer || (Array.isArray(answer) && answer.length === 0) || 
+        if (answer === undefined || answer === null || 
+            (Array.isArray(answer) && answer.length === 0) || 
             (typeof answer === 'string' && answer.trim() === '')) {
-          newErrors[question.id] = `${question.title} is required`;
+          newErrors[question.id] = `This question is required`;
         }
       }
     });
@@ -179,6 +145,13 @@ export default function RealignmentPage({
     
     try {
       // Simulate API call - replace with actual submission logic
+      console.log('Submitting realignment assessment:', {
+        institutionType: selectedInstitutionType,
+        answers,
+        totalQuestions: realignmentQuestions.length,
+        completionRate: (answeredCount / totalQuestions) * 100
+      });
+      
       await new Promise(resolve => setTimeout(resolve, 2000));
       setSubmitSuccess(true);
     } catch (error) {
@@ -189,7 +162,12 @@ export default function RealignmentPage({
   };
 
   // Handle input changes
-  const handleInputChange = (questionId: string, value: string | string[]) => {
+  const handleInputChange = (questionId: string, value: string | string[] | number) => {
+    if (questionId === 'INST_TYPE') {
+      handleInstitutionTypeChange(value as string);
+      return;
+    }
+    
     setAnswers(prev => ({ ...prev, [questionId]: value }));
     // Clear error when user starts typing
     if (errors[questionId]) {
@@ -222,11 +200,41 @@ export default function RealignmentPage({
             <h1 className="text-3xl font-bold text-gray-900">
               Realignment Assessment Completed
             </h1>
-            <p className="text-lg text-gray-600 prose prose-lg max-w-2xl mx-auto">
-              Thank you for completing the organizational realignment survey. 
-              Our team will review your responses and contact you within 2-3 business days 
-              with a customized realignment strategy.
-            </p>
+            <div className="prose prose-lg max-w-2xl mx-auto text-gray-600">
+              <p>
+                Thank you for completing the comprehensive organizational realignment assessment 
+                for your <strong>{selectedInstitutionType?.replace('-', ' ')}</strong>.
+              </p>
+              <p>
+                You answered <strong>{answeredCount} out of {totalQuestions}</strong> questions 
+                across <strong>{sections.length}</strong> assessment areas. Our team will analyze 
+                your responses and contact you within 2-3 business days with a customized 
+                realignment strategy.
+              </p>
+            </div>
+            
+            {/* Assessment Summary */}
+            <div className="bg-blue-50 rounded-lg p-6 max-w-md mx-auto">
+              <h3 className="font-semibold text-blue-900 mb-2">Assessment Summary</h3>
+              <div className="space-y-2 text-sm text-blue-800">
+                <div className="flex justify-between">
+                  <span>Institution Type:</span>
+                  <span className="font-medium">{answers.INST_TYPE}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Questions Completed:</span>
+                  <span className="font-medium">{answeredCount}/{totalQuestions}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Completion Rate:</span>
+                  <span className="font-medium">{Math.round(progressPercentage)}%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Assessment Areas:</span>
+                  <span className="font-medium">{sections.length}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </main>
       </div>
@@ -340,22 +348,23 @@ export default function RealignmentPage({
                           id={`q${index + 1}-label`}
                           className="text-lg font-semibold text-gray-900 mb-2"
                         >
-                          {question.title}
-                          {question.required && (
+                          {question.prompt}
+                          {question.priority === 'high' && (
                             <span className="text-red-500 ml-1" aria-label="required">*</span>
                           )}
                         </h2>
                         <p className="text-gray-600 leading-relaxed prose prose-sm">
-                          {question.description}
+                          Section: {question.section}
                         </p>
                       </div>
                     </div>
 
                     {/* Input fields with full-width touch targets */}
                     <div className="space-y-3">
-                      {question.type === 'radio' && question.options && (
+                      {/* Likert Scale Input */}
+                      {question.type === 'likert' && (
                         <div className="space-y-2">
-                          {question.options.map((option, optionIndex) => {
+                          {['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'].map((option, optionIndex) => {
                             const inputId = `${question.id}-${optionIndex}`;
                             return (
                               <label
@@ -383,7 +392,51 @@ export default function RealignmentPage({
                         </div>
                       )}
 
-                      {question.type === 'checkbox' && question.options && (
+                      {/* Numeric Input */}
+                      {question.type === 'numeric' && (
+                        <div>
+                          <label htmlFor={question.id} className="sr-only">
+                            {question.prompt}
+                          </label>
+                          <input
+                            id={question.id}
+                            type="number"
+                            value={answers[question.id] as number || ''}
+                            onChange={(e) => handleInputChange(question.id, parseInt(e.target.value) || 0)}
+                            aria-invalid={errors[question.id] ? 'true' : 'false'}
+                            aria-describedby={errors[question.id] ? `${question.id}-error` : undefined}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[48px]"
+                            placeholder="Enter a number..."
+                          />
+                        </div>
+                      )}
+
+                      {/* Select Dropdown */}
+                      {question.type === 'select' && question.options && (
+                        <div>
+                          <label htmlFor={question.id} className="sr-only">
+                            {question.prompt}
+                          </label>
+                          <select
+                            id={question.id}
+                            value={answers[question.id] as string || ''}
+                            onChange={(e) => handleInputChange(question.id, e.target.value)}
+                            aria-invalid={errors[question.id] ? 'true' : 'false'}
+                            aria-describedby={errors[question.id] ? `${question.id}-error` : undefined}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[48px]"
+                          >
+                            <option value="">Please select an option...</option>
+                            {question.options.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+
+                      {/* Multi-select Checkboxes */}
+                      {question.type === 'multi-select' && question.options && (
                         <div className="space-y-2">
                           {question.options.map((option, optionIndex) => {
                             const inputId = `${question.id}-${optionIndex}`;
@@ -418,42 +471,6 @@ export default function RealignmentPage({
                               </label>
                             );
                           })}
-                        </div>
-                      )}
-
-                      {question.type === 'text' && (
-                        <div>
-                          <label htmlFor={question.id} className="sr-only">
-                            {question.title}
-                          </label>
-                          <input
-                            id={question.id}
-                            type="text"
-                            value={answers[question.id] as string || ''}
-                            onChange={(e) => handleInputChange(question.id, e.target.value)}
-                            aria-invalid={errors[question.id] ? 'true' : 'false'}
-                            aria-describedby={errors[question.id] ? `${question.id}-error` : undefined}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[48px]"
-                            placeholder="Enter your response..."
-                          />
-                        </div>
-                      )}
-
-                      {question.type === 'textarea' && (
-                        <div>
-                          <label htmlFor={question.id} className="sr-only">
-                            {question.title}
-                          </label>
-                          <textarea
-                            id={question.id}
-                            rows={4}
-                            value={answers[question.id] as string || ''}
-                            onChange={(e) => handleInputChange(question.id, e.target.value)}
-                            aria-invalid={errors[question.id] ? 'true' : 'false'}
-                            aria-describedby={errors[question.id] ? `${question.id}-error` : undefined}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-vertical"
-                            placeholder="Please provide detailed information..."
-                          />
                         </div>
                       )}
 
