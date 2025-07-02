@@ -3,7 +3,6 @@
   "buildCommand": "npm run deploy",
   "devCommand": "npm run dev",
   "framework": "nextjs",
-  "domains": ["northpathstrategies.org", "app.northpathstrategies.org"],
   "env": {
     "NEXT_PUBLIC_DOMAIN": "northpathstrategies.org",
     "NEXT_PUBLIC_APP_URL": "https://app.northpathstrategies.org"
