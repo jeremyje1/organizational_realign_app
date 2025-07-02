@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 
 export const metadata = {
-  title: "Realignment Wizard",
+  title: "Realignment Wizard | Organizational Assessment",
+  description: "Complete our comprehensive organizational realignment survey to receive customized improvement strategies.",
 };
 
 export default function RealignmentLayout({
@@ -10,6 +11,8 @@ export default function RealignmentLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="mx-auto max-w-2xl py-10 px-4">{children}</div>
+    <div className="min-h-screen bg-gray-50">
+      {children}
+    </div>
   );
 }
