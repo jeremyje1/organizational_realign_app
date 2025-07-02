@@ -3,6 +3,8 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { ASSESSMENT_PRODUCTS } from '@/lib/products';
 
+export const dynamic = 'force-dynamic';
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(request: Request) {

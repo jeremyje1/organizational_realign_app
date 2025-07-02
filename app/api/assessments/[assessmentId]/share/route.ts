@@ -3,6 +3,8 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const shareAssessmentSchema = z.object({
   teamId: z.string().uuid(),
   permissions: z.enum(['view', 'comment', 'edit']),

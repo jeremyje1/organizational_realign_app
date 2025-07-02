@@ -3,6 +3,8 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const inviteSchema = z.object({
   email: z.string().email(),
   role: z.enum(['admin', 'member', 'viewer']),

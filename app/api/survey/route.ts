@@ -6,6 +6,8 @@ import {
   type CookieOptions,
 } from '@supabase/ssr';
 
+export const dynamic = 'force-dynamic';
+
 /** POST /survey – persists survey answers */
 export async function POST(req: NextRequest) {
 

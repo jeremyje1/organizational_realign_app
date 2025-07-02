@@ -3,6 +3,8 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const createTeamSchema = z.object({
   name: z.string().min(1).max(100),
   description: z.string().optional(),

@@ -5,6 +5,8 @@ import { cookies } from 'next/headers';
 import { getCollaborationStats } from '@/lib/collaboration-tracker';
 import { createObjectCsvStringifier } from 'csv-writer';
 
+export const dynamic = 'force-dynamic';
+
 // Function to generate mock data for demonstration when database isn't ready
 function getMockCollaborationStats() {
   const now = new Date();

@@ -5,6 +5,8 @@ import { z } from 'zod';
 import EmailNotifications from '@/lib/email-notifications';
 import CalendarIntegration from '@/lib/calendar-integration';
 
+export const dynamic = 'force-dynamic';
+
 const bookingSchema = z.object({
   assessmentId: z.string().uuid(),
   consultationType: z.enum(['strategic', 'implementation', 'follow-up']),
