@@ -9,7 +9,7 @@ import PriorityMatrix from "@/components/results/PriorityMatrix";
 
 export default function AdminResultsPage() {
   // 🆕  Get the dynamic [id] param from the hook
-  const { id } = useParams<{ id: string }>();
+  const { resultId } = useParams<{ resultId: string }>();
 
   const [record, setRecord] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -19,7 +19,7 @@ export default function AdminResultsPage() {
       const { data, error } = await supabase
         .from("realignments")
         .select("*")
-        .eq("id", id)
+        .eq("id", resultId)
         .single();
 
       if (error) console.error("Failed to fetch record:", error);
@@ -29,7 +29,7 @@ export default function AdminResultsPage() {
     };
 
     fetchData();
-  }, [id]);
+  }, [resultId]);
 
   if (loading)  return <div className="p-6">Loading…</div>;
   if (!record)  return <div className="p-6 text-red-600">No record found.</div>;
