@@ -472,17 +472,6 @@ export default function HomePage() {
               <div className="lg:order-2">
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-slate-600/20 rounded-2xl transform rotate-3"></div>
-                  <div className="relative rounded-2xl shadow-xl bg-gradient-to-br from-slate-100 to-slate-200 h-96 w-80 mx-auto flex items-center justify-center">
-                    {/* Replace this div with your actual Image component once photo is added */}
-                    <div className="text-center">
-                      <div className="w-24 h-24 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <span className="text-white text-3xl font-bold">JE</span>
-                      </div>
-                      <p className="text-slate-600 text-sm">Professional Photo</p>
-                      <p className="text-slate-500 text-xs">Coming Soon</p>
-                    </div>
-                  </div>
-                  {/* Uncomment when photo is ready:
                   <Image
                     src="/images/jeremy-estrella-founder.jpg"
                     alt="Jeremy Estrella, Founder of NorthPath Strategies"
@@ -491,7 +480,6 @@ export default function HomePage() {
                     className="relative rounded-2xl shadow-xl object-cover"
                     priority
                   />
-                  */}
                 </div>
               </div>
               
