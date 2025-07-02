@@ -100,7 +100,7 @@ describe('Collaborators API', () => {
   describe('GET handler', () => {
     it('should return collaborators for the assessment owner', async () => {
       const request = new NextRequest('http://localhost/api/assessments/test-assessment-id/collaborators');
-      const response = await GET(request, { params: { id: 'test-assessment-id' } });
+      const response = await GET(request, { params: { assessmentId: 'test-assessment-id' } });
       const data = await response.json();
 
       expect(response.status).toBe(200);
@@ -118,7 +118,7 @@ describe('Collaborators API', () => {
       });
 
       const request = new NextRequest('http://localhost/api/assessments/test-assessment-id/collaborators');
-      const response = await GET(request, { params: { id: 'test-assessment-id' } });
+      const response = await GET(request, { params: { assessmentId: 'test-assessment-id' } });
       const data = await response.json();
 
       expect(response.status).toBe(200);
@@ -130,7 +130,7 @@ describe('Collaborators API', () => {
       (AssessmentDB.findAssessmentById as jest.Mock).mockResolvedValueOnce(null);
 
       const request = new NextRequest('http://localhost/api/assessments/not-found-id/collaborators');
-      const response = await GET(request, { params: { id: 'not-found-id' } });
+      const response = await GET(request, { params: { assessmentId: 'not-found-id' } });
       const data = await response.json();
 
       expect(response.status).toBe(404);
@@ -150,7 +150,7 @@ describe('Collaborators API', () => {
         body: JSON.stringify(requestBody)
       });
 
-      const response = await POST(request, { params: { id: 'test-assessment-id' } });
+      const response = await POST(request, { params: { assessmentId: 'test-assessment-id' } });
       const data = await response.json();
 
       expect(response.status).toBe(200);
@@ -180,7 +180,7 @@ describe('Collaborators API', () => {
         body: JSON.stringify(requestBody)
       });
 
-      const response = await POST(request, { params: { id: 'test-assessment-id' } });
+      const response = await POST(request, { params: { assessmentId: 'test-assessment-id' } });
       const data = await response.json();
 
       expect(response.status).toBe(403);
@@ -195,7 +195,7 @@ describe('Collaborators API', () => {
         { method: 'DELETE' }
       );
 
-      const response = await DELETE(request, { params: { id: 'test-assessment-id' } });
+      const response = await DELETE(request, { params: { assessmentId: 'test-assessment-id' } });
       const data = await response.json();
 
       expect(response.status).toBe(200);
@@ -212,7 +212,7 @@ describe('Collaborators API', () => {
         { method: 'DELETE' }
       );
 
-      const response = await DELETE(request, { params: { id: 'test-assessment-id' } });
+      const response = await DELETE(request, { params: { assessmentId: 'test-assessment-id' } });
       const data = await response.json();
 
       expect(response.status).toBe(400);

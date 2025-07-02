@@ -17,7 +17,7 @@ const nextConfig = {
   // ─── Opt‑in features you actually need ─────────────
   experimental: {
     // keep typed routes if you use them
-    typedRoutes: true
+    typedRoutes: false
   },
 
   images: {

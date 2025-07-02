@@ -47,16 +47,6 @@ const activeAssessments = new Map<string, Map<string, AssessmentUser>>();
 // Track socket to user mapping
 const socketToUser = new Map<string, { userId: string, assessmentId: string }>();
 
-// Event emitter for analytics tracking
-export class SocketServer extends EventEmitter {
-  io: Server;
-  
-  constructor(io: Server) {
-    super();
-    this.io = io;
-  }
-}
-
 // Global instance
 let socketServer: SocketServer;
 

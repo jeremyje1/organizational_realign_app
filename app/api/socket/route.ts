@@ -10,16 +10,16 @@ export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
 // Define class and types in a separate module to avoid Next.js route validation issues
-import { setupSocketServer } from '@/lib/socket-server';
+import { setupSocketServer, SocketServer } from '@/lib/socket-server';
 
 // Define global types
 declare global {
-  var io: ServerIO;
+  var serverIo: any;
   var socketServer: EventEmitter;
 }
 
 export async function GET(request: NextRequest) {
-  if (!global.io) {
+  if (!global.serverIo) {
     // Create Socket.IO server if it doesn't exist yet
     const io = new ServerIO({
       cors: {
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Store globally
-    global.io = io;
+    global.serverIo = io;
     
     // Create socket server event emitter for analytics
     const socketServer = new SocketServer(io);

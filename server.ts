@@ -14,7 +14,7 @@ const handle = app.getRequestHandler();
 
 // Declare global for Socket.IO instance
 declare global {
-  var io: any;
+  var serverIo: any;
 }
 
 app.prepare().then(() => {
@@ -25,7 +25,7 @@ app.prepare().then(() => {
   });
 
   // Initialize socket server and attach to global for access in other modules
-  global.io = initSocketServer(server);
+  global.serverIo = initSocketServer(server);
 
   // Start the server
   server.listen(port, () => {

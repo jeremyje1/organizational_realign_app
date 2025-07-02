@@ -353,6 +353,18 @@ export class AssessmentDB {
     
     return result[0].changes;
   }
+
+  static async getAssessment(assessmentId: string): Promise<Assessment | null> {
+    try {
+      const result = await prisma.$queryRaw<Assessment[]>`
+        SELECT * FROM "public"."assessments" WHERE "id" = ${assessmentId}
+      `;
+      return result[0] || null;
+    } catch (error) {
+      console.error('Error fetching assessment:', error);
+      return null;
+    }
+  }
 }
 
 export { prisma as assessmentPrisma };
