@@ -1,6 +1,5 @@
 // __tests__/api/collaborators-fixed-new.test.ts
-const { describe, expect, test, beforeEach, afterEach, jest } = require('@jest/globals');
-const { NextRequest } = require('next/server');
+import { NextRequest } from 'next/server';
 
 // Mock all external dependencies
 // ------------------------------
@@ -65,11 +64,14 @@ const mockSupabaseClient = {
       }))
     }))
   }))
-};
+} as any;
+
+// Mock the createRouteHandlerClient function
+const mockCreateRouteHandlerClient = jest.fn(() => mockSupabaseClient);
 
 // Mock Supabase module
 jest.mock('@supabase/auth-helpers-nextjs', () => ({
-  createRouteHandlerClient: jest.fn(() => mockSupabaseClient)
+  createRouteHandlerClient: mockCreateRouteHandlerClient
 }));
 
 // Mock AssessmentDB
@@ -95,6 +97,13 @@ describe('Collaborators API Routes', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     
+    // Reset Supabase mock
+    mockCreateRouteHandlerClient.mockReturnValue(mockSupabaseClient);
+    mockSupabaseClient.auth.getUser.mockResolvedValue({
+      data: { user: mockUser },
+      error: null
+    });
+    
     // Setup default mock implementations
     mockAssessmentDB.findAssessmentById.mockResolvedValue(mockAssessment);
     mockAssessmentDB.getCollaborators.mockResolvedValue(mockCollaborators);
@@ -117,7 +126,7 @@ describe('Collaborators API Routes', () => {
   describe('Route Import', () => {
     test('should be able to import route handlers', async () => {
       // Import the route handlers
-      const routeModule = require('../../app/api/assessments/[assessmentId]/collaborators/route');
+      const routeModule = await import('../../app/api/assessments/[assessmentId]/collaborators/route');
       
       expect(routeModule).toBeDefined();
       expect(routeModule.GET).toBeDefined();
@@ -140,16 +149,29 @@ describe('Collaborators API Routes', () => {
       expect(response.status).toBe(200);
       const data = await response.json();
       expect(data).toHaveProperty('collaborators');
-      expect(data.collaborators).toEqual(mockCollaborators);
+      expect(data.collaborators).toHaveLength(2);
+      expect(data.collaborators[0]).toMatchObject({
+        id: 'collab1',
+        assessment_id: 'test-assessment-id',
+        email: 'collaborator1@example.com',
+        role: 'ADMIN'
+      });
+      expect(data.collaborators[1]).toMatchObject({
+        id: 'collab2',
+        assessment_id: 'test-assessment-id',
+        email: 'collaborator2@example.com',
+        role: 'VIEWER',
+        joined_at: null
+      });
       expect(mockAssessmentDB.findAssessmentById).toHaveBeenCalledWith('test-assessment-id');
       expect(mockAssessmentDB.getCollaborators).toHaveBeenCalledWith('test-assessment-id');
     });
     
     test('should return 401 if user is not authenticated', async () => {
       // Mock authentication failure
-      mockSupabaseClient.auth.getUser.mockResolvedValueOnce({
+      (mockSupabaseClient.auth.getUser as jest.Mock).mockResolvedValueOnce({
         data: { user: null },
-        error: new Error('Unauthorized')
+        error: { message: 'Unauthorized' }
       });
       
       const { GET } = require('../../app/api/assessments/[assessmentId]/collaborators/route');
