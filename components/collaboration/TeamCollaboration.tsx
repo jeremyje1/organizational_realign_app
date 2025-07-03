@@ -29,8 +29,7 @@ import {
   Calendar,
   Shield,
   Eye,
-  Edit3,
-  ExternalLink
+  Edit3
 } from 'lucide-react';
 
 interface Team {

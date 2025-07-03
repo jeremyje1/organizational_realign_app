@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { AssessmentDB } from '../../../../lib/assessment-db';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
 import EmailNotifications from '../../../../lib/email-notifications';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -80,21 +78,40 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   }
 
   try {
-    // Update assessment with premium status and payment info
-    const updatedAssessment = await AssessmentDB.updateAssessmentPremium(
-      metadata.assessmentId,
-      metadata.plan,
-      {
-        stripeSessionId: session.id,
-        stripeCustomerId: session.customer as string,
-        paymentAmount: amount_total || 0,
-        paymentStatus: 'completed',
-        paidAt: new Date(),
-        customerEmail: customer_email || '',
+    // Handle new customers vs existing assessments
+    if (metadata.isNewCustomer === 'true') {
+      // For new customers, the assessment will be created by the success page
+      console.log('New customer payment completed, assessment will be created by success page');
+      
+      // Send welcome email for new customers
+      if (customer_email) {
+        try {
+          await EmailNotifications.sendNewCustomerWelcome(
+            { email: customer_email, name: metadata.customerName || '' },
+            metadata.plan,
+            session.id
+          );
+        } catch (emailError) {
+          console.error('Failed to send welcome email:', emailError);
+        }
       }
-    );
+    } else {
+      // For existing assessments, update with premium status
+      const updatedAssessment = await AssessmentDB.updateAssessmentPremium(
+        metadata.assessmentId,
+        metadata.plan,
+        {
+          stripeSessionId: session.id,
+          stripeCustomerId: session.customer as string,
+          paymentAmount: amount_total || 0,
+          paymentStatus: 'completed',
+          paidAt: new Date(),
+          customerEmail: customer_email || '',
+        }
+      );
 
-    console.log('Assessment updated with premium status:', updatedAssessment?.id);
+      console.log('Assessment updated with premium status:', updatedAssessment?.id);
+    }
 
     // Trigger AI analysis generation for premium plans
     if (metadata.plan !== 'basic') {
@@ -175,7 +192,7 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
   console.log('Invoice payment succeeded:', invoice.id);
   
   // Handle recurring payments or enterprise billing
-  const { metadata, customer_email } = invoice;
+  const { metadata, customer_email: _customer_email } = invoice;
   
   if (metadata?.assessmentId) {
     try {

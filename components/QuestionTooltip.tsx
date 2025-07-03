@@ -1,9 +1,8 @@
 "use client";
-
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Info, HelpCircle, ChevronRight } from 'lucide-react';
 
-interface TooltipProps {
+interface QuestionTooltipProps {
   title: string;
   explanation?: string;
   examples?: string[];
@@ -13,13 +12,13 @@ interface TooltipProps {
 }
 
 export default function QuestionTooltip({ 
-  title, 
+  title: _title, 
   explanation, 
   examples = [], 
   children, 
   position = 'top',
   size = 'md'
-}: TooltipProps) {
+}: QuestionTooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 

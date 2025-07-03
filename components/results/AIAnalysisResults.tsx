@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  TrendingUp, 
   AlertTriangle, 
   CheckCircle, 
   Brain, 
@@ -15,7 +14,6 @@ import {
   Clock,
   DollarSign,
   Lightbulb,
-  Zap,
   Download,
   Share2,
   MessageSquare,
@@ -26,21 +24,12 @@ import {
   Cpu,
   BookOpen,
   ArrowRight,
-  ExternalLink,
   ChevronDown,
   ChevronRight
 } from 'lucide-react';
-import {
-  SectionScoresChart,
-  AIReadinessRadar,
-  TransformationPriorityMatrix,
-  ImplementationTimeline,
-  OrganizationalHealthMetrics,
-  RiskAssessmentChart
-} from '../charts/DataVisualization';
 
 // Import the AI analysis types
-import type { AIAnalysisResult, ImplementationPhase, CostBenefitAnalysis, BenchmarkData } from '@/lib/ai-analysis';
+import type { AIAnalysisResult } from '@/lib/ai-analysis';
 
 interface AIAnalysisResultsProps {
   analysis: AIAnalysisResult;
@@ -77,7 +66,7 @@ export function AIAnalysisResults({
     return 'text-red-400';
   };
 
-  const getScoreBadgeVariant = (score: number) => {
+  const _getScoreBadgeVariant = (score: number) => {
     if (score >= 80) return 'default';
     if (score >= 60) return 'secondary';
     return 'destructive';

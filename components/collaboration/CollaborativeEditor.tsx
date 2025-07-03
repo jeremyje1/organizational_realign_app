@@ -38,7 +38,7 @@ export function CollaborativeEditor({
   const [saving, setSaving] = useState(false);
   const [cursors, setCursors] = useState<EditorCursor[]>([]);
   const [lastEdit, setLastEdit] = useState<{ editor?: string; timestamp?: string }>({});
-  const [version, setVersion] = useState(1);
+  const [_version, setVersion] = useState(1);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { socket, connected, joinAssessment, sendEdit, sendCursorPosition } = useSocket();
   const [hasChanges, setHasChanges] = useState(false);

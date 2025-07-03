@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react';
 import { useQuestions } from './useQuestions';
 import { supabase } from '@/lib/supabase-browser';
-import { InstitutionType } from '@/data/comprehensiveQuestionBank';
+import { OrganizationType } from '@/data/northpathQuestionBank';
 
 export function useSurvey(userId: string | null) {
-  const [selectedInstitutionType, setSelectedInstitutionType] = useState<InstitutionType | undefined>();
+  const [selectedInstitutionType, setSelectedInstitutionType] = useState<OrganizationType | undefined>();
   const { questions, loading } = useQuestions(selectedInstitutionType);
   const [sectionIdx, setSectionIdx] = useState(0);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -40,14 +40,15 @@ export function useSurvey(userId: string | null) {
     
     // Handle institution type selection
     if (qId === 'INST_TYPE' && text) {
-      const institutionTypeMap: Record<string, InstitutionType> = {
-        'Community College': 'community-college',
-        'Public University/State University': 'public-university',
-        'Private University/College': 'private-university',
-        'Healthcare Organization/Hospital System': 'healthcare',
+      const institutionTypeMap: Record<string, OrganizationType> = {
+        'Community College': 'community_college',
+        'Trade & Technical School': 'trade_technical',
+        'Hospital & Healthcare System': 'hospital_healthcare',
+        'Public University': 'public_university',
+        'Private University': 'private_university',
         'Nonprofit Organization': 'nonprofit',
-        'Government Agency': 'government',
-        'Corporate/Business Organization': 'corporate'
+        'Government Agency': 'government_agency',
+        'Company & Business': 'company_business'
       };
       
       const mappedType = institutionTypeMap[text];

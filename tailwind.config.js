@@ -7,8 +7,25 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui'],
+        serif: ['var(--font-serif)', 'ui-serif', 'Georgia'],
+      },
       colors: {
-        // NorthPath brand colors
+        // NorthPath brand colors from homepage instructions
+        'np-blue': {
+          500: '#0A6CBD',
+          600: '#00457C',
+        },
+        'np-orange': {
+          400: '#F8991F',
+        },
+        'np-gray': {
+          100: '#F6F8FA',
+          900: '#1A1A1A',
+        },
+        
+        // Legacy colors for compatibility
         midnight: '#1a1f36',      // Deep navy blue
         gold: '#f4a261',          // Warm gold accent
         sage: '#2a9d8f',          // Sage green

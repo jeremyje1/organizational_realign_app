@@ -41,6 +41,25 @@ class EmailNotifications {
   }
 
   /**
+   * Send new customer welcome email
+   */
+  async sendNewCustomerWelcome(
+    recipient: EmailRecipient,
+    plan: string,
+    sessionId: string
+  ): Promise<boolean> {
+    const template = this.getNewCustomerWelcomeTemplate(plan, sessionId);
+    
+    return this.sendEmail({
+      to: recipient,
+      subject: template.subject,
+      html: template.html,
+      text: template.text,
+      category: 'new-customer-welcome'
+    });
+  }
+
+  /**
    * Send AI analysis completion notification
    */
   async sendAIAnalysisReady(
@@ -256,6 +275,143 @@ Assessment ID: ${assessmentId}
 Questions? Contact us at support@northpathstrategies.org
 
 North Path Strategies | Transforming Higher Education
+    `;
+
+    return { subject, html, text };
+  }
+
+  /**
+   * New customer welcome email template
+   */
+  private getNewCustomerWelcomeTemplate(plan: string, sessionId: string): EmailTemplate {
+    const planNames = {
+      'basic': 'Basic Diagnostic',
+      'team': 'Comprehensive Analysis',
+      'enterprise': 'Enterprise Optimization'
+    };
+
+    const planName = planNames[plan as keyof typeof planNames] || plan;
+    const subject = `🎉 Welcome to NorthPath Strategies! Your ${planName} is Ready`;
+    
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+          .content { background: #fff; padding: 30px; border: 1px solid #e0e0e0; }
+          .footer { background: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 10px 10px; }
+          .btn { display: inline-block; background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; margin: 15px 0; font-weight: bold; }
+          .btn:hover { background: #1d4ed8; }
+          .feature { padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; }
+          .feature:last-child { border-bottom: none; }
+          .checkmark { color: #10b981; font-weight: bold; margin-right: 10px; }
+          .step { background: #f0f9ff; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #2563eb; }
+          .step-number { background: #2563eb; color: white; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 10px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>🎉 Welcome to NorthPath Strategies!</h1>
+            <p>Your ${planName} package is ready to transform your organization</p>
+          </div>
+          
+          <div class="content">
+            <p><strong>Congratulations!</strong> Your payment has been processed successfully, and you now have access to our powerful organizational optimization platform.</p>
+            
+            <h3>🚀 Your Next Steps:</h3>
+            
+            <div class="step">
+              <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <span class="step-number">1</span>
+                <strong>Start Your Assessment</strong>
+              </div>
+              <p>Begin the comprehensive organizational assessment that will serve as the foundation for your transformation. This typically takes 45-90 minutes.</p>
+              <a href="${this.baseUrl}/survey" class="btn">Start Assessment Now</a>
+            </div>
+            
+            <div class="step">
+              <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <span class="step-number">2</span>
+                <strong>AI Analysis Generation</strong>
+              </div>
+              <p>Our advanced AI will analyze your responses using our proprietary DSCH, CRF, and LEI algorithms to generate comprehensive insights.</p>
+            </div>
+            
+            <div class="step">
+              <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <span class="step-number">3</span>
+                <strong>Review Your Results</strong>
+              </div>
+              <p>Access your professional PDF report, explore interactive visualizations, and discover actionable recommendations.</p>
+            </div>
+            
+            <h3>📋 What's Included in Your ${planName}:</h3>
+            <div style="margin: 20px 0;">
+              ${this.getPlanFeaturesHtml(plan)}
+            </div>
+            
+            <div style="background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h4 style="color: #065f46; margin-top: 0;">💡 Pro Tip</h4>
+              <p style="margin-bottom: 0; color: #065f46;">For the most accurate results, involve key stakeholders in completing different sections of the assessment. This collaborative approach provides comprehensive insights across all organizational levels.</p>
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${this.baseUrl}/survey" class="btn" style="font-size: 18px; padding: 18px 36px;">Begin Your Transformation Journey</a>
+            </div>
+            
+            <h3>🎯 Need Support?</h3>
+            <p>Our team is here to help you every step of the way:</p>
+            <ul>
+              <li><strong>Email:</strong> <a href="mailto:support@northpathstrategies.org">support@northpathstrategies.org</a></li>
+              <li><strong>Phone:</strong> <a href="tel:+1-555-123-4567">(555) 123-4567</a></li>
+              <li><strong>Schedule a consultation:</strong> <a href="${this.baseUrl}/contact">Book a session</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer">
+            <p><strong>NorthPath Strategies</strong><br>
+            Organizational Realignment & Optimization Suite<br>
+            <a href="${this.baseUrl}">app.northpathstrategies.org</a></p>
+            
+            <p style="font-size: 12px; color: #666; margin-top: 15px;">
+              Payment Reference: ${sessionId}<br>
+              This email confirms your successful purchase and account setup.
+            </p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const text = `
+Welcome to NorthPath Strategies!
+
+Congratulations! Your ${planName} package is ready to transform your organization.
+
+Your Next Steps:
+1. Start Your Assessment
+   Complete the comprehensive organizational assessment (45-90 minutes)
+   Link: ${this.baseUrl}/survey
+
+2. AI Analysis Generation
+   Our advanced AI will analyze your responses using proprietary algorithms
+
+3. Review Your Results
+   Access your professional PDF report and interactive visualizations
+
+Need Support?
+- Email: support@northpathstrategies.org
+- Phone: (555) 123-4567
+- Schedule consultation: ${this.baseUrl}/contact
+
+Payment Reference: ${sessionId}
+
+Start your transformation journey today: ${this.baseUrl}/survey
     `;
 
     return { subject, html, text };
@@ -564,6 +720,40 @@ Assessment ID: ${assessmentId}
     
     return planFeatures.map(feature => 
       `<div class="feature">✅ ${feature}</div>`
+    ).join('');
+  }
+
+  /**
+   * Get plan features HTML for welcome email
+   */
+  private getPlanFeaturesHtml(plan: string): string {
+    const features = {
+      'basic': [
+        'Access to the organizational assessment tool',
+        'AI-generated basic insights report',
+        'Email support for 30 days',
+        'Access to community webinars'
+      ],
+      'team': [
+        'Everything in Basic',
+        'Team collaboration on assessments',
+        'Custom branding for reports',
+        'Priority email support',
+        'Monthly strategy webinars'
+      ],
+      'enterprise': [
+        'Everything in Team',
+        'Dedicated account manager',
+        'Custom integration with internal systems',
+        'Onsite training and support',
+        'Quarterly business reviews'
+      ]
+    };
+
+    const planFeatures = features[plan as keyof typeof features] || [];
+    
+    return planFeatures.map(feature => 
+      `<div class="feature"><span class="checkmark">✔️</span>${feature}</div>`
     ).join('');
   }
 }

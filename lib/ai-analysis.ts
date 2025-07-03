@@ -124,7 +124,7 @@ export class EnhancedAIAnalysisService {
     };
   }
 
-  private generateFallbackAnalysis(analysisData: any, responses: any[]): AIAnalysisResult {
+  private generateFallbackAnalysis(analysisData: any, _responses: any[]): AIAnalysisResult {
     return {
       organizationalHealth: analysisData.organizationalHealth || 75,
       efficiencyScore: analysisData.efficiency || 70,

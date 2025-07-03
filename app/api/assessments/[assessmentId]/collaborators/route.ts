@@ -19,6 +19,7 @@ export async function GET(
 ) {
   try {
     const assessmentId = params.assessmentId;
+    // Use Next.js cookies (stubbed by jest.setup.js in tests)
     const supabase = createRouteHandlerClient({ cookies });
     
     // Verify user has access to this assessment

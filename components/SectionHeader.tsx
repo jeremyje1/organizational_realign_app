@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { ChevronLeft, ChevronRight, Target, Clock, CheckCircle2 } from 'lucide-react';
+import { Clock, CheckCircle2 } from 'lucide-react';
 
 interface SectionHeaderProps {
   sectionTitle: string;

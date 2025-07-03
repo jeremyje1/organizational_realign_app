@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AnalysisResults } from '../../../components/results/AnalysisResults';
 import { InteractiveInsights } from '../../../components/results/InteractiveInsights';
@@ -61,8 +61,32 @@ function ResultsPageContent() {
                   const pendingUpgrade = sessionStorage.getItem('pendingUpgrade');
                   if (pendingUpgrade) {
                     sessionStorage.removeItem('pendingUpgrade');
-                    // Automatically trigger AI analysis for premium users
-                    setTimeout(() => handleAIAnalysis(), 1000);
+                    // Automatically trigger AI analysis for premium users - use setTimeout to avoid dependency issues
+                    setTimeout(() => {
+                      // Call handleAIAnalysis when it's available
+                      const triggerAI = async () => {
+                        if (!assessmentData.assessment.id) return;
+                        
+                        try {
+                          const response = await fetch('/api/analysis/ai-enhanced', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ 
+                              assessmentId: assessmentData.assessment.id,
+                              analysisData: null 
+                            }),
+                          });
+                          if (response.ok) {
+                            const data = await response.json();
+                            setAiAnalysis(data.analysis);
+                            setShowAIAnalysis(true);
+                          }
+                        } catch (err) {
+                          console.error('AI analysis error:', err);
+                        }
+                      };
+                      triggerAI();
+                    }, 1000);
                   }
                 }
               }
@@ -145,7 +169,7 @@ function ResultsPageContent() {
     }
   };
 
-  const handleAIAnalysis = async () => {
+  const handleAIAnalysis = useCallback(async () => {
     if (!assessmentId || aiLoading) return;
     
     setAiLoading(true);
@@ -174,7 +198,7 @@ function ResultsPageContent() {
     } finally {
       setAiLoading(false);
     }
-  };
+  }, [assessmentId, aiLoading, analysis]);
 
   if (loading) {
     return (

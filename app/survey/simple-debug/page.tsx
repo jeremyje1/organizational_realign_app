@@ -7,10 +7,9 @@ import { SelectInput } from "@/components/SelectInput";
 import PublicNavigation from "@/components/PublicNavigation";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { 
-  getQuestionsForInstitution, 
-  institutionTypeQuestion,
-  InstitutionType 
-} from "@/data/comprehensiveQuestionBank";
+  allQuestions,
+  OrganizationType 
+} from "@/data/northpathQuestionBank";
 
 type Question = {
   id: string;
@@ -31,17 +30,23 @@ function adaptQuestion(q: any): Question {
 }
 
 export default function SimpleDebugPage() {
-  const [selectedInstitutionType, setSelectedInstitutionType] = useState<InstitutionType | undefined>();
+  const [selectedInstitutionType, setSelectedInstitutionType] = useState<OrganizationType | undefined>();
   const [sectionIdx, setSectionIdx] = useState(0);
   const [responses, setResponses] = useState<Record<string, any>>({});
 
   // Get questions based on institution type
   const questions = useMemo(() => {
     if (selectedInstitutionType) {
-      const filteredQuestions = getQuestionsForInstitution(selectedInstitutionType);
+      const filteredQuestions = allQuestions.filter(q => 
+        !q.vertical || q.vertical === selectedInstitutionType
+      );
       return filteredQuestions.map(adaptQuestion);
     } else {
-      return [adaptQuestion(institutionTypeQuestion)];
+      // Show organization selection and parameter questions
+      const orgQuestions = allQuestions.filter(q => 
+        q.section === 'Organization Selection' || q.id.startsWith('P_')
+      );
+      return orgQuestions.map(adaptQuestion);
     }
   }, [selectedInstitutionType]);
 
@@ -74,23 +79,24 @@ export default function SimpleDebugPage() {
       [questionId]: { value, text }
     }));
 
-    // Handle institution type selection
-    if (questionId === 'INST_TYPE' && text) {
-      const institutionTypeMap: Record<string, InstitutionType> = {
-        'Community College': 'community-college',
-        'Public University/State University': 'public-university',
-        'Private University/College': 'private-university',
-        'Healthcare Organization/Hospital System': 'healthcare',
+    // Handle organization type selection
+    if (questionId === 'ORG_TYPE' && text) {
+      const orgTypeMap: Record<string, OrganizationType> = {
+        'Community College': 'community_college',
+        'Trade & Technical School': 'trade_technical',
+        'Hospital & Healthcare System': 'hospital_healthcare',
+        'Public University': 'public_university',
+        'Private University': 'private_university',
         'Nonprofit Organization': 'nonprofit',
-        'Government Agency': 'government',
-        'Corporate/Business Organization': 'corporate'
+        'Government Agency': 'government_agency',
+        'Company & Business': 'company_business'
       };
       
-      const institutionType = institutionTypeMap[text];
-      console.log('Setting institution type to:', institutionType);
+      const orgType = orgTypeMap[text];
+      console.log('Setting organization type to:', orgType);
       
-      if (institutionType) {
-        setSelectedInstitutionType(institutionType);
+      if (orgType) {
+        setSelectedInstitutionType(orgType);
         setSectionIdx(0); // Reset to first section
       }
     }

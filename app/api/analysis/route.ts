@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { OrganizationalRealignmentEngine, AssessmentResponse } from '../../../lib/realignment-engine';
 import { AssessmentDB } from '../../../lib/assessment-db';
-import { comprehensiveQuestionBank } from '../../../data/comprehensiveQuestionBank';
+import { allQuestions } from '../../../data/northpathQuestionBank';
 
 export async function POST(request: NextRequest) {
   try {
@@ -81,7 +81,7 @@ function generateRealisticMockResponses(): AssessmentResponse[] {
     'External Relations & Partnerships': { mean: 3.3, variance: 0.8 }
   };
 
-  comprehensiveQuestionBank.forEach((question, _index) => {
+  allQuestions.forEach((question, _index) => {
     const pattern = sectionPatterns[question.section as keyof typeof sectionPatterns] || { mean: 3.0, variance: 1.0 };
     
     let value: number;

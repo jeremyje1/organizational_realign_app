@@ -42,7 +42,7 @@ interface AssessmentCommentsProps {
   isReadOnly?: boolean;
 }
 
-export function AssessmentComments({ assessmentId, section, isReadOnly = false }: AssessmentCommentsProps) {
+export function AssessmentComments({ assessmentId, section, isReadOnly: _isReadOnly = false }: AssessmentCommentsProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(false);

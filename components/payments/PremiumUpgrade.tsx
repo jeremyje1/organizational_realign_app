@@ -12,7 +12,7 @@ interface PremiumUpgradeProps {
   onUpgradeSuccess?: (tier: string) => void;
 }
 
-export function PremiumUpgrade({ assessmentId, trigger, currentPlan = 'basic', onUpgradeSuccess }: PremiumUpgradeProps) {
+export function PremiumUpgrade({ assessmentId, trigger, currentPlan: _currentPlan = 'basic', onUpgradeSuccess }: PremiumUpgradeProps) {
   const [selectedPlan, setSelectedPlan] = useState<string>('ai-enhanced');
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);

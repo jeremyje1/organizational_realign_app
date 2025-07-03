@@ -1,12 +1,12 @@
 // components/collaboration/ActiveCollaborators.tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
-import { Users, User, Clock, Wifi, WifiOff } from 'lucide-react';
+import { Users, Clock, Wifi, WifiOff } from 'lucide-react';
 import { useSocket } from '@/lib/socket-client';
 
 interface ActiveCollaboratorsProps {
@@ -29,7 +29,6 @@ interface CollaboratorUser {
 
 export function ActiveCollaborators({ assessmentId }: ActiveCollaboratorsProps) {
   const { connected, activeUsers, joinAssessment } = useSocket();
-  const [showCursors, setShowCursors] = useState(true);
 
   useEffect(() => {
     // Join the assessment room when the component mounts
@@ -78,7 +77,7 @@ export function ActiveCollaborators({ assessmentId }: ActiveCollaboratorsProps) 
           </CardTitle>
         </div>
         <CardDescription>
-          See who's currently viewing or editing this assessment
+          See who&apos;s currently viewing or editing this assessment
         </CardDescription>
       </CardHeader>
       <CardContent>

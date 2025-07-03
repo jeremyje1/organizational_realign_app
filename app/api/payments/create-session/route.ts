@@ -64,10 +64,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid plan selected' }, { status: 400 });
     }
 
-    // Verify assessment exists
-    const assessment = await AssessmentDB.findAssessmentById(assessmentId);
-    if (!assessment) {
-      return NextResponse.json({ error: 'Assessment not found' }, { status: 404 });
+    // For new customers, we'll create the assessment after payment
+    let assessment = null;
+    if (assessmentId !== 'new') {
+      assessment = await AssessmentDB.findAssessmentById(assessmentId);
+      if (!assessment) {
+        return NextResponse.json({ error: 'Assessment not found' }, { status: 404 });
+      }
     }
 
     // Create Stripe checkout session
@@ -89,12 +92,17 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/secure/results?session={CHECKOUT_SESSION_ID}&assessmentId=${assessmentId}&premium=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/secure/results?assessmentId=${assessmentId}`,
+      success_url: assessmentId === 'new' 
+        ? `${process.env.NEXT_PUBLIC_BASE_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}&new_customer=true`
+        : `${process.env.NEXT_PUBLIC_BASE_URL}/secure/results?session_id={CHECKOUT_SESSION_ID}&assessmentId=${assessmentId}&premium=true`,
+      cancel_url: assessmentId === 'new'
+        ? `${process.env.NEXT_PUBLIC_BASE_URL}/pricing`
+        : `${process.env.NEXT_PUBLIC_BASE_URL}/secure/results?assessmentId=${assessmentId}`,
       metadata: {
         assessmentId,
         plan,
         customerName: customerName || '',
+        isNewCustomer: assessmentId === 'new' ? 'true' : 'false',
       },
       invoice_creation: {
         enabled: true,

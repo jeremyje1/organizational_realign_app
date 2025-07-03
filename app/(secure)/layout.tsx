@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from 'next/link';
+import Image from 'next/image';
 import type { ReactNode } from "react";
 import AuthButton from "@/components/AuthButton";
 
@@ -19,10 +20,12 @@ export default function SecureLayout({
       <header className="border-b bg-white shadow-sm sticky top-0 z-20">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           <Link href="/" className="flex items-center">
-            <img 
+            <Image 
               src="/logo.svg"
               alt="Northpath Strategies" 
-              className="h-8 w-8 mr-2"
+              width={32}
+              height={32}
+              className="mr-2"
             />
             <span className="font-bold text-lg text-blue-900">Northpath Strategies</span>
           </Link>

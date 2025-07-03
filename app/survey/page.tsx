@@ -1,400 +1,573 @@
 "use client";
 
+import { useState, useEffect, useMemo, Suspense } from "react";
+import { useSearchParams } from 'next/navigation';
 import { useUser } from "@supabase/auth-helpers-react";
-import { useSurvey } from "@/hooks/useSurvey";
 import PublicNavigation from "@/components/PublicNavigation";
-import QuestionCard from "@/components/QuestionCard";
-import SectionHeader from "@/components/SectionHeader";
-import SurveyNavigation from "@/components/SurveyNavigation";
-import { CheckCircle2, AlertCircle, Clock, Target, BookOpen, Building2, User, LogOut } from 'lucide-react';
-import { useState, useEffect } from "react";
-import { consultancyAreas } from "@/data/comprehensiveQuestionBank";
-import { supabase } from "@/lib/supabase-browser";
-import Link from "next/link";
+import { CheckCircle2, AlertCircle, Clock, Building2, Upload, X } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  allQuestions,
+  OrganizationType, 
+  Question
+} from "@/data/northpathQuestionBank";
 
-export default function SurveyPage() {
-  // Get user from Supabase auth (handles cases where Supabase isn't configured)
+// Likert scale component
+function LikertInput({ onSelect, value }: { onSelect: (value: number) => void; value?: number }) {
+  const options = [
+    { value: 1, label: "Strongly Disagree" },
+    { value: 2, label: "Disagree" },
+    { value: 3, label: "Neutral" },
+    { value: 4, label: "Agree" },
+    { value: 5, label: "Strongly Agree" }
+  ];
+
+  return (
+    <div className="space-y-3">
+      {options.map((option) => (
+        <label key={option.value} className="flex items-center p-3 bg-slate-800/30 border border-slate-600/30 rounded-lg hover:border-slate-500/50 cursor-pointer transition-all duration-200">
+          <input
+            type="radio"
+            value={option.value}
+            checked={value === option.value}
+            onChange={() => onSelect(option.value)}
+            className="sr-only"
+          />
+          <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
+            value === option.value 
+              ? 'bg-purple-400 border-purple-400' 
+              : 'border-slate-400'
+          }`}>
+            {value === option.value && (
+              <div className="w-full h-full rounded-full bg-white scale-50"></div>
+            )}
+          </div>
+          <span className={`text-sm ${
+            value === option.value ? 'text-purple-200' : 'text-slate-300'
+          }`}>
+            {option.label}
+          </span>
+        </label>
+      ))}
+    </div>
+  );
+}
+
+// Text input component
+function TextInput({ onSubmit, value, placeholder }: { 
+  onSubmit: (value: string) => void; 
+  value?: string;
+  placeholder?: string;
+}) {
+  const [text, setText] = useState(value || '');
+
+  useEffect(() => {
+    if (text.trim() && text !== value) {
+      const timer = setTimeout(() => onSubmit(text), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [text, onSubmit, value]);
+
+  return (
+    <textarea
+      value={text}
+      onChange={(e) => setText(e.target.value)}
+      placeholder={placeholder || "Enter your response..."}
+      rows={4}
+      className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200 resize-none"
+    />
+  );
+}
+
+// File upload component
+function FileUpload({ onUpload, uploadedFiles }: { 
+  onUpload: (files: File[]) => void;
+  uploadedFiles?: File[];
+}) {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    onUpload(files);
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="border-2 border-dashed border-slate-600 rounded-lg p-6 text-center">
+        <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+        <p className="text-slate-300 mb-2">Upload required files</p>
+        <input
+          type="file"
+          multiple
+          accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg"
+          onChange={handleFileChange}
+          className="hidden"
+          id="file-upload"
+        />
+        <label htmlFor="file-upload" className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 cursor-pointer transition-colors">
+          Choose Files
+        </label>
+      </div>
+      
+      {uploadedFiles && uploadedFiles.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-sm text-slate-300">Uploaded files:</p>
+          {uploadedFiles.map((file, index) => (
+            <div key={index} className="flex items-center justify-between p-2 bg-slate-800/50 rounded">
+              <span className="text-sm text-slate-200">{file.name}</span>
+              <button
+                onClick={() => {
+                  const newFiles = uploadedFiles.filter((_, i) => i !== index);
+                  onUpload(newFiles);
+                }}
+                className="text-slate-400 hover:text-red-400"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SurveyPageContent() {
   const user = useUser();
-  
+  const searchParams = useSearchParams();
+  const orgType = searchParams.get('orgType') as OrganizationType;
+  const sessionId = searchParams.get('sessionId');
+
+  // State management
+  const [loading, setLoading] = useState(true);
+  const [sectionIdx, setSectionIdx] = useState(0);
+  const [answers, setAnswers] = useState<Map<string, any>>(new Map());
+  const [uploadedFiles, setUploadedFiles] = useState<Map<string, File[]>>(new Map());
+  const [showValidation, setShowValidation] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // Check for Supabase configuration
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       console.warn('Supabase not configured - running in demo mode');
     }
+    setLoading(false);
   }, []);
 
-  const {
-    loading,
-    section,
-    sectionQuestions,
-    sectionIdx,
-    sections,
-    selectedInstitutionType,
-    next,
-    setSectionIdx,
-    saveAnswer
-  } = useSurvey(user?.id ?? null);
+  // Filter questions based on organization type
+  const filteredQuestions = useMemo(() => {
+    if (!orgType) return allQuestions.slice(0, 20); // Show first 20 questions if no org type
+    
+    return allQuestions.filter(question => {
+      // Always include algorithm parameters and universal data uploads
+      if (question.id.startsWith('P_') || question.id.startsWith('U_')) {
+        return true;
+      }
+      
+      // Include universal questions (no specific vertical)
+      if (!question.vertical) {
+        return true;
+      }
+      
+      // Include questions for specific organization type
+      return question.vertical === orgType;
+    });
+  }, [orgType]);
 
-  const handleSignOut = async () => {
-    try {
-      await supabase.auth.signOut();
-      window.location.href = '/auth';
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
+  // Group questions by section
+  const sections = useMemo(() => {
+    const sectionMap = new Map<string, Question[]>();
+    
+    filteredQuestions.forEach(question => {
+      const section = question.section;
+      if (!sectionMap.has(section)) {
+        sectionMap.set(section, []);
+      }
+      sectionMap.get(section)!.push(question);
+    });
+    
+    return Array.from(sectionMap.entries()).map(([name, questions]) => ({
+      name,
+      questions
+    }));
+  }, [filteredQuestions]);
+
+  const currentSection = sections[sectionIdx];
+  const isLastSection = sectionIdx === sections.length - 1;
+
+  // Handle answer submission
+  const handleAnswer = (questionId: string, value: any) => {
+    const newAnswers = new Map(answers);
+    newAnswers.set(questionId, value);
+    setAnswers(newAnswers);
+    
+    // Auto-save logic could go here
+    console.log(`Answer for ${questionId}:`, value);
   };
 
-  // Track answered questions in current section and multi-select values
-  const [answeredQuestions, setAnsweredQuestions] = useState<Set<string>>(new Set());
-  const [multiSelectAnswers, setMultiSelectAnswers] = useState<Map<string, Set<number>>>(new Map());
-  const [showValidation, setShowValidation] = useState(false);
-  const [isNavigating, setIsNavigating] = useState(false);
-
-  // Reset validation when section changes
-  useEffect(() => {
-    setAnsweredQuestions(new Set());
-    setMultiSelectAnswers(new Map());
-    setShowValidation(false);
-    setIsNavigating(false);
-  }, [sectionIdx]);
-
-  const handleAnswer = async (questionId: string, value?: number | null, stringValue?: string) => {
-    await saveAnswer(questionId, value ?? null, stringValue);
-    setAnsweredQuestions(prev => new Set([...prev, questionId]));
+  // Handle file uploads
+  const handleFileUpload = (questionId: string, files: File[]) => {
+    const newFiles = new Map(uploadedFiles);
+    newFiles.set(questionId, files);
+    setUploadedFiles(newFiles);
+    
+    // Also save as answer
+    handleAnswer(questionId, files.map(f => f.name));
   };
 
-  const handleMultiSelectAnswer = async (questionId: string, optionIndex: number, checked: boolean) => {
-    const currentAnswers = multiSelectAnswers.get(questionId) || new Set();
-    
-    if (checked) {
-      currentAnswers.add(optionIndex);
-    } else {
-      currentAnswers.delete(optionIndex);
-    }
-    
-    setMultiSelectAnswers(prev => new Map(prev.set(questionId, currentAnswers)));
-    
-    // Mark as answered if at least one option is selected
-    if (currentAnswers.size > 0) {
-      setAnsweredQuestions(prev => new Set([...prev, questionId]));
-      // Save the multi-select answer as a comma-separated string
-      const answerText = Array.from(currentAnswers).join(',');
-      await saveAnswer(questionId, null, answerText);
-    } else {
-      setAnsweredQuestions(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(questionId);
-        return newSet;
-      });
-    }
-  };
-
+  // Navigation handlers
   const handleNext = () => {
-    const unansweredQuestions = sectionQuestions.filter(q => !answeredQuestions.has(q.id));
+    if (!currentSection) return;
     
-    if (unansweredQuestions.length > 0) {
+    // Validate required questions
+    const unansweredRequired = currentSection.questions
+      .filter(q => q.required)
+      .filter(q => !answers.has(q.id));
+      
+    if (unansweredRequired.length > 0) {
       setShowValidation(true);
-      // Scroll to first unanswered question
-      const firstUnanswered = document.getElementById(`question-${unansweredQuestions[0].id}`);
-      firstUnanswered?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
     
     setShowValidation(false);
-    setIsNavigating(true);
-    setTimeout(() => {
-      next();
-    }, 150);
+    
+    if (isLastSection) {
+      handleSubmit();
+    } else {
+      setSectionIdx(prev => prev + 1);
+    }
   };
 
   const handlePrevious = () => {
-    setIsNavigating(true);
-    setTimeout(() => {
-      setSectionIdx(sectionIdx - 1);
-    }, 150);
+    if (sectionIdx > 0) {
+      setSectionIdx(prev => prev - 1);
+      setShowValidation(false);
+    }
   };
 
-  const getQuestionProgress = () => {
-    return (answeredQuestions.size / sectionQuestions.length) * 100;
-  };
+  // Submit final assessment
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    
+    try {
+      // Prepare submission data
+      const submissionData = {
+        sessionId,
+        organizationType: orgType,
+        answers: Object.fromEntries(answers),
+        uploadedFiles: Object.fromEntries(uploadedFiles),
+        completedAt: new Date().toISOString(),
+        userId: user?.id
+      };
 
-  const getOverallProgress = () => {
-    return ((sectionIdx * 100) + getQuestionProgress()) / sections.length;
+      console.log('Submitting assessment:', submissionData);
+      
+      // Send to API endpoint for processing
+      const response = await fetch('/api/assessment/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submissionData)
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        // Redirect to results page with analysis
+        window.location.href = `/assessment/results?sessionId=${sessionId}&assessmentId=${result.analysisResults.assessmentId}`;
+      } else {
+        throw new Error(result.error || 'Submission failed');
+      }
+      
+    } catch (error) {
+      console.error('Submission error:', error);
+      alert('There was an error submitting your assessment. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col elegant-bg">
-        <PublicNavigation />
-        <main className="max-w-3xl mx-auto px-4 py-10 space-y-8 flex-1">
-          <div className="card p-10 text-center animate-fade-in">
-            <div className="flex items-center justify-center mb-6">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400"></div>
-            </div>
-            <h2 className="text-xl font-semibold text-slate-100 mb-2">Loading Assessment</h2>
-            <p className="text-lg text-slate-300">Preparing your organizational assessment questions…</p>
-            <div className="mt-6 bg-slate-700/50 rounded-full h-2">
-              <div className="bg-gradient-to-r from-purple-400 to-pink-400 h-2 rounded-full animate-pulse" style={{width: '60%'}}></div>
-            </div>
+      <div className="min-h-screen elegant-bg flex items-center justify-center">
+        <div className="card p-12 text-center max-w-lg animate-fade-in">
+          <div className="flex items-center justify-center mb-6">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-400"></div>
           </div>
-        </main>
+          <h2 className="text-2xl font-semibold text-slate-100 mb-4">Loading Assessment</h2>
+          <p className="text-slate-300">Preparing your customized evaluation...</p>
+        </div>
       </div>
     );
   }
 
-  if (!sectionQuestions.length) {
+  if (!currentSection) {
     return (
-      <div className="min-h-screen flex flex-col elegant-bg">
-        <PublicNavigation />
-        <main className="max-w-xl mx-auto py-20 text-center space-y-6 flex-1">
-          <div className="card p-10 animate-fade-in">
-            <div className="mb-8">
-              <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 celebrate-icon">
-                <span className="text-4xl">🎉</span>
-              </div>
-            </div>
-            <h1 className="text-4xl font-bold text-slate-100 mb-4">Assessment Complete!</h1>
-            <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-              Thank you for completing the organizational realignment assessment. 
-              Your responses are being analyzed to generate personalized insights and actionable recommendations.
-            </p>
-            
-            <div className="bg-slate-700/50 rounded-xl p-6 mb-8">
-              <div className="flex items-center justify-center mb-4">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400"></div>
-              </div>
-              <p className="text-sm text-slate-400 mb-2">
-                🤖 AI Analysis in Progress
-              </p>
-              <p className="text-xs text-slate-500">
-                Processing time: 2-3 minutes • Powered by advanced organizational analysis
-              </p>
-            </div>
-            
-            <div className="space-y-4">
-              <button 
-                className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 btn-hover-lift"
-                onClick={() => window.location.href = '/secure/results'}
-              >
-                View Results & Insights →
-              </button>
-              <button 
-                className="w-full bg-slate-700/50 hover:bg-slate-600/50 text-slate-200 px-8 py-3 rounded-lg border border-slate-600/50 hover:border-slate-500/50 transition-all duration-200"
-                onClick={() => window.location.href = '/secure/dashboard'}
-              >
-                Return to Dashboard
-              </button>
-            </div>
-            
-            <div className="mt-8 pt-6 border-t border-slate-600/30">
-              <p className="text-xs text-slate-500">
-                Next steps: Review your personalized report, schedule a consultation, or explore realignment scenarios
-              </p>
-            </div>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  if (sectionIdx >= sections.length) {
-    return (
-      <div className="min-h-screen flex flex-col elegant-bg">
-        <PublicNavigation />
-        <main className="max-w-4xl mx-auto py-20 text-center space-y-6 flex-1 px-4">
-          <div className="card p-12 animate-slide-up">
-            <div className="mb-8">
-              <div className="flex items-center justify-center mb-6">
-                <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-full flex items-center justify-center animate-bounce-once">
-                  <CheckCircle2 className="h-10 w-10 text-white" />
-                </div>
-              </div>
-              <h1 className="text-4xl font-bold text-slate-100 mb-4">Assessment Complete!</h1>
-              <p className="text-xl text-slate-300 leading-relaxed max-w-2xl mx-auto">
-                Thank you for completing the organizational assessment. Your responses will help generate valuable insights for your institution.
-              </p>
-            </div>
-
-            {/* Enhanced completion stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-              <div className="card p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-400/30">
-                <div className="flex items-center justify-center mb-3">
-                  <Target className="h-8 w-8 text-purple-400" />
-                </div>
-                <div className="text-2xl font-bold text-purple-300 mb-1">
-                  {sections.length}
-                </div>
-                <div className="text-sm text-slate-300">Sections Completed</div>
-              </div>
-              
-              <div className="card p-6 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border-emerald-400/30">
-                <div className="flex items-center justify-center mb-3">
-                  <BookOpen className="h-8 w-8 text-emerald-400" />
-                </div>
-                <div className="text-2xl font-bold text-emerald-300 mb-1">
-                  {sectionQuestions.length * sections.length}
-                </div>
-                <div className="text-sm text-slate-300">Questions Answered</div>
-              </div>
-              
-              <div className="card p-6 bg-gradient-to-br from-amber-500/10 to-orange-500/10 border-amber-400/30">
-                <div className="flex items-center justify-center mb-3">
-                  <Clock className="h-8 w-8 text-amber-400" />
-                </div>
-                <div className="text-2xl font-bold text-amber-300 mb-1">~15</div>
-                <div className="text-sm text-slate-300">Minutes Invested</div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <button
-                className="btn btn-primary w-full sm:w-auto px-8 py-4 text-lg font-medium animate-pulse-gentle"
-                onClick={() => window.location.href = '/secure/results'}
-              >
-                View Your Results →
-              </button>
-              <div className="text-sm text-slate-400">
-                Results will be generated in 2-3 minutes
-              </div>
-            </div>
-          </div>
-        </main>
+      <div className="min-h-screen elegant-bg flex items-center justify-center">
+        <div className="card p-12 text-center max-w-lg">
+          <AlertCircle className="h-16 w-16 text-amber-400 mx-auto mb-6" />
+          <h2 className="text-2xl font-semibold text-slate-100 mb-4">Assessment Error</h2>
+          <p className="text-slate-300 mb-6">
+            Unable to load assessment questions. Please check your organization type selection.
+          </p>
+          <Button onClick={() => window.location.href = '/assessment/start'}>
+            Return to Setup
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col elegant-bg">
+    <div className="min-h-screen elegant-bg">
       <PublicNavigation />
       
-      {/* User Authentication Status */}
-      {user && (
-        <div className="bg-slate-800/50 border-b border-slate-600/30">
-          <div className="max-w-4xl mx-auto px-4 py-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full flex items-center justify-center">
-                  <User className="h-4 w-4 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-slate-200">
-                    {user.user_metadata?.name || user.email}
-                  </p>
-                  <p className="text-xs text-slate-400">Survey progress is being saved</p>
-                </div>
-              </div>
-              <button
-                onClick={handleSignOut}
-                className="flex items-center space-x-2 text-slate-400 hover:text-slate-200 transition-colors"
-              >
-                <LogOut className="h-4 w-4" />
-                <span className="text-sm">Sign out</span>
-              </button>
-            </div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Building2 className="h-6 w-6 text-purple-400" />
+            <span className="text-purple-200 font-medium">
+              {orgType ? orgType.replace('_', ' ').toUpperCase() : 'ASSESSMENT'}
+            </span>
           </div>
+          <h1 className="text-3xl font-bold text-slate-100 mb-2">
+            NorthPath Organizational Assessment
+          </h1>
+          <p className="text-slate-300">
+            Section {sectionIdx + 1} of {sections.length}: {currentSection.name}
+          </p>
         </div>
-      )}
-      
-      {!user && (
-        <div className="bg-amber-500/10 border-b border-amber-400/30">
-          <div className="max-w-4xl mx-auto px-4 py-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <AlertCircle className="h-5 w-5 text-amber-400" />
-                <div>
-                  <p className="text-sm font-medium text-amber-200">Demo Mode</p>
-                  <p className="text-xs text-amber-300/80">Your progress won't be saved</p>
-                </div>
-              </div>
-              <Link 
-                href="/auth" 
-                className="text-sm text-amber-200 hover:text-amber-100 underline transition-colors"
-              >
-                Sign in to save progress
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
-      
-      {/* Section Header Component */}
-      <div className="sticky top-0 z-10 px-4 pt-4">
-        <SectionHeader
-          sectionTitle={section}
-          sectionIndex={sectionIdx}
-          totalSections={sections.length}
-          answeredQuestions={answeredQuestions.size}
-          totalQuestions={sectionQuestions.length}
-          estimatedTimeMinutes={Math.max(1, Math.ceil(sectionQuestions.length * 0.5))}
-        />
-      </div>
 
-      {/* Institution Type Information */}
-      {selectedInstitutionType && (
-        <div className="max-w-4xl mx-auto px-4 mb-6">
-          <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-400/30 rounded-xl p-6">
-            <div className="flex items-center gap-3 mb-3">
-              <Building2 className="h-5 w-5 text-purple-400" />
-              <span className="font-semibold text-purple-200">Selected Institution Type</span>
-            </div>
-            <p className="text-slate-300 mb-3">
-              {selectedInstitutionType.split('-').map(word => 
-                word.charAt(0).toUpperCase() + word.slice(1)
-              ).join(' ')}
-            </p>
-            
-            <div className="mt-4">
-              <h4 className="text-sm font-medium text-purple-200 mb-2">Available Consultancy Services:</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {consultancyAreas[selectedInstitutionType]?.map((area, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-sm text-slate-300">
-                    <div className="w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
-                    {area}
-                  </div>
-                ))}
-              </div>
-            </div>
+        {/* Progress bar */}
+        <div className="mb-8">
+          <div className="flex justify-between text-xs text-slate-400 mb-2">
+            <span>Overall Progress</span>
+            <span>{Math.round(((sectionIdx + 1) / sections.length) * 100)}%</span>
+          </div>
+          <div className="bg-slate-700/30 rounded-full h-2">
+            <div 
+              className="bg-gradient-to-r from-purple-400 to-pink-400 h-2 rounded-full transition-all duration-500"
+              style={{width: `${((sectionIdx + 1) / sections.length) * 100}%`}}
+            ></div>
           </div>
         </div>
-      )}
 
-      <main className={`max-w-4xl mx-auto px-4 pb-32 space-y-6 flex-1 transition-all duration-300 ${
-        isNavigating ? 'opacity-70 scale-98' : 'opacity-100 scale-100'
-      }`}>
-        
-        {/* Questions using QuestionCard Component */}
-        <div className="space-y-6">
-          {sectionQuestions.map((question, index) => {
-            const isAnswered = answeredQuestions.has(question.id);
-            const needsAttention = showValidation && !isAnswered;
+        {/* Validation message */}
+        {showValidation && (
+          <div className="mb-6 p-4 bg-amber-500/10 border border-amber-400/30 rounded-lg">
+            <div className="flex items-center gap-2 text-amber-200">
+              <AlertCircle className="h-5 w-5" />
+              <span>Please answer all required questions before proceeding.</span>
+            </div>
+          </div>
+        )}
+
+        {/* Questions */}
+        <div className="space-y-6 mb-8">
+          {currentSection.questions.map((question, index) => {
+            const isRequired = question.required;
+            const isAnswered = answers.has(question.id);
             
             return (
-              <div key={question.id} id={`question-${question.id}`}>
-                <QuestionCard
-                  question={question}
-                  index={index}
-                  isAnswered={isAnswered}
-                  needsAttention={needsAttention}
-                  multiSelectAnswers={multiSelectAnswers}
-                  onAnswer={handleAnswer}
-                  onMultiSelectAnswer={handleMultiSelectAnswer}
-                />
-              </div>
+              <Card key={question.id} className="bg-slate-800/30 border-slate-600/30">
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-sm text-slate-400">
+                          Question {index + 1} of {currentSection.questions.length}
+                        </span>
+                        {isRequired && (
+                          <span className="text-xs bg-amber-500/20 text-amber-200 px-2 py-1 rounded">
+                            Required
+                          </span>
+                        )}
+                        {question.tags && question.tags.length > 0 && (
+                          <div className="flex gap-1">
+                            {question.tags.map(tag => (
+                              <span key={tag} className="text-xs bg-blue-500/20 text-blue-200 px-2 py-1 rounded">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <CardTitle className="text-slate-100 text-lg">
+                        {question.prompt}
+                      </CardTitle>
+                    </div>
+                    {isAnswered && (
+                      <CheckCircle2 className="h-5 w-5 text-green-400 flex-shrink-0 ml-4" />
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {question.type === 'likert' && (
+                    <LikertInput 
+                      value={answers.get(question.id)}
+                      onSelect={(value) => handleAnswer(question.id, value)}
+                    />
+                  )}
+                  
+                  {question.type === 'text' && (
+                    <TextInput
+                      value={answers.get(question.id) || ''}
+                      onSubmit={(value) => handleAnswer(question.id, value)}
+                      placeholder="Enter your response..."
+                    />
+                  )}
+                  
+                  {question.type === 'upload' && (
+                    <FileUpload
+                      uploadedFiles={uploadedFiles.get(question.id)}
+                      onUpload={(files) => handleFileUpload(question.id, files)}
+                    />
+                  )}
+
+                  {question.type === 'numeric' && (
+                    <input
+                      type="number"
+                      value={answers.get(question.id) || ''}
+                      onChange={(e) => handleAnswer(question.id, parseInt(e.target.value) || 0)}
+                      className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
+                      placeholder="Enter a number..."
+                    />
+                  )}
+
+                  {question.type === 'select' && question.options && (
+                    <div className="space-y-2">
+                      {question.options.map((option, optionIndex) => (
+                        <button
+                          key={optionIndex}
+                          onClick={() => handleAnswer(question.id, option)}
+                          className={`w-full text-left p-3 rounded-lg border transition-all duration-200 ${
+                            answers.get(question.id) === option
+                              ? 'bg-purple-500/20 border-purple-400/50 text-purple-200'
+                              : 'bg-slate-700/30 border-slate-600/30 hover:border-slate-500/50 text-slate-300'
+                          }`}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {question.type === 'multiselect' && question.options && (
+                    <div className="space-y-3">
+                      <p className="text-sm text-slate-400">Select all that apply:</p>
+                      <div className="space-y-2">
+                        {question.options.map((option, optionIndex) => {
+                          const selectedOptions = answers.get(question.id) || [];
+                          const isSelected = selectedOptions.includes(optionIndex);
+                          
+                          return (
+                            <label key={optionIndex} className="flex items-center p-3 bg-slate-700/30 border border-slate-600/30 rounded-lg hover:border-slate-500/50 cursor-pointer transition-all duration-200">
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onChange={(e) => {
+                                  const currentSelections = answers.get(question.id) || [];
+                                  let newSelections;
+                                  if (e.target.checked) {
+                                    newSelections = [...currentSelections, optionIndex];
+                                  } else {
+                                    newSelections = currentSelections.filter((i: number) => i !== optionIndex);
+                                  }
+                                  handleAnswer(question.id, newSelections);
+                                }}
+                                className="sr-only"
+                              />
+                              <div className={`w-4 h-4 rounded border-2 mr-3 ${
+                                isSelected 
+                                  ? 'bg-purple-400 border-purple-400' 
+                                  : 'border-slate-400'
+                              }`}>
+                                {isSelected && (
+                                  <CheckCircle2 className="h-3 w-3 text-white" />
+                                )}
+                              </div>
+                              <span className={`text-sm ${
+                                isSelected ? 'text-purple-200' : 'text-slate-300'
+                              }`}>
+                                {option}
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             );
           })}
         </div>
-      </main>
 
-      {/* Survey Navigation Component */}
-      <SurveyNavigation
-        canGoNext={true}
-        canGoPrevious={sectionIdx > 0}
-        onNext={handleNext}
-        onPrevious={handlePrevious}
-        isLastSection={sectionIdx >= sections.length - 1}
-        showValidation={showValidation}
-        unansweredCount={sectionQuestions.length - answeredQuestions.size}
-      />
+        {/* Navigation */}
+        <div className="flex justify-between items-center">
+          <Button
+            variant="outline"
+            onClick={handlePrevious}
+            disabled={sectionIdx === 0}
+            className="bg-slate-700/30 hover:bg-slate-600/50 text-slate-200 border-slate-600/50"
+          >
+            Previous Section
+          </Button>
+          
+          <div className="text-center">
+            <p className="text-sm text-slate-400 mb-2">
+              {answers.size} of {filteredQuestions.length} questions answered
+            </p>
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4 text-slate-400" />
+              <span className="text-sm text-slate-400">
+                {Math.max(1, Math.ceil((filteredQuestions.length - answers.size) * 1.5))} min remaining
+              </span>
+            </div>
+          </div>
+          
+          <Button
+            onClick={handleNext}
+            disabled={isSubmitting}
+            className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+          >
+            {isSubmitting ? (
+              <div className="flex items-center gap-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                Processing...
+              </div>
+            ) : isLastSection ? (
+              'Complete Assessment'
+            ) : (
+              'Next Section'
+            )}
+          </Button>
+        </div>
+
+        {/* Help section */}
+        <div className="mt-8 p-4 bg-slate-800/30 rounded-lg border border-slate-600/30">
+          <p className="text-sm text-slate-400 text-center">
+            Need help? Contact our support team at{' '}
+            <a href="mailto:support@northpathstrategies.org" className="text-purple-400 hover:text-purple-300 transition-colors">
+              support@northpathstrategies.org
+            </a>
+          </p>
+        </div>
+      </div>
     </div>
+  );
+}
+
+export default function SurveyPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-400 mx-auto mb-4"></div>
+          <p>Loading survey...</p>
+        </div>
+      </div>
+    }>
+      <SurveyPageContent />
+    </Suspense>
   );
 }

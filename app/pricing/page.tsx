@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ASSESSMENT_PRODUCTS, type AssessmentTier } from '@/lib/stripe';
+import { type AssessmentTier } from '@/lib/stripe';
 
 export default function PricingPage() {
   const [loading, setLoading] = useState<AssessmentTier | null>(null);
@@ -59,40 +59,56 @@ export default function PricingPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Pricing Plans
+            NorthPath Package Options & Pricing
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Choose the perfect assessment plan for your organization
+            Choose the perfect optimization package for your organization. 
+            All packages include our proprietary DSCH, CRF, and LEI algorithms.
           </p>
+          <div className="mt-4 inline-block px-4 py-2 bg-blue-100 rounded-lg">
+            <span className="text-sm text-blue-800 font-medium">🔒 Patent Pending • SOC 2 Compliant</span>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Basic Plan */}
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          {/* Basic Diagnostic */}
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-200">
             <div className="p-8">
-              <h3 className="text-2xl font-bold text-gray-900">Basic Assessment</h3>
-              <p className="mt-2 text-gray-600">For small teams and departments</p>
+              <h3 className="text-2xl font-bold text-gray-900">Basic Diagnostic</h3>
+              <p className="mt-2 text-gray-600">≤ 500 FTE / ≤ 2 sites</p>
               <p className="mt-8 text-5xl font-bold text-gray-900">$1,999</p>
               <p className="mt-2 text-gray-500">One-time payment</p>
               
               <ul className="mt-8 space-y-4">
                 <li className="flex items-start">
-                  <svg className="h-6 w-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>Up to 25 team members</span>
+                  <span>Sections 1‑8 questionnaire</span>
                 </li>
                 <li className="flex items-start">
-                  <svg className="h-6 w-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>Basic AI analysis</span>
+                  <span>One DSCH scenario</span>
                 </li>
                 <li className="flex items-start">
-                  <svg className="h-6 w-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>PDF report</span>
+                  <span>12‑page PDF brief</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>30‑min results call</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <span className="font-semibold text-blue-700">Rapid insights</span>
                 </li>
               </ul>
             </div>
@@ -100,42 +116,61 @@ export default function PricingPage() {
             <div className="px-8 pb-8">
               <button
                 onClick={() => handleGetStarted('BASIC')}
-                className="w-full py-3 px-6 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
+                disabled={loading === 'BASIC'}
+                className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50"
               >
-                Get Started
+                {loading === 'BASIC' ? 'Processing...' : 'Get Started'}
               </button>
             </div>
           </div>
-          
-          {/* Pro Plan */}
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-blue-500 transform scale-105">
-            <div className="bg-blue-500 py-2">
-              <p className="text-center text-white font-medium">MOST POPULAR</p>
+
+          {/* Comprehensive */}
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-blue-500 relative">
+            <div className="absolute top-0 right-0 bg-blue-500 text-white px-4 py-2 text-sm font-semibold rounded-bl-lg">
+              Most Popular
             </div>
             <div className="p-8">
-              <h3 className="text-2xl font-bold text-gray-900">Team Assessment</h3>
-              <p className="mt-2 text-gray-600">For medium to large teams</p>
+              <h3 className="text-2xl font-bold text-gray-900">Comprehensive</h3>
+              <p className="mt-2 text-gray-600">501‑2,999 FTE / ≤ 5 sites</p>
               <p className="mt-8 text-5xl font-bold text-gray-900">$3,999</p>
               <p className="mt-2 text-gray-500">One-time payment</p>
               
               <ul className="mt-8 space-y-4">
                 <li className="flex items-start">
-                  <svg className="h-6 w-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>Unlimited team members</span>
+                  <span>Basic <strong>plus</strong></span>
                 </li>
                 <li className="flex items-start">
-                  <svg className="h-6 w-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>Advanced AI analysis</span>
+                  <span>Two additional scenarios</span>
                 </li>
                 <li className="flex items-start">
-                  <svg className="h-6 w-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>Custom PDF report</span>
+                  <span>Interactive Power BI dashboard</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>½‑day virtual workshop</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>90‑day e‑mail support</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <span className="font-semibold text-blue-700">Scenario depth</span>
                 </li>
               </ul>
             </div>
@@ -143,39 +178,64 @@ export default function PricingPage() {
             <div className="px-8 pb-8">
               <button
                 onClick={() => handleGetStarted('TEAM')}
-                className="w-full py-3 px-6 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
+                disabled={loading === 'TEAM'}
+                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50"
               >
-                Get Started
+                {loading === 'TEAM' ? 'Processing...' : 'Get Started'}
               </button>
             </div>
           </div>
-          
-          {/* Enterprise Plan */}
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+
+          {/* Enterprise */}
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-purple-500">
             <div className="p-8">
-              <h3 className="text-2xl font-bold text-gray-900">Enterprise Assessment</h3>
-              <p className="mt-2 text-gray-600">For large organizations</p>
+              <h3 className="text-2xl font-bold text-gray-900">Enterprise</h3>
+              <p className="mt-2 text-gray-600">≥ 3,000 FTE or multi‑system</p>
               <p className="mt-8 text-5xl font-bold text-gray-900">$8,999</p>
               <p className="mt-2 text-gray-500">One-time payment</p>
               
               <ul className="mt-8 space-y-4">
                 <li className="flex items-start">
-                  <svg className="h-6 w-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>Unlimited teams & departments</span>
+                  <span>Comprehensive <strong>plus</strong></span>
                 </li>
                 <li className="flex items-start">
-                  <svg className="h-6 w-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>Premium AI analysis</span>
+                  <span>Unlimited scenarios (6 mos.)</span>
                 </li>
                 <li className="flex items-start">
-                  <svg className="h-6 w-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>Consulting session included</span>
+                  <span>API access to scenario‑builder</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Custom cultural weighting</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>On‑site workshop (1 day)</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Board‑ready slide deck</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-purple-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <span className="font-semibold text-purple-700">Full integration</span>
                 </li>
               </ul>
             </div>
@@ -183,11 +243,31 @@ export default function PricingPage() {
             <div className="px-8 pb-8">
               <button
                 onClick={() => handleGetStarted('ENTERPRISE')}
-                className="w-full py-3 px-6 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
+                disabled={loading === 'ENTERPRISE'}
+                className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-colors disabled:opacity-50"
               >
-                Get Started
+                {loading === 'ENTERPRISE' ? 'Processing...' : 'Get Started'}
               </button>
             </div>
+          </div>
+        </div>
+
+        {/* Additional Information */}
+        <div className="mt-16 text-center">
+          <p className="text-gray-600 mb-4">
+            <strong>*</strong> Headcount is guidance; select the tier that matches desired analytic depth.
+          </p>
+          <div className="bg-gray-50 rounded-lg p-6 max-w-4xl mx-auto">
+            <h3 className="text-lg font-semibold mb-4">Technical Stack & Security</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
+              <div><strong>Front-end:</strong> Next.js 14 (RSC)</div>
+              <div><strong>Auth & DB:</strong> Supabase + Postgres 15</div>
+              <div><strong>AI Core:</strong> OpenAI o3</div>
+              <div><strong>Analytics:</strong> Power BI Embedded</div>
+            </div>
+            <p className="text-sm text-gray-500 mt-4">
+              SOC 2-aligned, field-level AES-256, S3 object lock
+            </p>
           </div>
         </div>
         
@@ -196,7 +276,7 @@ export default function PricingPage() {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-lg p-8 max-w-md w-full">
               <h3 className="text-xl font-bold mb-4">Enter your email to continue</h3>
-              <p className="text-gray-600 mb-6">We'll send you checkout information and assessment details.</p>
+              <p className="text-gray-600 mb-6">We&apos;ll send you checkout information and assessment details.</p>
               
               <div className="space-y-4">
                 <div>

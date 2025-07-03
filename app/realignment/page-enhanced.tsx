@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { ChevronRight, AlertCircle, CheckCircle2, Building2, Target } from 'lucide-react';
 
 interface RealignmentQuestion {
@@ -29,7 +29,7 @@ export default function RealignmentPage({
 }: {
   searchParams?: { slug?: string };
 }) {
-  const slug = searchParams?.slug;
+  const _slug = searchParams?.slug;
   const mainContentRef = useRef<HTMLElement>(null);
   
   // Form state management
@@ -251,10 +251,10 @@ export default function RealignmentPage({
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                Let's Plan Your Organizational Realignment
+                Let&apos;s Plan Your Organizational Realignment
               </h2>
               <p className="text-gray-600 leading-relaxed">
-                This assessment will help us understand your organization's specific needs 
+                This assessment will help us understand your organization&apos;s specific needs 
                 and develop a customized realignment strategy. Please answer all questions 
                 thoroughly to ensure we provide the most relevant recommendations.
               </p>
@@ -336,7 +336,7 @@ export default function RealignmentPage({
                             value={option}
                             checked={answers[question.id] === option}
                             onChange={(e) => handleInputChange(question.id, e.target.value)}
-                            aria-invalid={errors[question.id] ? 'true' : 'false'}
+                            aria-describedby={errors[question.id] ? `${question.id}-error` : undefined}
                             className="mt-1 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500 focus:outline-none"
                           />
                           <span className="text-gray-700 leading-relaxed">{option}</span>

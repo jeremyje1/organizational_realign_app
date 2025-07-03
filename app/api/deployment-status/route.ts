@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
       await prisma.$queryRaw`SELECT COUNT(*) FROM "CollaborationEvent"`;
       results.features.analytics.status = 'ok';
       results.features.analytics.message = 'Analytics tables available';
-    } catch (error) {
+    } catch {
       results.features.analytics.status = 'warning';
       results.features.analytics.message = 'Analytics tables not found or not accessible';
     }
@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
     
-    const { data, error } = await supabase.from('questions').select('id').limit(1);
+    const { data: _data, error } = await supabase.from('questions').select('id').limit(1);
     
     if (error) {
       throw error;

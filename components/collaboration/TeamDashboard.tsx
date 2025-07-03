@@ -5,12 +5,10 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '../ui/card';
 import { Button } from '../ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Avatar, AvatarFallback } from '../ui/avatar';
 import { Badge } from '../ui/badge';
 import { 
-  Users, 
   FileBarChart, 
-  Calendar,
   Bell,
   ChevronRight,
   Clock,
@@ -24,8 +22,7 @@ interface TeamDashboardProps {
   userId: string;
 }
 
-export function TeamDashboard({ userId }: TeamDashboardProps) {
-  const [activeTeams, setActiveTeams] = useState<any[]>([]);
+export function TeamDashboard({ userId: _userId }: TeamDashboardProps) {
   const [teamAssessments, setTeamAssessments] = useState<any[]>([]);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,17 +34,16 @@ export function TeamDashboard({ userId }: TeamDashboardProps) {
   const fetchTeamData = async () => {
     try {
       setLoading(true);
-      const [teamsRes, assessmentsRes, notificationsRes] = await Promise.all([
+      const [_teamsRes, assessmentsRes, notificationsRes] = await Promise.all([
         fetch('/api/teams'),
         fetch('/api/assessments/shared'),
         fetch('/api/notifications')
       ]);
 
-      const teamsData = await teamsRes.json();
+      // const teamsData = await teamsRes.json();
       const assessmentsData = await assessmentsRes.json();
       const notificationsData = await notificationsRes.json();
 
-      setActiveTeams(teamsData.teams || []);
       setTeamAssessments(assessmentsData.assessments || []);
       setNotifications(notificationsData.notifications || []);
     } catch (error) {
@@ -153,7 +149,7 @@ export function TeamDashboard({ userId }: TeamDashboardProps) {
               <CardHeader>
                 <CardTitle>No Team Assessments Yet</CardTitle>
                 <CardDescription>
-                  You haven't been added to any team assessments yet. Create a new assessment and share it with your team.
+                  You haven&apos;t been added to any team assessments yet. Create a new assessment and share it with your team.
                 </CardDescription>
               </CardHeader>
               <CardFooter>
@@ -208,7 +204,7 @@ export function TeamDashboard({ userId }: TeamDashboardProps) {
               <CardHeader>
                 <CardTitle>No Notifications</CardTitle>
                 <CardDescription>
-                  You're all caught up! No new notifications.
+                  You&apos;re all caught up! No new notifications.
                 </CardDescription>
               </CardHeader>
             </Card>

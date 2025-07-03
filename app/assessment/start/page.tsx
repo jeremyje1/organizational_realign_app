@@ -15,9 +15,12 @@ import {
   Lightbulb,
   TrendingUp,
   Shield,
-  Zap
+  Zap,
+  Building2
 } from 'lucide-react';
 import PublicNavigation from '@/components/PublicNavigation';
+import OrganizationTypeSelect from '@/components/OrganizationTypeSelect';
+import { OrganizationType } from '@/data/northpathQuestionBank';
 
 interface AssessmentInfo {
   id: string;
@@ -29,16 +32,39 @@ interface AssessmentInfo {
 function AssessmentStartContent() {
   const [assessment, setAssessment] = useState<AssessmentInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedOrgType, setSelectedOrgType] = useState<OrganizationType | null>(null);
+  const [showTypeSelection, setShowTypeSelection] = useState(true);
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
+  const orgType = searchParams.get('type') as OrganizationType;
 
   useEffect(() => {
+    // If org type is provided in URL, skip selection
+    if (orgType) {
+      setSelectedOrgType(orgType);
+      setShowTypeSelection(false);
+    }
+
     if (sessionId) {
       fetchAssessment(sessionId);
     } else {
+      // Set default assessment info
+      setAssessment({
+        id: 'northpath',
+        tier: 'COMPREHENSIVE',
+        status: 'active',
+        instructions: [
+          "Complete the NorthPath Organizational Realignment & Optimization Suite",
+          "Answer universal questions plus your sector-specific module", 
+          "Upload required data files (org charts, financials, system inventories)",
+          "The comprehensive assessment typically takes 2-3 hours to complete",
+          "You can save your progress and return to complete it later",
+          "Receive DSCH, CRF, and LEI analysis with actionable recommendations"
+        ]
+      });
       setLoading(false);
     }
-  }, [sessionId]);
+  }, [sessionId, orgType]);
 
   const fetchAssessment = async (sessionId: string) => {
     try {
@@ -68,40 +94,6 @@ function AssessmentStartContent() {
     );
   }
 
-  if (!assessment) {
-    return (
-      <div className="min-h-screen elegant-bg">
-        <PublicNavigation />
-        <div className="flex items-center justify-center min-h-[80vh]">
-          <div className="card p-12 text-center max-w-lg animate-fade-in">
-            <div className="w-16 h-16 bg-gradient-to-br from-red-400 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-white text-2xl">⚠️</span>
-            </div>
-            <h1 className="text-2xl font-bold text-slate-100 mb-4">Assessment Not Found</h1>
-            <p className="text-slate-300 mb-8">
-              We couldn&apos;t find your assessment. Please check your email for instructions or contact support.
-            </p>
-            <div className="space-y-3">
-              <Button 
-                onClick={() => window.location.href = '/pricing'}
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
-              >
-                View Pricing Plans
-              </Button>
-              <Button 
-                variant="outline"
-                onClick={() => window.location.href = '/'}
-                className="w-full bg-slate-700/30 hover:bg-slate-600/50 text-slate-200 border-slate-600/50"
-              >
-                Return Home
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   const getInstructionsByTier = (tier: string) => {
     const baseInstructions = [
       "Complete the comprehensive organizational assessment survey",
@@ -112,6 +104,10 @@ function AssessmentStartContent() {
     ];
 
     const tierSpecificInstructions = {
+      BASIC: [
+        "Access to basic organizational assessment questions",
+        "Receive a summary report with key insights",
+      ],
       INDIVIDUAL: [],
       TEAM: [
         "Invite team members to collaborate on sections relevant to their areas",
@@ -127,6 +123,47 @@ function AssessmentStartContent() {
 
     return [...baseInstructions, ...(tierSpecificInstructions[tier as keyof typeof tierSpecificInstructions] || [])];
   };
+
+  const handleOrganizationTypeSelect = (type: OrganizationType) => {
+    setSelectedOrgType(type);
+    setShowTypeSelection(false);
+  };
+
+  // Show organization type selection screen first
+  if (showTypeSelection && !selectedOrgType) {
+    return (
+      <div className="min-h-screen elegant-bg">
+        <PublicNavigation />
+        
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="text-center mb-12 animate-fade-in">
+            <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Building2 className="h-10 w-10 text-white" />
+            </div>
+            <h1 className="text-4xl font-bold text-slate-100 mb-4">Select Your Organization Type</h1>
+            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+              Choose the option that best describes your organization to receive customized assessment questions 
+              and sector-specific insights tailored to your industry.
+            </p>
+          </div>
+
+          <OrganizationTypeSelect onSelect={handleOrganizationTypeSelect} />
+        </div>
+      </div>
+    );
+  }
+
+  // Safety check - should not happen with new logic
+  if (!assessment) {
+    return (
+      <div className="min-h-screen elegant-bg flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 mx-auto mb-4"></div>
+          <p className="text-slate-300">Loading assessment...</p>
+        </div>
+      </div>
+    );
+  }
 
   const assessmentAreas = [
     { name: 'Organizational Structure', icon: Target },
@@ -153,10 +190,21 @@ function AssessmentStartContent() {
           <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 celebrate-icon">
             <CheckCircle className="h-10 w-10 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-slate-100 mb-4">Payment Successful!</h1>
-          <p className="text-xl text-slate-300">
-            Your <span className="text-emerald-400 font-semibold">{assessment.tier.toLowerCase()}</span> assessment is ready to begin.
-          </p>
+          {assessment.tier === 'BASIC' ? (
+            <>
+              <h1 className="text-4xl font-bold text-slate-100 mb-4">Start Your Assessment</h1>
+              <p className="text-xl text-slate-300">
+                Begin your <span className="text-emerald-400 font-semibold">organizational realignment assessment</span> to identify improvement opportunities.
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="text-4xl font-bold text-slate-100 mb-4">Payment Successful!</h1>
+              <p className="text-xl text-slate-300">
+                Your <span className="text-emerald-400 font-semibold">{assessment.tier.toLowerCase()}</span> assessment is ready to begin.
+              </p>
+            </>
+          )}
         </div>
 
         {/* Instructions Card */}
@@ -261,13 +309,18 @@ function AssessmentStartContent() {
         <div className="text-center space-y-6 animate-slide-up" style={{animationDelay: '0.6s'}}>
           <div className="space-y-4">
             <Button
-              onClick={() => window.location.href = '/survey'}
+              onClick={() => {
+                const surveyUrl = selectedOrgType 
+                  ? `/survey?orgType=${selectedOrgType}&sessionId=${sessionId || 'default'}`
+                  : '/survey';
+                window.location.href = surveyUrl;
+              }}
               className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-12 py-4 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 btn-hover-lift"
             >
               Begin Assessment
             </Button>
             
-            {assessment.tier !== 'INDIVIDUAL' && (
+            {assessment.tier !== 'INDIVIDUAL' && assessment.tier !== 'BASIC' && (
               <div>
                 <Button
                   onClick={() => window.location.href = '/assessment/team'}

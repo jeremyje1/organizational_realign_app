@@ -6,24 +6,22 @@
 
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { ChevronRight, AlertCircle, CheckCircle2, Building2, Target, HelpCircle } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { ChevronRight, AlertCircle, CheckCircle2, Building2, HelpCircle } from 'lucide-react';
 import { 
-  comprehensiveQuestionBank, 
-  institutionTypeQuestion, 
-  getQuestionsForInstitution, 
-  getSectionsForInstitution,
-  type InstitutionType,
-  type Question as ComprehensiveQuestion
-} from '@/data/comprehensiveQuestionBank';
+  allQuestions as northpathQuestions,
+  OrganizationType,
+  Question as NorthpathQuestion
+} from '@/data/northpathQuestionBank';
 
-// Extend the comprehensive question interface for the realignment context
-interface RealignmentQuestion extends ComprehensiveQuestion {
+// Extend the NORTHPATH question interface for the realignment context
+interface RealignmentQuestion extends NorthpathQuestion {
   help?: {
     title: string;
     content: string;
     examples?: string[];
   };
+  priority?: string; // Add priority field for backward compatibility
 }
 
 interface FormErrors {
@@ -38,7 +36,7 @@ export default function RealignmentPage({
 }: {
   searchParams?: { slug?: string };
 }) {
-  const slug = searchParams?.slug;
+  const _slug = searchParams?.slug;
   const mainContentRef = useRef<HTMLElement>(null);
   
   // Form state management
@@ -46,32 +44,58 @@ export default function RealignmentPage({
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [selectedInstitutionType, setSelectedInstitutionType] = useState<InstitutionType | null>(null);
-  const [currentSection, setCurrentSection] = useState<string>('Institution Type');
+  const [selectedInstitutionType, setSelectedInstitutionType] = useState<OrganizationType | null>(null);
+  const [_currentSection, setCurrentSection] = useState<string>('Institution Type');
 
-  // Get questions based on selected institution type
+  // Get organization type selection question
+  const organizationTypeQuestion: RealignmentQuestion = {
+    id: 'ORG_TYPE',
+    section: 'Organization Type',
+    prompt: 'What type of organization are you?',
+    type: 'select',
+    options: [
+      'Community College',
+      'Trade & Technical School',
+      'Hospital & Healthcare System',
+      'Public University',
+      'Private University',
+      'Nonprofit Organization',
+      'Government Agency',
+      'Company & Business'
+    ],
+    priority: 'high'
+  };
+
+  // Filter questions based on organization type
   const getFilteredQuestions = (): RealignmentQuestion[] => {
     if (!selectedInstitutionType) {
-      // Always start with institution type selection
-      return [institutionTypeQuestion];
+      // Always start with organization type selection
+      return [organizationTypeQuestion];
     }
     
-    // Get comprehensive questions for selected institution type
-    const institutionQuestions = getQuestionsForInstitution(selectedInstitutionType);
+    // Get comprehensive questions for selected organization type
+    const filteredQuestions = northpathQuestions.filter(q => 
+      !q.vertical || q.vertical === selectedInstitutionType
+    );
     
-    // Add help content to questions that have tooltips
-    return institutionQuestions.map(question => ({
+    // Add help content to questions
+    return filteredQuestions.map(question => ({
       ...question,
-      help: question.tooltip ? {
+      priority: question.tags?.includes('HIGH') ? 'high' : 'medium', // Add priority based on tags
+      help: question.tags?.includes('TOOLTIP') ? {
         title: `Understanding: ${question.prompt}`,
-        content: question.tooltip.explanation || 'This question helps assess your organization\'s current state in this area.',
-        examples: question.tooltip.examples || []
+        content: 'This question helps assess your organization\'s current state in this area.',
+        examples: []
       } : undefined
     }));
   };
 
   const realignmentQuestions = getFilteredQuestions();
-  const sections = selectedInstitutionType ? getSectionsForInstitution(selectedInstitutionType) : ['Institution Type'];
+  
+  // Get sections from the filtered questions
+  const sections = selectedInstitutionType ? 
+    Array.from(new Set(realignmentQuestions.map(q => q.section))) : 
+    ['Organization Type'];
   
   const totalQuestions = realignmentQuestions.length;
   const answeredCount = Object.keys(answers).filter(key => {
@@ -88,26 +112,27 @@ export default function RealignmentPage({
     mainContentRef.current?.focus();
   };
 
-  // Handle institution type selection
+  // Handle organization type selection
   const handleInstitutionTypeChange = (institutionType: string) => {
     const mappedType = mapInstitutionType(institutionType);
     setSelectedInstitutionType(mappedType);
-    setAnswers({ INST_TYPE: institutionType }); // Keep the display value
-    setCurrentSection('Governance & Leadership'); // Move to first section after selection
+    setAnswers({ ORG_TYPE: institutionType }); // Keep the display value
+    setCurrentSection(realignmentQuestions.find(q => q.section !== 'Organization Type')?.section || 'Universal Section 1'); // Move to first section after selection
   };
 
-  // Map display strings to InstitutionType enum
-  const mapInstitutionType = (displayValue: string): InstitutionType => {
-    const mapping: Record<string, InstitutionType> = {
-      'Community College': 'community-college',
-      'Public University/State University': 'public-university',
-      'Private University/College': 'private-university',
-      'Healthcare Organization/Hospital System': 'healthcare',
+  // Map display strings to OrganizationType enum
+  const mapInstitutionType = (displayValue: string): OrganizationType => {
+    const mapping: Record<string, OrganizationType> = {
+      'Community College': 'community_college',
+      'Trade & Technical School': 'trade_technical',
+      'Hospital & Healthcare System': 'hospital_healthcare',
+      'Public University': 'public_university',
+      'Private University': 'private_university',
       'Nonprofit Organization': 'nonprofit',
-      'Government Agency': 'government',
-      'Corporate/Business Organization': 'corporate'
+      'Government Agency': 'government_agency',
+      'Company & Business': 'company_business'
     };
-    return mapping[displayValue] || 'corporate';
+    return mapping[displayValue] || 'company_business';
   };
 
   // Form validation
@@ -115,8 +140,8 @@ export default function RealignmentPage({
     const newErrors: FormErrors = {};
     
     realignmentQuestions.forEach(question => {
-      // Institution type is always required
-      if (question.id === 'INST_TYPE' || question.priority === 'high') {
+      // Organization type is always required
+      if (question.id === 'ORG_TYPE' || question.priority === 'high') {
         const answer = answers[question.id];
         if (answer === undefined || answer === null || 
             (Array.isArray(answer) && answer.length === 0) || 
@@ -379,7 +404,6 @@ export default function RealignmentPage({
                                   value={option}
                                   checked={answers[question.id] === option}
                                   onChange={(e) => handleInputChange(question.id, e.target.value)}
-                                  aria-invalid={errors[question.id] ? 'true' : 'false'}
                                   aria-describedby={errors[question.id] ? `${question.id}-error` : undefined}
                                   className="mt-1 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500 focus:outline-none focus:ring-2"
                                 />
@@ -436,7 +460,7 @@ export default function RealignmentPage({
                       )}
 
                       {/* Multi-select Checkboxes */}
-                      {question.type === 'multi-select' && question.options && (
+                      {question.type === 'multiselect' && question.options && (
                         <div className="space-y-2">
                           {question.options.map((option, optionIndex) => {
                             const inputId = `${question.id}-${optionIndex}`;

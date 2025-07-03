@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const supabase = createRouteHandlerClient({ cookies });
     
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
     
     // Add collaboration notifications
     if (collaborations?.length) {
-      collaborations.forEach((collab, index) => {
+      collaborations.forEach((collab, _index) => {
         // For new invitations
         if (!collab.joined_at) {
           notifications.push({

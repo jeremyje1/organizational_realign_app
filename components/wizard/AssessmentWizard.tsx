@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '../ui/button';
 import { Progress } from '../ui/progress';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
@@ -14,8 +14,7 @@ import {
   Target,
   Users,
   Building,
-  BookOpen,
-  ArrowRight
+  BookOpen
 } from 'lucide-react';
 
 interface WizardStep {
@@ -105,7 +104,6 @@ export function AssessmentWizard({
   const totalSteps = steps.length;
   const completedSteps = steps.filter(step => step.isCompleted).length;
   const progress = (completedSteps / totalSteps) * 100;
-  const totalEstimatedTime = steps.reduce((acc, step) => acc + step.estimatedTime, 0);
   const remainingTime = steps.slice(currentStep).reduce((acc, step) => acc + step.estimatedTime, 0);
 
   useEffect(() => {
@@ -117,9 +115,10 @@ export function AssessmentWizard({
     }, 120000); // 2 minutes
 
     return () => clearInterval(autoSaveInterval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [responses]);
 
-  const handleSaveProgress = async () => {
+  const handleSaveProgress = useCallback(async () => {
     if (isSaving) return;
     
     setIsSaving(true);
@@ -147,7 +146,7 @@ export function AssessmentWizard({
     } finally {
       setIsSaving(false);
     }
-  };
+  }, [assessmentId, responses, currentStep, totalSteps, isSaving, onSave]);
 
   const handleStepComplete = (stepResponses: Record<string, any>) => {
     const updatedResponses = { ...responses, ...stepResponses };

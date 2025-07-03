@@ -2,7 +2,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Server as ServerIO } from "socket.io";
 import { authenticateSocket } from '@/lib/socket-middleware';
-import { initAnalyticsTracking } from '@/lib/analytics-events';
 import { EventEmitter } from 'events';
 
 // For WebSocket support with Vercel
@@ -10,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
 // Define class and types in a separate module to avoid Next.js route validation issues
-import { setupSocketServer, SocketServer } from '@/lib/socket-server';
+// import { setupSocketServer, SocketServer } from '@/lib/socket-server';
 
 // Define global types
 declare global {
@@ -18,7 +17,7 @@ declare global {
   var socketServer: EventEmitter;
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   if (!global.serverIo) {
     // Create Socket.IO server if it doesn't exist yet
     const io = new ServerIO({
@@ -64,11 +63,11 @@ export async function GET(request: NextRequest) {
     global.serverIo = io;
     
     // Create socket server event emitter for analytics
-    const socketServer = new SocketServer(io);
-    global.socketServer = socketServer;
+    // const socketServer = new SocketServer(io);
+    // global.socketServer = socketServer;
     
     // Initialize analytics tracking
-    initAnalyticsTracking(socketServer);
+    // initAnalyticsTracking(socketServer);
     
     console.log('Socket.IO server initialized');
   }

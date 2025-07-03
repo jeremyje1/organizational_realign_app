@@ -1,8 +1,8 @@
 // components/collaboration/CollaboratorManagement.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -26,8 +26,6 @@ import {
 import { 
   UserPlus, 
   Trash, 
-  Check,
-  X,
   Mail,
   Shield,
   Eye,
@@ -65,9 +63,10 @@ export function CollaboratorManagement({
 
   useEffect(() => {
     fetchCollaborators();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assessmentId]);
 
-  const fetchCollaborators = async () => {
+  const fetchCollaborators = useCallback(async () => {
     setFetching(true);
     try {
       const response = await fetch(`/api/assessments/${assessmentId}/collaborators`);
@@ -82,7 +81,7 @@ export function CollaboratorManagement({
     } finally {
       setFetching(false);
     }
-  };
+  }, [assessmentId]);
 
   const addCollaborator = async () => {
     if (!email.trim()) {
@@ -123,7 +122,7 @@ export function CollaboratorManagement({
           variant: "destructive",
         });
       }
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "An error occurred while adding collaborator",
@@ -157,7 +156,7 @@ export function CollaboratorManagement({
           variant: "destructive",
         });
       }
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "An error occurred while removing collaborator",

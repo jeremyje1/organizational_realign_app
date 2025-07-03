@@ -1,15 +1,13 @@
 // components/collaboration/CollaborativeAssessment.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { CollaborativeEditor } from './CollaborativeEditor';
 import { AssessmentComments } from './AssessmentComments';
 import { ActiveCollaborators } from './ActiveCollaborators';
-import { Button } from '../ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Badge } from '../ui/badge';
-import { Save, Users, History, MessageSquare } from 'lucide-react';
+import { History } from 'lucide-react';
 import { useSocket } from '@/lib/socket-client';
 
 interface CollaborativeAssessmentProps {
@@ -25,12 +23,9 @@ export function CollaborativeAssessment({
 }: CollaborativeAssessmentProps) {
   const [activeTab, setActiveTab] = useState<string>(Object.keys(initialSections)[0] || 'overview');
   const [sections, setSections] = useState(initialSections);
-  const [isLoading, setIsLoading] = useState(false);
   const { connected } = useSocket();
 
-  // Save a section content
   const saveSection = async (section: string, content: string) => {
-    setIsLoading(true);
     try {
       // Update locally
       setSections(prev => ({
@@ -55,8 +50,6 @@ export function CollaborativeAssessment({
     } catch (error) {
       console.error('Error saving section:', error);
       // Handle error (revert changes, show notification, etc.)
-    } finally {
-      setIsLoading(false);
     }
   };
 

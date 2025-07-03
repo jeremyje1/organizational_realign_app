@@ -2,10 +2,22 @@
 @import "tailwindcss/utilities";
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Lora:wght@400;700&display=swap');
+
+/* NorthPath Brand Design Tokens */
+:root {
+  --np-blue-600: #00457C;   /* primary */
+  --np-blue-500: #0A6CBD;
+  --np-orange-400: #F8991F; /* accent */
+  --np-gray-900: #1A1A1A;   /* text */
+  --np-gray-100: #F6F8FA;   /* background */
+  --font-sans: 'Open Sans', ui-sans-serif, system-ui;
+  --font-serif: 'Lora', ui-serif, Georgia;
+}
 
 /* Base styles */
 html {
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
