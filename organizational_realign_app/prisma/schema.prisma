@@ -1,0 +1,128 @@
+// prisma/schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public", "auth"]
+}
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  name          String?
+  organizations Organization[] @relation("OrganizationOwner")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@schema("auth")
+}
+
+model Organization {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  owner       User     @relation("OrganizationOwner", fields: [ownerId], references: [id])
+  ownerId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@schema("public")
+}
+
+/// Stores each survey instance a user completes
+model Survey {
+  id          String    @id @default(uuid())
+  userId      String    @map("user_id")
+  institutionType String? @map("institution_type")
+  startedAt   DateTime  @default(now()) @map("started_at")
+  completedAt DateTime? @map("completed_at")
+
+  // Relations
+  answers Answer[]
+  responses SurveyResponse[]
+
+  @@index([userId])
+  @@schema("public")
+}
+
+/// Stores individual answers tied to a Survey
+model Answer {
+  id        String   @id @default(uuid())
+  surveyId  String   @map("survey_id")
+  question  String
+  valueInt  Int?
+  valueText String?
+
+  // Relations
+  survey Survey @relation(fields: [surveyId], references: [id])
+
+  @@index([surveyId])
+  @@schema("public")
+}
+
+/// New table for survey responses (matches our app's needs)
+model SurveyResponse {
+  id            String   @id @default(uuid())
+  userId        String   @map("user_id")
+  surveyId      String?  @map("survey_id")
+  questionId    String   @map("question_id")
+  numericAnswer Int?     @map("numeric_answer")
+  textAnswer    String?  @map("text_answer")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // Relations
+  survey Survey? @relation(fields: [surveyId], references: [id])
+
+  @@index([userId])
+  @@index([questionId])
+  @@map("survey_responses")
+  @@schema("public")
+}
+
+/// Existing Supabase questions table (managed outside Prisma)
+model Question {
+  id       Int     @id
+  section  Int?
+  prompt   String?
+  kind     String?
+  scale    Int?
+
+  @@map("questions")
+  @@schema("public")
+  @@ignore
+}
+
+/// Tracks user collaboration activities for analytics
+model CollaborationEvent {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  assessmentId String?  @map("assessment_id")
+  teamId       String?  @map("team_id")
+  type         String   // EDIT, COMMENT, VIEW
+  section      String?  // Section of the assessment
+  metadata     Json?    // Additional data specific to event type
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([assessmentId])
+  @@index([teamId])
+  @@index([type])
+  @@index([createdAt])
+  @@map("collaboration_events")
+  @@schema("public")
+}
+
+/// Supabase's internal migration history table (leave untouched)
+model SchemaMigration {
+  version     String   @id
+  inserted_at DateTime
+
+  @@map("schema_migrations")
+  @@schema("public")
+  @@ignore
+}

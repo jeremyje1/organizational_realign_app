@@ -1,0 +1,9 @@
+{
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "env": {
+    "NEXT_PUBLIC_DOMAIN": "northpathstrategies.org",
+    "NEXT_PUBLIC_APP_URL": "https://northpathstrategies.org",
+    "NEXT_PUBLIC_BASE_URL": "https://northpathstrategies.org"
+  }
+}

@@ -1,0 +1,59 @@
+/* Custom styles for the onboarding tour */
+
+.onboarding-tour-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  pointer-events: auto;
+}
+
+.onboarding-tour-tooltip {
+  position: absolute;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  padding: 1rem 1.5rem;
+  z-index: 10000;
+  max-width: 400px;
+  width: auto;
+  pointer-events: auto;
+  border: 2px solid var(--np-primary-blue, #3b82f6);
+}
+
+/* Enhanced target highlighting */
+.tour-target {
+  position: relative;
+  z-index: 10000;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5), 0 0 0 2000px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .onboarding-tour-tooltip {
+    position: fixed !important;
+    bottom: 5rem !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: auto !important;
+    max-width: 90vw !important;
+    width: 90vw !important;
+  }
+  
+  /* Ensure buttons have proper touch targets */
+  .tour-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Accessibility focus styles */
+.tour-button:focus-visible {
+  outline: 2px solid var(--np-primary-blue, #3b82f6);
+  outline-offset: 2px;
+}

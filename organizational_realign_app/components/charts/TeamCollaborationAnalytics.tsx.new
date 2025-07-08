@@ -1,0 +1,523 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip as RechartsTooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line,
+  Area,
+  AreaChart,
+} from 'recharts';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { 
+  Download, 
+  Calendar, 
+  Users, 
+  MessageSquare, 
+  Clock, 
+  Activity, 
+  BarChart2 
+} from 'lucide-react';
+
+interface TeamCollaborationAnalyticsProps {
+  teamId?: string;
+  assessmentId?: string;
+}
+
+export default function TeamCollaborationAnalytics({ teamId, assessmentId }: TeamCollaborationAnalyticsProps) {
+  const [activeMetric, setActiveMetric] = useState('activity');
+  const [timeRange, setTimeRange] = useState('week');
+  const [loading, setLoading] = useState(false);
+  const [analyticsData, setAnalyticsData] = useState<any>(null);
+  const [exportLoading, setExportLoading] = useState(false);
+
+  const COLORS = [
+    '#0f4c81', '#3498db', '#2ecc71', '#9b59b6', '#e67e22', '#e74c3c',
+    '#f1c40f', '#1abc9c', '#34495e', '#7f8c8d'
+  ];
+  
+  // Export analytics data
+  const handleExport = async (format: 'csv' | 'json') => {
+    setExportLoading(true);
+    try {
+      const queryParams = new URLSearchParams();
+      if (teamId) queryParams.append('teamId', teamId);
+      if (assessmentId) queryParams.append('assessmentId', assessmentId);
+      queryParams.append('timeRange', timeRange);
+      queryParams.append('format', format);
+      
+      const response = await fetch(`/api/analytics/export?${queryParams.toString()}`);
+      
+      if (!response.ok) {
+        throw new Error('Failed to export analytics data');
+      }
+      
+      if (format === 'csv') {
+        // For CSV, trigger download
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = `team-analytics-${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      } else {
+        // For JSON, open in a new tab
+        const data = await response.json();
+        const jsonString = JSON.stringify(data, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+      }
+    } catch (error) {
+      console.error('Failed to export analytics data:', error);
+    } finally {
+      setExportLoading(false);
+    }
+  };
+
+  // Fetch analytics data
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      setLoading(true);
+      try {
+        // Use real API endpoint for analytics data
+        const queryParams = new URLSearchParams();
+        if (teamId) queryParams.append('teamId', teamId);
+        if (assessmentId) queryParams.append('assessmentId', assessmentId);
+        queryParams.append('timeRange', timeRange);
+        
+        const response = await fetch(`/api/analytics/team-collaboration?${queryParams.toString()}`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch analytics data');
+        }
+        
+        const data = await response.json();
+        setAnalyticsData(data);
+      } catch (error) {
+        console.error('Failed to fetch analytics:', error);
+        // Fall back to mock data for demo purposes or development
+        setAnalyticsData(getMockData());
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnalytics();
+  }, [teamId, assessmentId, timeRange]);
+
+  // Mock data for demonstration
+  const getMockData = () => {
+    return {
+      userActivity: [
+        { name: 'John D.', edits: 23, comments: 15, views: 42 },
+        { name: 'Emma S.', edits: 18, comments: 32, views: 37 },
+        { name: 'Michael R.', edits: 29, comments: 8, views: 31 },
+        { name: 'Sophia L.', edits: 12, comments: 27, views: 45 },
+        { name: 'Daniel K.', edits: 15, comments: 19, views: 28 },
+      ],
+      activityTimeline: [
+        { date: 'Mon', edits: 15, comments: 8, views: 23 },
+        { date: 'Tue', edits: 22, comments: 17, views: 32 },
+        { date: 'Wed', edits: 18, comments: 23, views: 45 },
+        { date: 'Thu', edits: 29, comments: 15, views: 36 },
+        { date: 'Fri', edits: 32, comments: 24, views: 42 },
+        { date: 'Sat', edits: 12, comments: 8, views: 18 },
+        { date: 'Sun', edits: 9, comments: 6, views: 15 },
+      ],
+      collaborationDistribution: [
+        { name: 'Edits', value: 137 },
+        { name: 'Comments', value: 101 },
+        { name: 'Views', value: 221 },
+      ],
+      sectionActivity: [
+        { name: 'Overview', edits: 23, comments: 18, views: 45 },
+        { name: 'Current State', edits: 31, comments: 24, views: 42 },
+        { name: 'Goals', edits: 18, comments: 15, views: 37 },
+        { name: 'Challenges', edits: 42, comments: 29, views: 53 },
+        { name: 'Recommendations', edits: 28, comments: 22, views: 49 },
+      ],
+      timeSpent: [
+        { name: 'Overview', value: 45 },
+        { name: 'Current State', value: 83 },
+        { name: 'Goals', value: 37 },
+        { name: 'Challenges', value: 72 },
+        { name: 'Recommendations', value: 65 },
+      ]
+    };
+  };
+
+  if (loading || !analyticsData) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Team Collaboration Analytics</CardTitle>
+          <CardDescription>Loading analytics data...</CardDescription>
+        </CardHeader>
+        <CardContent className="h-80 flex items-center justify-center">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-sm text-gray-500">Loading collaboration insights...</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Team Collaboration Analytics</h2>
+          <p className="text-gray-500">Insights into how your team is collaborating on assessments</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm">
+            <select
+              value={timeRange}
+              onChange={(e) => setTimeRange(e.target.value)}
+              className="border-none bg-transparent outline-none"
+            >
+              <option value="day">Today</option>
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+              <option value="year">This Year</option>
+            </select>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="outline"
+              className="flex items-center gap-2 py-1 px-2 text-xs"
+              onClick={() => handleExport('csv')}
+              disabled={exportLoading}
+            >
+              <Download className="h-4 w-4" />
+              CSV
+            </Button>
+            <Button 
+              variant="outline"
+              className="flex items-center gap-2 py-1 px-2 text-xs"
+              onClick={() => handleExport('json')}
+              disabled={exportLoading}
+            >
+              <Download className="h-4 w-4" />
+              JSON
+            </Button>
+          </div>
+          <Button variant="outline" className="flex items-center gap-1 py-1 px-2 text-xs">
+            <Download size={16} />
+            Export
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+          <CardContent className="p-4 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-blue-800">Total Edits</p>
+              <p className="text-3xl font-bold text-blue-900">
+                {analyticsData.collaborationDistribution.find((d: any) => d.name === 'Edits')?.value || 0}
+              </p>
+              <p className="text-xs text-blue-700 mt-1">+12% from last {timeRange}</p>
+            </div>
+            <div className="h-14 w-14 rounded-full bg-blue-200 flex items-center justify-center">
+              <Activity size={28} className="text-blue-700" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+          <CardContent className="p-4 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-purple-800">Total Comments</p>
+              <p className="text-3xl font-bold text-purple-900">
+                {analyticsData.collaborationDistribution.find((d: any) => d.name === 'Comments')?.value || 0}
+              </p>
+              <p className="text-xs text-purple-700 mt-1">+8% from last {timeRange}</p>
+            </div>
+            <div className="h-14 w-14 rounded-full bg-purple-200 flex items-center justify-center">
+              <MessageSquare size={28} className="text-purple-700" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+          <CardContent className="p-4 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-green-800">Active Members</p>
+              <p className="text-3xl font-bold text-green-900">
+                {analyticsData.userActivity.length}
+              </p>
+              <p className="text-xs text-green-700 mt-1">+2 from last {timeRange}</p>
+            </div>
+            <div className="h-14 w-14 rounded-full bg-green-200 flex items-center justify-center">
+              <Users size={28} className="text-green-700" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Tabs defaultValue="activity" onValueChange={setActiveMetric}>
+        <TabsList>
+          <TabsTrigger value="activity" className="flex items-center gap-2">
+            <Activity className="h-4 w-4" />
+            Activity Timeline
+          </TabsTrigger>
+          <TabsTrigger value="contribution" className="flex items-center gap-2">
+            <BarChart2 className="h-4 w-4" />
+            Team Contributions
+          </TabsTrigger>
+          <TabsTrigger value="sections" className="flex items-center gap-2">
+            <Clock className="h-4 w-4" />
+            Section Analytics
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Activity Timeline Tab */}
+        <TabsContent value="activity" className="mt-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Activity Timeline</CardTitle>
+              <CardDescription>Collaborative activities over time</CardDescription>
+            </CardHeader>
+            <CardContent className="h-96">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={analyticsData.activityTimeline} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <RechartsTooltip 
+                    contentStyle={{
+                      borderRadius: '8px',
+                      border: '1px solid #e2e8f0',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                    }}
+                  />
+                  <Legend />
+                  <Area type="monotone" dataKey="views" stackId="1" stroke="#8884d8" fill="#8884d8" fillOpacity={0.3} />
+                  <Area type="monotone" dataKey="comments" stackId="1" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.3} />
+                  <Area type="monotone" dataKey="edits" stackId="1" stroke="#ffc658" fill="#ffc658" fillOpacity={0.3} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Team Contributions Tab */}
+        <TabsContent value="contribution" className="mt-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Team Member Contributions</CardTitle>
+              <CardDescription>Breakdown of activity by team member</CardDescription>
+            </CardHeader>
+            <CardContent className="h-96">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={analyticsData.userActivity}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  layout="vertical"
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" />
+                  <YAxis type="category" dataKey="name" width={80} />
+                  <RechartsTooltip 
+                    contentStyle={{
+                      borderRadius: '8px',
+                      border: '1px solid #e2e8f0',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                    }}
+                  />
+                  <Legend />
+                  <Bar dataKey="edits" name="Edits" fill={COLORS[0]} radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="comments" name="Comments" fill={COLORS[1]} radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="views" name="Views" fill={COLORS[2]} radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Collaboration Distribution</CardTitle>
+                <CardDescription>Types of collaborative activities</CardDescription>
+              </CardHeader>
+              <CardContent className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={analyticsData.collaborationDistribution}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, percent }) => `${name}: ${percent ? (percent * 100).toFixed(0) : 0}%`}
+                    >
+                      {analyticsData.collaborationDistribution.map((entry: any, index: number) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip formatter={(value) => [`${value} actions`, 'Count']} />
+                    <Legend verticalAlign="bottom" height={36} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Active Collaborators</CardTitle>
+                <CardDescription>Most active team members this {timeRange}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {analyticsData.userActivity
+                    .sort((a: any, b: any) => (b.edits + b.comments) - (a.edits + a.comments))
+                    .slice(0, 4)
+                    .map((user: any, index: number) => {
+                      const totalActivity = user.edits + user.comments + user.views;
+                      const maxActivity = Math.max(
+                        ...analyticsData.userActivity.map((u: any) => u.edits + u.comments + u.views)
+                      );
+                      const percentage = (totalActivity / maxActivity) * 100;
+
+                      return (
+                        <div key={index} className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-medium">
+                                {user.name.split(' ').map((n: string) => n[0]).join('')}
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium">{user.name}</p>
+                                <p className="text-xs text-gray-500">{user.edits} edits, {user.comments} comments</p>
+                              </div>
+                            </div>
+                            <Badge variant={index === 0 ? "default" : "outline"}>{percentage.toFixed(0)}%</Badge>
+                          </div>
+                          <Progress value={percentage} className="h-2" />
+                        </div>
+                      );
+                    })}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Section Analytics Tab */}
+        <TabsContent value="sections" className="mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Section Activity</CardTitle>
+                <CardDescription>Engagement by assessment section</CardDescription>
+              </CardHeader>
+              <CardContent className="h-96">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={analyticsData.sectionActivity}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <RechartsTooltip />
+                    <Legend />
+                    <Bar dataKey="edits" name="Edits" fill={COLORS[0]} />
+                    <Bar dataKey="comments" name="Comments" fill={COLORS[1]} />
+                    <Bar dataKey="views" name="Views" fill={COLORS[2]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Time Spent by Section</CardTitle>
+                <CardDescription>Minutes spent collaborating on each section</CardDescription>
+              </CardHeader>
+              <CardContent className="h-96">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={analyticsData.timeSpent}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, value }) => `${name}: ${value}m`}
+                    >
+                      {analyticsData.timeSpent.map((entry: any, index: number) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip formatter={(value) => [`${value} minutes`, 'Time Spent']} />
+                    <Legend verticalAlign="bottom" height={36} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Section Engagement Over Time</CardTitle>
+              <CardDescription>How team members interact with different sections</CardDescription>
+            </CardHeader>
+            <CardContent className="h-96">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={[
+                    { day: 'Mon', Overview: 12, 'Current State': 18, Goals: 8, Challenges: 22, Recommendations: 15 },
+                    { day: 'Tue', Overview: 15, 'Current State': 22, Goals: 12, Challenges: 28, Recommendations: 19 },
+                    { day: 'Wed', Overview: 10, 'Current State': 25, Goals: 17, Challenges: 32, Recommendations: 23 },
+                    { day: 'Thu', Overview: 18, 'Current State': 20, Goals: 15, Challenges: 24, Recommendations: 28 },
+                    { day: 'Fri', Overview: 22, 'Current State': 18, Goals: 19, Challenges: 30, Recommendations: 25 },
+                    { day: 'Sat', Overview: 8, 'Current State': 10, Goals: 7, Challenges: 15, Recommendations: 12 },
+                    { day: 'Sun', Overview: 5, 'Current State': 8, Goals: 6, Challenges: 12, Recommendations: 10 }
+                  ]}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="day" />
+                  <YAxis />
+                  <RechartsTooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="Overview" stroke={COLORS[0]} activeDot={{ r: 8 }} />
+                  <Line type="monotone" dataKey="Current State" stroke={COLORS[1]} />
+                  <Line type="monotone" dataKey="Goals" stroke={COLORS[2]} />
+                  <Line type="monotone" dataKey="Challenges" stroke={COLORS[3]} />
+                  <Line type="monotone" dataKey="Recommendations" stroke={COLORS[4]} />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}

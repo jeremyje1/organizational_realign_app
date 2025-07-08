@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "@types/node",
+      "@types/react",
+      "@types/react-dom",
+      "@types/jest",
+      "jest",
+      "@testing-library/jest-dom"
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ]
+  },
+  "include": [
+    "__tests__/**/*",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "types/jest-globals.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "cypress/**/*"
+  ]
+}

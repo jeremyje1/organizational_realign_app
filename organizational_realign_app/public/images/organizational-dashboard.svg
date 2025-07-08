@@ -1,0 +1,74 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#F9FAFB" />
+  
+  <!-- Header -->
+  <rect width="800" height="60" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1" />
+  <text x="30" y="37" font-family="Arial" font-size="18" font-weight="bold" fill="#1F2937">Organizational Dashboard</text>
+  
+  <!-- Navigation Sidebar -->
+  <rect x="0" y="60" width="200" height="540" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1" />
+  
+  <!-- Nav Items -->
+  <rect x="20" y="100" width="160" height="40" rx="8" fill="#EBF5FF" />
+  <text x="50" y="125" font-family="Arial" font-size="14" fill="#1D4ED8">Dashboard</text>
+  
+  <text x="50" y="175" font-family="Arial" font-size="14" fill="#6B7280">Team Structure</text>
+  <text x="50" y="225" font-family="Arial" font-size="14" fill="#6B7280">Process Map</text>
+  <text x="50" y="275" font-family="Arial" font-size="14" fill="#6B7280">Cost Analysis</text>
+  <text x="50" y="325" font-family="Arial" font-size="14" fill="#6B7280">Recommendations</text>
+  <text x="50" y="375" font-family="Arial" font-size="14" fill="#6B7280">Implementation</text>
+  
+  <!-- Main Content Area -->
+  <rect x="200" y="60" width="600" height="540" fill="#F3F4F6" />
+  
+  <!-- Dashboard Title -->
+  <text x="230" y="100" font-family="Arial" font-size="20" font-weight="bold" fill="#111827">Organizational Health Overview</text>
+  <text x="230" y="125" font-family="Arial" font-size="14" fill="#6B7280">Last updated: Today at 10:30 AM</text>
+  
+  <!-- KPI Cards -->
+  <rect x="230" y="145" width="170" height="100" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1" />
+  <text x="250" y="175" font-family="Arial" font-size="14" fill="#6B7280">Team Efficiency</text>
+  <text x="250" y="205" font-family="Arial" font-size="24" font-weight="bold" fill="#1D4ED8">87%</text>
+  <text x="320" y="205" font-family="Arial" font-size="14" fill="#10B981">↑ 12%</text>
+  
+  <rect x="420" y="145" width="170" height="100" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1" />
+  <text x="440" y="175" font-family="Arial" font-size="14" fill="#6B7280">Cost Optimization</text>
+  <text x="440" y="205" font-family="Arial" font-size="24" font-weight="bold" fill="#1D4ED8">$2.4M</text>
+  <text x="520" y="205" font-family="Arial" font-size="14" fill="#10B981">↑ 23%</text>
+  
+  <rect x="610" y="145" width="170" height="100" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1" />
+  <text x="630" y="175" font-family="Arial" font-size="14" fill="#6B7280">Process Score</text>
+  <text x="630" y="205" font-family="Arial" font-size="24" font-weight="bold" fill="#1D4ED8">92/100</text>
+  <text x="720" y="205" font-family="Arial" font-size="14" fill="#10B981">↑ 8%</text>
+  
+  <!-- Chart Area -->
+  <rect x="230" y="265" width="550" height="160" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1" />
+  <text x="250" y="295" font-family="Arial" font-size="16" font-weight="bold" fill="#111827">Organizational Performance Trend</text>
+  
+  <!-- Simple Line Chart -->
+  <polyline points="250,375 300,350 350,365 400,320 450,330 500,310 550,290 600,270 650,280 700,250" 
+           fill="none" stroke="#1D4ED8" stroke-width="3" />
+           
+  <!-- X-axis -->
+  <line x1="250" y1="380" x2="700" y2="380" stroke="#E5E7EB" stroke-width="1" />
+  <text x="250" y="400" font-family="Arial" font-size="10" fill="#6B7280">Jan</text>
+  <text x="350" y="400" font-family="Arial" font-size="10" fill="#6B7280">Mar</text>
+  <text x="450" y="400" font-family="Arial" font-size="10" fill="#6B7280">May</text>
+  <text x="550" y="400" font-family="Arial" font-size="10" fill="#6B7280">Jul</text>
+  <text x="650" y="400" font-family="Arial" font-size="10" fill="#6B7280">Sep</text>
+  
+  <!-- Bottom Section - Recommendations -->
+  <rect x="230" y="445" width="550" height="135" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1" />
+  <text x="250" y="475" font-family="Arial" font-size="16" font-weight="bold" fill="#111827">Key Recommendations</text>
+  
+  <!-- Recommendation Items -->
+  <circle cx="260" cy="505" r="6" fill="#1D4ED8" />
+  <text x="280" y="510" font-family="Arial" font-size="14" fill="#111827">Reorganize marketing and sales into cross-functional teams</text>
+  
+  <circle cx="260" cy="535" r="6" fill="#1D4ED8" />
+  <text x="280" y="540" font-family="Arial" font-size="14" fill="#111827">Implement agile methodologies across product development</text>
+  
+  <circle cx="260" cy="565" r="6" fill="#1D4ED8" />
+  <text x="280" y="570" font-family="Arial" font-size="14" fill="#111827">Streamline approval workflows to reduce decision latency</text>
+</svg>

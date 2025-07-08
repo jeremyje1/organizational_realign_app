@@ -1,0 +1,258 @@
+import "./globals.css";
+import type { Metadata } from "next";
+import Providers from "./providers";
+import type { ReactNode } from "react";
+import { Toaster } from "@/components/ui/toaster";
+import { NotificationProvider } from "@/components/ui/notification-system";
+import { PreloadAssets } from "@/components/ui/performance-optimizer";
+import PWAInstall from "@/components/pwa/PWAInstall";
+import { Inter, Lora } from 'next/font/google';
+import Analytics from '@/components/Analytics';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import AccessibilityEnhancements from '@/components/accessibility/AccessibilityEnhancements';
+import ClientOptimizations from '@/components/ClientOptimizations';
+import QualityAssurance from '@/components/testing/QualityAssurance';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const lora = Lora({
+  subsets: ['latin'],
+  variable: '--font-serif',
+  display: 'swap',
+});
+
+export const metadata: Metadata = {
+  title: {
+    default: "NorthPath Strategies - Organizational Realignment & Optimization Suite",
+    template: "%s | NorthPath Strategies"
+  },
+  description: "Reduce operating costs by 23% in 90 days with NorthPath's data-driven organizational realignment. Proprietary optimization engine with proven ROI for Fortune 500 results. Free assessment in under 15 minutes.",
+  keywords: [
+    "organizational realignment",
+    "cost reduction consulting",
+    "operational efficiency",
+    "business transformation",
+    "organizational optimization",
+    "fortune 500 consulting",
+    "cost savings analysis",
+    "business process improvement", 
+    "organizational assessment",
+    "management consulting",
+    "strategic consulting",
+    "operational excellence",
+    "performance optimization",
+    "organizational design",
+    "change management consulting"
+  ],
+  authors: [{ name: "Jeremy Estrella", url: "https://northpathstrategies.org/about" }],
+  creator: "NorthPath Strategies",
+  publisher: "NorthPath Strategies",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "NorthPath Strategies",
+    startupImage: [
+      {
+        url: "/icons/apple-startup-640x1136.png",
+        media: "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)",
+      },
+      {
+        url: "/icons/apple-startup-750x1334.png",
+        media: "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)",
+      },
+      {
+        url: "/icons/apple-startup-1242x2208.png",
+        media: "(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)",
+      },
+    ],
+  },
+  applicationName: "NorthPath Strategies",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://app.northpathstrategies.org',
+    siteName: 'NorthPath Strategies',
+    title: 'Reduce Operating Costs by 23% in 90 Days - NorthPath Strategies',
+    description: 'Fortune 500 results for organizations seeking rapid cost reduction and operational excellence. Free assessment delivers $2.4M average annual savings in under 15 minutes.',
+    images: [
+      {
+        url: 'https://app.northpathstrategies.org/og-homepage.png',
+        width: 1200,
+        height: 630,
+        alt: 'NorthPath Strategies - Fortune 500 Cost Reduction Results',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Reduce Operating Costs by 23% in 90 Days - NorthPath Strategies',
+    description: 'Fortune 500 results for rapid cost reduction. Free assessment in 15 minutes delivers $2.4M average savings.',
+    images: ['https://app.northpathstrategies.org/twitter-image.png'],
+    creator: '@northpathstrat',
+  },
+  verification: {
+    google: 'your-google-verification-code',
+    yandex: 'your-yandex-verification-code',
+  },
+  category: 'Education',
+  classification: 'Higher Education Consulting',
+  referrer: 'origin-when-cross-origin',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://app.northpathstrategies.org'),
+  alternates: {
+    canonical: 'https://app.northpathstrategies.org',
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'NorthPath Strategies',
+    description: 'Strategic organizational realignment consulting delivering 23% cost reduction in 90 days with Fortune 500 methodologies',
+    url: 'https://app.northpathstrategies.org',
+    logo: 'https://app.northpathstrategies.org/images/northpath-logo.png',
+    image: 'https://app.northpathstrategies.org/og-homepage.png',
+    founder: {
+      '@type': 'Person',
+      name: 'Jeremy Estrella',
+      jobTitle: 'Founder & Strategic Consultant',
+      description: 'Organizational strategist with 15+ years experience delivering measurable cost reduction and operational excellence',
+      image: 'https://app.northpathstrategies.org/images/jeremy-estrella.jpg'
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Houston',
+      addressRegion: 'Texas',
+      addressCountry: 'United States'
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+1-555-123-4567',
+      email: 'info@northpathstrategies.org',
+      contactType: 'customer service',
+      availableLanguage: 'English'
+    },
+    serviceArea: {
+      '@type': 'Country',
+      name: 'United States',
+    },
+    areaServed: 'United States',
+    industry: 'Management Consulting',
+    knowsAbout: [
+      'Organizational Realignment',
+      'Cost Reduction Strategy',
+      'Operational Excellence',
+      'Business Transformation',
+      'Performance Optimization',
+      'Management Consulting',
+    ],
+    offers: [
+      {
+        '@type': 'Service',
+        name: 'Organizational Assessment',
+        description: 'Comprehensive 15-minute assessment identifying cost reduction opportunities worth $2.4M average annual savings',
+        provider: {
+          '@type': 'Organization',
+          name: 'NorthPath Strategies',
+        },
+        serviceType: 'Business Consulting'
+      },
+      {
+        '@type': 'Service', 
+        name: 'Strategic Implementation',
+        description: '90-day transformation program delivering 23% cost reduction with Fortune 500 methodologies',
+        provider: {
+          '@type': 'Organization',
+          name: 'NorthPath Strategies',
+        },
+        serviceType: 'Management Consulting'
+      }
+    ],
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      reviewCount: '500',
+      bestRating: '5'
+    },
+    review: [
+      {
+        '@type': 'Review',
+        reviewRating: {
+          '@type': 'Rating',
+          ratingValue: '5'
+        },
+        author: {
+          '@type': 'Organization',
+          name: 'Fortune 500 Healthcare System'
+        },
+        reviewBody: 'Achieved $2.3M in annual savings through strategic reorganization. Exceeded all expectations.'
+      }
+    ]
+  };
+
+  return (
+    <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#6366F1" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        {/* Preconnect to external domains for performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://api.stripe.com" />
+        <link rel="preconnect" href="https://js.stripe.com" />
+        {/* DNS prefetch for better performance */}
+        <link rel="dns-prefetch" href="//supabase.co" />
+        <link rel="dns-prefetch" href="//vercel.app" />
+      </head>
+      <body className={`min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans antialiased flex flex-col ${inter.variable} ${lora.variable}`}>
+        {/* <ClientOptimizations /> - Temporarily disabled */}
+        {/* <Analytics /> - Temporarily disabled */}
+        {/* <PreloadAssets /> - Temporarily disabled */}
+        <ThemeProvider>
+          <NotificationProvider>
+            {/* <PWAInstall> - Temporarily disabled */}
+              <Providers>
+                {children}
+              </Providers>
+            {/* </PWAInstall> - Temporarily disabled */}
+          </NotificationProvider>
+        </ThemeProvider>
+        {/* <AccessibilityEnhancements /> - Temporarily disabled */}
+        {/* <QualityAssurance /> - Temporarily disabled */}
+        <Toaster />
+      </body>
+    </html>
+  );
+}

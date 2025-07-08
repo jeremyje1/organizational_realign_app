@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    /* -------------------------------------------------- */
+    /*  language                                           */
+    /* -------------------------------------------------- */
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "preserve",
+    "strict": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    /* -------------------------------------------------- */
+    /*  paths / aliases                                   */
+    /* -------------------------------------------------- */
+    "baseUrl": ".",
+    "paths": {
+      "@/*":            ["./*"],
+      "@/lib/*":        ["lib/*"],
+      "@/types/*":      ["types/*"],
+      "@/components/*": ["components/*"],
+      "@/app/*":        ["app/*"],
+      "@/hooks/*":      ["hooks/*"],
+      "@/data/*":       ["data/*"]
+    },
+    /* -------------------------------------------------- */
+    /*  libs / types                                      */
+    /* -------------------------------------------------- */
+    "types": [
+      "@types/node",
+      "@types/react",
+      "@types/react-dom",
+      "@types/jest",
+      "jest",
+      "@testing-library/jest-dom"
+    ],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2022"
+    ],
+    "allowJs": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "cypress/**/*",
+    "cypress.config.ts"
+  ]
+}
