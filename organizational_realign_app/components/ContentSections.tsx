@@ -66,14 +66,7 @@ const ContentItem = ({ item, index }: { item: typeof contentItems[0], index: num
         {item.icon}
       </div>
       <h3 className="text-xl font-bold text-enhanced-dark mb-4 group-hover:text-professional-blue transition-colors duration-300">{item.title}</h3>
-      <p className="text-enhanced-dark opacity-80 mb-6 leading-relaxed">{item.description}</p>
-      <Link 
-        href={item.link} 
-        className="inline-flex items-center text-professional-blue font-semibold hover:text-emerald-600 transition-colors group-hover:translate-x-1 transform transition-transform duration-300"
-      >
-        Learn More
-        <ChevronRight className="h-5 w-5 ml-1 transition-transform group-hover:translate-x-1" />
-      </Link>
+      <p className="text-enhanced-dark opacity-80 leading-relaxed pb-2">{item.description}</p>
     </motion.div>
   );
 };

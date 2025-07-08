@@ -12,9 +12,11 @@ const ALLOWED_ORIGINS = [
   'https://api.stripe.com',
 ];
 
-// Generate a nonce for CSP
+// Generate a nonce for CSP using Web Crypto API (Edge Runtime compatible)
 const generateNonce = () => {
-  return Buffer.from(crypto.randomBytes(16)).toString('base64');
+  const array = new Uint8Array(16);
+  crypto.getRandomValues(array);
+  return btoa(String.fromCharCode(...array));
 };
 
 export async function middleware(request: NextRequest) {

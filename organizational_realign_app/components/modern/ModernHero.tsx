@@ -17,7 +17,7 @@ export default function ModernHero() {
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full bg-slate-100">
         <Image
-          src="/images/pages-background-60.jpg"
+          src="/images/optimized-041412-60.jpg"
           alt="Professional consulting background"
           fill
           priority
@@ -29,6 +29,23 @@ export default function ModernHero() {
       {/* Light Overlay for better text readability */}
       <div className="absolute inset-0 bg-white bg-opacity-60" />
       
+      {/* Dashboard Visualization - Left aligned */}
+      <div className="relative z-5 hidden lg:block w-1/2 h-3/4 left-10" style={{ position: 'absolute', bottom: '10%', opacity: 0.85 }}>
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.2, delay: 0.5 }}
+        >
+          <Image 
+            src="/images/organizational-dashboard.svg"
+            alt="NorthPath Strategies Dashboard"
+            width={600}
+            height={400}
+            className="rounded-xl shadow-2xl"
+          />
+        </motion.div>
+      </div>
+
       {/* Content - Right aligned */}
       <div className="relative z-10 w-full max-w-7xl px-6 text-right mr-8" style={{ zIndex: 10 }}>
         <div className="max-w-2xl ml-auto">
@@ -124,15 +141,7 @@ export default function ModernHero() {
             </Link>
           </motion.div>
 
-          {/* Trust indicators */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="text-slate-800 font-medium text-sm bg-white/90 backdrop-blur-sm rounded-lg px-6 py-3 inline-block"
-          >
-            ✅ 500+ Organizations Optimized • $2.4M Average Annual Savings • 95% Success Rate
-          </motion.div>
+          {/* Trust indicators removed as requested */}
         </div>
       </div>
 

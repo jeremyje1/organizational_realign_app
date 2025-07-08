@@ -19,7 +19,7 @@ export default function CostReductionPage() {
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Strategic Cost Reduction Without Sacrificing Quality
               </h1>
-              <p className="text-xl text-gray-700 mb-8">
+              <p className="text-xl text-gray-800 mb-8 font-medium">
                 Our proven methodologies help organizations identify and eliminate inefficiencies, 
                 reduce operational costs, and optimize resources - all while maintaining or improving 
                 service quality and operational effectiveness.
@@ -39,10 +39,11 @@ export default function CostReductionPage() {
             </div>
             <div className="relative h-80 md:h-96 lg:h-full rounded-xl overflow-hidden">
               <Image 
-                src="/images/optimized-hero-logo-60.jpg"
+                src="/images/optimized-041412-60.webp"
                 alt="Cost reduction strategies visualization"
                 fill
                 className="object-cover"
+                priority
               />
             </div>
           </div>

@@ -14,11 +14,12 @@ export default function EnhancedFooter() {
   ];
 
   const services = [
-    { name: 'Strategy & Systems Design', href: '/solutions/strategy-systems' },
-    { name: 'Institutional Transformation', href: '/solutions/institutional-transformation' },
-    { name: 'Mission-Driven Solutions', href: '/solutions/mission-driven-solutions' },
-    { name: 'Strategic Planning', href: '/services#strategic-planning' },
-    { name: 'Accreditation Support', href: '/services#accreditation' },
+    { name: 'NorthPath Assessment — Single Use', href: '/pricing#single-use' },
+    { name: 'NorthPath Assessment — Monthly', href: '/pricing#monthly' },
+    { name: 'Comprehensive Analysis Package', href: '/pricing#comprehensive' },
+    { name: 'Enterprise Transformation Package', href: '/pricing#enterprise' },
+    { name: 'Custom Consulting Services', href: '/contact' },
+    { name: 'All Services', href: '/pricing' },
   ];
 
   const resources = [
@@ -155,10 +156,14 @@ export default function EnhancedFooter() {
             <h4 className="text-lg font-semibold mb-4 border-b border-enhanced-dark/20 pb-2 text-enhanced-dark">Services</h4>
             <ul className="space-y-3">
               {services.map((service, index) => (
-                <li key={index} className="group">
+                <li key={index} className={`group ${service.name === 'All Services' ? 'mt-5' : ''}`}>
                   <Link 
                     href={service.href} 
-                    className="text-enhanced-dark opacity-80 hover:opacity-100 hover:text-professional-blue transition-all duration-300 flex items-center"
+                    className={`flex items-center ${
+                      service.name === 'All Services' 
+                      ? 'text-professional-blue font-medium hover:text-emerald-600' 
+                      : 'text-enhanced-dark opacity-80 hover:opacity-100 hover:text-professional-blue'
+                    } transition-all duration-300`}
                   >
                     <ChevronRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-professional-blue" />
                     {service.name}

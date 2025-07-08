@@ -10,12 +10,12 @@ import { CheckCircle, ArrowRight } from 'lucide-react';
 
 export default function FounderBio() {
   const expertise = [
-    "Strategic Organizational Assessment",
-    "Change Management & Implementation", 
-    "AI-Powered Analytics Integration",
-    "Executive Leadership Coaching",
-    "Performance Optimization",
-    "Cultural Transformation"
+    "Higher Education Transformation",
+    "Student Success Architecture", 
+    "Strategic Systems Realignment",
+    "Academic & Career Pathways",
+    "Institutional Effectiveness",
+    "Change Leadership"
   ];
 
   return (
@@ -37,11 +37,11 @@ export default function FounderBio() {
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
               Meet Jeremy Estrella
               <span className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent block">
-                Founder & Strategic Consultant
+                Founder & Principal
               </span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              Two decades of proven expertise in organizational transformation and strategic consulting
+              Strategic Systems Realignment | Student Success Architecture | Higher Ed Transformation
             </p>
           </motion.div>
 
@@ -56,18 +56,18 @@ export default function FounderBio() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <div className="relative">
-                <div className="w-80 h-80 lg:w-96 lg:h-96 rounded-2xl overflow-hidden shadow-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
+                <div className="w-64 h-64 lg:w-80 lg:h-80 rounded-2xl overflow-hidden shadow-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
                   <Image
                     src="/images/jeremy-estrella.jpg"
                     alt="Jeremy Estrella, Founder & Strategic Consultant at NorthPath Strategies"
-                    width={384}
-                    height={384}
+                    width={320}
+                    height={320}
                     className="w-full h-full object-cover"
                     priority
                   />
                 </div>
                 {/* Professional Frame Effect */}
-                <div className="absolute -inset-4 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-3xl -z-10"></div>
+                <div className="absolute -inset-3 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-3xl -z-10"></div>
               </div>
             </motion.div>
 
@@ -80,26 +80,24 @@ export default function FounderBio() {
             >
               <div className="space-y-6">
                 <h3 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  Transforming Organizations Through
-                  <span className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent block">
-                    Data-Driven Strategy
-                  </span>
+                  Jeremy Estrella
                 </h3>
                 
-                <div className="text-lg text-gray-600 dark:text-gray-300 space-y-4 leading-relaxed">
+                <div className="text-lg text-gray-800 dark:text-gray-200 space-y-4 leading-relaxed">
                   <p>
-                    Jeremy Estrella brings over two decades of strategic consulting experience to help organizations 
-                    navigate complex transformation challenges. His unique approach combines traditional consulting 
-                    expertise with cutting-edge AI-powered analytics.
+                    Jeremy Estrella is a nationally recognized higher education leader, systems strategist, and student success architect with over two decades of leadership experience transforming institutions to better serve students, communities, and the future of work.
                   </p>
                   <p>
-                    As the founder of NorthPath Strategies, Jeremy has developed proprietary methodologies that 
-                    help organizations achieve measurable improvements in efficiency, performance, and 
-                    organizational alignment.
+                    Before founding NorthPath Strategies, Jeremy served in leadership roles across large, complex community college systems, including Houston Community College and Portland Community College, where he led multimillion-dollar initiatives in academic and career pathways, student success infrastructure, and institution-wide redesign.
                   </p>
                   <p>
-                    His data-driven approach to organizational transformation focuses on delivering sustainable 
-                    results and helping clients achieve their strategic objectives through systematic improvement.
+                    Jeremy's approach is grounded in clarity, alignment, and execution. From leading the integration of holistic student support systems to architecting multi-campus operational realignments, his work consistently delivers measurable impact: increased persistence, stronger workforce pipelines, and more access to higher education.
+                  </p>
+                  <p>
+                    A former faculty chair and seasoned accreditation leader, Jeremy brings a unique ability to connect policy, practice, and purpose, making him a trusted advisor to college presidents, provosts, and change-making teams nationwide.
+                  </p>
+                  <p>
+                    He holds an M.A. in Communication Studies from California State University, Long Beach, and remains passionate about educational access, systems innovation, and mentoring first-generation college students.
                   </p>
                 </div>
               </div>
@@ -121,8 +119,8 @@ export default function FounderBio() {
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
                     >
-                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      <span className="text-gray-700 dark:text-gray-300">{item}</span>
+                      <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+                      <span className="text-gray-800 dark:text-gray-200 font-medium">{item}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -137,7 +135,7 @@ export default function FounderBio() {
               >
                 <Button asChild size="lg" className="bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white">
                   <a href="https://calendly.com/jeremyestrella/30min" target="_blank" rel="noopener noreferrer">
-                    Schedule a Consultation with Jeremy
+                    Schedule a Strategy Session
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </a>
                 </Button>

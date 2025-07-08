@@ -19,7 +19,7 @@ export default function TalentAlignmentPage() {
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Align Your Talent With Business Objectives
               </h1>
-              <p className="text-xl text-gray-700 mb-8">
+              <p className="text-xl text-gray-800 mb-8 font-medium">
                 Our talent alignment solutions help organizations place the right people in the right roles, 
                 develop critical skills, and create career paths that enhance both business performance and 
                 employee satisfaction.
@@ -39,10 +39,11 @@ export default function TalentAlignmentPage() {
             </div>
             <div className="relative h-80 md:h-96 lg:h-full rounded-xl overflow-hidden">
               <Image 
-                src="/images/optimized-hero-logo-60.jpg"
+                src="/images/organizational-dashboard.svg"
                 alt="Talent alignment strategies visualization"
                 fill
-                className="object-cover"
+                className="object-contain bg-white/90"
+                priority
               />
             </div>
           </div>

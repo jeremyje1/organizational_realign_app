@@ -279,6 +279,7 @@ function PricingPlan({
 
   return (
     <motion.div
+      id={plan.id}
       className={`relative ${isPopular ? 'scale-105 z-10' : ''}`}
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -543,6 +544,7 @@ export default function ModernPricing() {
 
   const plans = [
     {
+      id: 'single-use',
       name: 'NorthPath Assessment — Single Use',
       description: 'Perfect for institutions wanting a quick organizational diagnostic',
       price: 899,
@@ -562,6 +564,7 @@ export default function ModernPricing() {
       additionalInfo: 'One-time use • Best for quick diagnostics'
     },
     {
+      id: 'monthly',
       name: 'NorthPath Assessment — Monthly Access',
       description: 'Unlimited assessments with progress tracking capabilities',
       price: 899,
@@ -581,6 +584,7 @@ export default function ModernPricing() {
       additionalInfo: 'Cancel anytime • Best for ongoing monitoring'
     },
     {
+      id: 'comprehensive',
       name: 'Comprehensive Analysis & Strategy Package',
       description: 'Deep analysis with expert guidance and strategic planning',
       price: 3999,
@@ -600,6 +604,7 @@ export default function ModernPricing() {
       additionalInfo: 'Most popular for strategic planning'
     },
     {
+      id: 'enterprise',
       name: 'Enterprise Transformation Package',
       description: 'Full system-wide transformation with dedicated support',
       price: 8999,
@@ -673,7 +678,7 @@ export default function ModernPricing() {
         </div>
 
         {/* Pricing calculator */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
+        <div id="calculator" className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
           <div>
             <motion.h3
               className="text-3xl font-bold text-neutral-900 dark:text-white mb-6"

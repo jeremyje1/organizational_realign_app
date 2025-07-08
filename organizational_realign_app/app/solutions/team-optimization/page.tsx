@@ -19,7 +19,7 @@ export default function TeamOptimizationPage() {
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Optimize Your Team for Peak Performance
               </h1>
-              <p className="text-xl text-gray-700 mb-8">
+              <p className="text-xl text-gray-800 mb-8 font-medium">
                 Our team optimization solutions help organizations build high-performing teams through strategic 
                 restructuring, enhanced collaboration frameworks, and leadership development - resulting in 
                 increased productivity and employee satisfaction.
@@ -39,10 +39,11 @@ export default function TeamOptimizationPage() {
             </div>
             <div className="relative h-80 md:h-96 lg:h-full rounded-xl overflow-hidden">
               <Image 
-                src="/images/optimized-hero-logo-60.jpg"
+                src="/images/optimized-041412-60.jpg"
                 alt="Team optimization strategies visualization"
                 fill
                 className="object-cover"
+                priority
               />
             </div>
           </div>
