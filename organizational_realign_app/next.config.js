@@ -1,6 +1,33 @@
 /** @type {import('next').NextConfig} */
 const crypto = require('crypto');
 
+// Security utility function to check environment variables
+const checkRequiredEnvVars = () => {
+  const requiredEnvVars = [
+    'NEXT_PUBLIC_SUPABASE_URL',
+    'NEXT_PUBLIC_SUPABASE_ANON_KEY',
+    'DATABASE_URL',
+    'NEXTAUTH_URL',
+    'NEXTAUTH_SECRET',
+  ];
+
+  const missingVars = requiredEnvVars.filter(
+    envVar => !process.env[envVar]
+  );
+
+  if (missingVars.length > 0) {
+    console.warn(`⚠️  Missing required environment variables: ${missingVars.join(', ')}`);
+    console.warn('Some functionality may not work as expected.');
+  }
+  
+  return true;
+};
+
+// Run the check in non-production environments
+if (process.env.NODE_ENV !== 'production') {
+  checkRequiredEnvVars();
+}
+
 const nextConfig = {
   reactStrictMode: true,
 
@@ -43,6 +70,43 @@ const nextConfig = {
   // ─── Performance & Caching ─────────────
   poweredByHeader: false,
   compress: true,
+  
+  // ─── Security Headers ─────────────
+  headers: async () => [
+    {
+      source: '/:path*',
+      headers: [
+        {
+          key: 'X-DNS-Prefetch-Control',
+          value: 'on',
+        },
+        {
+          key: 'Strict-Transport-Security',
+          value: 'max-age=63072000; includeSubDomains; preload',
+        },
+        {
+          key: 'X-Content-Type-Options',
+          value: 'nosniff',
+        },
+        {
+          key: 'X-Frame-Options',
+          value: 'SAMEORIGIN',
+        },
+        {
+          key: 'X-XSS-Protection',
+          value: '1; mode=block',
+        },
+        {
+          key: 'Referrer-Policy',
+          value: 'strict-origin-when-cross-origin',
+        },
+        {
+          key: 'Permissions-Policy',
+          value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+        },
+      ],
+    },
+  ],
 
   images: {
     domains: ['lh3.googleusercontent.com', 'northpathstrategies.org', 'app.northpathstrategies.org'],

@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import crypto from 'crypto';
+
+// Import security middleware
+import './middleware/security';
 
 // Define which paths should redirect to the app subdomain
 const APP_PATHS = [

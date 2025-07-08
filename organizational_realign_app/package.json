@@ -18,7 +18,9 @@
     "generate-sitemap": "next-sitemap --config next-sitemap.config.js",
     "test:e2e": "pnpm playwright test",
     "test:e2e:ui": "pnpm playwright test --ui",
-    "check-links": "node scripts/check-links.js"
+    "check-links": "node scripts/check-links.js",
+    "security:audit": "npm audit --audit-level=moderate",
+    "security:check": "node scripts/security-check.js"
   },
   "dependencies": {
     "@auth/core": "^0.40.0",
