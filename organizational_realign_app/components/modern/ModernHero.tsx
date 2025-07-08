@@ -103,7 +103,7 @@ export default function ModernHero() {
               </Button>
             </Link>
             
-            <Link href="/downloads/NorthPath_Strategies_Profile.pdf" target="_blank" rel="noopener noreferrer">
+            <Link href="/resources/overview" target="_blank" rel="noopener noreferrer">
               <Button
                 variant="outline"
                 size="lg"
