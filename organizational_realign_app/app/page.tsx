@@ -1,4 +1,3 @@
-import ImprovedModernNavbar from '@/components/modern/ImprovedModernNavbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import EnhancedHero from '@/components/EnhancedHero';
 import ContentSections from '@/components/ContentSections';
@@ -43,9 +42,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <>
-      <ImprovedModernNavbar />
-      
+    <>      
       {/* Client-side additional SEO enhancements */}
       <EnhancedSEO 
         title="NorthPath Strategies - Redesign the Systems. Align the Strategy. Transform the Institution."
