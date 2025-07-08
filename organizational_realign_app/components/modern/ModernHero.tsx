@@ -103,6 +103,16 @@ export default function ModernHero() {
               </Button>
             </Link>
             
+            <Link href="/downloads/NorthPath_Strategies_Profile.pdf" target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-slate-700 text-slate-800 hover:bg-slate-800 hover:text-white font-medium text-lg px-8 py-4 rounded-2xl backdrop-blur-md hover:scale-105 transition-all duration-300 group"
+              >
+                Download Overview
+              </Button>
+            </Link>
+            
             <Link href="mailto:jeremy@northpathstrategies.com?subject=Enterprise%20Sales%20Inquiry">
               <Button
                 variant="outline"
