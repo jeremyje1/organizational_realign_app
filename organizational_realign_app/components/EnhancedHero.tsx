@@ -68,9 +68,10 @@ export default function EnhancedHero() {
           sizes="100vw"
           fetchPriority="high"
           structuredData={true}
+          overlay={true}
+          overlayType="diagonal"
+          overlayOpacity={0.6}
         />
-        {/* Gradient overlay for better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/40 to-black/60"></div>
       </div>
       
       {/* Background Elements */}

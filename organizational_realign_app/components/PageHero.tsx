@@ -1,5 +1,6 @@
 // PageHero.tsx - A reusable hero component for page headers
 import React from 'react';
+import ResponsiveImage from './ui/responsive-image';
 
 interface PageHeroProps {
   title: string;
@@ -54,11 +55,16 @@ const PageHero: React.FC<PageHeroProps> = ({
     >
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gray-900/60 z-10"></div>
-        <img
+        <ResponsiveImage
           src={imageUrl}
           alt=""
-          className="w-full h-full object-cover"
+          fill
+          quality={85}
+          className="object-cover"
+          overlay={true}
+          overlayType="solid"
+          overlayColor="#1e293b"
+          overlayOpacity={0.6}
         />
       </div>
       

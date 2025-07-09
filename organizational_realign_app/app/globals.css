@@ -770,6 +770,45 @@ p, li, span {
   animation: orbit 20s linear infinite;
 }
 
+/* Enhanced Image Overlay Effects */
+.bg-vignette {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.4) 70%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+.dark .bg-vignette {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.5) 70%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
+.bg-gradient-overlay {
+  background: linear-gradient(to bottom, 
+    rgba(0, 0, 0, 0.7) 0%, 
+    rgba(0, 0, 0, 0.5) 25%, 
+    rgba(0, 0, 0, 0.3) 50%, 
+    rgba(0, 0, 0, 0.5) 75%, 
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+.bg-diagonal-overlay {
+  background: linear-gradient(135deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.5) 25%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0.2) 75%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+}
+
 /* Enhanced Glass Morphism Effects */
 .glass-ultra {
   background: rgba(255, 255, 255, 0.03);
