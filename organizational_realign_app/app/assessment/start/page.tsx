@@ -25,7 +25,6 @@ import {
 } from 'lucide-react';
 import PublicNavigation from '@/components/PublicNavigation';
 import OrganizationTypeSelect from '@/components/OrganizationTypeSelect';
-import ErrorBoundary from '@/components/ErrorBoundary';
 import { OrganizationType } from '@/data/northpathQuestionBank';
 
 interface AssessmentInfo {
@@ -625,29 +624,27 @@ function AssessmentStartContent() {
 
 export default function AssessmentStartPage() {
   return (
-    <ErrorBoundary>
-      <Suspense fallback={
-        <div className="min-h-screen elegant-bg flex items-center justify-center">
-          <motion.div 
-            className="text-center"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
+    <Suspense fallback={
+      <div className="min-h-screen elegant-bg flex items-center justify-center">
+        <motion.div 
+          className="text-center"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <LoadingSpinner size="lg" variant="gradient" className="mx-auto mb-4" />
+          <motion.p 
+            className="text-slate-300"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
           >
-            <LoadingSpinner size="lg" variant="gradient" className="mx-auto mb-4" />
-            <motion.p 
-              className="text-slate-300"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              Loading assessment...
-            </motion.p>
-          </motion.div>
-        </div>
-      }>
-        <AssessmentStartContent />
-      </Suspense>
-    </ErrorBoundary>
+            Loading assessment...
+          </motion.p>
+        </motion.div>
+      </div>
+    }>
+      <AssessmentStartContent />
+    </Suspense>
   );
 }
