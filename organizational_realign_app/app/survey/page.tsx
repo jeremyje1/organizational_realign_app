@@ -257,12 +257,15 @@ function SurveyPageContent() {
     const loadQuestions = async () => {
       try {
         console.log('Loading questions...');
-        const { allQuestions: questionsData } = await import('@/data/northpathQuestionBank');
-        console.log('Questions loaded:', questionsData?.length);
-        setAllQuestions(questionsData || []);
+        const questionBankModule = await import('@/data/northpathQuestionBank');
+        console.log('Question bank module:', Object.keys(questionBankModule));
+        console.log('Questions loaded:', questionBankModule.allQuestions?.length);
+        console.log('First question:', questionBankModule.allQuestions?.[0]);
+        setAllQuestions(questionBankModule.allQuestions || []);
       } catch (err) {
         console.error('Error loading questions:', err);
-        setError('Failed to load assessment questions');
+        console.error('Error details:', err);
+        setError(`Failed to load assessment questions: ${err.message}`);
       } finally {
         setLoading(false);
       }
