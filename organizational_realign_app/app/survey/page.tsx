@@ -9,12 +9,13 @@ import SectionExplanation from "@/components/SectionExplanation";
 import { CheckCircle2, AlertCircle, Clock, Building2, Upload, X, HelpCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  allQuestions,
+import { PagesBackground } from '@/components/ui/pages-background';
+
+// Import types only - data will be loaded dynamically
+import type { 
   OrganizationType, 
   Question
 } from "@/data/northpathQuestionBank";
-import { PagesBackground } from '@/components/ui/pages-background';
 
 // Likert scale component with premium styling
 function LikertInput({ onSelect, value }: { onSelect: (value: number) => void; value?: number }) {
@@ -248,17 +249,38 @@ function SurveyPageContent() {
   const [uploadedFiles, setUploadedFiles] = useState<Map<string, File[]>>(new Map());
   const [showValidation, setShowValidation] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [allQuestions, setAllQuestions] = useState<Question[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  // Load questions dynamically
+  useEffect(() => {
+    const loadQuestions = async () => {
+      try {
+        console.log('Loading questions...');
+        const { allQuestions: questionsData } = await import('@/data/northpathQuestionBank');
+        console.log('Questions loaded:', questionsData?.length);
+        setAllQuestions(questionsData || []);
+      } catch (err) {
+        console.error('Error loading questions:', err);
+        setError('Failed to load assessment questions');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadQuestions();
+  }, []);
 
   // Check for Supabase configuration
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       console.warn('Supabase not configured - running in demo mode');
     }
-    setLoading(false);
   }, []);
 
   // Filter questions based on organization type
   const filteredQuestions = useMemo(() => {
+    if (!allQuestions || allQuestions.length === 0) return [];
     if (!orgType) return allQuestions.slice(0, 20); // Show first 20 questions if no org type
     
     return allQuestions.filter(question => {
@@ -275,7 +297,7 @@ function SurveyPageContent() {
       // Include questions for specific organization type
       return question.vertical === orgType;
     });
-  }, [orgType]);
+  }, [orgType, allQuestions]);
 
   // Group questions by section
   const sections = useMemo(() => {
@@ -399,6 +421,34 @@ function SurveyPageContent() {
             </div>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">Loading Assessment</h2>
             <p className="text-gray-600">Preparing your customized evaluation...</p>
+          </div>
+        </div>
+      </PagesBackground>
+    );
+  }
+
+  if (error) {
+    return (
+      <PagesBackground>
+        <div className="min-h-screen elegant-bg flex items-center justify-center">
+          <div className="card p-12 text-center max-w-lg">
+            <AlertCircle className="h-16 w-16 text-red-400 mx-auto mb-6" />
+            <h2 className="text-2xl font-semibold text-slate-100 mb-4">Loading Error</h2>
+            <p className="text-slate-300 mb-6">
+              {error}
+            </p>
+            <div className="space-y-2">
+              <Button onClick={() => window.location.reload()}>
+                Try Again
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => window.location.href = '/assessment/start'}
+                className="w-full"
+              >
+                Return to Setup
+              </Button>
+            </div>
           </div>
         </div>
       </PagesBackground>
