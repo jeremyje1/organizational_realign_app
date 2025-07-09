@@ -81,10 +81,6 @@ const nextConfig = {
           value: 'on',
         },
         {
-          key: 'Strict-Transport-Security',
-          value: 'max-age=63072000; includeSubDomains; preload',
-        },
-        {
           key: 'X-Content-Type-Options',
           value: 'nosniff',
         },
@@ -167,61 +163,24 @@ const nextConfig = {
   
   // Domain configuration
   async headers() {
+    // only include HSTS in production to avoid enforcing HTTPS on localhost dev
+    const baseHeaders = [
+      {
+        key: 'X-DNS-Prefetch-Control', value: 'on'
+      },
+      // produce HSTS header only in production
+      ...(process.env.NODE_ENV === 'production'
+        ? [{ key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' }]
+        : []),
+      { key: 'X-Content-Type-Options', value: 'nosniff' },
+      { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+      { key: 'X-XSS-Protection', value: '1; mode=block' },
+      { key: 'Referrer-Policy', value: 'origin-when-cross-origin' },
+      // Performance headers
+      { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+    ];
     return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on',
-          },
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
-          },
-          // Performance headers
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      // Static assets caching
-      {
-        source: '/static/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      // API routes caching
-      {
-        source: '/api/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=300, s-maxage=300',
-          },
-        ],
-      },
+      { source: '/(.*)', headers: baseHeaders }
     ];
   },
 

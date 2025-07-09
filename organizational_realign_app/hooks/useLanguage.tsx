@@ -7,6 +7,8 @@
  * @module @/hooks/useLanguage
  */
 
+'use client';
+
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { 
   translateText, 

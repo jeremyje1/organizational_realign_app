@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react';
 import { LinkProvider } from './DynamicClientImports';
+import { LanguageProvider } from '@/hooks/useLanguage';
 
 interface ClientWrapperProps {
   children: ReactNode;
@@ -11,7 +12,9 @@ interface ClientWrapperProps {
 export default function ClientWrapper({ children }: ClientWrapperProps) {
   return (
     <LinkProvider>
-      {children}
+      <LanguageProvider>
+        {children}
+      </LanguageProvider>
     </LinkProvider>
   );
 }

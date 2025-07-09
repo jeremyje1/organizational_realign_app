@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev",
     "dev-custom": "NEXT_DISABLE_TURBOPACK=1 ts-node --transpile-only server.ts",
     "build": "next build",
     "vercel-build": "prisma generate && next build",
