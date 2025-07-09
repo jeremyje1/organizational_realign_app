@@ -10,6 +10,7 @@ import { CheckCircle2, AlertCircle, Clock, Building2, Upload, X, HelpCircle } fr
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PagesBackground } from '@/components/ui/pages-background';
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 // Import types only - data will be loaded dynamically
 import type { 
@@ -237,10 +238,32 @@ function FileUpload({ onUpload, uploadedFiles }: {
 }
 
 function SurveyPageContent() {
+  console.log('=== SurveyPageContent component rendering ===');
+  
   const user = useUser();
   const searchParams = useSearchParams();
-  const orgType = searchParams.get('orgType') as OrganizationType;
-  const sessionId = searchParams.get('sessionId');
+  
+  console.log('User:', user?.id || 'No user');
+  console.log('Search params available:', !!searchParams);
+  
+  // Safely extract params with error handling
+  const [orgType, setOrgType] = useState<OrganizationType | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  
+  // Extract search params in useEffect to avoid Suspense issues
+  useEffect(() => {
+    try {
+      console.log('=== Extracting search params ===');
+      const orgTypeParam = searchParams?.get('orgType') as OrganizationType;
+      const sessionIdParam = searchParams?.get('sessionId');
+      console.log('Extracted params:', { orgTypeParam, sessionIdParam });
+      setOrgType(orgTypeParam);
+      setSessionId(sessionIdParam);
+    } catch (err) {
+      console.error('Error extracting search params:', err);
+      // Continue with null values - the component can handle this
+    }
+  }, [searchParams]);
 
   // State management
   const [loading, setLoading] = useState(true);
@@ -256,16 +279,36 @@ function SurveyPageContent() {
   useEffect(() => {
     const loadQuestions = async () => {
       try {
+        console.log('=== Starting question load process ===');
+        console.log('Environment:', process.env.NODE_ENV);
         console.log('Loading questions...');
+        
+        // Import the question bank module
         const questionBankModule = await import('@/data/northpathQuestionBank');
-        console.log('Question bank module:', Object.keys(questionBankModule));
-        console.log('Questions loaded:', questionBankModule.allQuestions?.length);
-        console.log('First question:', questionBankModule.allQuestions?.[0]);
+        console.log('✅ Question bank module loaded successfully');
+        
+        console.log('Question bank module keys:', Object.keys(questionBankModule));
+        console.log('Questions available:', !!questionBankModule.allQuestions);
+        console.log('Questions count:', questionBankModule.allQuestions?.length);
+        console.log('First question preview:', questionBankModule.allQuestions?.[0]?.id);
+        
+        if (!questionBankModule.allQuestions) {
+          throw new Error('allQuestions is undefined in question bank module');
+        }
+        
+        if (questionBankModule.allQuestions.length === 0) {
+          throw new Error('allQuestions array is empty');
+        }
+        
         setAllQuestions(questionBankModule.allQuestions || []);
+        console.log('=== Question load completed successfully ===');
+        console.log('State updated with questions count:', questionBankModule.allQuestions.length);
       } catch (err) {
+        console.error('=== ERROR LOADING QUESTIONS ===');
         console.error('Error loading questions:', err);
-        console.error('Error details:', err);
-        setError(`Failed to load assessment questions: ${err.message}`);
+        console.error('Error stack:', err?.stack);
+        console.error('Error message:', err?.message);
+        setError(`Failed to load assessment questions: ${err?.message || 'Unknown error'}`);
       } finally {
         setLoading(false);
       }
@@ -283,23 +326,29 @@ function SurveyPageContent() {
 
   // Filter questions based on organization type
   const filteredQuestions = useMemo(() => {
-    if (!allQuestions || allQuestions.length === 0) return [];
-    if (!orgType) return allQuestions.slice(0, 20); // Show first 20 questions if no org type
-    
-    return allQuestions.filter(question => {
-      // Always include algorithm parameters and universal data uploads
-      if (question.id.startsWith('P_') || question.id.startsWith('U_')) {
-        return true;
-      }
+    try {
+      if (!allQuestions || allQuestions.length === 0) return [];
+      if (!orgType) return allQuestions.slice(0, 20); // Show first 20 questions if no org type
       
-      // Include universal questions (no specific vertical)
-      if (!question.vertical) {
-        return true;
-      }
-      
-      // Include questions for specific organization type
-      return question.vertical === orgType;
-    });
+      return allQuestions.filter(question => {
+        // Always include algorithm parameters and universal data uploads
+        if (question.id.startsWith('P_') || question.id.startsWith('U_')) {
+          return true;
+        }
+        
+        // Include universal questions (no specific vertical)
+        if (!question.vertical) {
+          return true;
+        }
+        
+        // Include questions for specific organization type
+        return question.vertical === orgType;
+      });
+    } catch (err) {
+      console.error('Error filtering questions:', err);
+      // Return first 10 questions as fallback
+      return allQuestions?.slice(0, 10) || [];
+    }
   }, [orgType, allQuestions]);
 
   // Group questions by section
@@ -320,10 +369,53 @@ function SurveyPageContent() {
     }));
   }, [filteredQuestions]);
 
+  // Also check for empty questions state after loading
+  if (!loading && !error && (!allQuestions || allQuestions.length === 0)) {
+    return (
+      <PagesBackground>
+        <div className="min-h-screen elegant-bg flex items-center justify-center">
+          <div className="card p-12 text-center max-w-lg">
+            <HelpCircle className="h-16 w-16 text-yellow-400 mx-auto mb-6" />
+            <h2 className="text-2xl font-semibold text-slate-100 mb-4">No Questions Available</h2>
+            <p className="text-slate-300 mb-6">
+              The assessment questions could not be loaded. This might be a temporary issue.
+            </p>
+            <div className="text-left bg-slate-800/50 p-4 rounded-lg mb-6 text-xs">
+              <p className="text-slate-400 mb-2">Debug Information:</p>
+              <p className="text-slate-300">Environment: {process.env.NODE_ENV || 'unknown'}</p>
+              <p className="text-slate-300">Loading state: {loading.toString()}</p>
+              <p className="text-slate-300">Error state: {error || 'none'}</p>
+              <p className="text-slate-300">Questions array: {allQuestions ? `length ${allQuestions.length}` : 'null/undefined'}</p>
+              <p className="text-slate-300">Org Type: {orgType || 'none'}</p>
+              <p className="text-slate-300">Session ID: {sessionId || 'none'}</p>
+            </div>
+            <div className="space-y-2">
+              <Button onClick={() => window.location.reload()}>
+                Reload Assessment
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => window.location.href = '/survey/debug'}
+                className="w-full"
+              >
+                View Debug Page
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => window.location.href = '/assessment/start'}
+                className="w-full"
+              >
+                Return to Setup
+              </Button>
+            </div>
+          </div>
+        </div>
+      </PagesBackground>
+    );
+  }
+
   const currentSection = sections[sectionIdx];
   const isLastSection = sectionIdx === sections.length - 1;
-
-  // Handle answer submission
   const handleAnswer = (questionId: string, value: any) => {
     const newAnswers = new Map(answers);
     newAnswers.set(questionId, value);
@@ -380,7 +472,7 @@ function SurveyPageContent() {
     try {
       // Prepare submission data
       const submissionData = {
-        sessionId,
+        sessionId: sessionId || 'default',
         organizationType: orgType,
         answers: Object.fromEntries(answers),
         uploadedFiles: Object.fromEntries(uploadedFiles),
@@ -401,7 +493,8 @@ function SurveyPageContent() {
       
       if (result.success) {
         // Redirect to results page with analysis
-        window.location.href = `/assessment/results?sessionId=${sessionId}&assessmentId=${result.analysisResults.assessmentId}`;
+        const redirectSessionId = sessionId || 'default';
+        window.location.href = `/assessment/results?sessionId=${redirectSessionId}&assessmentId=${result.analysisResults.assessmentId}`;
       } else {
         throw new Error(result.error || 'Submission failed');
       }
@@ -440,6 +533,14 @@ function SurveyPageContent() {
             <p className="text-slate-300 mb-6">
               {error}
             </p>
+            <div className="text-left bg-slate-800/50 p-4 rounded-lg mb-6 text-xs">
+              <p className="text-slate-400 mb-2">Debug Information:</p>
+              <p className="text-slate-300">Environment: {process.env.NODE_ENV || 'unknown'}</p>
+              <p className="text-slate-300">Questions loaded: {allQuestions.length}</p>
+              <p className="text-slate-300">Org Type: {orgType || 'none'}</p>
+              <p className="text-slate-300">Session ID: {sessionId || 'none'}</p>
+              <p className="text-slate-300">URL: {typeof window !== 'undefined' ? window.location.href : 'unknown'}</p>
+            </div>
             <div className="space-y-2">
               <Button onClick={() => window.location.reload()}>
                 Try Again
@@ -450,6 +551,13 @@ function SurveyPageContent() {
                 className="w-full"
               >
                 Return to Setup
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => window.location.href = '/survey/debug'}
+                className="w-full"
+              >
+                View Debug Page
               </Button>
             </div>
           </div>
@@ -1091,16 +1199,18 @@ function SurveyPageContent() {
 
 export default function SurveyPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="text-white text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-400 mx-auto mb-4"></div>
-          <p>Loading survey...</p>
+    <ErrorBoundary>
+      <Suspense fallback={
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+          <div className="text-white text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-400 mx-auto mb-4"></div>
+            <p>Loading survey...</p>
+          </div>
         </div>
-      </div>
-    }
-    >
-      <SurveyPageContent />
-    </Suspense>
+      }
+      >
+        <SurveyPageContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
