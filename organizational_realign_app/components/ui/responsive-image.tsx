@@ -27,6 +27,12 @@ interface ResponsiveImageProps {
   attribution?: string;
   license?: string;
   structuredData?: boolean;
+  // Overlay props
+  overlay?: boolean;
+  overlayType?: 'solid' | 'gradient' | 'vignette' | 'diagonal' | 'vertical';
+  overlayOpacity?: number;
+  overlayColor?: string;
+  overlayGradient?: string;
 }
 
 /**
@@ -54,6 +60,12 @@ export default function ResponsiveImage({
   attribution,
   license,
   structuredData = true,
+  // Overlay props
+  overlay = false,
+  overlayType = 'gradient',
+  overlayOpacity = 0.5,
+  overlayColor = '#000000',
+  overlayGradient = 'from-black/50 via-black/40 to-black/60',
 }: ResponsiveImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -181,6 +193,30 @@ export default function ResponsiveImage({
               fill && 'absolute inset-0'
             )}
           />
+          
+          {/* Image overlay for better text contrast */}
+          {overlay && (
+            <div 
+              className={cn(
+                "absolute inset-0",
+                overlayType === 'gradient' 
+                  ? `bg-gradient-to-r ${overlayGradient}`
+                  : overlayType === 'vignette'
+                  ? 'bg-vignette'
+                  : overlayType === 'diagonal'
+                  ? 'bg-diagonal-overlay'
+                  : overlayType === 'vertical'
+                  ? 'bg-gradient-overlay'
+                  : ''
+              )}
+              style={overlayType === 'solid' ? { 
+                backgroundColor: overlayColor,
+                opacity: overlayOpacity
+              } : (overlayOpacity !== 0.5) ? {
+                opacity: overlayOpacity * 2 // Adjusting opacity for gradient overlays
+              } : undefined}
+            />
+          )}
         </div>
       )}
       

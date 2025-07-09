@@ -745,9 +745,9 @@ export default function ModernPricing() {
               Join hundreds of organizations that have transformed their operations with our platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/assessment/start">
+              <Link href="/assessment/secure-access">
                 <Button size="lg" className="gradient-primary text-white font-semibold px-8 py-4 rounded-2xl shadow-elegant hover:shadow-premium hover:scale-105 transition-all duration-300">
-                  Start Free Assessment
+                  Start Assessment
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>

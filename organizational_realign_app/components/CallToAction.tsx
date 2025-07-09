@@ -87,9 +87,9 @@ export default function CallToAction() {
               size="lg" 
               className="btn-premium bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white px-12 py-6 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 border border-cyan-400/30"
             >
-              <Link href="/assessment/start" className="flex items-center gap-4">
+              <Link href="/assessment/secure-access" className="flex items-center gap-4">
                 <Play size={24} />
-                Start Free Assessment
+                Start Assessment
                 <ArrowRight size={24} />
               </Link>
             </Button>

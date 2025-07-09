@@ -51,27 +51,40 @@ function AssessmentStartContent() {
   useEffect(() => {
     const checkAuthorization = () => {
       try {
-        const authorized = sessionStorage.getItem('assessment_authorized');
-        console.log('Authorization check:', authorized); // Debug log
+        // First try to check session storage
+        let authorized = null;
+        
+        try {
+          authorized = sessionStorage.getItem('assessment_authorized');
+          console.log('Authorization check from sessionStorage:', authorized);
+        } catch (storageError) {
+          console.log('SessionStorage not available:', storageError);
+        }
         
         if (authorized === 'true') {
           setIsAuthorized(true);
           setCheckingAuth(false);
         } else {
+          // For development, you can uncomment this to bypass auth check
+          // setIsAuthorized(true);
+          // setCheckingAuth(false);
+          
           // Redirect to secure access page
-          console.log('Not authorized, redirecting...'); // Debug log
+          console.log('Not authorized, redirecting to secure access...');
           router.push('/assessment/secure-access');
-          return;
         }
       } catch (error) {
         console.error('Authorization check error:', error);
         setCheckingAuth(false);
         setIsAuthorized(false);
+        
+        // On error, safely redirect
+        router.push('/assessment/secure-access');
       }
     };
 
-    // Add a small delay to ensure sessionStorage is available
-    const timer = setTimeout(checkAuthorization, 100);
+    // Add a small delay to ensure browser APIs are available
+    const timer = setTimeout(checkAuthorization, 300);
     return () => clearTimeout(timer);
   }, [router]);
 
@@ -109,14 +122,23 @@ function AssessmentStartContent() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (checkingAuth) {
-        console.log('Authorization check timeout, setting defaults...');
+        console.log('Authorization check timeout, redirecting to secure access...');
         setCheckingAuth(false);
         setIsAuthorized(false);
+        
+        // Redirect to secure access on timeout
+        try {
+          router.push('/assessment/secure-access');
+        } catch (error) {
+          console.error('Redirect error:', error);
+          // As a last resort, use window.location
+          window.location.href = '/assessment/secure-access';
+        }
       }
-    }, 5000); // 5 second timeout
+    }, 3000); // 3 second timeout (reduced from 5 seconds)
 
     return () => clearTimeout(timeout);
-  }, [checkingAuth]);
+  }, [checkingAuth, router]);
 
   const fetchAssessment = async (sessionId: string) => {
     try {

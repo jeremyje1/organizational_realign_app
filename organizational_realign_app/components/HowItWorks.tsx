@@ -165,13 +165,13 @@ export default function HowItWorks() {
               Join 500+ organizations that have already started their journey to operational excellence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/assessment/start">
+              <Link href="/assessment/secure-access">
                 <Button 
                   size="lg"
                   className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xl font-bold px-12 py-6 rounded-2xl shadow-xl group transform hover:scale-105 transition-all duration-300"
                 >
                   <Zap className="mr-3 w-6 h-6" />
-                  Start Free Assessment
+                  Start Assessment
                   <ArrowRight className="ml-3 w-6 h-6 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>

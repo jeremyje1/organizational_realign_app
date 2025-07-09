@@ -106,15 +106,15 @@ export default function SecureAssessmentAccess() {
           <h3 className="text-sm font-semibold text-gray-900 mb-2">Need Access?</h3>
           <p className="text-xs text-gray-600 mb-3">
             The assessment platform is included with all paid packages. 
-            Purchase a package to receive your access credentials.
+            Select a service package below to gain access.
           </p>
           <div className="space-y-2">
             <Button asChild variant="outline" size="sm" className="w-full">
-              <a href="/pricing">View Pricing & Purchase</a>
+              <a href="/pricing">View Service Packages</a>
             </Button>
             <Button asChild variant="ghost" size="sm" className="w-full">
               <a href="https://calendly.com/jeremyestrella/30min" target="_blank" rel="noopener noreferrer">
-                Contact for Demo Access
+                Schedule a Consultation
               </a>
             </Button>
           </div>

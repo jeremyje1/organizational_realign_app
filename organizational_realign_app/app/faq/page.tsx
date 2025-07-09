@@ -321,9 +321,9 @@ export default function FAQPage() {
                 Contact Us
               </Button>
             </SafeLink>
-            <SafeLink href="/assessment/start">
+            <SafeLink href="/assessment/secure-access">
               <Button size="lg" variant="outline" className="border-white hover:bg-white hover:text-primary-700">
-                Start Free Assessment
+                Start Assessment
               </Button>
             </SafeLink>
           </div>
