@@ -249,19 +249,39 @@ function SurveyPageContent() {
   // Safely extract params with error handling
   const [orgType, setOrgType] = useState<OrganizationType | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [paramError, setParamError] = useState<string | null>(null);
   
   // Extract search params in useEffect to avoid Suspense issues
   useEffect(() => {
     try {
       console.log('=== Extracting search params ===');
-      const orgTypeParam = searchParams?.get('orgType') as OrganizationType;
-      const sessionIdParam = searchParams?.get('sessionId');
+      
+      if (!searchParams) {
+        throw new Error('Search parameters are not available');
+      }
+      
+      const orgTypeParam = searchParams.get('orgType') as OrganizationType;
+      const sessionIdParam = searchParams.get('sessionId');
+      
       console.log('Extracted params:', { orgTypeParam, sessionIdParam });
+      
+      // Validate required parameters
+      if (!orgTypeParam) {
+        setParamError('Missing required organization type parameter (orgType)');
+        return;
+      }
+      
+      if (!sessionIdParam) {
+        setParamError('Missing required session ID parameter (sessionId)');
+        return;
+      }
+      
       setOrgType(orgTypeParam);
       setSessionId(sessionIdParam);
+      setParamError(null);
     } catch (err) {
       console.error('Error extracting search params:', err);
-      // Continue with null values - the component can handle this
+      setParamError(`Failed to process URL parameters: ${err.message}`);
     }
   }, [searchParams]);
 
@@ -369,7 +389,44 @@ function SurveyPageContent() {
     }));
   }, [filteredQuestions]);
 
-  // Also check for empty questions state after loading
+  // Check for parameter errors first
+  if (paramError) {
+    return (
+      <PagesBackground>
+        <div className="min-h-screen elegant-bg flex items-center justify-center">
+          <div className="card p-12 text-center max-w-lg">
+            <AlertCircle className="h-16 w-16 text-yellow-400 mx-auto mb-6" />
+            <h2 className="text-2xl font-semibold text-slate-100 mb-4">Unable to Start Assessment</h2>
+            <p className="text-slate-300 mb-6">
+              {paramError}
+            </p>
+            <div className="text-left bg-slate-800/50 p-4 rounded-lg mb-6 text-xs">
+              <p className="text-slate-400 mb-2">Debug Information:</p>
+              <p className="text-slate-300">Environment: {process.env.NODE_ENV || 'unknown'}</p>
+              <p className="text-slate-300">Search Params Available: {searchParams ? 'Yes' : 'No'}</p>
+              <p className="text-slate-300">Org Type: {orgType || 'none'}</p>
+              <p className="text-slate-300">Session ID: {sessionId || 'none'}</p>
+              <p className="text-slate-300">Expected URL format: /survey?orgType=xxx&sessionId=xxx</p>
+            </div>
+            <div className="space-y-2">
+              <Button onClick={() => window.location.href = '/assessment/secure-access'}>
+                Return to Secure Access
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => window.location.href = '/survey/debug'}
+                className="w-full"
+              >
+                View Debug Page
+              </Button>
+            </div>
+          </div>
+        </div>
+      </PagesBackground>
+    );
+  }
+
+  // Check for empty questions state after loading
   if (!loading && !error && (!allQuestions || allQuestions.length === 0)) {
     return (
       <PagesBackground>
@@ -1197,19 +1254,68 @@ function SurveyPageContent() {
     );
 }
 
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div className="text-white text-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-400 mx-auto mb-4"></div>
+        <p>Loading survey...</p>
+      </div>
+    </div>
+  );
+}
+
+function SafeSurveyContent() {
+  const searchParams = useSearchParams();
+  
+  // If no search params available, show a more helpful error
+  if (!searchParams) {
+    return (
+      <div className="min-h-screen elegant-bg flex items-center justify-center p-4">
+        <div className="card p-8 text-center max-w-lg">
+          <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <AlertCircle className="w-8 h-8 text-yellow-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-100 mb-4">
+            Missing Required Parameters
+          </h2>
+          <p className="text-slate-300 mb-6">
+            The assessment requires organization type and session ID parameters.
+          </p>
+          <div className="text-left bg-slate-800/50 p-4 rounded-lg mb-6 text-xs">
+            <p className="text-slate-400 mb-2">Debug Information:</p>
+            <p className="text-slate-300">Environment: {process.env.NODE_ENV || 'unknown'}</p>
+            <p className="text-slate-300">Search Params: {searchParams ? 'available' : 'undefined'}</p>
+            <p className="text-slate-300">Expected URL format: /survey?orgType=xxx&sessionId=xxx</p>
+          </div>
+          <div className="space-y-3">
+            <Button
+              onClick={() => window.location.href = '/assessment/secure-access'}
+              className="w-full bg-blue-600 hover:bg-blue-700"
+            >
+              Return to Secure Access
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => window.location.href = '/survey/debug'}
+              className="w-full"
+            >
+              View Debug Information
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+  return <SurveyPageContent />;
+}
+
 export default function SurveyPage() {
   return (
     <ErrorBoundary>
-      <Suspense fallback={
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-          <div className="text-white text-center">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-400 mx-auto mb-4"></div>
-            <p>Loading survey...</p>
-          </div>
-        </div>
-      }
-      >
-        <SurveyPageContent />
+      <Suspense fallback={<LoadingFallback />}>
+        <SafeSurveyContent />
       </Suspense>
     </ErrorBoundary>
   );
