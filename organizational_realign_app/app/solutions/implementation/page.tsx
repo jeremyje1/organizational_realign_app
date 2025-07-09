@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import { Metadata } from 'next';
-import ModernNavbar from '@/components/modern/ModernNavbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { PageWrapper } from '@/components/ui/page-wrapper';
 import { Button } from '@/components/ui/button';
@@ -96,7 +95,6 @@ export default function ImplementationPage() {
 
   return (
     <PageWrapper>
-      <ModernNavbar />
       <div className="bg-white">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-primary-50 to-primary-100 py-24">

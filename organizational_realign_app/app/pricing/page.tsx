@@ -1,4 +1,3 @@
-import ModernNavbar from '@/components/modern/ModernNavbar';
 import ModernPricing from '@/components/modern/ModernPricing';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { PageWrapper } from '@/components/ui/page-wrapper';
@@ -8,7 +7,6 @@ export default function PricingPage() {
   return (
     <PagesBackground>
       <PageWrapper>
-        <ModernNavbar />
         <main>
           <ModernPricing />
         </main>

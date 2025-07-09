@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { ChevronRight, Home } from 'lucide-react';
 import StructuredData from '../seo/StructuredData';
+import { useEffect, useState } from 'react';
 
 interface BreadcrumbsProps {
   items?: {
@@ -29,9 +30,15 @@ export default function Breadcrumbs({
   includeStructuredData = true,
 }: BreadcrumbsProps) {
   const pathname = usePathname();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Generate breadcrumb items from the current path if none are provided
-  const breadcrumbItems = items || generateBreadcrumbItems(pathname, homeLabel);
+  // Only generate dynamic breadcrumbs on the client to prevent hydration mismatches
+  const breadcrumbItems = items || (isClient ? generateBreadcrumbItems(pathname, homeLabel) : [{ label: homeLabel, href: '/' }]);
   
   // Prepare data for structured data
   const structuredDataItems = breadcrumbItems.map(item => ({

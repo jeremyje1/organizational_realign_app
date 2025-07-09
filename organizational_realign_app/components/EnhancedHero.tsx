@@ -58,19 +58,19 @@ export default function EnhancedHero() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <ResponsiveImage
-          src="/images/optimized-041412-60.jpg"
+          src="/images/northpath_background_opt.jpg"
           alt="NorthPath Strategies organizational realignment background"
           fill
           quality={90}
           priority
-          className="object-cover responsive-image-container"
-          title="Organizational Excellence Background"
+          className="object-cover w-full h-full object-[center_30%]"
+          title="NorthPath Strategies Background"
           sizes="100vw"
           fetchPriority="high"
-          structuredData={true}
+          structuredData={false}
           overlay={true}
           overlayType="diagonal"
-          overlayOpacity={0.6}
+          overlayOpacity={0.75}
         />
       </div>
       
@@ -226,82 +226,6 @@ export default function EnhancedHero() {
             <span className="hidden lg:inline-block">Systems Transformation</span>
           </motion.div>
         </motion.div>
-
-        {/* Hero Image Section */}
-        <div className="w-full lg:w-1/2 mt-12 lg:mt-0">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.6 }}
-            className="relative"
-          >
-            {/* Main hero image - updated with backdrop blur for better visibility against background */}
-            <div className="bg-white/90 backdrop-blur-md p-3 rounded-2xl shadow-2xl relative z-10">
-              <div className="relative overflow-hidden rounded-xl aspect-[4/3]">
-                <ResponsiveImage
-                  src="/images/organizational-dashboard.svg" 
-                  alt="NorthPath Organizational Dashboard showing realignment metrics and KPIs"
-                  width={600}
-                  height={450}
-                  className="object-cover"
-                  priority
-                  title="Organizational Realignment Dashboard"
-                  quality={95}
-                  structuredData={true}
-                />
-              </div>
-              
-              {/* Floating element for visual interest with animation - updated to remove specific stats */}
-              <motion.div 
-                className="absolute -right-8 -bottom-8 bg-blue-600 text-white p-4 rounded-xl shadow-lg z-20 flex items-center gap-3"
-                animate={{
-                  y: [0, -5, 0],
-                  x: [0, 3, 0],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                }}
-              >
-                <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="text-xs font-semibold">Systemic</div>
-                  <div className="text-sm font-bold">Transformation</div>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Background decoration with subtle animations - updated colors for visibility */}
-            <motion.div 
-              className="absolute top-8 -right-8 w-full h-full border-2 border-dashed border-white/50 rounded-2xl -z-10"
-              animate={{
-                rotate: [0, 1, 0, -1, 0],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            ></motion.div>
-            <motion.div 
-              className="absolute -top-8 left-8 w-full h-full border-2 border-dashed border-white/40 rounded-2xl -z-10"
-              animate={{
-                rotate: [0, -1, 0, 1, 0],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0.5,
-              }}
-            ></motion.div>
-          </motion.div>
-        </div>
       </div>
 
       {/* Wave divider with animation */}

@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import { Metadata } from 'next';
-import SimpleNavbar from '@/components/SimpleNavbar';
 import ModernServices from '@/components/modern/ModernServices';
 import ConsultationPackages from '@/components/ConsultationPackages';
 import ModernFooter from '@/components/modern/ModernFooter';
@@ -27,7 +26,6 @@ export default function ServicesPage() {
   return (
     <PagesBackground>
       <PageWrapper>
-        <SimpleNavbar />
         <main>
           <ModernServices />
           <ConsultationPackages />

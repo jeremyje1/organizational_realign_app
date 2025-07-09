@@ -56,11 +56,11 @@ export default function FounderBio() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <div className="relative">
-                <div className="w-64 h-64 lg:w-80 lg:h-80 rounded-2xl overflow-hidden shadow-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
+                <div className="w-48 h-60 lg:w-56 lg:h-72 rounded-2xl overflow-hidden shadow-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
                   <Image
                     src="/images/jeremy-estrella.jpg"
                     alt="Jeremy Estrella, Founder & Strategic Consultant at NorthPath Strategies"
-                    width={320}
+                    width={256}
                     height={320}
                     className="w-full h-full object-cover"
                     priority

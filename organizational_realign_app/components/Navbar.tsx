@@ -50,7 +50,7 @@ export default function Navbar() {
                 priority
                 title="NorthPath Strategies"
                 quality={95}
-                structuredData={true}
+                structuredData={false}
               />
             </div>
             <div className="hidden sm:block">

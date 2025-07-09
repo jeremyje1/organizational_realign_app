@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import { Metadata } from 'next';
-import ModernNavbar from '@/components/modern/ModernNavbar';
 import ImprovedModernContact from '@/components/modern/ImprovedModernContact';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { PageWrapper } from '@/components/ui/page-wrapper';
@@ -24,7 +23,6 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <PageWrapper>
-      <ModernNavbar />
       <main>
         <ImprovedModernContact />
       </main>

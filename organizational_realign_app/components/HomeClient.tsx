@@ -1,21 +1,14 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import ContentSections from '@/components/ContentSections';
 import SimplifiedTestimonials from '@/components/SimplifiedTestimonials';
 import CallToActionSection from '@/components/CallToActionSection';
+import EnhancedHero from '@/components/EnhancedHero';
 import { SafeLink as Link } from '@/components/client-wrappers/DynamicClientImports';
 import EnhancedSEO from '@/components/seo/EnhancedSEO';
 import StructuredData from '@/components/seo/StructuredData';
 import ReadProgress from '@/components/seo/ReadProgress';
-import Breadcrumbs from '@/components/ui/breadcrumbs';
-
-// Dynamically import EnhancedHero without SSR
-const EnhancedHero = dynamic(
-  () => import('@/components/EnhancedHero'),
-  { ssr: false }
-);
 
 export default function HomeClient() {
   return (
@@ -48,10 +41,6 @@ export default function HomeClient() {
           height={3} 
           threshold={50} 
           color="#3b82f6"
-        />
-        <Breadcrumbs 
-          items={[{ label: 'Home', href: '/' }]} 
-          className="container mx-auto px-4 pt-2"
         />
         <EnhancedHero />
         <ContentSections />

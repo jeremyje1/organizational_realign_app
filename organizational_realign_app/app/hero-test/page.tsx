@@ -1,6 +1,5 @@
 import React from 'react';
 import { Metadata } from 'next';
-import StableNavbar from '@/components/StableNavbar';
 import EnhancedHero from '@/components/EnhancedHero';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import Link from 'next/link';
@@ -13,7 +12,6 @@ export const metadata: Metadata = {
 export default function HeroTestPage() {
   return (
     <>
-      <StableNavbar />
       <main>
         <EnhancedHero />
         

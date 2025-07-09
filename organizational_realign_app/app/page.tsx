@@ -3,7 +3,6 @@ import HomeClient from '@/components/HomeClient';
 import EnhancedSEO from '@/components/seo/EnhancedSEO';
 import StructuredData from '@/components/seo/StructuredData';
 import ReadProgress from '@/components/seo/ReadProgress';
-import Breadcrumbs from '@/components/ui/breadcrumbs';
 import type { Metadata } from 'next';
 
 // Define metadata for this page (static metadata)

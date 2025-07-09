@@ -3,7 +3,6 @@ import { ChevronRight, Briefcase, BarChart, Users, Globe, Clock, Award } from 'l
 import { Button } from '@/components/ui/button';
 import { PageWrapper } from '@/components/ui/page-wrapper';
 import { PagesBackground } from '@/components/ui/pages-background';
-import StableNavbar from '@/components/StableNavbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 
 export const metadata: Metadata = {
@@ -99,7 +98,6 @@ export default function CareersPage() {
 
   return (
     <>
-      <StableNavbar />
       <PagesBackground>
         <PageWrapper>
           <main className="min-h-screen">

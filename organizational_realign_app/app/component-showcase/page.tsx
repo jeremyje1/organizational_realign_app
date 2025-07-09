@@ -1,6 +1,5 @@
 import React from 'react';
 import { Metadata } from 'next';
-import StableNavbar from '@/components/StableNavbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import ImprovedModernContact from '@/components/modern/ImprovedModernContact';
 import Link from 'next/link';
@@ -16,7 +15,6 @@ export default function ComponentShowcasePage() {
   return (
     <PagesBackground>
       <PageWrapper>
-        <StableNavbar />
         <main>
           <div className="container mx-auto px-4 py-12">
             <div className="mb-12 text-center">

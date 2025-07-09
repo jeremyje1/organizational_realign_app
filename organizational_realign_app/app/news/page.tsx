@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PageWrapper } from '@/components/ui/page-wrapper';
 import { PagesBackground } from '@/components/ui/pages-background';
-import StableNavbar from '@/components/StableNavbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 
 export const metadata: Metadata = {
@@ -108,7 +107,6 @@ export default function NewsPage() {
 
   return (
     <>
-      <StableNavbar />
       <PagesBackground>
         <PageWrapper>
           <main className="min-h-screen">

@@ -102,7 +102,7 @@ export default function EnhancedFooter() {
                 height={60}
                 className="h-12 w-auto"
                 title="NorthPath Strategies Logo"
-                structuredData={true}
+                structuredData={false}
               />
             </div>
             

@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { SafeLink } from '@/components/client-wrappers/DynamicClientImports';
-import ModernNavbar from '@/components/modern/ModernNavbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { PageWrapper } from '@/components/ui/page-wrapper';
 
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
 export default function CaseStudiesPage() {
   return (
     <PageWrapper>
-      <ModernNavbar />
       <div className="bg-white">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary-50 to-primary-100 py-24">
