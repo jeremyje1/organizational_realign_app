@@ -54,7 +54,7 @@ export default function EnhancedHero() {
   };
 
   return (
-    <section className="relative overflow-hidden pt-24 pb-20 sm:pt-28 sm:pb-28 lg:py-32">
+    <section className="relative overflow-hidden pt-24 pb-20 sm:pt-28 sm:pb-28 lg:py-32 hero-background">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <ResponsiveImage
@@ -63,7 +63,7 @@ export default function EnhancedHero() {
           fill
           quality={90}
           priority
-          className="object-cover"
+          className="object-cover responsive-image-container"
           title="Organizational Excellence Background"
           sizes="100vw"
           fetchPriority="high"
@@ -166,7 +166,7 @@ export default function EnhancedHero() {
           {/* Main headline */}
           <motion.h1 
             variants={itemVariants}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight text-shadow-lg"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight text-contrast-enhanced"
           >
             Redesign the Systems. <span className="text-blue-200">Align the Strategy. Transform the Institution.</span>
           </motion.h1>
@@ -174,7 +174,7 @@ export default function EnhancedHero() {
           {/* Subheadline */}
           <motion.p 
             variants={itemVariants}
-            className="text-lg md:text-xl text-white mb-8 max-w-2xl mx-auto lg:mx-0 text-shadow-md"
+            className="text-lg md:text-xl text-white mb-8 max-w-2xl mx-auto lg:mx-0 text-contrast-enhanced"
           >
             NorthPath Strategies partners with mission-driven colleges, universities, nonprofits, healthcare, and businesses to solve the root causes of misalignment, fragmentation, and underperformance, not just the symptoms.
           </motion.p>
@@ -186,22 +186,22 @@ export default function EnhancedHero() {
                 variants={buttonVariants}
                 whileHover="hover"
                 whileTap="tap"
-                className="px-8 py-4 bg-white text-blue-700 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
+                className="px-8 py-4 bg-white text-blue-700 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 w-full sm:w-auto button-contrast-enhanced"
                 aria-label="Schedule a discovery call"
               >
                 Schedule a Call
                 <ArrowRight className="h-5 w-5" />
               </motion.button>
             </Link>
-            <Link href="/resources/overview">
+            <Link href="/assessment/secure-access">
               <motion.button
                 variants={buttonVariants}
                 whileHover="hover"
                 whileTap="tap"
-                className="px-8 py-4 bg-transparent text-white border-2 border-white rounded-lg font-semibold hover:bg-white/10 transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
-                aria-label="Download our overview PDF"
+                className="px-8 py-4 bg-transparent text-white border-2 border-white rounded-lg font-semibold hover:bg-white/20 transition-all flex items-center justify-center gap-2 w-full sm:w-auto button-contrast-enhanced"
+                aria-label="Start your organizational assessment"
               >
-                Download Overview
+                Start Assessment
                 <ChevronRight className="h-5 w-5" />
               </motion.button>
             </Link>

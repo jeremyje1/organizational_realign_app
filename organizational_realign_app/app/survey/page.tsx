@@ -6,6 +6,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import PublicNavigation from "@/components/PublicNavigation";
 import QuestionText from "@/components/QuestionText";
 import SectionExplanation from "@/components/SectionExplanation";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { CheckCircle2, AlertCircle, Clock, Building2, Upload, X, HelpCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -1038,16 +1039,18 @@ function SurveyPageContent() {
 
 export default function SurveyPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="text-white text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-400 mx-auto mb-4"></div>
-          <p>Loading survey...</p>
+    <ErrorBoundary>
+      <Suspense fallback={
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+          <div className="text-white text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-400 mx-auto mb-4"></div>
+            <p>Loading survey...</p>
+          </div>
         </div>
-      </div>
-    }
-    >
-      <SurveyPageContent />
-    </Suspense>
+      }
+      >
+        <SurveyPageContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }

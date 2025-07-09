@@ -1262,4 +1262,44 @@ p, li, span {
   font-weight: 600;
 }
 
-/* ...existing code... */
+/* Enhanced Image Loading and Fallback Styles */
+.hero-background {
+  background-color: #1e293b; /* Fallback dark background */
+  background-image: 
+    linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%),
+    url('/images/optimized-041412-60.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Enhanced contrast for text over images */
+.text-contrast-enhanced {
+  text-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.8),
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced button contrast */
+.button-contrast-enhanced {
+  box-shadow: 
+    0 4px 14px 0 rgba(0, 0, 0, 0.2),
+    0 1px 0 0 rgba(255, 255, 255, 0.1) inset;
+  backdrop-filter: blur(10px);
+}
+
+/* Ensure responsive images maintain aspect ratio */
+.responsive-image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.responsive-image-container img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.responsive-image-container:hover img {
+  transform: scale(1.02);
+}
