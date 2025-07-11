@@ -3,12 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Users, 
   Target, 
-  TrendingUp, 
   Shield,
-  Award,
-  Clock,
   Lightbulb,
   Zap,
   ArrowRight
@@ -16,32 +12,6 @@ import {
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-const stats = [
-  { 
-    number: "500+", 
-    label: "Organizations Transformed",
-    icon: Users,
-    gradient: "from-blue-500 to-cyan-500"
-  },
-  { 
-    number: "95%", 
-    label: "Client Satisfaction Rate",
-    icon: Target,
-    gradient: "from-emerald-500 to-teal-500"
-  },
-  { 
-    number: "$12M+", 
-    label: "Cost Savings Generated",
-    icon: TrendingUp,
-    gradient: "from-purple-500 to-pink-500"
-  },
-  { 
-    number: "90", 
-    label: "Day Average ROI",
-    icon: Clock,
-    gradient: "from-amber-500 to-orange-500"
-  }
-];
 
 const values = [
   {
@@ -61,12 +31,6 @@ const values = [
     title: "Sustainable Change",
     description: "Implementation approaches that build lasting organizational capacity",
     color: "purple"
-  },
-  {
-    icon: Award,
-    title: "Equity-Centered",
-    description: "Solutions that advance inclusion and remove barriers to success",
-    color: "amber"
   }
 ];
 
@@ -88,12 +52,6 @@ const colorClasses = {
     bg: "bg-purple-50",
     text: "text-purple-700",
     glass: "glass-purple"
-  },
-  amber: {
-    gradient: "from-amber-500 to-orange-500",
-    bg: "bg-amber-50",
-    text: "text-amber-700",
-    glass: "glass-amber"
   }
 };
 
@@ -115,13 +73,7 @@ export default function EnhancedAbout() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <motion.div
-              className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 text-white text-sm font-medium mb-6 shadow-lg border border-white/30"
-              whileHover={{ scale: 1.05 }}
-            >
-              <Award className="w-4 h-4" />
-              Transforming Institutions Since 2015
-            </motion.div>
+
 
             <h1 className="text-5xl lg:text-6xl font-black text-white mb-6">
               Strategic Excellence
@@ -180,33 +132,7 @@ export default function EnhancedAbout() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 hero-background relative">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20"
-              >
-                <motion.div
-                  className={`inline-flex p-3 rounded-2xl bg-gradient-to-r ${stat.gradient} text-white mb-4 shadow-lg`}
-                  whileHover={{ rotate: [0, -10, 10, 0] }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <stat.icon className="w-6 h-6" />
-                </motion.div>
-                <div className="text-3xl font-bold text-white mb-2">{stat.number}</div>
-                <div className="text-blue-200 font-medium">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Values Section */}
       <section className="py-24 hero-background relative">
@@ -289,142 +215,7 @@ export default function EnhancedAbout() {
         </div>
       </section>
 
-      {/* Founder Bio Section */}
-      <section className="py-20 hero-background">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {isClient ? (
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className="order-2 lg:order-1"
-              >
-                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 text-white text-sm font-medium mb-6 border border-white/30">
-                  <Users className="w-4 h-4" />
-                  Leadership
-                </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                  Meet Jeremy Estrella
-                </h2>
-                <div className="text-xl text-blue-100 mb-4 font-medium">
-                  Founder & Principal, NorthPath Strategies
-                </div>
-                <div className="text-lg text-blue-200 mb-6 italic">
-                  Strategic Systems Realignment | Student Success Architecture | Higher Ed Transformation
-                </div>
-                <div className="space-y-6 text-lg text-blue-200">
-                  <p>
-                    Jeremy Estrella is a nationally recognized higher education leader, systems strategist, and student success architect with over two decades of leadership experience transforming institutions to better serve students, communities, and the future of work.
-                  </p>
-                  <p>
-                    Before founding NorthPath Strategies, Jeremy served in leadership roles across large, complex community college systems, including Houston Community College and Portland Community College, where he led multimillion-dollar initiatives in academic and career pathways, student success infrastructure, and institution-wide redesign.
-                  </p>
-                  <p>
-                    Jeremy's approach is grounded in clarity, alignment, and execution. From leading the integration of holistic student support systems to architecting multi-campus operational realignments, his work consistently delivers measurable impact: increased persistence, stronger workforce pipelines, and more access to higher education.
-                  </p>
-                  <p>
-                    A former faculty chair and seasoned accreditation leader, Jeremy brings a unique ability to connect policy, practice, and purpose, making him a trusted advisor to college presidents, provosts, and change-making teams nationwide.
-                  </p>
-                  <p>
-                    He holds an M.A. in Communication Studies from California State University, Long Beach, and remains passionate about educational access, systems innovation, and mentoring first-generation college students.
-                  </p>
-                </div>
-                <div className="mt-8">
-                  <Link href="/contact">
-                    <Button className="bg-white/20 border border-white/30 text-white hover:bg-white/30 backdrop-blur-sm">
-                      Schedule a Consultation
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </Link>
-                </div>
-              </motion.div>
-            ) : (
-              <div className="order-2 lg:order-1">
-                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 text-white text-sm font-medium mb-6 border border-white/30">
-                  <Users className="w-4 h-4" />
-                  Leadership
-                </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                  Meet Jeremy Estrella
-                </h2>
-                <div className="text-xl text-blue-100 mb-4 font-medium">
-                  Founder & Principal, NorthPath Strategies
-                </div>
-                <div className="text-lg text-blue-200 mb-6 italic">
-                  Strategic Systems Realignment | Student Success Architecture | Higher Ed Transformation
-                </div>
-                <div className="space-y-6 text-lg text-blue-200">
-                  <p>
-                    Jeremy Estrella is a nationally recognized higher education leader, systems strategist, and student success architect with over two decades of leadership experience transforming institutions to better serve students, communities, and the future of work.
-                  </p>
-                  <p>
-                    Before founding NorthPath Strategies, Jeremy served in leadership roles across large, complex community college systems, including Houston Community College and Portland Community College, where he led multimillion-dollar initiatives in academic and career pathways, student success infrastructure, and institution-wide redesign.
-                  </p>
-                  <p>
-                    Jeremy's approach is grounded in clarity, alignment, and execution. From leading the integration of holistic student support systems to architecting multi-campus operational realignments, his work consistently delivers measurable impact: increased persistence, stronger workforce pipelines, and more access to higher education.
-                  </p>
-                  <p>
-                    A former faculty chair and seasoned accreditation leader, Jeremy brings a unique ability to connect policy, practice, and purpose, making him a trusted advisor to college presidents, provosts, and change-making teams nationwide.
-                  </p>
-                  <p>
-                    He holds an M.A. in Communication Studies from California State University, Long Beach, and remains passionate about educational access, systems innovation, and mentoring first-generation college students.
-                  </p>
-                </div>
-                <div className="mt-8">
-                  <Link href="/contact">
-                    <Button className="bg-white/20 border border-white/30 text-white hover:bg-white/30 backdrop-blur-sm">
-                      Schedule a Consultation
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            )}
-            
-            {isClient ? (
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className="order-1 lg:order-2 flex justify-center lg:justify-end"
-              >
-                <div className="relative max-w-sm">
-                  <div className="aspect-[3/4] w-64 rounded-2xl overflow-hidden shadow-xl border border-white/20">
-                    <img
-                      src="/images/jeremy-estrella.jpg"
-                      alt="Jeremy Estrella - Founder of NorthPath Strategies"
-                      className="w-full h-full object-cover object-center"
-                    />
-                  </div>
-                  <div className="absolute -bottom-6 -right-6 bg-white/20 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-white/30">
-                    <div className="text-sm text-blue-200 mb-1">Founder & Principal</div>
-                    <div className="font-semibold text-white">Jeremy Estrella</div>
-                    <div className="text-xs text-blue-300">M.A., Communication Studies</div>
-                  </div>
-                </div>
-              </motion.div>
-            ) : (
-              <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
-                <div className="relative max-w-sm">
-                  <div className="aspect-[3/4] w-64 rounded-2xl overflow-hidden shadow-xl border border-white/20">
-                    <img
-                      src="/images/jeremy-estrella.jpg"
-                      alt="Jeremy Estrella - Founder of NorthPath Strategies"
-                      className="w-full h-full object-cover object-center"
-                    />
-                  </div>
-                  <div className="absolute -bottom-6 -right-6 bg-white/20 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-white/30">
-                    <div className="text-sm text-blue-200 mb-1">Founder & Principal</div>
-                    <div className="font-semibold text-white">Jeremy Estrella</div>
-                    <div className="text-xs text-blue-300">M.A., Communication Studies</div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 }

@@ -10,9 +10,6 @@ import type { ReactNode } from "react";
 import type { Database } from "@/types/supabase";
 import { SocketProvider } from "@/lib/socket-client";
 import { LanguageProvider } from "@/hooks/useLanguage";
-import { QueryProvider } from "@/components/providers/QueryProvider";
-import SEOProvider from "@/components/seo/SEOProvider";
-import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -35,18 +32,12 @@ const supabase = createBrowserClient<Database>(
  */
 export default function Providers({ children }: ProvidersProps) {
   return (
-    <QueryProvider>
-      <SessionContextProvider supabaseClient={supabase}>
-        <SocketProvider>
-          <LanguageProvider>
-            <AnalyticsProvider>
-              <SEOProvider>
-                {children}
-              </SEOProvider>
-            </AnalyticsProvider>
-          </LanguageProvider>
-        </SocketProvider>
-      </SessionContextProvider>
-    </QueryProvider>
+    <SessionContextProvider supabaseClient={supabase}>
+      <SocketProvider>
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
+      </SocketProvider>
+    </SessionContextProvider>
   );
 }

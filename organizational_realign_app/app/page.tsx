@@ -1,40 +1,145 @@
-import EnhancedFooter from '@/components/EnhancedFooter';
-import HomeClient from '@/components/HomeClient';
-import EnhancedSEO from '@/components/seo/EnhancedSEO';
-import StructuredData from '@/components/seo/StructuredData';
-import ReadProgress from '@/components/seo/ReadProgress';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ChevronRight, BarChart3, Users, Shield, Zap } from 'lucide-react';
 import type { Metadata } from 'next';
 
-// Define metadata for this page (static metadata)
 export const metadata: Metadata = {
-  title: "NorthPath Strategies - Higher Education & Nonprofit Transformation",
-  description: "NorthPath Strategies partners with mission-driven colleges, universities, and nonprofits to solve the root causes of misalignment, fragmentation, and underperformance.",
-  keywords: "higher education transformation, institutional alignment, nonprofit strategy, systems design, university consulting, strategic planning",
+  title: "NorthPath Strategies Assessment Platform",
+  description: "Advanced organizational assessment and analytics platform for institutional transformation.",
+  keywords: "organizational assessment, analytics platform, institutional transformation, data-driven insights",
   openGraph: {
-    title: "NorthPath Strategies - Redesign the Systems. Align the Strategy. Transform the Institution.",
-    description: "We help mission-driven colleges, universities, and nonprofits align structures, people, and outcomes to your mission.",
-    url: "https://northpathstrategies.org",
-    siteName: "NorthPath Strategies",
-    images: [
-      {
-        url: '/og-homepage.png',
-        width: 1200,
-        height: 630,
-        alt: "NorthPath Strategies - Higher Education & Nonprofit Transformation",
-      }
-    ],
-    locale: "en_US",
+    title: "NorthPath Strategies Assessment Platform",
+    description: "Advanced organizational assessment and analytics platform for institutional transformation.",
+    url: "https://app.northpathstrategies.org",
+    siteName: "NorthPath Strategies App",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "NorthPath Strategies - Higher Education & Nonprofit Transformation",
-    description: "We design the systems that support mission-driven institutions at the intersection of strategy, equity, and execution.",
+    title: "NorthPath Analytics Platform",
+    description: "Advanced organizational assessment and analytics platform for data-driven transformation.",
     creator: "@northpathstrat",
-    images: ["/og-homepage.png"],
+    images: ["/og-app.png"],
   },
 };
 
-export default function RootPageWrapper() {
-  return <HomeClient />;
+export default function AppHomePage() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Header */}
+      <header className="border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
+                <BarChart3 className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-xl font-bold text-white">NorthPath Analytics</h1>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Link href="/assessment/start" className="text-slate-300 hover:text-white transition-colors">
+                Take Assessment
+              </Link>
+              <Link href="/secure/dashboard" className="text-slate-300 hover:text-white transition-colors">
+                Dashboard
+              </Link>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-6">
+            <Zap className="h-4 w-4 mr-2" />
+            Assessment Platform
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            Organizational
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+              {" "}Analytics
+            </span>
+          </h1>
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-8">
+            Advanced assessment and analytics platform for data-driven organizational transformation. 
+            Get insights, analyze patterns, and drive strategic decisions.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" asChild className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+              <Link href="/assessment/start">
+                Start Assessment
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" asChild className="border-slate-600 text-slate-300 hover:bg-slate-800">
+              <Link href="/secure/dashboard">
+                View Dashboard
+              </Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* Features Grid */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+              <BarChart3 className="h-6 w-6 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">Advanced Analytics</h3>
+            <p className="text-slate-300 text-sm">
+              Comprehensive organizational assessment with AI-powered insights and pattern recognition.
+            </p>
+          </div>
+          
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-500 rounded-lg flex items-center justify-center mb-4">
+              <Users className="h-6 w-6 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">Team Collaboration</h3>
+            <p className="text-slate-300 text-sm">
+              Multi-user dashboards and collaborative analysis tools for strategic planning.
+            </p>
+          </div>
+          
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
+            <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-500 rounded-lg flex items-center justify-center mb-4">
+              <Shield className="h-6 w-6 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">Secure Platform</h3>
+            <p className="text-slate-300 text-sm">
+              Enterprise-grade security with data encryption and compliance protocols.
+            </p>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-xl p-8 text-center">
+          <h2 className="text-2xl font-bold text-white mb-4">Get Started Today</h2>
+          <p className="text-slate-300 mb-6 max-w-2xl mx-auto">
+            Begin with our comprehensive organizational assessment to unlock insights and drive transformation.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+              <Link href="/assessment/start">Begin Assessment</Link>
+            </Button>
+            <Button variant="outline" asChild className="border-slate-600 text-slate-300 hover:bg-slate-800">
+              <Link href="/secure/results">View Sample Results</Link>
+            </Button>
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-700/50 bg-slate-900/80 backdrop-blur-sm mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center">
+            <p className="text-slate-400 text-sm">
+              © 2025 NorthPath Strategies Analytics Platform. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
 }

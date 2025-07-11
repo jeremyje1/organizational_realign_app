@@ -3,7 +3,9 @@ import { Suspense } from 'react';
 import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase-server';
 import { AssessmentDB } from '@/lib/assessment-db';
-import { CollaborativeAssessment } from '@/components/collaboration/CollaborativeAssessment';
+
+// Placeholder component for removed CollaborativeAssessment
+const CollaborativeAssessment = ({ data }: any) => <div className="p-4 border rounded">Collaborative Assessment Component (Placeholder)</div>;
 
 interface CollaboratePageProps {
   params: {

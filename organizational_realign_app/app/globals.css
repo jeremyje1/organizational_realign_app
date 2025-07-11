@@ -1303,3 +1303,57 @@ p, li, span {
 .responsive-image-container:hover img {
   transform: scale(1.02);
 }
+
+/* Homepage with Hero Background Styles */
+.homepage-hero-bg {
+  /* Ensure text is readable over the hero background */
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.6),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.homepage-hero-bg h1,
+.homepage-hero-bg h2,
+.homepage-hero-bg h3,
+.homepage-hero-bg h4 {
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.8),
+    0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.homepage-hero-bg p {
+  text-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.7),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Glass morphism effects for homepage cards */
+.homepage-hero-bg .bg-white\/10 {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.37),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.homepage-hero-bg .bg-white\/20 {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 
+    0 4px 24px 0 rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Enhanced contrast for links */
+.homepage-hero-bg a {
+  text-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* Ensure proper contrast for interactive elements */
+.homepage-hero-bg button,
+.homepage-hero-bg .button-contrast-enhanced {
+  box-shadow: 
+    0 4px 14px 0 rgba(0, 0, 0, 0.3),
+    0 1px 0 0 rgba(255, 255, 255, 0.2) inset;
+}

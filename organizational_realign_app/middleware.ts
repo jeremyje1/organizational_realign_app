@@ -21,6 +21,11 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hostname = request.headers.get('host');
   
+  // Skip redirects for local development
+  if (hostname?.includes('localhost') || hostname?.includes('127.0.0.1')) {
+    return NextResponse.next();
+  }
+  
   // If we're on the main domain and trying to access app-specific paths
   if (hostname === 'northpathstrategies.org' || hostname === 'www.northpathstrategies.org') {
     // Check if the path should redirect to app subdomain

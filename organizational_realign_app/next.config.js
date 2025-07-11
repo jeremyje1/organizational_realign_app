@@ -105,7 +105,20 @@ const nextConfig = {
   ],
 
   images: {
-    domains: ['lh3.googleusercontent.com', 'northpathstrategies.org', 'app.northpathstrategies.org'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'northpathstrategies.org',
+      },
+      {
+        protocol: 'https',
+        hostname: 'app.northpathstrategies.org',
+      },
+    ],
     // Enable modern image formats
     formats: ['image/webp', 'image/avif'],
     // Optimize image loading

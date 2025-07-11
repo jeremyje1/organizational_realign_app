@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { SafeLink } from '@/components/client-wrappers/DynamicClientImports';
 
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions - NorthPath Strategies',
@@ -316,16 +316,16 @@ export default function FAQPage() {
             Contact us for answers to specific questions about how we can help your organization.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <SafeLink href="/contact">
+            <Link href="/contact">
               <Button size="lg" variant="secondary">
                 Contact Us
               </Button>
-            </SafeLink>
-            <SafeLink href="/assessment/secure-access">
+            </Link>
+            <Link href="/assessment/secure-access">
               <Button size="lg" variant="outline" className="border-white hover:bg-white hover:text-primary-700">
                 Start Assessment
               </Button>
-            </SafeLink>
+            </Link>
           </div>
         </div>
       </section>

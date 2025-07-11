@@ -5,7 +5,6 @@ import "./skip-content.css"; // Import skip-to-content styles
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Inter } from 'next/font/google';
-import { DynamicClientImports } from "@/components/client-wrappers/DynamicClientImports";
 import ClientWrapper from "@/components/client-wrappers/ClientWrapper";
 
 const inter = Inter({
@@ -77,7 +76,6 @@ export default function RootLayout({
         <ClientWrapper>
           {children}
         </ClientWrapper>
-        <DynamicClientImports />
       </body>
     </html>
   );

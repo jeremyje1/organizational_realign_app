@@ -3,9 +3,10 @@
 import { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams } from 'next/navigation';
 import { useUser } from "@supabase/auth-helpers-react";
-import PublicNavigation from "@/components/PublicNavigation";
+
 import QuestionText from "@/components/QuestionText";
-import SectionExplanation from "@/components/SectionExplanation";
+import PublicNavigation from "@/components/PublicNavigation";
+
 import { CheckCircle2, AlertCircle, Clock, Building2, Upload, X, HelpCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +18,68 @@ import type {
   OrganizationType, 
   Question
 } from "@/data/northpathQuestionBank";
+
+// Define the SectionExplanation component
+interface SectionExplanationProps {
+  sectionName: string;
+}
+
+function SectionExplanation({ sectionName }: SectionExplanationProps) {
+  // Map of section names to their explanations
+  const explanations: Record<string, { title: string; description: string }> = {
+    "Organizational Structure": {
+      title: "Organizational Structure & Design",
+      description: "This section evaluates how your organization's structure supports its strategic goals, how departments interact, and whether reporting lines and decision-making processes are optimized."
+    },
+    "Leadership & Management": {
+      title: "Leadership & Management Practices",
+      description: "These questions assess leadership effectiveness, management alignment with organizational values, and the health of your management systems."
+    },
+    "Communication Systems": {
+      title: "Communication Systems & Processes",
+      description: "This section examines your formal and informal communication channels, information flow, and how effectively key messages reach all stakeholders."
+    },
+    "Strategic Planning": {
+      title: "Strategic Planning & Execution",
+      description: "These questions evaluate your organization's approach to setting goals, tracking progress, and ensuring accountability for strategic initiatives."
+    },
+    "Culture & Values": {
+      title: "Organizational Culture & Values",
+      description: "This section explores how well your stated values translate into daily operations and the overall health of your organizational culture."
+    },
+    "Resource Allocation": {
+      title: "Resource Allocation & Management",
+      description: "These questions assess how effectively your organization allocates and manages financial, human, and technological resources to achieve its mission."
+    },
+    "Performance Management": {
+      title: "Performance Management & Metrics",
+      description: "This section examines your systems for measuring success, tracking key metrics, and using data to drive continuous improvement."
+    },
+  };
+
+  // Default explanation for any section not in the mapping
+  const defaultExplanation = {
+    title: sectionName,
+    description: "This section evaluates key aspects of your organization's approach, systems, and processes in this important area."
+  };
+
+  // Get the explanation for this section or use the default
+  const explanation = explanations[sectionName] || defaultExplanation;
+
+  return (
+    <div className="mb-8 p-5 bg-white/90 backdrop-blur-sm rounded-xl border border-blue-200 shadow-lg">
+      <div className="flex items-start gap-4">
+        <div className="bg-blue-100 rounded-full p-2 mt-1">
+          <HelpCircle className="h-6 w-6 text-blue-700" />
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold text-blue-900 mb-2">{explanation.title}</h2>
+          <p className="text-gray-700">{explanation.description}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // Likert scale component with premium styling
 function LikertInput({ onSelect, value }: { onSelect: (value: number) => void; value?: number }) {

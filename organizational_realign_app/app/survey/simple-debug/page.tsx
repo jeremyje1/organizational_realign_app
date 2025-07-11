@@ -4,11 +4,14 @@ import { useState, useMemo, useEffect } from "react";
 import LikertInput from "@/components/LikertInput";
 import NumericInput from "@/components/NumericInput";
 import { SelectInput } from "@/components/SelectInput";
-import PublicNavigation from "@/components/PublicNavigation";
+
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Import types only to avoid data loading during SSR
 import type { OrganizationType } from "@/data/northpathQuestionBank";
+
+// Placeholder component for removed PublicNavigation
+const PublicNavigation = () => <div className="p-4 border-b">Public Navigation (Placeholder)</div>;
 
 type Question = {
   id: string;

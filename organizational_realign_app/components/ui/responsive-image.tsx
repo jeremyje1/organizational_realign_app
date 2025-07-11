@@ -67,11 +67,16 @@ export default function ResponsiveImage({
   overlayColor = '#000000',
   overlayGradient = 'from-black/50 via-black/40 to-black/60',
 }: ResponsiveImageProps) {
+  const [isMounted, setIsMounted] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
   const shouldUseBlur = placeholder === 'blur';
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const imgSrc = getOptimizedImageUrl(src, {
     quality: quality.toString(),
@@ -91,8 +96,8 @@ export default function ResponsiveImage({
           setIsInView(true);
           observer.disconnect();
           
-          // Log performance for first meaningful paint
-          if (performance && performance.mark) {
+          // Log performance for first meaningful paint (client-side only)
+          if (typeof window !== 'undefined' && performance && performance.mark) {
             performance.mark(`image-in-view-${src.split('/').pop()}`);
           }
         }
@@ -110,8 +115,8 @@ export default function ResponsiveImage({
     setIsLoaded(true);
     if (onLoad) onLoad();
     
-    // Log image load timing for performance monitoring
-    if (performance && performance.mark) {
+    // Log image load timing for performance monitoring (client-side only)
+    if (typeof window !== 'undefined' && performance && performance.mark) {
       performance.mark(`image-loaded-${src.split('/').pop()}`);
     }
   };
@@ -165,6 +170,12 @@ export default function ResponsiveImage({
 
   return (
     <figure ref={imageRef} className={cn('relative', className)}>
+      {isMounted && structuredData && getStructuredData() && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: getStructuredData()! }}
+        />
+      )}
       {(isInView || priority) && (
         <div
           className={cn(
@@ -229,13 +240,6 @@ export default function ResponsiveImage({
             </span>
           )}
         </figcaption>
-      )}
-      
-      {structuredData && (
-        <script 
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: getStructuredData() }}
-        />
       )}
     </figure>
   );

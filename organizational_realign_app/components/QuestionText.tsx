@@ -4,7 +4,7 @@
 'use client';
 
 import React from 'react';
-import InfoTooltip from './InfoTooltip';
+
 import { TERM_DEFINITIONS } from '@/lib/termDefinitions';
 import { useTranslatedText } from '@/hooks/useLanguage';
 

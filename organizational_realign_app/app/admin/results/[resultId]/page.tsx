@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";   // ← NEW
+import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import SummaryCard from "@/components/results/SummaryCard";
-import RoleList from "@/components/results/RoleList";
-import PriorityMatrix from "@/components/results/PriorityMatrix";
+
+// Placeholder components for removed modules
+const SummaryCard = ({ data }: any) => <div className="p-4 border rounded">Summary Card Component (Placeholder)</div>;
+const RoleList = ({ data }: any) => <div className="p-4 border rounded">Role List Component (Placeholder)</div>;
+const PriorityMatrix = ({ data }: any) => <div className="p-4 border rounded">Priority Matrix Component (Placeholder)</div>;
 
 export default function AdminResultsPage() {
   // 🆕  Get the dynamic [id] param from the hook

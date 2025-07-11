@@ -23,7 +23,6 @@ import {
   PlayCircle,
   Lock
 } from 'lucide-react';
-import PublicNavigation from '@/components/PublicNavigation';
 import OrganizationTypeSelect from '@/components/OrganizationTypeSelect';
 import { OrganizationType } from '@/data/northpathQuestionBank';
 
@@ -58,32 +57,31 @@ function AssessmentStartContent() {
           authorized = sessionStorage.getItem('assessment_authorized');
           console.log('Authorization check from sessionStorage:', authorized);
         } catch (storageError) {
-          console.log('SessionStorage not available:', storageError);
+          console.warn('SessionStorage not available:', storageError);
         }
         
-        // Check if we're in development mode
-        const isDevelopment = typeof window !== 'undefined' && 
-                             (process.env.NODE_ENV === 'development' || 
-                              window.location.hostname === 'localhost' ||
-                              window.location.hostname.includes('localhost') ||
-                              window.location.protocol === 'http:');
-        
-        if (authorized === 'true' || isDevelopment) {
+        if (authorized === 'true') {
+          console.log('User is authorized via sessionStorage');
           setIsAuthorized(true);
           setCheckingAuth(false);
-        } else {
-          // In production, redirect to secure access page
-          console.log('Not authorized, redirecting to secure access...');
+          return;
+        }
+        
+        // Check if this is localhost (development)
+        const isDevelopment = (typeof window !== 'undefined' && 
+                              window.location.hostname === 'localhost' ||
+                              window.location.hostname.includes('localhost'));
+        if (!isDevelopment) {
           router.push('/assessment/secure-access');
+        } else {
+          // Allow access in development even if there's an error
+          setIsAuthorized(true);
+          setCheckingAuth(false);
         }
       } catch (error) {
         console.error('Authorization check error:', error);
-        setCheckingAuth(false);
-        setIsAuthorized(false);
-        
-        // On error, safely redirect (except in development)
-        const isDevelopment = typeof window !== 'undefined' && 
-                             (process.env.NODE_ENV === 'development' ||
+        // Check if this is localhost (development)
+        const isDevelopment = (typeof window !== 'undefined' && 
                               window.location.hostname === 'localhost' ||
                               window.location.hostname.includes('localhost'));
         if (!isDevelopment) {
@@ -104,7 +102,7 @@ function AssessmentStartContent() {
   useEffect(() => {
     if (!isAuthorized || checkingAuth) return;
     
-    // If org type is provided in URL, skip selection
+    // If org type is provided in URL, set it immediately
     if (orgType) {
       setSelectedOrgType(orgType);
       setShowTypeSelection(false);
@@ -144,56 +142,42 @@ function AssessmentStartContent() {
           router.push('/assessment/secure-access');
         } catch (error) {
           console.error('Redirect error:', error);
-          // As a last resort, use window.location
-          window.location.href = '/assessment/secure-access';
+          // Fallback redirect
+          if (typeof window !== 'undefined') {
+            window.location.href = '/assessment/secure-access';
+          }
         }
       }
-    }, 3000); // 3 second timeout (reduced from 5 seconds)
+    }, 5000); // 5 second timeout
 
     return () => clearTimeout(timeout);
   }, [checkingAuth, router]);
 
   const fetchAssessment = async (sessionId: string) => {
     try {
-      const response = await fetch(`/api/assessment/by-session/${sessionId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setAssessment(data);
-      }
+      // This would typically fetch assessment data from your API
+      // For now, return mock data based on session
+      setAssessment({
+        id: sessionId,
+        tier: 'COMPREHENSIVE',
+        status: 'active',
+        instructions: [
+          "Complete the comprehensive organizational assessment survey",
+          "Answer all questions honestly and thoroughly for accurate results",
+          "The assessment typically takes 45-90 minutes to complete",
+          "You can save your progress and return to complete it later",
+          "Once submitted, AI analysis will generate your professional report",
+        ]
+      });
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching assessment:', error);
-    } finally {
       setLoading(false);
     }
   };
 
-  // Show authorization check loading
+  // Show auth loading state
   if (checkingAuth) {
-    return (
-      <div className="min-h-screen elegant-bg flex items-center justify-center">
-        <motion.div 
-          className="card p-12 text-center max-w-lg"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="flex items-center justify-center mb-6">
-            <Lock className="w-8 h-8 text-blue-400 mr-3" />
-            <LoadingSpinner size="lg" variant="gradient" />
-          </div>
-          <h2 className="text-2xl font-bold text-white mb-4">Verifying Access</h2>
-          <p className="text-slate-300">Checking your assessment platform authorization...</p>
-        </motion.div>
-      </div>
-    );
-  }
-
-  // Redirect if not authorized (this shouldn't be reached due to useEffect redirect)
-  if (!isAuthorized) {
-    return null;
-  }
-
-  if (loading) {
     return (
       <div className="min-h-screen elegant-bg flex items-center justify-center">
         <motion.div 
@@ -249,6 +233,7 @@ function AssessmentStartContent() {
       ENTERPRISE: [
         "Invite unlimited team members and external consultants",
         "Upload organizational charts and supporting documents",
+        "Access premium analytics and custom recommendations",
         "Schedule your included 2-hour strategy consultation after completion",
       ],
     };
@@ -265,8 +250,6 @@ function AssessmentStartContent() {
   if (showTypeSelection && !selectedOrgType) {
     return (
       <div className="min-h-screen elegant-bg">
-        <PublicNavigation />
-        
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <motion.div 
             className="text-center mb-12"
@@ -282,16 +265,8 @@ function AssessmentStartContent() {
             >
               <Building2 className="h-10 w-10 text-white" />
             </motion.div>
-            <motion.h1 
-              className="text-4xl font-bold text-slate-100 mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              Select Your Organization Type
-            </motion.h1>
             <motion.p 
-              className="text-xl text-slate-300 max-w-3xl mx-auto"
+              className="text-xl text-slate-300 max-w-3xl mx-auto text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
@@ -325,20 +300,227 @@ function AssessmentStartContent() {
     );
   }
 
-  const assessmentAreas = [
-    { name: 'Organizational Structure', icon: Target },
-    { name: 'Role Definition & Redundancy', icon: Users },
-    { name: 'Decision-Making Processes', icon: Settings },
-    { name: 'Curriculum Planning', icon: FileText },
-    { name: 'Course Scheduling', icon: Clock },
-    { name: 'Technology Integration', icon: Zap },
-    { name: 'Financial Operations', icon: TrendingUp },
-    { name: 'Student Services', icon: Shield },
-    { name: 'Faculty Relations', icon: Users },
-    { name: 'External Relations', icon: Target },
-    { name: 'AI Automation Opportunities', icon: Brain },
-    { name: 'Cost-Saving Recommendations', icon: Lightbulb }
-  ];
+  const getAssessmentAreas = (orgType: OrganizationType | null) => {
+    const universalAreas = [
+      { name: 'Organizational Structure', icon: Target },
+      { name: 'Role Definition & Redundancy', icon: Users },
+      { name: 'Decision-Making Processes', icon: Settings },
+      { name: 'Technology Integration', icon: Zap },
+      { name: 'Financial Operations', icon: TrendingUp },
+      { name: 'AI Automation Opportunities', icon: Brain },
+      { name: 'Cost-Saving Recommendations', icon: Lightbulb }
+    ];
+
+    const specificAreas = {
+      'community_college': [
+        { name: 'Curriculum Planning', icon: FileText },
+        { name: 'Course Scheduling', icon: Clock },
+        { name: 'Student Services', icon: Shield },
+        { name: 'Faculty Relations', icon: Users },
+        { name: 'Dual Enrollment Programs', icon: Target }
+      ],
+      'public_university': [
+        { name: 'Academic Programs', icon: FileText },
+        { name: 'Research Administration', icon: Brain },
+        { name: 'Student Affairs', icon: Shield },
+        { name: 'Faculty Governance', icon: Users },
+        { name: 'Grant Management', icon: TrendingUp }
+      ],
+      'private_university': [
+        { name: 'Academic Excellence', icon: FileText },
+        { name: 'Enrollment Management', icon: Clock },
+        { name: 'Alumni Relations', icon: Users },
+        { name: 'Advancement Operations', icon: TrendingUp },
+        { name: 'Campus Life Programs', icon: Shield }
+      ],
+      'hospital_healthcare': [
+        { name: 'Patient Care Operations', icon: Shield },
+        { name: 'Clinical Workflows', icon: FileText },
+        { name: 'Medical Staff Relations', icon: Users },
+        { name: 'Quality & Safety Programs', icon: Target },
+        { name: 'Regulatory Compliance', icon: Settings }
+      ],
+      'nonprofit': [
+        { name: 'Program Delivery', icon: FileText },
+        { name: 'Donor Relations', icon: Users },
+        { name: 'Community Outreach', icon: Target },
+        { name: 'Volunteer Management', icon: Shield },
+        { name: 'Grant Administration', icon: TrendingUp }
+      ],
+      'government_agency': [
+        { name: 'Public Service Delivery', icon: Shield },
+        { name: 'Regulatory Processes', icon: FileText },
+        { name: 'Citizen Engagement', icon: Users },
+        { name: 'Policy Implementation', icon: Settings },
+        { name: 'Interagency Coordination', icon: Target }
+      ],
+      'company_business': [
+        { name: 'Product Development', icon: Brain },
+        { name: 'Customer Relations', icon: Users },
+        { name: 'Sales Operations', icon: TrendingUp },
+        { name: 'Supply Chain Management', icon: Settings },
+        { name: 'Market Strategy', icon: Target }
+      ],
+      'trade_technical': [
+        { name: 'Skills Training Programs', icon: FileText },
+        { name: 'Industry Partnerships', icon: Users },
+        { name: 'Equipment Management', icon: Settings },
+        { name: 'Safety Protocols', icon: Shield },
+        { name: 'Certification Processes', icon: Target }
+      ]
+    };
+
+    const orgSpecific = specificAreas[orgType as keyof typeof specificAreas] || [];
+    return [...universalAreas, ...orgSpecific];
+  };
+
+  const getBenefitsByOrgType = (orgType: OrganizationType | null) => {
+    const universalBenefits = [
+      "Comprehensive organizational analysis report",
+      "DSCH algorithm optimization recommendations", 
+      "CRF (Cost Reduction Framework) analysis",
+      "LEI (License Efficiency Index) assessment"
+    ];
+
+    const universalBenefits2 = [
+      "AI-powered improvement roadmap",
+      "ROI projections and cost-saving estimates",
+      "Implementation timeline and milestones",
+      "Risk assessment and mitigation strategies"
+    ];
+
+    const specificBenefits = {
+      'community_college': {
+        column1: [
+          "Academic program optimization",
+          "Student success pathway analysis",
+          "Community partnership enhancement",
+          "Transfer process streamlining"
+        ],
+        column2: [
+          "Workforce development alignment",
+          "Faculty resource optimization",
+          "Student support service improvements",
+          "Enrollment management strategies"
+        ]
+      },
+      'public_university': {
+        column1: [
+          "Academic excellence framework",
+          "Research administration optimization",
+          "Student affairs enhancement",
+          "Faculty governance improvements"
+        ],
+        column2: [
+          "Grant management efficiency",
+          "Alumni engagement strategies",
+          "Campus operations optimization",
+          "Public service mission alignment"
+        ]
+      },
+      'private_university': {
+        column1: [
+          "Academic program differentiation",
+          "Enrollment management optimization",
+          "Alumni relations enhancement",
+          "Advancement operations improvement"
+        ],
+        column2: [
+          "Student experience optimization",
+          "Faculty development strategies",
+          "Campus life enhancement",
+          "Financial sustainability planning"
+        ]
+      },
+      'hospital_healthcare': {
+        column1: [
+          "Patient care workflow optimization",
+          "Clinical efficiency recommendations",
+          "Regulatory compliance assessment",
+          "Quality metrics improvement plan"
+        ],
+        column2: [
+          "Medical staff productivity analysis",
+          "Healthcare technology integration roadmap",
+          "Patient satisfaction enhancement strategies",
+          "Cost reduction in clinical operations"
+        ]
+      },
+      'nonprofit': {
+        column1: [
+          "Program delivery optimization",
+          "Donor engagement strategy recommendations",
+          "Community impact measurement framework",
+          "Grant management efficiency analysis"
+        ],
+        column2: [
+          "Volunteer coordination improvements",
+          "Fundraising process optimization",
+          "Mission alignment assessment",
+          "Resource allocation recommendations"
+        ]
+      },
+      'government_agency': {
+        column1: [
+          "Public service delivery optimization",
+          "Citizen engagement enhancement strategies",
+          "Regulatory process streamlining",
+          "Interagency coordination improvements"
+        ],
+        column2: [
+          "Policy implementation efficiency analysis",
+          "Digital transformation roadmap",
+          "Public accountability framework",
+          "Resource optimization recommendations"
+        ]
+      },
+      'company_business': {
+        column1: [
+          "Business process optimization",
+          "Customer experience enhancement",
+          "Sales pipeline efficiency analysis",
+          "Market positioning strategies"
+        ],
+        column2: [
+          "Product development streamlining",
+          "Supply chain optimization",
+          "Competitive advantage identification",
+          "Revenue growth recommendations"
+        ]
+      },
+      'trade_technical': {
+        column1: [
+          "Skills training program optimization",
+          "Industry partnership enhancement",
+          "Equipment utilization analysis",
+          "Safety protocol improvements"
+        ],
+        column2: [
+          "Certification process streamlining",
+          "Workforce development strategies",
+          "Training outcome improvements",
+          "Industry alignment recommendations"
+        ]
+      }
+    };
+
+    const orgSpecific = specificBenefits[orgType as keyof typeof specificBenefits];
+    
+    if (orgSpecific) {
+      return {
+        column1: [...universalBenefits.slice(0, 2), ...orgSpecific.column1.slice(0, 2)],
+        column2: [...universalBenefits2.slice(0, 2), ...orgSpecific.column2.slice(0, 2)]
+      };
+    }
+    
+    return {
+      column1: universalBenefits,
+      column2: universalBenefits2
+    };
+  };
+
+  const benefits = getBenefitsByOrgType(selectedOrgType);
+  const assessmentAreas = getAssessmentAreas(selectedOrgType);
 
   return (
     <main className="min-h-screen flex flex-col bg-gradient-to-br from-slate-900 via-blue-950 to-slate-800">
@@ -352,119 +534,62 @@ function AssessmentStartContent() {
       </section>
       <section className="w-full max-w-3xl mx-auto bg-white/90 rounded-3xl shadow-2xl p-8 mb-16">
         {/* Enhanced Success Header */}
-        <motion.div 
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.div 
-            className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6"
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ type: "spring", duration: 0.8, delay: 0.2 }}
-          >
-            <CheckCircle className="h-10 w-10 text-white" />
-          </motion.div>
-          {assessment.tier === 'BASIC' ? (
-            <>
-              <motion.h1 
-                className="text-4xl font-bold text-slate-100 mb-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                Start Your Assessment
-              </motion.h1>
-              <motion.p 
-                className="text-xl text-slate-300"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                Begin your <span className="text-emerald-400 font-semibold">organizational realignment assessment</span> to identify improvement opportunities.
-              </motion.p>
-            </>
-          ) : (
-            <>
-              <motion.h1 
-                className="text-4xl font-bold text-slate-100 mb-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                Payment Successful!
-              </motion.h1>
-              <motion.p 
-                className="text-xl text-slate-300"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                Your <span className="text-emerald-400 font-semibold">{assessment.tier.toLowerCase()}</span> assessment is ready to begin.
-              </motion.p>
-            </>
-          )}
-        </motion.div>
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center mb-6">
+            <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-full flex items-center justify-center">
+              <CheckCircle className="h-10 w-10 text-white" />
+            </div>
+          </div>
+          <h1 className="text-4xl font-bold text-slate-100 mb-4">
+            Begin Assessment
+          </h1>
+          <p className="text-xl text-slate-300">
+            Begin your <span className="text-emerald-400 font-semibold">organizational realignment assessment</span> to identify improvement opportunities.
+          </p>
+        </div>
 
-        {/* Enhanced Instructions Card */}
-        <motion.div 
-          className="card p-8 mb-8"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <motion.div 
+        {/* Enhanced Getting Started */}
+        <div className="card p-8 mb-8">
+          <div className="flex items-center gap-4 mb-6">
+            <div 
               className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full flex items-center justify-center"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
             >
               <Brain className="h-5 w-5 text-white" />
-            </motion.div>
+            </div>
             <h2 className="text-2xl font-bold text-slate-100">Getting Started</h2>
           </div>
           
           <div className="space-y-6">
             <p className="text-slate-300 text-lg leading-relaxed">
               Welcome to your Organizational Realignment Assessment. This comprehensive evaluation 
-              will analyze your institution&apos;s structure, identify inefficiencies, and provide 
+              will analyze your organization&apos;s structure, identify inefficiencies, and provide 
               AI-powered recommendations for improvement.
             </p>
 
             <div>
               <h3 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
                 <FileText className="h-5 w-5 text-purple-400" />
-                Instructions
+                What You&apos;ll Complete
               </h3>
-              <div className="grid gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {getInstructionsByTier(assessment.tier).map((instruction, index) => (
-                  <motion.div 
+                  <div 
                     key={index} 
-                    className="flex items-start gap-4 p-4 bg-slate-800/30 rounded-lg border border-slate-600/20 hover:border-purple-500/30 transition-all duration-300"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.6 + index * 0.1 }}
-                    whileHover={{ scale: 1.02 }}
+                    className="flex items-start gap-3 p-4 bg-slate-800/30 rounded-lg border border-slate-600/30"
                   >
-                    <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                      {index + 1}
+                    <div className="w-6 h-6 bg-purple-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-xs font-semibold text-purple-300">{index + 1}</span>
                     </div>
-                    <span className="text-slate-200">{instruction}</span>
-                  </motion.div>
+                    <span className="text-slate-300 text-sm">{instruction}</span>
+                  </div>
                 ))}
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Enhanced Assessment Areas */}
-        <motion.div 
-          className="card p-8 mb-8"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.6 }}
-        >
+        <div className="card p-8 mb-8">
           <h3 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-purple-400" />
             Assessment Areas
@@ -473,98 +598,50 @@ function AssessmentStartContent() {
             {assessmentAreas.map((area, index) => {
               const Icon = area.icon;
               return (
-                <motion.div 
+                <div 
                   key={index} 
-                  className="flex items-center p-4 bg-slate-800/30 border border-slate-600/30 rounded-lg hover:border-slate-500/50 transition-all duration-300 group cursor-pointer"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8 + index * 0.05 }}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center gap-3 p-3 bg-slate-800/30 rounded-lg border border-slate-600/30 hover:border-slate-500/50 transition-all duration-200 group"
                 >
-                  <motion.div 
-                    className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-full flex items-center justify-center mr-3"
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    <Icon className="h-4 w-4 text-white" />
-                  </motion.div>
+                  <div className="w-8 h-8 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Icon className="h-4 w-4 text-purple-400" />
+                  </div>
                   <span className="text-slate-200 text-sm font-medium group-hover:text-slate-100 transition-colors">{area.name}</span>
-                </motion.div>
+                </div>
               );
             })}
           </div>
-        </motion.div>
+        </div>
 
         {/* Enhanced Key Benefits */}
-        <motion.div 
-          className="card p-8 mb-8"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.6 }}
-        >
+        <div className="card p-8 mb-8">
           <h3 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-2">
             <Target className="h-5 w-5 text-purple-400" />
             What You&apos;ll Receive
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              {[
-                { icon: Brain, title: "AI-Powered Analysis", desc: "Advanced algorithms analyze your responses for deep insights", color: "purple" },
-                { icon: FileText, title: "Comprehensive Report", desc: "Detailed PDF with actionable recommendations", color: "blue" }
-              ].map((benefit, index) => (
-                <motion.div 
-                  key={index}
-                  className="flex items-start gap-3 p-4 bg-slate-800/20 rounded-lg border border-slate-600/20 hover:border-purple-500/30 transition-all duration-300"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1.0 + index * 0.1 }}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <benefit.icon className={`h-6 w-6 text-${benefit.color}-400 mt-1`} />
-                  <div>
-                    <h4 className="font-semibold text-slate-100">{benefit.title}</h4>
-                    <p className="text-slate-300 text-sm">{benefit.desc}</p>
-                  </div>
-                </motion.div>
+              {benefits.column1.map((benefit, index) => (
+                <div key={index} className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <span className="text-slate-300">{benefit}</span>
+                </div>
               ))}
             </div>
             <div className="space-y-4">
-              {[
-                { icon: TrendingUp, title: "ROI Projections", desc: "Expected returns on recommended changes", color: "emerald" },
-                { icon: Lightbulb, title: "Implementation Roadmap", desc: "Step-by-step guide to transformation", color: "amber" }
-              ].map((benefit, index) => (
-                <motion.div 
-                  key={index}
-                  className="flex items-start gap-3 p-4 bg-slate-800/20 rounded-lg border border-slate-600/20 hover:border-purple-500/30 transition-all duration-300"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1.2 + index * 0.1 }}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <benefit.icon className={`h-6 w-6 text-${benefit.color}-400 mt-1`} />
-                  <div>
-                    <h4 className="font-semibold text-slate-100">{benefit.title}</h4>
-                    <p className="text-slate-300 text-sm">{benefit.desc}</p>
-                  </div>
-                </motion.div>
+              {benefits.column2.map((benefit, index) => (
+                <div key={index} className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <span className="text-slate-300">{benefit}</span>
+                </div>
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Enhanced Action Buttons */}
-        <motion.div 
-          className="text-center space-y-6"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.4, duration: 0.6 }}
-        >
-          <div className="space-y-4">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+        {/* Enhanced Action Section */}
+        <div className="text-center pt-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div>
               <Button
                 onClick={() => {
                   const surveyUrl = selectedOrgType 
@@ -578,14 +655,10 @@ function AssessmentStartContent() {
                 Begin Assessment
                 <ArrowRight className="h-5 w-5 ml-3 group-hover:translate-x-1 transition-transform" />
               </Button>
-            </motion.div>
+            </div>
             
             {assessment.tier !== 'INDIVIDUAL' && assessment.tier !== 'BASIC' && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.6 }}
-              >
+              <div>
                 <Button
                   onClick={() => window.location.href = '/assessment/team'}
                   variant="outline"
@@ -594,24 +667,19 @@ function AssessmentStartContent() {
                   <Users className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
                   Manage Team Access
                 </Button>
-              </motion.div>
+              </div>
             )}
           </div>
           
-          <motion.div 
+          <div 
             className="bg-slate-800/30 rounded-lg p-4 border border-slate-600/30"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.8 }}
           >
-            <p className="text-sm text-slate-400">
-              Need help? Contact our support team at{' '}
-              <a href="mailto:support@northpathstrategies.org" className="text-purple-400 hover:text-purple-300 transition-colors">
-                support@northpathstrategies.org
-              </a>
-            </p>
-          </motion.div>
-        </motion.div>
+            <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
+              <Lock className="h-4 w-4" />
+              <span>All data processed using SOC 2 compliant, AES-256 encrypted systems</span>
+            </div>
+          </div>
+        </div>
       </section>
       <footer className="w-full py-8 border-t-2 border-slate-800 bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 text-center text-slate-400 text-xs font-serif shadow-inner mt-auto">
         <span>Organizational Realignment Tool v1.0 © {new Date().getFullYear()} NorthPath Strategies</span>
@@ -624,26 +692,7 @@ function AssessmentStartContent() {
 
 export default function AssessmentStartPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen elegant-bg flex items-center justify-center">
-        <motion.div 
-          className="text-center"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <LoadingSpinner size="lg" variant="gradient" className="mx-auto mb-4" />
-          <motion.p 
-            className="text-slate-300"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            Loading assessment...
-          </motion.p>
-        </motion.div>
-      </div>
-    }>
+    <Suspense fallback={<LoadingSpinner />}>
       <AssessmentStartContent />
     </Suspense>
   );

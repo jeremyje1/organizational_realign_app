@@ -3,7 +3,9 @@
 export const dynamic = 'force-dynamic';
 
 import React from 'react';
-import { TeamCollaboration } from '@/components/collaboration/TeamCollaboration';
+
+// Placeholder component for removed TeamCollaboration
+const TeamCollaboration = () => <div className="p-4 border rounded">Team Collaboration Component (Placeholder)</div>;
 
 export default function WorkspacesPage() {
   return (

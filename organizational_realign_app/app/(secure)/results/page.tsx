@@ -2,14 +2,16 @@
 
 import { useEffect, useState, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { AnalysisResults } from '../../../components/results/AnalysisResults';
-import { InteractiveInsights } from '../../../components/results/InteractiveInsights';
-import { AIAnalysisResults } from '../../../components/results/AIAnalysisResults';
-import { AssessmentComments } from '../../../components/collaboration/AssessmentComments';
-import { ConsultationBooking } from '../../../components/consultation/ConsultationBooking';
-import { PremiumUpgrade } from '../../../components/payments/PremiumUpgrade';
 import { Button } from '../../../components/ui/button';
 import { Brain, Download, Share2, BookOpen, CheckCircle, Target, AlertTriangle, Sparkles, Crown } from 'lucide-react';
+
+// Placeholder components for removed modules
+const AnalysisResults = ({ data }: any) => <div className="p-4 border rounded">Analysis Results Component (Placeholder)</div>;
+const InteractiveInsights = ({ data }: any) => <div className="p-4 border rounded">Interactive Insights Component (Placeholder)</div>;
+const AIAnalysisResults = ({ data }: any) => <div className="p-4 border rounded">AI Analysis Results Component (Placeholder)</div>;
+const AssessmentComments = ({ data }: any) => <div className="p-4 border rounded">Assessment Comments Component (Placeholder)</div>;
+const ConsultationBooking = ({ data }: any) => <div className="p-4 border rounded">Consultation Booking Component (Placeholder)</div>;
+const PremiumUpgrade = ({ data }: any) => <div className="p-4 border rounded">Premium Upgrade Component (Placeholder)</div>;
 
 function ResultsPageContent() {
   const searchParams = useSearchParams();

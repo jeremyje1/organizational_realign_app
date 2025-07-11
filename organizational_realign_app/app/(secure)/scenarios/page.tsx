@@ -1,8 +1,10 @@
 
-import { ScenarioEditor } from "@/components/scenarios/ScenarioEditor";
-import { ScenarioViewer } from "@/components/scenarios/ScenarioViewer";
 import { promises as fs } from 'fs';
 import path from 'path';
+
+// Placeholder components for removed modules
+const ScenarioEditor = ({ baselineAssessment }: any) => <div className="p-4 border rounded">Scenario Editor Component (Placeholder)</div>;
+const ScenarioViewer = () => <div className="p-4 border rounded">Scenario Viewer Component (Placeholder)</div>;
 
 async function getAssessmentData() {
   // Path to the mock data file

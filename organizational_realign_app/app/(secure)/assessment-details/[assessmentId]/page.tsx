@@ -7,8 +7,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, Download, Share2 } from 'lucide-react';
 import Link from 'next/link';
-import { CollaboratorManagement } from '@/components/collaboration/CollaboratorManagement';
-import { AssessmentComments } from '@/components/collaboration/AssessmentComments';
+
+// Placeholder components for removed modules
+const CollaboratorManagement = ({ data }: any) => <div className="p-4 border rounded">Collaborator Management Component (Placeholder)</div>;
+const AssessmentComments = ({ data }: any) => <div className="p-4 border rounded">Assessment Comments Component (Placeholder)</div>;
 
 export const metadata = {
   title: 'Assessment Details',

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { SafeLink } from '@/components/client-wrappers/DynamicClientImports';
+import Link from 'next/link';
 
 // Client components cannot export metadata
 // Metadata should be moved to a separate layout file if needed
@@ -43,10 +43,10 @@ export default function ErrorPage({
           </Button>
           
           <Button asChild>
-            <SafeLink href="/" className="flex items-center">
+            <Link href="/" className="flex items-center">
               <span className="mr-2">🏠</span>
               Return Home
-            </SafeLink>
+            </Link>
           </Button>
         </div>
         

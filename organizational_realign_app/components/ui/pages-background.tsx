@@ -12,19 +12,19 @@ interface PagesBackgroundProps {
 export function PagesBackground({ 
   children, 
   className = '',
-  overlayOpacity = 0.85
+  overlayOpacity = 0.80
 }: PagesBackgroundProps) {
   return (
     <div className={`min-h-screen relative ${className}`}>
       <div className="absolute inset-0 z-0">
         <ResponsiveImage
-          src="/images/pages-background-60.jpg"
+          src="/images/northpath_background_opt.jpg"
           alt=""
           fill
           className="object-cover"
           overlay={true}
-          overlayType="solid"
-          overlayColor="#ffffff"
+          overlayType="gradient"
+          overlayGradient="from-blue-900/70 to-indigo-900/80"
           overlayOpacity={overlayOpacity}
         />
       </div>
@@ -38,19 +38,19 @@ export function PagesBackground({
 export function PagesBackgroundSection({ 
   children, 
   className = '',
-  overlayOpacity = 0.95
+  overlayOpacity = 0.85
 }: PagesBackgroundProps) {
   return (
     <div className={`relative ${className}`}>
       <div className="absolute inset-0 z-0">
         <ResponsiveImage
-          src="/images/pages-background-60.jpg"
+          src="/images/northpath_background_opt.jpg"
           alt=""
           fill
           className="object-cover"
           overlay={true}
-          overlayType="solid"
-          overlayColor="#ffffff"
+          overlayType="gradient"
+          overlayGradient="from-blue-900/80 to-indigo-900/85"
           overlayOpacity={overlayOpacity}
         />
       </div>
