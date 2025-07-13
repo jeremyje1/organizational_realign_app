@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-export default function AssessmentPage() {
+function AssessmentRedirect() {
   const searchParams = useSearchParams();
   const tier = searchParams.get('tier');
 
@@ -24,5 +24,20 @@ export default function AssessmentPage() {
         <p className="mt-4 text-gray-600">Redirecting to assessment...</p>
       </div>
     </div>
+  );
+}
+
+export default function AssessmentPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading assessment...</p>
+        </div>
+      </div>
+    }>
+      <AssessmentRedirect />
+    </Suspense>
   );
 }
