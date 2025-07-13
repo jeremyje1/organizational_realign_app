@@ -10,10 +10,10 @@ import { PageHero } from '@/components/PageHero';
 export const dynamic = 'force-dynamic';
 
 function DashboardContent() {
-  const { data: session, status } = useSession();
-
-  // Loading state
-  if (status === 'loading') {
+  const session = useSession();
+  
+  // Handle loading state and undefined session
+  if (!session || session.status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -25,12 +25,12 @@ function DashboardContent() {
   }
 
   // Not authenticated
-  if (!session) {
+  if (session.status === 'unauthenticated' || !session.data) {
     redirect('/auth');
   }
 
   // Check if user has enterprise tier access (this would be handled by middleware in production)
-  const userTier = (session as any)?.tier || 'INDIVIDUAL';
+  const userTier = (session.data as any)?.tier || 'INDIVIDUAL';
   if (userTier !== 'ENTERPRISE') {
     return (
       <div className="min-h-screen bg-gray-50">
