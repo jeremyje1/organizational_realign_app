@@ -12,8 +12,6 @@ import {
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 
-export const metadata = { title: 'Settings | Assessment Tool' };
-
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('profile');
   const [settings, setSettings] = useState({
