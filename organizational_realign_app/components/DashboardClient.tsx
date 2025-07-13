@@ -41,19 +41,31 @@ function QuickActions() {
     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8 border border-white/20">
       <h2 className="text-xl font-semibold text-white mb-4">Quick Actions</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <button className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors">
+        <button 
+          onClick={() => window.location.href = '/assessment/onboarding'}
+          className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors"
+        >
           <FileText className="h-6 w-6 text-white mb-2" />
           <span className="text-white text-sm">New Assessment</span>
         </button>
-        <button className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors">
+        <button 
+          onClick={() => window.location.href = '/results'}
+          className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors"
+        >
           <BarChart3 className="h-6 w-6 text-white mb-2" />
           <span className="text-white text-sm">View Reports</span>
         </button>
-        <button className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors">
+        <button 
+          onClick={() => window.location.href = '/settings'}
+          className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors"
+        >
           <Settings className="h-6 w-6 text-white mb-2" />
           <span className="text-white text-sm">Settings</span>
         </button>
-        <button className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors">
+        <button 
+          onClick={() => window.location.href = '/secure/workspaces'}
+          className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors"
+        >
           <Download className="h-6 w-6 text-white mb-2" />
           <span className="text-white text-sm">Export Data</span>
         </button>

@@ -303,7 +303,7 @@ export function validateTierAccess(
   const { guardrails } = config;
   
   // Check assessment limits
-  if (guardrails.maxAssessments && usage.assessmentsUsed && usage.assessmentsUsed >= guardrails.maxAssessments) {
+  if (guardrails.maxAssessments && usage.assessmentsUsed && usage.assessmentsUsed > guardrails.maxAssessments) {
     return {
       valid: false,
       message: `Assessment limit reached (${guardrails.maxAssessments}). Upgrade to continue.`,
@@ -311,8 +311,8 @@ export function validateTierAccess(
     };
   }
   
-  // Check user limits
-  if (guardrails.maxUsers && usage.usersCount && usage.usersCount >= guardrails.maxUsers) {
+  // Check user limits  
+  if (guardrails.maxUsers && usage.usersCount && usage.usersCount > guardrails.maxUsers) {
     return {
       valid: false,
       message: `User limit reached (${guardrails.maxUsers}). Upgrade to add more users.`,

@@ -89,7 +89,7 @@ function TierBasedAssessmentContent() {
   // Validate tier access
   useEffect(() => {
     const validation = validateTierAccess(assessmentState.tier, {
-      assessmentsUsed: 1,
+      assessmentsUsed: 0, // Check if they can start a new assessment
       usersCount: 1
     });
     

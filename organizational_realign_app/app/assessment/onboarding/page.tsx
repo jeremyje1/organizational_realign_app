@@ -218,7 +218,7 @@ export default function AssessmentOnboardingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
               <div key={index} className="border border-gray-200 rounded-lg p-6">
-                <div className="text-3xl mb-3">{feature.icon}</div>
+                <div className="text-lg mb-3">{feature.icon}</div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
                 <p className="text-gray-600 text-sm">{feature.description}</p>
               </div>
@@ -228,7 +228,7 @@ export default function AssessmentOnboardingPage() {
 
         {/* Quick Launch Checklist */}
         <section className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">2. Quick Launch Checklist ✔️</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">2. Quick Launch Checklist</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -267,7 +267,7 @@ export default function AssessmentOnboardingPage() {
 
         {/* Documents to Gather */}
         <section className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">3. Documents to Gather 📂</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">3. Documents to Gather</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -312,7 +312,7 @@ export default function AssessmentOnboardingPage() {
 
         {/* Who Should Be Involved */}
         <section className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">4. Who Should Be Involved 👥</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">4. Who Should Be Involved</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {teamRoles.map((role, index) => (
               <div key={index} className="border border-gray-200 rounded-lg p-4">
@@ -382,7 +382,7 @@ export default function AssessmentOnboardingPage() {
 
         {/* Timeline */}
         <section className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">6. Timeline at a Glance ⏱️</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">6. Timeline at a Glance</h2>
           <div className="space-y-6">
             {timeline.map((phase, index) => (
               <div key={index} className="border-l-4 border-blue-500 pl-6">
@@ -411,7 +411,7 @@ export default function AssessmentOnboardingPage() {
 
         {/* Data Security & Compliance */}
         <section className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">7. Data Security & Compliance 🔒</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">7. Data Security & Compliance</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div className="flex items-start">
