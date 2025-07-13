@@ -1,0 +1,440 @@
+'use client';
+
+import React, { useState } from 'react';
+import { PageHero } from '@/components/PageHero';
+import { PricingTier, PRICING_TIERS } from '@/lib/tierConfiguration';
+import { CheckCircleIcon, DocumentArrowDownIcon, ClockIcon } from '@heroicons/react/24/outline';
+
+export default function AssessmentOnboardingPage() {
+  const [selectedTier, setSelectedTier] = useState<PricingTier>('one-time-diagnostic');
+
+  const tierInfo = PRICING_TIERS[selectedTier];
+
+  const features = [
+    {
+      title: 'Dynamic Survey',
+      description: 'Questions adapt to your institution type and earlier answers.',
+      icon: '🔄'
+    },
+    {
+      title: 'Secure File Uploads',
+      description: 'Upload org charts, salary rosters, and system inventories — all encrypted in transit and at rest.',
+      icon: '🔒'
+    },
+    {
+      title: 'AI Scoring Engine (DSCH / CRF / LEI)',
+      description: 'Produces your Organizational Complexity Index (OCI™, HOCI™, or ICI™).',
+      icon: '🤖'
+    },
+    {
+      title: 'Instant Snapshot Report',
+      description: 'Quick‑view metrics in minutes; full PDF within 5–10 business days.',
+      icon: '📊'
+    },
+    {
+      title: 'Collaboration‑Ready',
+      description: 'Invite colleagues to answer their sections or review data.',
+      icon: '👥'
+    }
+  ];
+
+  const checklist = [
+    {
+      step: 'Select Package',
+      owner: 'Project sponsor',
+      target: 'Today',
+      notes: 'Already done if you reached this page.',
+      completed: true
+    },
+    {
+      step: 'Gather Required Files',
+      owner: 'HR / Finance / IT',
+      target: '+3 days',
+      notes: 'CSV/XLSX/PDF accepted.',
+      completed: false
+    },
+    {
+      step: 'Identify Section Leads',
+      owner: 'Project sponsor',
+      target: '+3 days',
+      notes: 'At least 1 per area.',
+      completed: false
+    },
+    {
+      step: 'Send Assessment Invites',
+      owner: 'NorthPath platform',
+      target: 'Auto',
+      notes: 'Via "Team" tab after you click Start Assessment.',
+      completed: false
+    },
+    {
+      step: 'Complete Survey',
+      owner: 'Section leads',
+      target: '+10 days',
+      notes: 'Save‑and‑resume supported.',
+      completed: false
+    },
+    {
+      step: 'Review Draft Report',
+      owner: 'Exec sponsor + NorthPath analyst',
+      target: '+15 days',
+      notes: 'Schedule 60‑min read‑out.',
+      completed: false
+    }
+  ];
+
+  const requiredFiles = [
+    {
+      code: 'U‑01',
+      file: 'org_units.csv',
+      why: 'Unit hierarchy and reporting lines',
+      template: true
+    },
+    {
+      code: 'U‑02',
+      file: 'positions.csv',
+      why: 'Role titles, FTE, salary, benefits %',
+      template: true
+    },
+    {
+      code: 'U‑03',
+      file: 'people.csv',
+      why: 'Span‑of‑control and vacancy map',
+      template: true
+    },
+    {
+      code: 'U‑04',
+      file: 'systems_inventory.csv',
+      why: 'License cost & redundancy analysis',
+      template: true
+    },
+    {
+      code: 'U‑05',
+      file: 'Strategic plan (PDF)',
+      why: 'Constraints and mission alignment',
+      template: false
+    },
+    {
+      code: 'Optional',
+      file: 'BPMN diagrams (.zip)',
+      why: 'Process mining accuracy',
+      template: false
+    }
+  ];
+
+  const teamRoles = [
+    {
+      role: 'Executive Sponsor',
+      responsibility: 'Approves scope & timelines; attends read‑out.'
+    },
+    {
+      role: 'HR / People Ops',
+      responsibility: 'Provides org_units and positions files.'
+    },
+    {
+      role: 'Finance / Budget',
+      responsibility: 'Supplies salary, overhead, and benefit figures.'
+    },
+    {
+      role: 'IT / CIO',
+      responsibility: 'Exports systems_inventory.xlsx; verifies license counts.'
+    },
+    {
+      role: 'Institutional Research / Quality',
+      responsibility: 'Answers governance & KPI sections.'
+    },
+    {
+      role: 'Department Leads (optional)',
+      responsibility: 'Validate span‑of‑control and process details.'
+    }
+  ];
+
+  const timeline = [
+    { phase: 'Prep', days: '0-3', tasks: ['Select package', 'Gather files', 'Identify section leads'] },
+    { phase: 'Execution', days: '3-10', tasks: ['Send invites', 'Complete survey', 'Upload docs'] },
+    { phase: 'Wrap‑Up', days: '10-15', tasks: ['AI processing', 'Analyst review', 'Executive read‑out'] }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <PageHero 
+        title="🚀 Welcome to the NorthPath Organizational Assessment"
+        subtitle="Our AI‑enhanced diagnostic pinpoints structural inefficiencies, cost‑saving opportunities, and cultural friction points in under 60 minutes of staff time."
+      />
+      
+      <div className="max-w-7xl mx-auto py-12 px-4 space-y-16">
+        
+        {/* Package Selection */}
+        <section className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Selected Package</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            {Object.entries(PRICING_TIERS).map(([key, tier]) => (
+              <button
+                key={key}
+                onClick={() => setSelectedTier(key as PricingTier)}
+                className={`p-4 border-2 rounded-lg transition-colors ${
+                  selectedTier === key
+                    ? 'border-blue-500 bg-blue-50'
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
+              >
+                <h3 className="font-semibold text-sm">{tier.name}</h3>
+                <p className="text-xs text-gray-600">${tier.price.toLocaleString()}</p>
+              </button>
+            ))}
+          </div>
+          
+          <div className="bg-blue-50 p-6 rounded-lg">
+            <h3 className="text-lg font-semibold text-blue-900 mb-3">{tierInfo.name}</h3>
+            <p className="text-blue-800 mb-4">{tierInfo.targetCustomer}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-medium text-blue-900 mb-2">Core Deliverables:</h4>
+                <ul className="space-y-1 text-sm text-blue-800">
+                  {tierInfo.coreDeliverables.map((deliverable, index) => (
+                    <li key={index} className="flex items-start">
+                      <CheckCircleIcon className="h-4 w-4 text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
+                      {deliverable}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-medium text-blue-900 mb-2">Assessment Scope:</h4>
+                <ul className="space-y-1 text-sm text-blue-800">
+                  <li>• {tierInfo.assessmentScope.questionCount} targeted questions</li>
+                  <li>• {tierInfo.assessmentScope.reportPages}-page detailed report</li>
+                  <li>• {tierInfo.assessmentScope.algorithms.join(', ')} analysis</li>
+                  <li>• {tierInfo.assessmentScope.followUpSupport}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* What the Tool Does */}
+        <section className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">1. What the Tool Does — In Plain English</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, index) => (
+              <div key={index} className="border border-gray-200 rounded-lg p-6">
+                <div className="text-3xl mb-3">{feature.icon}</div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-gray-600 text-sm">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Quick Launch Checklist */}
+        <section className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">2. Quick Launch Checklist ✔️</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Step</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Owner</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Target Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notes</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {checklist.map((item, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.step}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.owner}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-bold">{item.target}</td>
+                    <td className="px-6 py-4 text-sm text-gray-500">{item.notes}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {item.completed ? (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Complete
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                          Pending
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* Documents to Gather */}
+        <section className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">3. Documents to Gather 📂</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">File</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Why We Need It</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Template</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {requiredFiles.map((file, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-900">{file.code}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{file.file}</td>
+                    <td className="px-6 py-4 text-sm text-gray-500">{file.why}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {file.template ? (
+                        <a 
+                          href={`/downloads/${file.file}`}
+                          download
+                          className="inline-flex items-center text-blue-600 hover:text-blue-800"
+                        >
+                          <DocumentArrowDownIcon className="h-4 w-4 mr-1" />
+                          Download
+                        </a>
+                      ) : (
+                        '–'
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-sm text-yellow-800">
+              <strong>Tip:</strong> If you can&apos;t extract all salary data, supply salary bands; our model will interpolate.
+            </p>
+          </div>
+        </section>
+
+        {/* Who Should Be Involved */}
+        <section className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">4. Who Should Be Involved 👥</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {teamRoles.map((role, index) => (
+              <div key={index} className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-2">{role.role}</h3>
+                <p className="text-sm text-gray-600">{role.responsibility}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-sm text-blue-800">
+              Enterprise clients often include <strong>Change‑Management / PMO</strong> for implementation planning.
+            </p>
+          </div>
+        </section>
+
+        {/* Adding Team Members */}
+        <section className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">5. Adding Team Members to the Assessment</h2>
+          <div className="space-y-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <span className="text-sm font-bold text-blue-800">1</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm text-gray-700">Click the <strong>Team</strong> tab once inside the assessment wizard.</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <span className="text-sm font-bold text-blue-800">2</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm text-gray-700">Enter each colleague&apos;s email and select their <strong>section permissions</strong> (e.g., &quot;Finance only&quot;).</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <span className="text-sm font-bold text-blue-800">3</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm text-gray-700">They receive a secure, single‑use link.</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <span className="text-sm font-bold text-blue-800">4</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm text-gray-700">Progress indicators show which sections are complete.</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <span className="text-sm font-bold text-blue-800">5</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm text-gray-700">The survey auto‑saves every 30 seconds; partial answers are fine.</p>
+              </div>
+            </div>
+          </div>
+          <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <p className="text-sm text-green-800">
+              <strong>Security:</strong> Each invite token expires after 14 days or on survey submission.
+            </p>
+          </div>
+        </section>
+
+        {/* Timeline */}
+        <section className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">6. Timeline at a Glance ⏱️</h2>
+          <div className="space-y-6">
+            {timeline.map((phase, index) => (
+              <div key={index} className="border-l-4 border-blue-500 pl-6">
+                <div className="flex items-center mb-2">
+                  <ClockIcon className="h-5 w-5 text-blue-500 mr-2" />
+                  <h3 className="text-lg font-semibold text-gray-900">{phase.phase}</h3>
+                  <span className="ml-auto text-sm text-gray-500">Days {phase.days}</span>
+                </div>
+                <ul className="space-y-1">
+                  {phase.tasks.map((task, taskIndex) => (
+                    <li key={taskIndex} className="text-sm text-gray-600 flex items-center">
+                      <CheckCircleIcon className="h-4 w-4 text-green-500 mr-2" />
+                      {task}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Call to Action */}
+        <section className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg shadow-lg p-8 text-white text-center">
+          <h2 className="text-3xl font-bold mb-4">Ready to Begin?</h2>
+          <p className="text-xl mb-8 text-blue-100">
+            Your {tierInfo.name} package is configured and ready to launch.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => {
+                // Set authorization and redirect to assessment start
+                try {
+                  sessionStorage.setItem('assessment_authorized', 'true');
+                } catch (e) {
+                  console.warn('SessionStorage not available:', e);
+                }
+                window.location.href = `/assessment/start?tier=${selectedTier}`;
+              }}
+              className="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            >
+              Start Assessment Now
+            </button>
+            <button
+              onClick={() => window.location.href = '/secure/dashboard'}
+              className="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+            >
+              Go to Dashboard
+            </button>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  );
+}
