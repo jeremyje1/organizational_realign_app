@@ -8,7 +8,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -41,7 +41,7 @@ interface AssessmentState {
   validationErrors: string[];
 }
 
-export default function TierBasedAssessment() {
+function TierBasedAssessmentContent() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
@@ -518,5 +518,20 @@ export default function TierBasedAssessment() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function TierBasedAssessment() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading assessment...</p>
+        </div>
+      </div>
+    }>
+      <TierBasedAssessmentContent />
+    </Suspense>
   );
 }
