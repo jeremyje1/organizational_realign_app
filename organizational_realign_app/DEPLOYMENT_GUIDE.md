@@ -3,9 +3,11 @@
 ## Prerequisites Checklist
 
 ### 1. Environment Variables Update ✅
+
 Update the following environment variables in Vercel Dashboard:
 
 #### Domain & URL Variables
+
 ```
 NEXT_PUBLIC_DOMAIN=app.northpathstrategies.org
 NEXT_PUBLIC_APP_URL=https://app.northpathstrategies.org
@@ -14,6 +16,7 @@ NEXTAUTH_URL=https://app.northpathstrategies.org
 ```
 
 #### Database Variables
+
 ```
 DATABASE_URL=<production_database_url>
 SUPABASE_URL=<production_supabase_url>
@@ -24,6 +27,7 @@ SUPABASE_SERVICE_ROLE_KEY=<production_service_role_key>
 ```
 
 #### Auth Variables
+
 ```
 NEXTAUTH_SECRET=<secure_random_string>
 GOOGLE_CLIENT_ID=<production_google_client_id>
@@ -36,6 +40,7 @@ AUTH0_ISSUER=<production_auth0_issuer>
 ```
 
 #### Payment Variables
+
 ```
 STRIPE_SECRET_KEY=<production_stripe_secret>
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=<production_stripe_publishable>
@@ -48,6 +53,7 @@ STRIPE_TEAM_PRICE_ID=<team_price_id>
 ```
 
 #### AI & External Services
+
 ```
 OPENAI_API_KEY=<production_openai_key>
 ```
@@ -70,6 +76,7 @@ npx prisma generate
 ### 3. Vercel Configuration ✅
 
 Updated `vercel.json` with:
+
 - Correct domain: `app.northpathstrategies.org`
 - Extended function timeouts for AI/PDF generation (30s)
 - CORS headers for API routes
@@ -78,6 +85,7 @@ Updated `vercel.json` with:
 ### 4. Power BI Configuration 🔄
 
 #### Required Actions:
+
 1. **Power BI Admin Portal**
    - Add `app.northpathstrategies.org` to embed allowlist
    - Configure tenant settings for embedding
@@ -96,6 +104,7 @@ Updated `vercel.json` with:
 ## Deployment Steps
 
 ### Step 1: Update Environment Variables
+
 ```bash
 # Using Vercel CLI (if available)
 vercel env add NEXT_PUBLIC_DOMAIN production
@@ -109,6 +118,7 @@ vercel env add NEXT_PUBLIC_APP_URL production
 ```
 
 ### Step 2: Database Setup
+
 ```bash
 # Ensure production database is accessible
 # Update DATABASE_URL in Vercel environment
@@ -117,6 +127,7 @@ pnpm run prisma migrate deploy
 ```
 
 ### Step 3: Deploy Application
+
 ```bash
 # Deploy to Vercel
 vercel --prod
@@ -128,6 +139,7 @@ git push origin main
 ### Step 4: Post-Deployment Verification
 
 #### Health Checks
+
 - [ ] Application loads at `https://app.northpathstrategies.org`
 - [ ] API endpoints respond correctly
 - [ ] Authentication flow works
@@ -137,6 +149,7 @@ git push origin main
 - [ ] AI PDF generation functions
 
 #### API Endpoint Tests
+
 ```bash
 # Test health endpoint
 curl https://app.northpathstrategies.org/api/health
@@ -155,6 +168,7 @@ curl -X POST https://app.northpathstrategies.org/api/report/generate \
 ### Step 5: External Service Configuration
 
 #### Power BI Embed Setup
+
 1. Login to Power BI Admin Portal
 2. Navigate to Tenant Settings > Developer Settings
 3. Add `app.northpathstrategies.org` to "Embed content in apps"
@@ -162,6 +176,7 @@ curl -X POST https://app.northpathstrategies.org/api/report/generate \
 5. Test embed functionality
 
 #### Stripe Webhook Configuration
+
 ```bash
 # Update webhook endpoint in Stripe Dashboard
 # Endpoint: https://app.northpathstrategies.org/api/webhooks/stripe
@@ -169,6 +184,7 @@ curl -X POST https://app.northpathstrategies.org/api/report/generate \
 ```
 
 #### Auth Provider Updates
+
 - **Google OAuth**: Add `https://app.northpathstrategies.org` to authorized origins
 - **GitHub OAuth**: Update callback URL to `https://app.northpathstrategies.org/api/auth/callback/github`
 - **Auth0**: Update allowed callback URLs and origins
@@ -176,16 +192,19 @@ curl -X POST https://app.northpathstrategies.org/api/report/generate \
 ## Monitoring & Maintenance
 
 ### Performance Monitoring
+
 - Vercel Analytics enabled
 - Error tracking via Vercel monitoring
 - Database performance via Supabase metrics
 
 ### Backup Strategy
+
 - Database: Automated daily backups via Supabase
 - File uploads: S3 backup strategy (if implemented)
 - Configuration: Environment variables documented
 
 ### SSL/Security
+
 - SSL certificate automatically managed by Vercel
 - Security headers configured in `next.config.js`
 - API rate limiting implemented
@@ -193,6 +212,7 @@ curl -X POST https://app.northpathstrategies.org/api/report/generate \
 ## Rollback Plan
 
 ### If Deployment Fails
+
 1. Revert environment variables to previous values
 2. Rollback database migrations if necessary:
    ```bash
@@ -202,6 +222,7 @@ curl -X POST https://app.northpathstrategies.org/api/report/generate \
 3. Deploy previous working version via Vercel dashboard
 
 ### Emergency Contacts
+
 - Vercel Support: Dashboard help
 - Supabase Support: Database issues
 - Stripe Support: Payment processing
