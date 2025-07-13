@@ -3,45 +3,54 @@
 import React, { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { PageHero } from '@/components/PageHero';
+import { PricingTier, PRICING_TIERS } from '@/lib/tierConfiguration';
+import { generateStripeCheckoutUrl } from '@/lib/stripe-tier-mapping';
 
 function UpgradeContent() {
   const searchParams = useSearchParams();
-  const requiredTier = searchParams.get('requiredTier') || 'ENTERPRISE';
-  const currentTier = searchParams.get('currentTier') || 'INDIVIDUAL';
+  const requiredTier = searchParams.get('requiredTier') || 'enterprise-transformation';
+  const currentTier = searchParams.get('currentTier') || 'one-time-diagnostic';
 
+  // Use actual tier configuration instead of hardcoded features
   const tierFeatures = {
-    INDIVIDUAL: {
-      name: 'Individual',
-      price: '$49',
-      features: [
-        'Basic assessment reports',
-        'Individual analytics',
-        'Standard templates',
-        'Email support'
-      ]
+    'one-time-diagnostic': {
+      name: 'One-Time Diagnostic',
+      price: '$4,995',
+      interval: 'one-time',
+      tierKey: 'one-time-diagnostic' as PricingTier,
+      features: PRICING_TIERS['one-time-diagnostic'].coreDeliverables
     },
-    TEAM: {
-      name: 'Team',
-      price: '$149',
-      features: [
-        'Team collaboration tools',
-        'Scenario modeling',
-        'Advanced analytics',
-        'Bulk data upload',
-        'Priority support'
-      ]
+    'monthly-subscription': {
+      name: 'Monthly Subscription',
+      price: '$2,995',
+      interval: '/month',
+      tierKey: 'monthly-subscription' as PricingTier,
+      features: PRICING_TIERS['monthly-subscription'].coreDeliverables
     },
-    ENTERPRISE: {
-      name: 'Enterprise',
-      price: '$399',
-      features: [
-        'Enterprise dashboard',
-        'Power BI integration',
-        'Advanced scenario analysis',
-        'Custom reporting',
-        'API access',
-        'Dedicated support'
-      ]
+    'comprehensive-package': {
+      name: 'Comprehensive Package',
+      price: '$9,900',
+      interval: 'one-time',
+      tierKey: 'comprehensive-package' as PricingTier,
+      features: PRICING_TIERS['comprehensive-package'].coreDeliverables
+    },
+    'enterprise-transformation': {
+      name: 'Enterprise Transformation',
+      price: '$24,000',
+      interval: 'one-time',
+      tierKey: 'enterprise-transformation' as PricingTier,
+      features: PRICING_TIERS['enterprise-transformation'].coreDeliverables
+    }
+  };
+
+  const handleUpgrade = async (tierKey: PricingTier) => {
+    try {
+      // Redirect to Stripe checkout for the selected tier
+      const checkoutUrl = generateStripeCheckoutUrl(tierKey);
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      console.error('Error initiating upgrade:', error);
+      alert('There was an error processing your upgrade. Please try again.');
     }
   };
 
@@ -77,13 +86,11 @@ function UpgradeContent() {
         </div>
 
         {/* Pricing Comparison */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {Object.entries(tierFeatures).map(([tier, info]) => {
             const isCurrent = tier === currentTier;
             const isRequired = tier === requiredTier;
-            const isUpgrade = ['TEAM', 'ENTERPRISE'].includes(tier) && 
-                             (['INDIVIDUAL'].includes(currentTier) || 
-                              (tier === 'ENTERPRISE' && currentTier === 'TEAM'));
+            const isUpgrade = tier !== currentTier;
 
             return (
               <div
@@ -113,7 +120,7 @@ function UpgradeContent() {
                       <span className="text-4xl font-bold text-gray-900">
                         {info.price}
                       </span>
-                      <span className="text-gray-600">/month</span>
+                      <span className="text-gray-600">{info.interval}</span>
                     </div>
                   </div>
                 </div>
@@ -142,17 +149,14 @@ function UpgradeContent() {
                       </button>
                     ) : isUpgrade ? (
                       <button
-                        onClick={() => {
-                          // Handle upgrade logic here
-                          console.log(`Upgrading to ${tier}`);
-                        }}
+                        onClick={() => handleUpgrade(info.tierKey)}
                         className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
                           isRequired
                             ? 'bg-blue-600 text-white hover:bg-blue-700'
                             : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                         }`}
                       >
-                        {isRequired ? 'Upgrade Now' : 'Upgrade'}
+                        {isRequired ? 'Upgrade Now' : 'Select Plan'}
                       </button>
                     ) : (
                       <button
