@@ -25,7 +25,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     stripeProductId: 'prod_diagnostic',
     stripePriceId: process.env.STRIPE_BASIC_PRICE_ID || 'price_1Rhdf0ELd2WOuqIWwagqCdLa',
     stripeMode: 'payment',
-    successRedirect: '/assessment/start?tier=one-time-diagnostic',
+    successRedirect: '/assessment/tier-based?tier=one-time-diagnostic',
     cancelRedirect: '/upgrade?tier=one-time-diagnostic',
     tierName: 'One-Time Diagnostic',
     tierPrice: 4995
@@ -35,7 +35,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     stripeProductId: 'prod_monthly',
     stripePriceId: process.env.STRIPE_TEAM_PRICE_ID || 'price_1RhdgNELd2WOuqIW9HDyggY3',
     stripeMode: 'subscription',
-    successRedirect: '/assessment/start?tier=monthly-subscription',
+    successRedirect: '/assessment/tier-based?tier=monthly-subscription',
     cancelRedirect: '/upgrade?tier=monthly-subscription',
     tierName: 'Monthly Subscription',
     tierPrice: 2995
@@ -45,7 +45,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     stripeProductId: 'prod_comprehensive',
     stripePriceId: process.env.STRIPE_COMPREHENSIVE_PRICE_ID || 'price_1RgUduELd2WOuqIWFHobukeZ',
     stripeMode: 'payment',
-    successRedirect: '/assessment/start?tier=comprehensive-package',
+    successRedirect: '/assessment/tier-based?tier=comprehensive-package',
     cancelRedirect: '/upgrade?tier=comprehensive-package',
     tierName: 'Comprehensive Package',
     tierPrice: 9900
@@ -55,7 +55,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     stripeProductId: 'prod_enterprise',
     stripePriceId: process.env.STRIPE_ENTERPRISE_PRICE_ID || 'price_1RgUb8ELd2WOuqIWMxA0mLwz',
     stripeMode: 'payment',
-    successRedirect: '/assessment/start?tier=enterprise-transformation',
+    successRedirect: '/assessment/tier-based?tier=enterprise-transformation',
     cancelRedirect: '/upgrade?tier=enterprise-transformation',
     tierName: 'Enterprise Transformation',
     tierPrice: 24000

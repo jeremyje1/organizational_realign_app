@@ -262,7 +262,7 @@ function ResultsPageContent() {
             </Button>
             <Button 
               variant="outline" 
-              onClick={() => window.location.href = '/secure/dashboard'}
+              onClick={() => window.location.href = '/dashboard'}
               className="w-full bg-slate-700/30 hover:bg-slate-600/50 text-slate-200 border-slate-600/50"
             >
               Return to Dashboard
@@ -293,7 +293,7 @@ function ResultsPageContent() {
             </Button>
             <Button 
               variant="outline" 
-              onClick={() => window.location.href = '/secure/dashboard'}
+              onClick={() => window.location.href = '/dashboard'}
               className="w-full bg-slate-700/30 hover:bg-slate-600/50 text-slate-200 border-slate-600/50"
             >
               Return to Dashboard

@@ -48,11 +48,11 @@ function PaymentSuccessContent() {
 
   const redirectToTierContent = useCallback(() => {
     if (tier && PRICING_TIERS[tier]) {
-      // Redirect to tier-specific assessment or dashboard
-      window.location.href = `/assessment/start?tier=${tier}`;
+      // Redirect to tier-specific assessment
+      window.location.href = `/assessment/tier-based?tier=${tier}`;
     } else {
       // Default redirect to dashboard
-      window.location.href = '/secure/dashboard';
+      window.location.href = '/dashboard';
     }
   }, [tier]);
 
@@ -199,7 +199,7 @@ function PaymentSuccessContent() {
               Start Assessment Now
             </button>
             <button
-              onClick={() => window.location.href = '/secure/dashboard'}
+              onClick={() => window.location.href = '/dashboard'}
               className="px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
             >
               Go to Dashboard

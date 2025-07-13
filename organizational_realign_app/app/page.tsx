@@ -40,7 +40,7 @@ export default function AppHomePage() {
               <Link href="/assessment/onboarding" className="text-slate-300 hover:text-white transition-colors">
                 Take Assessment
               </Link>
-              <Link href="/secure/dashboard" className="text-slate-300 hover:text-white transition-colors">
+              <Link href="/dashboard" className="text-slate-300 hover:text-white transition-colors">
                 Dashboard
               </Link>
             </div>
@@ -73,7 +73,7 @@ export default function AppHomePage() {
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="border-slate-600 text-slate-300 hover:bg-slate-800">
-              <Link href="/secure/dashboard">
+              <Link href="/dashboard">
                 View Dashboard
               </Link>
             </Button>
@@ -121,7 +121,7 @@ export default function AppHomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
-              <Link href="/assessment/start">Begin Assessment</Link>
+              <Link href="/assessment/onboarding">Begin Assessment</Link>
             </Button>
             <Button variant="outline" asChild className="border-slate-600 text-slate-300 hover:bg-slate-800">
               <Link href="/secure/results">View Sample Results</Link>

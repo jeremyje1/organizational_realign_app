@@ -8,9 +8,9 @@ function AssessmentRedirect() {
   const tier = searchParams.get('tier');
 
   useEffect(() => {
-    // If coming from a payment success, redirect to tier-specific start
+    // If coming from a payment success, redirect to tier-specific assessment
     if (tier) {
-      window.location.href = `/assessment/start?tier=${tier}`;
+      window.location.href = `/assessment/tier-based?tier=${tier}`;
     } else {
       // Otherwise, show the onboarding page
       window.location.href = '/assessment/onboarding';

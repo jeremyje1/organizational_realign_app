@@ -513,23 +513,18 @@ export default function AssessmentOnboardingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
             <button
               onClick={() => {
-                // Set authorization and redirect to assessment start
-                try {
-                  sessionStorage.setItem('assessment_authorized', 'true');
-                } catch (e) {
-                  console.warn('SessionStorage not available:', e);
-                }
-                window.location.href = `/assessment/start?tier=${selectedTier}`;
+                // Direct to tier-based assessment
+                window.location.href = `/assessment/tier-based?tier=${selectedTier}`;
               }}
               className="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg"
             >
-              👉 Start Your Assessment
+              👉 Begin Assessment Now
             </button>
             <button
-              onClick={() => window.location.href = '/secure/dashboard'}
+              onClick={() => window.location.href = '/dashboard'}
               className="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
             >
-              Go to Dashboard
+              Manage Team Access
             </button>
           </div>
           <p className="text-sm text-blue-200">
