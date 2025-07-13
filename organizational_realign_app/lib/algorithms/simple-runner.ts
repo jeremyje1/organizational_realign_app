@@ -6,14 +6,40 @@
  * @author NorthPath Strategies
  */
 
-import { calcDSCH, DSCHInput, DSCHResult } from './dsch-simple';
-import { calcCRF, CRFInput, CRFResult } from './crf-simple';
-import { calcLEI, LEIInput, LEIResult } from './lei-simple';
+import { calcDSCH } from './dsch-simple';
+import { calcCRF } from './crf-simple';
+import { calcLEI } from './lei-simple';
 
-// Re-export types for external use
-export { DSCHInput, DSCHResult } from './dsch-simple';
-export { CRFInput, CRFResult } from './crf-simple';
-export { LEIInput, LEIResult } from './lei-simple';
+// Define inline types for simplicity
+export interface DSCHInput {
+  layers: number;
+  spanByMgr: number[];
+}
+
+export interface DSCHResult {
+  score: number;
+  recommendation: string;
+}
+
+export interface CRFInput {
+  ratios: number[];
+  benchmark: number;
+}
+
+export interface CRFResult {
+  score: number;
+  recommendation: string;
+}
+
+export interface LEIInput {
+  initiatives: number;
+  capacity: number;
+}
+
+export interface LEIResult {
+  score: number;
+  recommendation: string;
+}
 
 export interface AlgorithmPayload {
   structure: {
