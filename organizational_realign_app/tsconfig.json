@@ -37,14 +37,6 @@
     /* -------------------------------------------------- */
     /*  libs / types                                      */
     /* -------------------------------------------------- */
-    "types": [
-      "@types/node",
-      "@types/react",
-      "@types/react-dom",
-      "@types/jest",
-      "jest",
-      "@testing-library/jest-dom"
-    ],
     "lib": [
       "DOM",
       "DOM.Iterable",
