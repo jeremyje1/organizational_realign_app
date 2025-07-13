@@ -49,12 +49,30 @@ const nextConfig = {
     typedRoutes: false,
     // Enable modern bundling optimizations
     optimizePackageImports: ['@heroicons/react', '@headlessui/react', 'framer-motion', 'lucide-react'],
-    // Enable optimized CSS
-    optimizeCss: true,
-    // Improved memory usage
-    memoryBasedWorkersCount: true,
+    // Reduce compilation overhead
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
-  
+
+  // ─── Performance Configuration ─────────────
+  onDemandEntries: {
+    // Period (in ms) where the server will keep pages in the buffer
+    maxInactiveAge: 25 * 1000,
+    // Number of pages that should be kept simultaneously without being disposed
+    pagesBufferLength: 2,
+  },
+
+  // Optimize file watching
+  watchOptions: {
+    ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**', '**/coverage/**', '**/__tests__/**'],
+  },
+
   // Built-in transpilePackages instead of next-transpile-modules
   transpilePackages: ['lucide-react'],
   

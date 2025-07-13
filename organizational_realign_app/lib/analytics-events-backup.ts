@@ -10,70 +10,44 @@ export function initAnalyticsTracking(socketServer: SocketServer) {
   socketServer.on('userJoined', async (data) => {
     if (!data.userId) return;
     
-    await trackCollaborationEvent({
-      userId: data.userId,
-      assessmentId: data.assessmentId,
-      teamId: data.teamId,
-      type: 'VIEW',
-      section: data.section || 'General',
-      metadata: {
-        clientId: data.clientId,
-        device: data.device
-      }
-    });
+    await trackCollaborationEvent(
+      data.userId,
+      'VIEW',
+      data.section || 'General'
+    );
   });
 
   // Track document edits
   socketServer.on('documentEdit', async (data) => {
     if (!data.userId) return;
     
-    await trackCollaborationEvent({
-      userId: data.userId,
-      assessmentId: data.documentId,
-      teamId: data.teamId,
-      type: 'EDIT',
-      section: data.section || 'General',
-      metadata: {
-        charCount: data.charCount,
-        position: data.position,
-        fieldName: data.fieldName
-      }
-    });
+    await trackCollaborationEvent(
+      data.userId,
+      'EDIT',
+      data.section || 'General'
+    );
   });
 
   // Track comments
   socketServer.on('commentAdded', async (data) => {
     if (!data.userId) return;
     
-    await trackCollaborationEvent({
-      userId: data.userId,
-      assessmentId: data.documentId,
-      teamId: data.teamId,
-      type: 'COMMENT',
-      section: data.section || 'General',
-      metadata: {
-        commentId: data.commentId,
-        replyTo: data.replyTo,
-        charCount: data.text?.length
-      }
-    });
+    await trackCollaborationEvent(
+      data.userId,
+      'COMMENT',
+      data.section || 'General'
+    );
   });
 
   // Track active viewing time
   socketServer.on('userActivity', async (data) => {
     if (!data.userId || data.type !== 'active') return;
     
-    await trackCollaborationEvent({
-      userId: data.userId,
-      assessmentId: data.documentId,
-      teamId: data.teamId,
-      type: 'VIEW',
-      section: data.section || 'General',
-      metadata: {
-        duration: data.duration,
-        activityType: data.activityType
-      }
-    });
+    await trackCollaborationEvent(
+      data.userId,
+      'VIEW',
+      data.section || 'General'
+    );
   });
 
   console.log('Analytics tracking initialized for real-time collaboration events');

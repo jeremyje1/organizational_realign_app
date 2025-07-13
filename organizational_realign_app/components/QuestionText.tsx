@@ -7,6 +7,7 @@ import React from 'react';
 
 import { TERM_DEFINITIONS } from '@/lib/termDefinitions';
 import { useTranslatedText } from '@/hooks/useLanguage';
+import InfoTooltip from '@/components/InfoTooltip';
 
 interface QuestionTextProps {
   text: string;

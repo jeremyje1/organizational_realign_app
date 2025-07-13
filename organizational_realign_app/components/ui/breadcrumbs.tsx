@@ -4,7 +4,6 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { ChevronRight, Home } from 'lucide-react';
-import StructuredData from '../seo/StructuredData';
 import { useEffect, useState } from 'react';
 
 interface BreadcrumbsProps {
@@ -15,7 +14,6 @@ interface BreadcrumbsProps {
   homeLabel?: string;
   className?: string;
   separator?: React.ReactNode;
-  includeStructuredData?: boolean;
 }
 
 /**
@@ -27,7 +25,6 @@ export default function Breadcrumbs({
   homeLabel = 'Home',
   className,
   separator = <ChevronRight className="h-4 w-4 mx-2 text-gray-500" aria-hidden="true" />,
-  includeStructuredData = true,
 }: BreadcrumbsProps) {
   const pathname = usePathname();
   const [isClient, setIsClient] = useState(false);
@@ -39,12 +36,6 @@ export default function Breadcrumbs({
   // Generate breadcrumb items from the current path if none are provided
   // Only generate dynamic breadcrumbs on the client to prevent hydration mismatches
   const breadcrumbItems = items || (isClient ? generateBreadcrumbItems(pathname, homeLabel) : [{ label: homeLabel, href: '/' }]);
-  
-  // Prepare data for structured data
-  const structuredDataItems = breadcrumbItems.map(item => ({
-    name: item.label,
-    url: item.href,
-  }));
 
   return (
     <nav 
@@ -89,14 +80,6 @@ export default function Breadcrumbs({
           );
         })}
       </ol>
-
-      {/* Add structured data for SEO */}
-      {includeStructuredData && (
-        <StructuredData 
-          type="BreadcrumbList" 
-          data={{ items: structuredDataItems }} 
-        />
-      )}
     </nav>
   );
 }

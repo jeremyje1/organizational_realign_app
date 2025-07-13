@@ -2,8 +2,35 @@
   "framework": "nextjs",
   "regions": ["iad1"],
   "env": {
-    "NEXT_PUBLIC_DOMAIN": "northpathstrategies.org",
-    "NEXT_PUBLIC_APP_URL": "https://northpathstrategies.org",
-    "NEXT_PUBLIC_BASE_URL": "https://northpathstrategies.org"
-  }
+    "NEXT_PUBLIC_DOMAIN": "app.northpathstrategies.org",
+    "NEXT_PUBLIC_APP_URL": "https://app.northpathstrategies.org",
+    "NEXT_PUBLIC_BASE_URL": "https://app.northpathstrategies.org"
+  },
+  "functions": {
+    "app/api/report/generate/route.ts": {
+      "maxDuration": 30
+    },
+    "app/api/upload/route.ts": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://app.northpathstrategies.org"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    }
+  ]
 }

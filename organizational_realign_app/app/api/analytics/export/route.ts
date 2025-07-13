@@ -60,10 +60,7 @@ export async function GET(request: NextRequest) {
     // Retrieve collaboration stats with error handling
     let stats;
     try {
-      stats = await getCollaborationStats(timeRange, { 
-        teamId: teamId || undefined, 
-        assessmentId: assessmentId || undefined 
-      });
+      stats = await getCollaborationStats();
     } catch (error) {
       console.error('Error retrieving collaboration stats:', error);
       // Provide mock data for demonstration purposes if database is not set up

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { 
   CheckCircle, 
+  CheckCircle2,
   Clock, 
   Users, 
   Brain, 
@@ -179,9 +180,9 @@ function AssessmentStartContent() {
   // Show auth loading state
   if (checkingAuth) {
     return (
-      <div className="min-h-screen elegant-bg flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50 flex items-center justify-center">
         <motion.div 
-          className="card p-12 text-center max-w-lg"
+          className="bg-white/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl p-12 text-center max-w-lg"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
@@ -190,7 +191,7 @@ function AssessmentStartContent() {
             <LoadingSpinner size="lg" variant="gradient" />
           </div>
           <motion.h2 
-            className="text-2xl font-semibold text-slate-100 mb-4"
+            className="text-2xl font-semibold text-slate-800 mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -198,7 +199,7 @@ function AssessmentStartContent() {
             Setting Up Your Assessment
           </motion.h2>
           <motion.p 
-            className="text-slate-300"
+            className="text-slate-600"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -249,7 +250,7 @@ function AssessmentStartContent() {
   // Show organization type selection screen first
   if (showTypeSelection && !selectedOrgType) {
     return (
-      <div className="min-h-screen elegant-bg">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <motion.div 
             className="text-center mb-12"
@@ -258,15 +259,23 @@ function AssessmentStartContent() {
             transition={{ duration: 0.6 }}
           >
             <motion.div 
-              className="w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6"
+              className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: "spring", duration: 0.8, delay: 0.2 }}
             >
               <Building2 className="h-10 w-10 text-white" />
             </motion.div>
+            <motion.h1 
+              className="text-4xl md:text-5xl font-bold text-slate-800 mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              Select Your Organization Type
+            </motion.h1>
             <motion.p 
-              className="text-xl text-slate-300 max-w-3xl mx-auto text-center"
+              className="text-xl text-slate-600 max-w-3xl mx-auto text-center leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
@@ -291,10 +300,10 @@ function AssessmentStartContent() {
   // Safety check - should not happen with new logic
   if (!assessment) {
     return (
-      <div className="min-h-screen elegant-bg flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 mx-auto mb-4"></div>
-          <p className="text-slate-300">Loading assessment...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-slate-600">Loading assessment...</p>
         </div>
       </div>
     );
@@ -523,125 +532,174 @@ function AssessmentStartContent() {
   const assessmentAreas = getAssessmentAreas(selectedOrgType);
 
   return (
-    <main className="min-h-screen flex flex-col bg-gradient-to-br from-slate-900 via-blue-950 to-slate-800">
-      <section className="max-w-2xl mx-auto py-16 px-4 text-center">
-        <h1 className="text-4xl md:text-5xl font-serif font-extrabold text-white drop-shadow-2xl mb-6 tracking-tight">
-          Start Your Organizational Assessment
-        </h1>
-        <p className="text-lg md:text-2xl text-slate-200 font-light mb-8">
-          Unlock actionable insights and drive transformation with <span className="font-semibold text-emerald-300">NorthPath Strategies</span>
-        </p>
-      </section>
-      <section className="w-full max-w-3xl mx-auto bg-white/90 rounded-3xl shadow-2xl p-8 mb-16">
-        {/* Enhanced Success Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-6">
-            <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-full flex items-center justify-center">
-              <CheckCircle className="h-10 w-10 text-white" />
-            </div>
-          </div>
-          <h1 className="text-4xl font-bold text-slate-100 mb-4">
-            Begin Assessment
-          </h1>
-          <p className="text-xl text-slate-300">
-            Begin your <span className="text-emerald-400 font-semibold">organizational realignment assessment</span> to identify improvement opportunities.
-          </p>
-        </div>
-
-        {/* Enhanced Getting Started */}
-        <div className="card p-8 mb-8">
-          <div className="flex items-center gap-4 mb-6">
-            <div 
-              className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full flex items-center justify-center"
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50">
+      {/* Modern Header */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-20"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="text-center">
+            <motion.div 
+              className="inline-flex items-center justify-center mb-6"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", duration: 0.8 }}
             >
-              <Brain className="h-5 w-5 text-white" />
-            </div>
-            <h2 className="text-2xl font-bold text-slate-100">Getting Started</h2>
+              <div className="relative">
+                <div className="absolute inset-0 bg-white/20 rounded-full blur-xl"></div>
+                <div className="relative bg-white/20 backdrop-blur-md rounded-full p-4 border border-white/30">
+                  <CheckCircle className="h-12 w-12 text-white" />
+                </div>
+              </div>
+            </motion.div>
+            
+            <motion.h1 
+              className="text-4xl md:text-5xl font-bold text-white mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              Begin Assessment
+            </motion.h1>
+            
+            <motion.p 
+              className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              Begin your <span className="text-white font-semibold">organizational realignment assessment</span> to identify improvement opportunities and drive strategic transformation.
+            </motion.p>
           </div>
-          
-          <div className="space-y-6">
-            <p className="text-slate-300 text-lg leading-relaxed">
-              Welcome to your Organizational Realignment Assessment. This comprehensive evaluation 
-              will analyze your organization&apos;s structure, identify inefficiencies, and provide 
-              AI-powered recommendations for improvement.
-            </p>
+        </div>
+      </div>
 
-            <div>
-              <h3 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
-                <FileText className="h-5 w-5 text-purple-400" />
-                What You&apos;ll Complete
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {getInstructionsByTier(assessment.tier).map((instruction, index) => (
-                  <div 
-                    key={index} 
-                    className="flex items-start gap-3 p-4 bg-slate-800/30 rounded-lg border border-slate-600/30"
-                  >
-                    <div className="w-6 h-6 bg-purple-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-xs font-semibold text-purple-300">{index + 1}</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 -mt-8">
+        {/* Main Content Card */}
+        <motion.div 
+          className="bg-white/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl p-8 mb-8"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          {/* Getting Started Section */}
+          <div className="mb-12">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl">
+                <Brain className="h-6 w-6 text-white" />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-800">Getting Started</h2>
+            </div>
+            
+            <div className="space-y-6">
+              <p className="text-lg text-slate-600 leading-relaxed">
+                Welcome to your Organizational Realignment Assessment. This comprehensive evaluation 
+                will analyze your organization's structure, identify inefficiencies, and provide 
+                AI-powered recommendations for improvement.
+              </p>
+
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-blue-600" />
+                  What You'll Complete
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {getInstructionsByTier(assessment.tier).map((instruction, index) => (
+                    <div 
+                      key={index} 
+                      className="flex items-start gap-3 p-4 bg-white/70 rounded-lg border border-blue-200/50 hover:shadow-md transition-all duration-200"
+                    >
+                      <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-xs font-semibold text-white">{index + 1}</span>
+                      </div>
+                      <span className="text-slate-700 text-sm leading-relaxed">{instruction}</span>
                     </div>
-                    <span className="text-slate-300 text-sm">{instruction}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Enhanced Assessment Areas */}
-        <div className="card p-8 mb-8">
-          <h3 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-2">
-            <BarChart3 className="h-5 w-5 text-purple-400" />
-            Assessment Areas
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {assessmentAreas.map((area, index) => {
-              const Icon = area.icon;
-              return (
-                <div 
-                  key={index} 
-                  className="flex items-center gap-3 p-3 bg-slate-800/30 rounded-lg border border-slate-600/30 hover:border-slate-500/50 transition-all duration-200 group"
-                >
-                  <div className="w-8 h-8 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Icon className="h-4 w-4 text-purple-400" />
-                  </div>
-                  <span className="text-slate-200 text-sm font-medium group-hover:text-slate-100 transition-colors">{area.name}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Enhanced Key Benefits */}
-        <div className="card p-8 mb-8">
-          <h3 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-2">
-            <Target className="h-5 w-5 text-purple-400" />
-            What You&apos;ll Receive
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              {benefits.column1.map((benefit, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <CheckCircle className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-slate-300">{benefit}</span>
-                </div>
-              ))}
+          {/* Assessment Areas */}
+          <div className="mb-12">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="p-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl">
+                <BarChart3 className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-800">Assessment Areas</h3>
             </div>
-            <div className="space-y-4">
-              {benefits.column2.map((benefit, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <CheckCircle className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-slate-300">{benefit}</span>
-                </div>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {assessmentAreas.map((area, index) => {
+                const Icon = area.icon;
+                return (
+                  <motion.div
+                    key={area.name}
+                    className="group p-4 bg-white/70 rounded-xl border border-slate-200 hover:border-purple-300 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * index }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg group-hover:from-purple-200 group-hover:to-pink-200 transition-colors">
+                        <Icon className="h-5 w-5 text-purple-600" />
+                      </div>
+                      <span className="font-medium text-slate-700 text-sm group-hover:text-slate-900 transition-colors">
+                        {area.name}
+                      </span>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
-        </div>
 
-        {/* Enhanced Action Section */}
-        <div className="text-center pt-6">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <div>
+          {/* Benefits Section */}
+          <div className="mb-12">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="p-3 bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl">
+                <Target className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-800">What You'll Receive</h3>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                {benefits.column1.map((benefit, index) => (
+                  <motion.div 
+                    key={index} 
+                    className="flex items-start gap-3 p-3 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border border-emerald-200"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 * index }}
+                  >
+                    <CheckCircle2 className="h-5 w-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-slate-700 text-sm">{benefit}</span>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="space-y-4">
+                {benefits.column2.map((benefit, index) => (
+                  <motion.div 
+                    key={index} 
+                    className="flex items-start gap-3 p-3 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border border-emerald-200"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 * index }}
+                  >
+                    <CheckCircle2 className="h-5 w-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-slate-700 text-sm">{benefit}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div> 
+
+          {/* Action Section */}
+          <div className="flex flex-col items-center gap-6">
+            <motion.div
+              className="w-full max-w-md"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+            >
               <Button
                 onClick={() => {
                   const surveyUrl = selectedOrgType 
@@ -649,44 +707,57 @@ function AssessmentStartContent() {
                     : '/survey';
                   window.location.href = surveyUrl;
                 }}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-12 py-4 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 group"
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
-                <PlayCircle className="h-5 w-5 mr-3 group-hover:scale-110 transition-transform" />
-                Begin Assessment
-                <ArrowRight className="h-5 w-5 ml-3 group-hover:translate-x-1 transition-transform" />
+                <PlayCircle className="h-6 w-6 mr-3 group-hover:scale-110 transition-transform" />
+                Begin Assessment Now
+                <ArrowRight className="h-6 w-6 ml-3 group-hover:translate-x-1 transition-transform" />
               </Button>
-            </div>
+            </motion.div>
             
             {assessment.tier !== 'INDIVIDUAL' && assessment.tier !== 'BASIC' && (
-              <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.0 }}
+              >
                 <Button
                   onClick={() => window.location.href = '/assessment/team'}
                   variant="outline"
-                  className="bg-slate-700/30 hover:bg-slate-600/50 text-slate-200 border-slate-600/50 hover:border-slate-500/50 px-8 py-3 ml-4 group"
+                  className="bg-white/50 hover:bg-white/70 text-slate-700 border-slate-300 hover:border-slate-400 px-6 py-3 rounded-xl group"
                 >
-                  <Users className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
+                  <Users className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
                   Manage Team Access
                 </Button>
-              </div>
+              </motion.div>
             )}
+
+            <motion.div 
+              className="bg-blue-50/50 backdrop-blur-sm rounded-xl p-4 border border-blue-200/50 max-w-md"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2 }}
+            >
+              <div className="flex items-center justify-center gap-2 text-sm text-slate-600">
+                <Shield className="h-4 w-4 text-blue-600" />
+                <span>SOC 2 compliant • AES-256 encrypted • GDPR ready</span>
+              </div>
+            </motion.div>
           </div>
-          
-          <div 
-            className="bg-slate-800/30 rounded-lg p-4 border border-slate-600/30"
-          >
-            <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
-              <Lock className="h-4 w-4" />
-              <span>All data processed using SOC 2 compliant, AES-256 encrypted systems</span>
-            </div>
-          </div>
+        </motion.div>
+      </div>
+
+      {/* Footer */}
+      <footer className="w-full py-8 bg-white/50 backdrop-blur-sm border-t border-slate-200 text-center text-slate-500 text-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <span>Organizational Realignment Tool v1.0 © {new Date().getFullYear()} NorthPath Strategies</span>
+          <span className="mx-2">|</span>
+          <a href="mailto:feedback@northpathstrategies.org" className="text-blue-600 hover:text-blue-700 hover:underline font-medium transition-colors">
+            Send Feedback
+          </a>
         </div>
-      </section>
-      <footer className="w-full py-8 border-t-2 border-slate-800 bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 text-center text-slate-400 text-xs font-serif shadow-inner mt-auto">
-        <span>Organizational Realignment Tool v1.0 © {new Date().getFullYear()} NorthPath Strategies</span>
-        <span className="mx-2">|</span>
-        <a href="mailto:feedback@northpathstrategies.org" className="text-emerald-400 hover:underline font-medium">Send Feedback</a>
       </footer>
-    </main>
+    </div>
   );
 }
 
