@@ -218,7 +218,7 @@ export default function AssessmentOnboardingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
               <div key={index} className="border border-gray-200 rounded-lg p-6">
-                <div className="text-lg mb-3">{feature.icon}</div>
+                <div className="text-sm mb-3">{feature.icon}</div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
                 <p className="text-gray-600 text-sm">{feature.description}</p>
               </div>
