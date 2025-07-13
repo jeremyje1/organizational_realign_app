@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { PageHero } from '@/components/PageHero';
 import { PricingTier, PRICING_TIERS } from '@/lib/tierConfiguration';
-import { CheckCircleIcon, DocumentArrowDownIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 
 export default function AssessmentOnboardingPage() {
   const [selectedTier, setSelectedTier] = useState<PricingTier>('one-time-diagnostic');
@@ -162,7 +162,7 @@ export default function AssessmentOnboardingPage() {
         subtitle="Our AI‑enhanced diagnostic pinpoints structural inefficiencies, cost‑saving opportunities, and cultural friction points in under 60 minutes of staff time."
       />
       
-      <div className="max-w-7xl mx-auto py-12 px-4 space-y-16">
+      <div className="max-w-7xl mx-auto py-12 px-4 space-y-12">
         
         {/* Package Selection */}
         <section className="bg-white rounded-lg shadow-lg p-8">
@@ -193,7 +193,7 @@ export default function AssessmentOnboardingPage() {
                 <ul className="space-y-1 text-sm text-blue-800">
                   {tierInfo.coreDeliverables.map((deliverable, index) => (
                     <li key={index} className="flex items-start">
-                      <CheckCircleIcon className="h-4 w-4 text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
+                      <span className="w-4 h-4 bg-blue-500 rounded-full text-xs text-white flex items-center justify-center mt-0.5 mr-2 flex-shrink-0">✓</span>
                       {deliverable}
                     </li>
                   ))}
@@ -331,78 +331,62 @@ export default function AssessmentOnboardingPage() {
         {/* Adding Team Members */}
         <section className="bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">5. Adding Team Members to the Assessment</h2>
-          <div className="space-y-4">
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-sm font-bold text-blue-800">1</span>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm text-gray-700">Click the <strong>Team</strong> tab once inside the assessment wizard.</p>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+              <h4 className="font-semibold text-blue-900 mb-2">1. Access Team Tab</h4>
+              <p className="text-sm text-blue-800">Click the <strong>Team</strong> tab once inside the assessment wizard.</p>
             </div>
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-sm font-bold text-blue-800">2</span>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm text-gray-700">Enter each colleague&apos;s email and select their <strong>section permissions</strong> (e.g., &quot;Finance only&quot;).</p>
-              </div>
+            <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+              <h4 className="font-semibold text-blue-900 mb-2">2. Set Permissions</h4>
+              <p className="text-sm text-blue-800">Enter each colleague&apos;s email and select their <strong>section permissions</strong> (e.g., &quot;Finance only&quot;).</p>
             </div>
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-sm font-bold text-blue-800">3</span>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm text-gray-700">They receive a secure, single‑use link.</p>
-              </div>
+            <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+              <h4 className="font-semibold text-blue-900 mb-2">3. Secure Delivery</h4>
+              <p className="text-sm text-blue-800">They receive a secure, single‑use link.</p>
             </div>
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-sm font-bold text-blue-800">4</span>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm text-gray-700">Progress indicators show which sections are complete.</p>
-              </div>
-            </div>
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-sm font-bold text-blue-800">5</span>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm text-gray-700">The survey auto‑saves every 30 seconds; partial answers are fine.</p>
-              </div>
+            <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+              <h4 className="font-semibold text-blue-900 mb-2">4. Track Progress</h4>
+              <p className="text-sm text-blue-800">Progress indicators show which sections are complete.</p>
             </div>
           </div>
-          <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-            <p className="text-sm text-green-800">
-              <strong>Security:</strong> Each invite token expires after 14 days or on survey submission.
-            </p>
+          <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+            <div className="flex items-start space-x-3">
+              <div className="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold text-white">✓</span>
+              </div>
+              <div>
+                <p className="text-sm text-green-800">
+                  <strong>Auto-Save & Security:</strong> The survey auto‑saves every 30 seconds; partial answers are fine. 
+                  Each invite token expires after 14 days or on survey submission.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* Timeline */}
         <section className="bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">6. Timeline at a Glance</h2>
-          <div className="space-y-6">
+          <div className="space-y-8">
             {timeline.map((phase, index) => (
-              <div key={index} className="border-l-4 border-blue-500 pl-6">
-                <div className="flex items-center mb-2">
-                  <ClockIcon className="h-5 w-5 text-blue-500 mr-2" />
-                  <h3 className="text-lg font-semibold text-gray-900">{phase.phase}</h3>
-                  <span className="ml-auto text-sm text-gray-500">Days {phase.days}</span>
+              <div key={index} className="border-l-4 border-blue-500 pl-6 pb-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-semibold text-gray-900">{phase.phase}</h3>
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
+                    Days {phase.days}
+                  </span>
                 </div>
-                <ul className="space-y-1">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {phase.tasks.map((task, taskIndex) => (
-                    <li key={taskIndex} className="text-sm text-gray-600 flex items-center">
-                      <CheckCircleIcon className="h-4 w-4 text-green-500 mr-2" />
-                      {task}
-                    </li>
+                    <div key={taskIndex} className="bg-gray-50 px-4 py-3 rounded-lg">
+                      <span className="text-sm font-medium text-gray-700">{task}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             ))}
           </div>
-          <div className="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+          <div className="mt-8 p-4 bg-purple-50 border border-purple-200 rounded-lg">
             <p className="text-sm text-purple-800">
               <strong>Enterprise customers:</strong> Timelines can compress if you purchase the Accelerated Sprint add‑on.
             </p>
@@ -414,47 +398,27 @@ export default function AssessmentOnboardingPage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6">7. Data Security & Compliance</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <div className="flex items-start">
-                <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                  <CheckCircleIcon className="h-5 w-5 text-green-600" />
-                </div>
-                <div className="ml-4">
-                  <h3 className="font-semibold text-gray-900">SOC‑2‑Aligned AWS Infrastructure</h3>
-                  <p className="text-sm text-gray-600">Enterprise-grade cloud security with compliance monitoring</p>
-                </div>
+              <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                <h3 className="font-semibold text-gray-900 mb-2">SOC‑2‑Aligned AWS Infrastructure</h3>
+                <p className="text-sm text-gray-600">Enterprise-grade cloud security with compliance monitoring</p>
               </div>
-              <div className="flex items-start">
-                <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                  <CheckCircleIcon className="h-5 w-5 text-green-600" />
-                </div>
-                <div className="ml-4">
-                  <h3 className="font-semibold text-gray-900">TLS 1.3 End‑to‑End Encryption</h3>
-                  <p className="text-sm text-gray-600">All data encrypted in transit with latest protocols</p>
-                </div>
+              <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                <h3 className="font-semibold text-gray-900 mb-2">TLS 1.3 End‑to‑End Encryption</h3>
+                <p className="text-sm text-gray-600">All data encrypted in transit with latest protocols</p>
               </div>
             </div>
             <div className="space-y-4">
-              <div className="flex items-start">
-                <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                  <CheckCircleIcon className="h-5 w-5 text-green-600" />
-                </div>
-                <div className="ml-4">
-                  <h3 className="font-semibold text-gray-900">AES‑256 at Rest with Object‑Lock</h3>
-                  <p className="text-sm text-gray-600">Military-grade encryption for stored data</p>
-                </div>
+              <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                <h3 className="font-semibold text-gray-900 mb-2">AES‑256 at Rest with Object‑Lock</h3>
+                <p className="text-sm text-gray-600">Military-grade encryption for stored data</p>
               </div>
-              <div className="flex items-start">
-                <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                  <CheckCircleIcon className="h-5 w-5 text-green-600" />
-                </div>
-                <div className="ml-4">
-                  <h3 className="font-semibold text-gray-900">FERPA‑Aligned Controls</h3>
-                  <p className="text-sm text-gray-600">HIPAA BAA available on request</p>
-                </div>
+              <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                <h3 className="font-semibold text-gray-900 mb-2">FERPA‑Aligned Controls</h3>
+                <p className="text-sm text-gray-600">HIPAA BAA available on request</p>
               </div>
             </div>
           </div>
-          <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <p className="text-sm text-yellow-800">
               <strong>Data Retention:</strong> Data purged after 90 days unless you enable ongoing monitoring.
             </p>
