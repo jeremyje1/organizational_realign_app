@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import { prisma } from '@/lib/prisma';
 import { AssessmentDB, type AssessmentTier } from '@/lib/assessment-db';
-import { getTierFromStripePriceId, getStripeMappingForTier } from '@/lib/stripe-tier-mapping';
+import { getStripeMappingForTier } from '@/lib/stripe-tier-mapping';
 import { PricingTier } from '@/lib/tierConfiguration';
 import Stripe from 'stripe';
 

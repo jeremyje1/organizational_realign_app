@@ -23,7 +23,7 @@ export interface OrgUnit {
 }
 
 export interface DataConnectorConfig {
-  type: 'csv' | 'xlsx' | 'api';
+  type: 'csv' | 'xlsx' | 'xls' | 'pdf' | 'docx' | 'zip' | 'api';
   source: string;
   mappings: Record<string, string>;
   schedule?: string;

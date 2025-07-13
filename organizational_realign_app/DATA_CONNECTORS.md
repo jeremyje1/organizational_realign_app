@@ -6,7 +6,7 @@ This document describes the data connectors implementation for the organizationa
 
 ### Overview
 
-The flat-file import functionality allows users to upload CSV and XLSX files containing organizational data.
+The flat-file import functionality allows users to upload CSV, XLSX, XLS, PDF, DOCX, and ZIP files containing organizational data.
 
 ### API Endpoint
 
@@ -16,8 +16,11 @@ The flat-file import functionality allows users to upload CSV and XLSX files con
 
 ### Supported File Types
 
-- CSV files (`.csv`)
-- Excel files (`.xlsx`)
+- **CSV** (.csv) - Comma-separated values for tabular data
+- **Excel** (.xlsx, .xls) - Microsoft Excel spreadsheets
+- **PDF** (.pdf) - Portable Document Format for strategic plans and reports
+- **Word** (.docx) - Microsoft Word documents for policy and procedure files
+- **ZIP** (.zip) - Compressed archives for BPMN diagrams and bulk uploads
 
 ### File Mappings
 

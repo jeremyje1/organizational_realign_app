@@ -239,7 +239,7 @@ export function QuestionInput({
             )}>
               <Upload className="h-12 w-12 text-slate-400 mx-auto mb-4" />
               <p className="text-slate-300 mb-2">Drag & drop files here or click to browse</p>
-              <p className="text-slate-500 text-sm">Supported formats: PDF, DOC, XLS, CSV</p>
+              <p className="text-slate-500 text-sm">Supported formats: CSV, XLSX, XLS, PDF, DOCX, ZIP</p>
               
               <Button
                 onClick={() => {

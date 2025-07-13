@@ -10,11 +10,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
-    // Validate file type
-    const allowedTypes = ['text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+    // Validate file type - align with onboarding page promises
+    const allowedTypes = [
+      'text/csv',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+      'application/vnd.ms-excel', // .xls
+      'application/pdf', // .pdf
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+      'application/zip', // .zip (for BPMN diagrams)
+      'application/x-zip-compressed' // Alternative zip MIME type
+    ];
+    
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
-        { error: 'Invalid file type. Only CSV and XLSX files are supported.' }, 
+        { error: 'Invalid file type. Supported formats: .csv, .xlsx, .xls, .pdf, .docx, .zip' }, 
         { status: 400 }
       );
     }

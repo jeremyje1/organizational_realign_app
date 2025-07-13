@@ -50,7 +50,7 @@ export default function AssessmentOnboardingPage() {
       step: 'Gather Required Files',
       owner: 'HR / Finance / IT',
       target: '+3 days',
-      notes: 'CSV/XLSX/PDF accepted.',
+      notes: 'CSV/XLSX/XLS/PDF/DOCX/ZIP accepted.',
       completed: false
     },
     {
@@ -402,6 +402,106 @@ export default function AssessmentOnboardingPage() {
               </div>
             ))}
           </div>
+          <div className="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+            <p className="text-sm text-purple-800">
+              <strong>Enterprise customers:</strong> Timelines can compress if you purchase the Accelerated Sprint add‑on.
+            </p>
+          </div>
+        </section>
+
+        {/* Data Security & Compliance */}
+        <section className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">7. Data Security & Compliance 🔒</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div className="flex items-start">
+                <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <CheckCircleIcon className="h-5 w-5 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="font-semibold text-gray-900">SOC‑2‑Aligned AWS Infrastructure</h3>
+                  <p className="text-sm text-gray-600">Enterprise-grade cloud security with compliance monitoring</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <CheckCircleIcon className="h-5 w-5 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="font-semibold text-gray-900">TLS 1.3 End‑to‑End Encryption</h3>
+                  <p className="text-sm text-gray-600">All data encrypted in transit with latest protocols</p>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div className="flex items-start">
+                <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <CheckCircleIcon className="h-5 w-5 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="font-semibold text-gray-900">AES‑256 at Rest with Object‑Lock</h3>
+                  <p className="text-sm text-gray-600">Military-grade encryption for stored data</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <CheckCircleIcon className="h-5 w-5 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="font-semibold text-gray-900">FERPA‑Aligned Controls</h3>
+                  <p className="text-sm text-gray-600">HIPAA BAA available on request</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-sm text-yellow-800">
+              <strong>Data Retention:</strong> Data purged after 90 days unless you enable ongoing monitoring.
+            </p>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">8. Frequently Asked Onboarding Questions</h2>
+          <div className="space-y-4">
+            <details className="border border-gray-200 rounded-lg">
+              <summary className="cursor-pointer p-4 font-semibold text-gray-900 hover:bg-gray-50">
+                How many people can I invite?
+              </summary>
+              <div className="px-4 pb-4 text-gray-600">
+                <p>Unlimited. We recommend 3‑8 subject‑matter experts for most mid‑sized institutions.</p>
+              </div>
+            </details>
+
+            <details className="border border-gray-200 rounded-lg">
+              <summary className="cursor-pointer p-4 font-semibold text-gray-900 hover:bg-gray-50">
+                Can I pause and resume?
+              </summary>
+              <div className="px-4 pb-4 text-gray-600">
+                <p>Yes. The wizard auto‑saves; you can leave and return at any time before submission.</p>
+              </div>
+            </details>
+
+            <details className="border border-gray-200 rounded-lg">
+              <summary className="cursor-pointer p-4 font-semibold text-gray-900 hover:bg-gray-50">
+                What file formats do you accept?
+              </summary>
+              <div className="px-4 pb-4 text-gray-600">
+                <p>.csv, .xlsx, .xls, .pdf, .docx, .zip (for BPMN diagrams).</p>
+              </div>
+            </details>
+
+            <details className="border border-gray-200 rounded-lg">
+              <summary className="cursor-pointer p-4 font-semibold text-gray-900 hover:bg-gray-50">
+                How do we handle sensitive salary data?
+              </summary>
+              <div className="px-4 pb-4 text-gray-600">
+                <p><strong>Option A</strong> – Provide anonymized salary bands.</p>
+                <p><strong>Option B</strong> – Provide hashed employee IDs. Our model works with either.</p>
+              </div>
+            </details>
+          </div>
         </section>
 
         {/* Call to Action */}
@@ -410,7 +510,7 @@ export default function AssessmentOnboardingPage() {
           <p className="text-xl mb-8 text-blue-100">
             Your {tierInfo.name} package is configured and ready to launch.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
             <button
               onClick={() => {
                 // Set authorization and redirect to assessment start
@@ -421,9 +521,9 @@ export default function AssessmentOnboardingPage() {
                 }
                 window.location.href = `/assessment/start?tier=${selectedTier}`;
               }}
-              className="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              className="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg"
             >
-              Start Assessment Now
+              👉 Start Your Assessment
             </button>
             <button
               onClick={() => window.location.href = '/secure/dashboard'}
@@ -432,7 +532,29 @@ export default function AssessmentOnboardingPage() {
               Go to Dashboard
             </button>
           </div>
+          <p className="text-sm text-blue-200">
+            Need help first?{' '}
+            <a 
+              href="/contact" 
+              className="text-white underline hover:text-blue-100"
+            >
+              Book a 15‑min onboarding call.
+            </a>
+          </p>
         </section>
+
+        {/* Footer Information */}
+        <footer className="text-center text-gray-500 text-sm py-6">
+          <p>
+            Version 2025‑07‑12 • Questions?{' '}
+            <a 
+              href="mailto:support@northpathstrategies.org" 
+              className="text-blue-600 hover:text-blue-800"
+            >
+              Email support@northpathstrategies.org
+            </a>
+          </p>
+        </footer>
 
       </div>
     </div>
