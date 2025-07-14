@@ -29,7 +29,7 @@ function WelcomeBanner({ user }: { user: Pick<Session['user'], 'email' | 'user_m
         </div>
         <div>
           <h1 className="text-2xl font-bold text-white">Welcome back, {displayName}</h1>
-          <p className="text-blue-200">Here's your dashboard overview</p>
+          <p className="text-blue-200">Here&apos;s your dashboard overview</p>
         </div>
       </div>
     </div>

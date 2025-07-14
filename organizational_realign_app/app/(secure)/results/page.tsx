@@ -6,12 +6,12 @@ import { Button } from '../../../components/ui/button';
 import { Brain, Download, Share2, BookOpen, CheckCircle, Target, AlertTriangle, Sparkles, Crown } from 'lucide-react';
 
 // Placeholder components for removed modules
-const AnalysisResults = ({ data }: any) => <div className="p-4 border rounded">Analysis Results Component (Placeholder)</div>;
-const InteractiveInsights = ({ data }: any) => <div className="p-4 border rounded">Interactive Insights Component (Placeholder)</div>;
-const AIAnalysisResults = ({ data }: any) => <div className="p-4 border rounded">AI Analysis Results Component (Placeholder)</div>;
-const AssessmentComments = ({ data }: any) => <div className="p-4 border rounded">Assessment Comments Component (Placeholder)</div>;
-const ConsultationBooking = ({ data }: any) => <div className="p-4 border rounded">Consultation Booking Component (Placeholder)</div>;
-const PremiumUpgrade = ({ data }: any) => <div className="p-4 border rounded">Premium Upgrade Component (Placeholder)</div>;
+const AnalysisResults = ({ data: _data }: any) => <div className="p-4 border rounded">Analysis Results Component (Placeholder)</div>;
+const InteractiveInsights = ({ data: _data }: any) => <div className="p-4 border rounded">Interactive Insights Component (Placeholder)</div>;
+const AIAnalysisResults = ({ data: _data }: any) => <div className="p-4 border rounded">AI Analysis Results Component (Placeholder)</div>;
+const AssessmentComments = ({ data: _data }: any) => <div className="p-4 border rounded">Assessment Comments Component (Placeholder)</div>;
+const ConsultationBooking = ({ data: _data }: any) => <div className="p-4 border rounded">Consultation Booking Component (Placeholder)</div>;
+const PremiumUpgrade = ({ data: _data }: any) => <div className="p-4 border rounded">Premium Upgrade Component (Placeholder)</div>;
 
 function ResultsPageContent() {
   const searchParams = useSearchParams();

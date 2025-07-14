@@ -158,7 +158,7 @@ export default function AssessmentOnboardingPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <PageHero 
-        title="🚀 Welcome to the NorthPath Organizational Assessment"
+        title="Organizational Realignment Diagnostic"
         subtitle="Our AI‑enhanced diagnostic pinpoints structural inefficiencies, cost‑saving opportunities, and cultural friction points in under 60 minutes of staff time."
       />
       
@@ -293,6 +293,24 @@ export default function AssessmentOnboardingPage() {
                         >
                           <DocumentArrowDownIcon className="h-4 w-4 mr-1" />
                           Download
+                        </a>
+                      ) : file.code === 'U‑05' ? (
+                        <a 
+                          href="/downloads/strategic-plan-template.pdf"
+                          download
+                          className="inline-flex items-center text-blue-600 hover:text-blue-800"
+                        >
+                          <DocumentArrowDownIcon className="h-4 w-4 mr-1" />
+                          Template
+                        </a>
+                      ) : file.code === 'Optional' ? (
+                        <a 
+                          href="/downloads/bpmn-diagram-guide.zip"
+                          download
+                          className="inline-flex items-center text-blue-600 hover:text-blue-800"
+                        >
+                          <DocumentArrowDownIcon className="h-4 w-4 mr-1" />
+                          Guide
                         </a>
                       ) : (
                         '–'
@@ -494,7 +512,9 @@ export default function AssessmentOnboardingPage() {
           <p className="text-sm text-blue-200">
             Need help first?{' '}
             <a 
-              href="/contact" 
+              href="https://calendly.com/jeremyestrella/30min?month=2025-07" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-white underline hover:text-blue-100"
             >
               Book a 15‑min onboarding call.
