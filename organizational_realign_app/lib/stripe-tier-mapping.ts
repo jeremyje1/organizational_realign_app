@@ -33,7 +33,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
   'monthly-subscription': {
     tierKey: 'monthly-subscription',
     stripeProductId: 'prod_monthly',
-    stripePriceId: process.env.STRIPE_TEAM_PRICE_ID || 'price_1RhdgNELd2WOuqIW9HDyggY3',
+    stripePriceId: process.env.STRIPE_MONTHLY_SUBSCRIPTION_PRICE_ID || 'price_1RhdgNELd2WOuqIW9HDyggY3',
     stripeMode: 'subscription',
     successRedirect: '/assessment/tier-based?tier=monthly-subscription',
     cancelRedirect: '/upgrade?tier=monthly-subscription',
