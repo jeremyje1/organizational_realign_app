@@ -23,7 +23,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
   'one-time-diagnostic': {
     tierKey: 'one-time-diagnostic',
     stripeProductId: 'prod_diagnostic',
-    stripePriceId: process.env.STRIPE_BASIC_PRICE_ID || 'price_1Rhdf0ELd2WOuqIWwagqCdLa',
+    stripePriceId: (process.env.STRIPE_BASIC_PRICE_ID || 'price_1Rhdf0ELd2WOuqIWwagqCdLa').trim(),
     stripeMode: 'payment',
     successRedirect: '/assessment/tier-based?tier=one-time-diagnostic',
     cancelRedirect: '/upgrade?tier=one-time-diagnostic',
@@ -33,7 +33,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
   'monthly-subscription': {
     tierKey: 'monthly-subscription',
     stripeProductId: 'prod_monthly',
-    stripePriceId: process.env.STRIPE_MONTHLY_SUBSCRIPTION_PRICE_ID || 'price_1RhdgNELd2WOuqIW9HDyggY3',
+    stripePriceId: (process.env.STRIPE_MONTHLY_SUBSCRIPTION_PRICE_ID || 'price_1RhdgNELd2WOuqIW9HDyggY3').trim(),
     stripeMode: 'subscription',
     successRedirect: '/assessment/tier-based?tier=monthly-subscription',
     cancelRedirect: '/upgrade?tier=monthly-subscription',
@@ -43,7 +43,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
   'comprehensive-package': {
     tierKey: 'comprehensive-package',
     stripeProductId: 'prod_comprehensive',
-    stripePriceId: process.env.STRIPE_COMPREHENSIVE_PRICE_ID || 'price_1RgUduELd2WOuqIWFHobukeZ',
+    stripePriceId: (process.env.STRIPE_COMPREHENSIVE_PRICE_ID || 'price_1RgUduELd2WOuqIWFHobukeZ').trim(),
     stripeMode: 'payment',
     successRedirect: '/assessment/tier-based?tier=comprehensive-package',
     cancelRedirect: '/upgrade?tier=comprehensive-package',
@@ -53,7 +53,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
   'enterprise-transformation': {
     tierKey: 'enterprise-transformation',
     stripeProductId: 'prod_enterprise',
-    stripePriceId: process.env.STRIPE_ENTERPRISE_PRICE_ID || 'price_1RgUb8ELd2WOuqIWMxA0mLwz',
+    stripePriceId: (process.env.STRIPE_ENTERPRISE_PRICE_ID || 'price_1RgUb8ELd2WOuqIWMxA0mLwz').trim(),
     stripeMode: 'payment',
     successRedirect: '/assessment/tier-based?tier=enterprise-transformation',
     cancelRedirect: '/upgrade?tier=enterprise-transformation',
