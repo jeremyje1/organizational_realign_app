@@ -335,3 +335,39 @@ enum CostCenterCategory {
   
   @@schema("public")
 }
+
+/// Org Chart Generation Models
+
+/// Stores generated org charts and restructuring scenarios
+model OrgChart {
+  id            String   @id @default(uuid())
+  assessmentId  String   @unique @map("assessment_id")
+  svgUrl        String?  @map("svg_url") @db.VarChar(255)
+  scenarios     Json?    // JSON containing baseline, moderate, aggressive scenarios
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Add relation when Assessment model is available
+  // assessment    Assessment @relation(fields: [assessmentId], references: [id])
+
+  @@map("org_charts")
+  @@schema("public")
+}
+
+/// Stores position costs for org chart calculations
+model PositionCost {
+  id           String  @id @default(uuid())
+  assessmentId String  @map("assessment_id")
+  roleTitle    String  @map("role_title")
+  fte          Float   // head-count fraction (0.5 = part-time, 1.0 = full-time)
+  annualCost   Int     @map("annual_cost") // USD
+  parentId     String? @map("parent_id") // for hierarchy building
+  level        Int?    // organizational level (0 = top, 1 = direct reports, etc.)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([assessmentId])
+  @@index([parentId])
+  @@map("position_costs")
+  @@schema("public")
+}

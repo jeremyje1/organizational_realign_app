@@ -12,6 +12,11 @@ export default function AssessmentOnboardingPage() {
 
   const features = [
     {
+      title: 'One-Click Org Chart Generator',
+      description: 'Instantly generate interactive org charts with scenario costing and SVG/CSV exports.',
+      icon: '📊'
+    },
+    {
       title: 'Dynamic Survey',
       description: 'Questions adapt to your institution type and earlier answers.',
       icon: '🔄'
@@ -501,6 +506,12 @@ export default function AssessmentOnboardingPage() {
               className="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg"
             >
               👉 Begin Assessment Now
+            </button>
+            <button
+              onClick={() => window.location.href = '/demo/org-chart'}
+              className="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+            >
+              📊 Try One-Click Org Chart Demo
             </button>
             <button
               onClick={() => window.location.href = '/dashboard'}

@@ -28,6 +28,7 @@ export interface TierConfiguration {
     apiConnectors: boolean;
     onSiteFacilitation: boolean;
     progressAudits: boolean;
+    orgChartGenerator: boolean;
     scenarioBuilder: boolean;
     monteCarloSimulation: boolean;
     realTimeCollaboration: boolean;
@@ -48,7 +49,9 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
     coreDeliverables: [
       '100-item survey',
       'Secure file upload',
+      'One-click interactive org chart generator',
       '12-page PDF brief',
+      'Scenario cost comparison',
       'OCI / HOCI / JCI scores',
       '30-min Q&A call'
     ],
@@ -67,6 +70,7 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       apiConnectors: false,
       onSiteFacilitation: false,
       progressAudits: false,
+      orgChartGenerator: true,
       scenarioBuilder: false,
       monteCarloSimulation: false,
       realTimeCollaboration: false
@@ -84,7 +88,9 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
     targetCustomer: 'Schools with multiple programs or departments iterating every term',
     coreDeliverables: [
       'Unlimited assessments per month',
+      'One-click org chart with advanced analytics',
       'Dashboard refresh (CSV exports)',
+      'Multi-scenario cost modeling',
       '60-min office-hours call / mo'
     ],
     assessmentScope: {
@@ -102,6 +108,7 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       apiConnectors: false,
       onSiteFacilitation: false,
       progressAudits: false,
+      orgChartGenerator: true,
       scenarioBuilder: false,
       monteCarloSimulation: false,
       realTimeCollaboration: false
@@ -119,10 +126,11 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
     targetCustomer: 'Mid-sized institutions needing board-ready narrative',
     coreDeliverables: [
       'Everything in Monthly, plus',
+      'One-click org chart with scenario modeling',
       '25–30 page PDF w/ AI narrative',
       '90-min strategy session',
       'Cost-saving ranges (static model)',
-      'Add-on: Scenario builder ($5k)'
+      'Advanced scenario builder'
     ],
     assessmentScope: {
       questionCount: 150,
@@ -139,6 +147,7 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       apiConnectors: false,
       onSiteFacilitation: false,
       progressAudits: false,
+      orgChartGenerator: true,
       scenarioBuilder: true, // Add-on available
       monteCarloSimulation: false,
       realTimeCollaboration: false
@@ -156,7 +165,8 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
     targetCustomer: 'Multi-campus systems, hospital networks, public agencies',
     coreDeliverables: [
       'Everything in Comprehensive, plus',
-      'Scenario builder (unlimited)',
+      'One-click real-time collaborative org charts',
+      'Unlimited scenario builder',
       'Power BI embedded live dashboard',
       'API & flat-file connectors',
       'On-site or virtual facilitation day',
@@ -177,6 +187,7 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       apiConnectors: true,
       onSiteFacilitation: true,
       progressAudits: true,
+      orgChartGenerator: true,
       scenarioBuilder: true,
       monteCarloSimulation: true,
       realTimeCollaboration: true
@@ -186,6 +197,37 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
     }
   }
 };
+
+/**
+ * Helper Functions for Tier Feature Access
+ */
+
+export function hasOrgChartAccess(tier: PricingTier): boolean {
+  return PRICING_TIERS[tier].features.orgChartGenerator;
+}
+
+export function hasScenarioBuilder(tier: PricingTier): boolean {
+  return PRICING_TIERS[tier].features.scenarioBuilder;
+}
+
+export function hasRealTimeCollaboration(tier: PricingTier): boolean {
+  return PRICING_TIERS[tier].features.realTimeCollaboration;
+}
+
+export function getOrgChartCapabilities(tier: PricingTier): {
+  canGenerate: boolean;
+  canModelScenarios: boolean;
+  canCollaborate: boolean;
+  maxScenarios?: number;
+} {
+  const config = PRICING_TIERS[tier];
+  return {
+    canGenerate: config.features.orgChartGenerator,
+    canModelScenarios: config.features.scenarioBuilder,
+    canCollaborate: config.features.realTimeCollaboration,
+    maxScenarios: config.guardrails.maxScenarios
+  };
+}
 
 /**
  * Industry-Specific Question Modules
