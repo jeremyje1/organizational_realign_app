@@ -9,7 +9,6 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChartBarIcon, ArrowDownTrayIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
 import { useToast } from '@/components/ui/use-toast';
 
 interface OrgChartGeneratorProps {
@@ -147,7 +146,6 @@ export function OrgChartGenerator({
           size="lg"
           className="flex-1"
         >
-          <ChartBarIcon className="w-5 h-5 mr-2" />
           {isGenerating ? 'Generating Chart...' : 'Generate Org Chart'}
         </Button>
         
@@ -158,7 +156,6 @@ export function OrgChartGenerator({
               onClick={() => downloadExisting('svg')}
               size="lg"
             >
-              <ArrowDownTrayIcon className="w-4 h-4 mr-2" />
               SVG
             </Button>
             
@@ -167,7 +164,6 @@ export function OrgChartGenerator({
               onClick={() => downloadExisting('csv')}
               size="lg"
             >
-              <DocumentTextIcon className="w-4 h-4 mr-2" />
               CSV
             </Button>
           </div>

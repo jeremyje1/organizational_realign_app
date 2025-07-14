@@ -16,13 +16,6 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/components/ui/use-toast';
-import { 
-  ChartBarIcon, 
-  EyeIcon, 
-  DocumentTextIcon,
-  InformationCircleIcon,
-  ExclamationTriangleIcon
-} from '@heroicons/react/24/outline';
 
 interface OrgChartPageProps {
   assessmentId: string;
@@ -156,15 +149,12 @@ export function OrgChartPage({ assessmentId, initialData }: OrgChartPageProps) {
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="generate" className="flex items-center gap-2">
-                  <ChartBarIcon className="w-4 h-4" />
                   Generate
                 </TabsTrigger>
                 <TabsTrigger value="view" className="flex items-center gap-2">
-                  <EyeIcon className="w-4 h-4" />
                   View Chart
                 </TabsTrigger>
                 <TabsTrigger value="details" className="flex items-center gap-2">
-                  <DocumentTextIcon className="w-4 h-4" />
                   Details
                 </TabsTrigger>
               </TabsList>
@@ -174,7 +164,6 @@ export function OrgChartPage({ assessmentId, initialData }: OrgChartPageProps) {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <ChartBarIcon className="w-5 h-5" />
                       Chart Generation
                     </CardTitle>
                   </CardHeader>
@@ -190,7 +179,6 @@ export function OrgChartPage({ assessmentId, initialData }: OrgChartPageProps) {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <InformationCircleIcon className="w-5 h-5" />
                       How It Works
                     </CardTitle>
                   </CardHeader>
@@ -236,7 +224,6 @@ export function OrgChartPage({ assessmentId, initialData }: OrgChartPageProps) {
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <CardTitle className="flex items-center gap-2">
-                          <EyeIcon className="w-5 h-5" />
                           Interactive Org Chart
                         </CardTitle>
                         <div className="flex gap-2">
@@ -262,7 +249,6 @@ export function OrgChartPage({ assessmentId, initialData }: OrgChartPageProps) {
                   <Card>
                     <CardContent className="flex items-center justify-center h-64">
                       <div className="text-center">
-                        <ChartBarIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-gray-900 mb-2">No Chart Available</h3>
                         <p className="text-gray-600 mb-4">Generate an org chart to view it here.</p>
                         <Button onClick={() => setActiveTab('generate')}>
@@ -312,7 +298,6 @@ export function OrgChartPage({ assessmentId, initialData }: OrgChartPageProps) {
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <ExclamationTriangleIcon className="w-5 h-5 text-yellow-500" />
                         Issues & Recommendations
                       </CardTitle>
                     </CardHeader>
@@ -321,7 +306,6 @@ export function OrgChartPage({ assessmentId, initialData }: OrgChartPageProps) {
                         {issues.map((issue, index) => (
                           <div key={index} className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                             <div className="flex gap-2">
-                              <ExclamationTriangleIcon className="w-4 h-4 text-yellow-600 mt-0.5 flex-shrink-0" />
                               <div>
                                 <div className="font-medium text-yellow-800">{issue.type}</div>
                                 <div className="text-sm text-yellow-700">{issue.message}</div>

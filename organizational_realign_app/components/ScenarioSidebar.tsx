@@ -12,13 +12,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { 
-  ArrowTrendingUpIcon, 
-  ArrowTrendingDownIcon, 
-  CalculatorIcon,
-  UsersIcon,
-  CurrencyDollarIcon
-} from '@heroicons/react/24/outline';
 
 interface Scenarios {
   current: {
@@ -97,7 +90,6 @@ export function ScenarioSidebar({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <CalculatorIcon className="w-5 h-5" />
               Cost Scenarios
             </CardTitle>
           </CardHeader>
@@ -120,7 +112,6 @@ export function ScenarioSidebar({
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg flex items-center gap-2">
-              <UsersIcon className="w-5 h-5" />
               Current State
             </CardTitle>
             <Button
@@ -155,7 +146,6 @@ export function ScenarioSidebar({
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg flex items-center gap-2">
-              <ArrowTrendingDownIcon className="w-5 h-5 text-green-600" />
               Optimized
             </CardTitle>
             <Button
@@ -195,7 +185,6 @@ export function ScenarioSidebar({
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg flex items-center gap-2">
-              <ArrowTrendingUpIcon className="w-5 h-5 text-orange-600" />
               Expanded
             </CardTitle>
             <Button
@@ -234,7 +223,6 @@ export function ScenarioSidebar({
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center gap-2">
-            <CurrencyDollarIcon className="w-5 h-5" />
             Custom Scenario
           </CardTitle>
         </CardHeader>
