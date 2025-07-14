@@ -13,6 +13,13 @@ export async function GET(_request: NextRequest) {
         STRIPE_ENTERPRISE_PRICE_ID: process.env.STRIPE_ENTERPRISE_PRICE_ID || 'NOT_SET',
         STRIPE_TEAM_PRICE_ID: process.env.STRIPE_TEAM_PRICE_ID || 'NOT_SET',
       },
+      trimmedVars: {
+        STRIPE_BASIC_PRICE_ID: (process.env.STRIPE_BASIC_PRICE_ID || 'NOT_SET').trim(),
+        STRIPE_MONTHLY_SUBSCRIPTION_PRICE_ID: (process.env.STRIPE_MONTHLY_SUBSCRIPTION_PRICE_ID || 'NOT_SET').trim(),
+        STRIPE_COMPREHENSIVE_PRICE_ID: (process.env.STRIPE_COMPREHENSIVE_PRICE_ID || 'NOT_SET').trim(),
+        STRIPE_ENTERPRISE_PRICE_ID: (process.env.STRIPE_ENTERPRISE_PRICE_ID || 'NOT_SET').trim(),
+        STRIPE_TEAM_PRICE_ID: (process.env.STRIPE_TEAM_PRICE_ID || 'NOT_SET').trim(),
+      },
       mappings: STRIPE_TIER_MAPPINGS
     };
 
