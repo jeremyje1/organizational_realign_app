@@ -124,7 +124,6 @@ function AssessmentStartContent() {
           "Receive DSCH, CRF, and LEI analysis with actionable recommendations"
         ]
       });
-      setLoading(false);
     }
   }, [sessionId, orgType, isAuthorized, checkingAuth]);
 
@@ -168,10 +167,8 @@ function AssessmentStartContent() {
           "Once submitted, AI analysis will generate your professional report",
         ]
       });
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching assessment:', error);
-      setLoading(false);
     }
   };
 

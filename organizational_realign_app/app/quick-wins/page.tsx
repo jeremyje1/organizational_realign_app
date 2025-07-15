@@ -14,8 +14,7 @@ import {
   ArrowRight,
   Zap,
   BarChart3,
-  Gift,
-  Star
+  Gift
 } from 'lucide-react';
 import QuickWinsAssessment from '@/components/QuickWinsAssessment';
 import { QuickWinsResult } from '@/data/quickWinsQuestions';
@@ -32,8 +31,8 @@ export default function QuickWinsLandingPage() {
   };
 
   const handleUpgrade = () => {
-    // Redirect to full assessment or contact form
-    window.location.href = '/assessment/start';
+    // Redirect to pricing page where users can choose their assessment plan
+    window.location.href = '/pricing';
   };
 
   if (showAssessment) {
@@ -227,52 +226,6 @@ export default function QuickWinsLandingPage() {
                 <p className="text-sm text-slate-600">Per week across your organization</p>
               </CardContent>
             </Card>
-          </div>
-        </motion.div>
-
-        {/* Social Proof */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h3 className="text-2xl font-bold text-slate-800 mb-8">
-            Trusted by Organizations Like Yours
-          </h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                type: 'Healthcare System',
-                result: 'Identified $180K in annual savings',
-                quote: 'The quick wins assessment revealed inefficiencies we never knew existed.'
-              },
-              {
-                type: 'University',
-                result: 'Streamlined 15 hours of weekly processes',
-                quote: 'Simple changes that made a huge impact on our operations.'
-              },
-              {
-                type: 'Non-Profit',
-                result: 'Reduced operational costs by 23%',
-                quote: 'Now we can redirect more funds to our mission-critical work.'
-              }
-            ].map((testimonial, index) => (
-              <Card key={index} className="text-left">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-1 mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    ))}
-                  </div>
-                  <p className="text-sm text-slate-600 mb-4 italic">&quot;{testimonial.quote}&quot;</p>
-                  <div className="border-t pt-4">
-                    <p className="font-semibold text-slate-800">{testimonial.type}</p>
-                    <p className="text-sm text-green-600 font-medium">{testimonial.result}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </motion.div>
 

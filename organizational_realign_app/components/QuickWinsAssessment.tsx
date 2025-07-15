@@ -1,5 +1,7 @@
 'use client';
 
+// QuickWinsAssessment Component - Lead Generation Tool
+import * as React from 'react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -17,7 +19,6 @@ import {
   Target,
   Zap,
   BarChart3,
-  AlertCircle,
   Sparkles
 } from 'lucide-react';
 import { 
@@ -111,8 +112,8 @@ export default function QuickWinsAssessment({ onComplete, onUpgrade }: QuickWins
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mb-4">
             <Sparkles className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-slate-800 mb-2">Your Quick Wins Assessment Results</h1>
-          <p className="text-lg text-slate-600">Immediate opportunities for organizational improvement</p>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">Your Quick Wins Results</h1>
+          <p className="text-lg text-slate-600">Immediate improvement opportunities identified</p>
         </motion.div>
 
         {/* Overall Score */}
@@ -297,12 +298,6 @@ export default function QuickWinsAssessment({ onComplete, onUpgrade }: QuickWins
                   Download Results
                 </Button>
               </div>
-              <div className="mt-6 flex items-center justify-center gap-4 text-sm text-blue-200">
-                <div className="flex items-center gap-1">
-                  <AlertCircle className="h-4 w-4" />
-                  <span>Limited Time: 50% off comprehensive assessment</span>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </motion.div>
@@ -334,7 +329,7 @@ export default function QuickWinsAssessment({ onComplete, onUpgrade }: QuickWins
       {/* Progress Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-slate-800">Quick Wins Assessment</h1>
+          <h1 className="text-2xl font-bold text-slate-800">Assessment</h1>
           <Badge variant="outline" className="text-sm">
             {currentQuestionIndex + 1} of {QUICK_WINS_QUESTIONS.length}
           </Badge>
@@ -358,9 +353,10 @@ export default function QuickWinsAssessment({ onComplete, onUpgrade }: QuickWins
             <CardHeader>
               <div className="flex items-start gap-3">
                 <div className={`p-2 bg-gradient-to-r ${getCategoryColor(currentQuestion.category)} rounded-lg`}>
-                  {React.createElement(getCategoryIcon(currentQuestion.category), { 
-                    className: "h-5 w-5 text-white" 
-                  })}
+                  {(() => {
+                    const Icon = getCategoryIcon(currentQuestion.category);
+                    return <Icon className="h-5 w-5 text-white" />;
+                  })()}
                 </div>
                 <div>
                   <CardTitle className="text-xl text-slate-800">

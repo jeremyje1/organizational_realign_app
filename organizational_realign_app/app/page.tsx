@@ -40,7 +40,7 @@ export default function AppHomePage() {
               <Link href="/quick-wins" className="text-slate-300 hover:text-white transition-colors">
                 Quick Wins
               </Link>
-              <Link href="/assessment/onboarding" className="text-slate-300 hover:text-white transition-colors">
+              <Link href="/pricing" className="text-slate-300 hover:text-white transition-colors">
                 Take Assessment
               </Link>
               <Link href="/dashboard" className="text-slate-300 hover:text-white transition-colors">
@@ -76,7 +76,7 @@ export default function AppHomePage() {
               </Link>
             </Button>
             <Button size="lg" asChild className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
-              <Link href="/assessment/onboarding">
+              <Link href="/pricing">
                 Full Assessment
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Link>
