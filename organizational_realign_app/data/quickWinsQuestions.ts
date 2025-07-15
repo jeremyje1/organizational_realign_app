@@ -72,9 +72,10 @@ export const QUICK_WINS_QUESTIONS: QuickWinsQuestion[] = [
   },
   {
     id: 'duplicate_work',
-    type: 'rating',
+    type: 'multiple-choice',
     category: 'efficiency',
-    question: 'How often do you notice the same work being done by multiple people/departments? (1-5 scale)',
+    question: 'How much duplicate work occurs across departments?',
+    options: ['Very little - roles are clearly separated', 'Some overlap in routine tasks', 'Frequent duplication of efforts', 'Significant waste from duplicate work'],
     weight: 9,
     description: 'Duplicate efforts waste resources and time'
   },
@@ -99,9 +100,10 @@ export const QUICK_WINS_QUESTIONS: QuickWinsQuestion[] = [
   },
   {
     id: 'automation_level',
-    type: 'rating',
+    type: 'multiple-choice',
     category: 'technology',
-    question: 'How automated are your repetitive business processes? (1-5 scale)',
+    question: 'What percentage of your routine tasks are automated?',
+    options: ['Most tasks (80%+) are automated', 'Many tasks (60-80%) are automated', 'Some tasks (30-60%) are automated', 'Few tasks (less than 30%) are automated'],
     weight: 9,
     description: 'Automation reduces errors and frees up human resources'
   },
@@ -126,9 +128,10 @@ export const QUICK_WINS_QUESTIONS: QuickWinsQuestion[] = [
   },
   {
     id: 'process_waste',
-    type: 'rating',
+    type: 'multiple-choice',
     category: 'costs',
-    question: 'How much time is wasted on unnecessary approvals and bureaucracy? (1-5 scale)',
+    question: 'How streamlined are your approval processes?',
+    options: ['Very efficient - minimal delays', 'Mostly efficient with some bottlenecks', 'Moderately efficient but could improve', 'Slow and bureaucratic with many delays'],
     weight: 9,
     description: 'Streamlining processes can yield immediate savings'
   }
