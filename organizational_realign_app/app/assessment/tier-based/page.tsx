@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, AlertTriangle, Upload, Clock, DollarSign } from 'lucide-react';
+
 
 import { 
   getTierConfiguration, 
@@ -244,7 +244,7 @@ function TierBasedAssessmentContent() {
   const FileUpload = ({ question }: { question: Question }) => (
     <div className="space-y-4">
       <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-        <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+        <div className="h-8 w-8 text-gray-400 mx-auto mb-2 flex items-center justify-center text-2xl">📁</div>
         <p className="text-gray-600 mb-2">Upload organizational charts, job descriptions, or budget documents</p>
         <input
           type="file"
@@ -267,7 +267,7 @@ function TierBasedAssessmentContent() {
           <p className="text-sm font-medium text-gray-700">Uploaded Files:</p>
           {assessmentState.uploadedFiles.map((file, index) => (
             <div key={index} className="flex items-center text-sm text-gray-600">
-              <CheckCircle2 className="h-4 w-4 text-green-500 mr-2" />
+              <span className="text-green-500 mr-2">✓</span>
               {file.name}
             </div>
           ))}
@@ -281,7 +281,7 @@ function TierBasedAssessmentContent() {
       <div className="max-w-4xl mx-auto p-6">
         <Card>
           <CardHeader className="text-center">
-            <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4" />
+            <div className="text-6xl text-green-500 mx-auto mb-4">✅</div>
             <CardTitle className="text-2xl text-green-700">Assessment Complete!</CardTitle>
           </CardHeader>
           <CardContent className="text-center space-y-4">
@@ -293,7 +293,7 @@ function TierBasedAssessmentContent() {
               <ul className="text-sm text-blue-800 space-y-1 text-left">
                 {tierConfig.coreDeliverables.map((deliverable, index) => (
                   <li key={index} className="flex items-start">
-                    <CheckCircle2 className="h-4 w-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-blue-600 mr-2 mt-0.5 flex-shrink-0">✓</span>
                     {deliverable}
                   </li>
                 ))}
@@ -314,7 +314,7 @@ function TierBasedAssessmentContent() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center text-amber-600">
-              <AlertTriangle className="h-6 w-6 mr-2" />
+              <span className="text-amber-600 mr-2">⚠️</span>
               Upgrade Required
             </CardTitle>
           </CardHeader>
@@ -351,7 +351,7 @@ function TierBasedAssessmentContent() {
           </div>
           <div className="text-right">
             <Badge variant="secondary" className="mb-2">
-              <DollarSign className="h-4 w-4 mr-1" />
+              <span className="mr-1">💰</span>
               ${tierConfig.price.toLocaleString()}
             </Badge>
             <p className="text-sm text-gray-500">{tierConfig.assessmentScope.reportPages} page report</p>
@@ -389,7 +389,7 @@ function TierBasedAssessmentContent() {
               >
                 {section}
                 {sectionAnswered === sectionQuestions.length && (
-                  <CheckCircle2 className="h-4 w-4 ml-1 inline" />
+                  <span className="ml-1 inline text-green-600">✓</span>
                 )}
               </button>
             );
@@ -400,7 +400,7 @@ function TierBasedAssessmentContent() {
       {/* Error Messages */}
       {assessmentState.validationErrors.length > 0 && (
         <Alert className="mb-6">
-          <AlertTriangle className="h-4 w-4" />
+          <span className="text-red-600 mr-2">⚠️</span>
           <AlertDescription>
             {assessmentState.validationErrors.join('; ')}
           </AlertDescription>
@@ -471,7 +471,7 @@ function TierBasedAssessmentContent() {
             >
               {loading ? (
                 <>
-                  <Clock className="h-4 w-4 mr-2 animate-spin" />
+                  <span className="mr-2 animate-spin">⏳</span>
                   Submitting...
                 </>
               ) : (
