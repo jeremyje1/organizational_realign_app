@@ -21,8 +21,7 @@ import {
   Zap,
   Building2,
   ArrowRight,
-  PlayCircle,
-  Lock
+  PlayCircle
 } from 'lucide-react';
 import OrganizationTypeSelect from '@/components/OrganizationTypeSelect';
 import { OrganizationType } from '@/data/northpathQuestionBank';
@@ -36,7 +35,6 @@ interface AssessmentInfo {
 
 function AssessmentStartContent() {
   const [assessment, setAssessment] = useState<AssessmentInfo | null>(null);
-  const [loading, setLoading] = useState(true);
   const [selectedOrgType, setSelectedOrgType] = useState<OrganizationType | null>(null);
   const [showTypeSelection, setShowTypeSelection] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -593,14 +591,14 @@ function AssessmentStartContent() {
             <div className="space-y-6">
               <p className="text-lg text-slate-600 leading-relaxed">
                 Welcome to your Organizational Realignment Assessment. This comprehensive evaluation 
-                will analyze your organization's structure, identify inefficiencies, and provide 
+                will analyze your organization&apos;s structure, identify inefficiencies, and provide 
                 AI-powered recommendations for improvement.
               </p>
 
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
                 <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
                   <FileText className="h-5 w-5 text-blue-600" />
-                  What You'll Complete
+                  What You&apos;ll Complete
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {getInstructionsByTier(assessment.tier).map((instruction, index) => (
@@ -658,7 +656,7 @@ function AssessmentStartContent() {
               <div className="p-3 bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl">
                 <Target className="h-6 w-6 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-800">What You'll Receive</h3>
+              <h3 className="text-2xl font-bold text-slate-800">What You&apos;ll Receive</h3>
             </div>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-4">
