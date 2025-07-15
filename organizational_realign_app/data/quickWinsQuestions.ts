@@ -55,9 +55,10 @@ export const QUICK_WINS_QUESTIONS: QuickWinsQuestion[] = [
   // Process Efficiency (3 questions)
   {
     id: 'manual_processes',
-    type: 'rating',
+    type: 'multiple-choice',
     category: 'efficiency',
-    question: 'What percentage of your routine tasks are still done manually? (1=0-20%, 5=80-100%)',
+    question: 'What percentage of your routine tasks are still done manually?',
+    options: ['0-20% (Most tasks are automated)', '20-40% (Many tasks automated)', '40-60% (Some automation)', '60-80% (Limited automation)', '80-100% (Mostly manual)'],
     weight: 10,
     description: 'Manual processes are prime candidates for automation'
   },
