@@ -169,6 +169,27 @@ export default function AssessmentOnboardingPage() {
       
       <div className="max-w-7xl mx-auto py-12 px-4 space-y-12">
         
+        {/* Quick Wins Promotion */}
+        <section className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h3 className="text-lg font-semibold text-green-800 mb-2">
+                🎯 Not sure where to start? Try our Free Quick Wins Assessment!
+              </h3>
+              <p className="text-green-700">
+                Get immediate cost-saving recommendations in just 5 minutes. No email required.
+              </p>
+            </div>
+            <a 
+              href="/quick-wins"
+              className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center gap-2"
+            >
+              Try Quick Wins Assessment
+              <span>→</span>
+            </a>
+          </div>
+        </section>
+        
         {/* Package Selection */}
         <section className="bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Selected Package</h2>

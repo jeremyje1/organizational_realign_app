@@ -37,6 +37,9 @@ export default function AppHomePage() {
               <h1 className="text-xl font-bold text-white">NorthPath Analytics</h1>
             </div>
             <div className="flex items-center space-x-4">
+              <Link href="/quick-wins" className="text-slate-300 hover:text-white transition-colors">
+                Quick Wins
+              </Link>
               <Link href="/assessment/onboarding" className="text-slate-300 hover:text-white transition-colors">
                 Take Assessment
               </Link>
@@ -66,9 +69,15 @@ export default function AppHomePage() {
             Get insights, analyze patterns, and drive strategic decisions.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" asChild className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold shadow-lg">
+              <Link href="/quick-wins">
+                Free Quick Wins Assessment
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
             <Button size="lg" asChild className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
               <Link href="/assessment/onboarding">
-                Start Assessment
+                Full Assessment
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
