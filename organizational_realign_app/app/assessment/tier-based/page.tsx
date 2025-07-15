@@ -49,7 +49,7 @@ function TierBasedAssessmentContent() {
   const [assessmentState, setAssessmentState] = useState<AssessmentState>({
     currentSection: 0,
     responses: {},
-    organizationType: 'higher-education',
+    organizationType: (searchParams.get('orgType') as OrganizationType) || 'higher-education',
     institutionName: '',
     tier: (searchParams.get('tier') as PricingTier) || 'one-time-diagnostic',
     uploadedFiles: [],

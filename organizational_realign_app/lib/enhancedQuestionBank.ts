@@ -106,6 +106,76 @@ export const CORE_QUESTIONS: Question[] = [
     helpText: "Agile credential development responds to evolving industry needs and revenue opportunities."
   },
 
+  // Healthcare Service Lines (Healthcare Specific)
+  {
+    id: "HSL_01",
+    section: "Service Lines & Clinical Programs",
+    prompt: "Clinical service lines are reviewed annually using patient volume, profitability, and quality outcome data.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    required: true,
+    helpText: "Regular service line review ensures clinical offerings align with community needs and financial sustainability."
+  },
+  {
+    id: "HSL_02",
+    section: "Service Lines & Clinical Programs",
+    prompt: "Physician scheduling optimization reduces gaps in coverage while maintaining quality care standards.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    helpText: "Optimized scheduling improves patient access while controlling labor costs."
+  },
+  {
+    id: "HSL_03",
+    section: "Service Lines & Clinical Programs",
+    prompt: "Cross-training protocols exist for critical nursing and support roles across multiple units.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    helpText: "Cross-training improves staffing flexibility and reduces overtime costs."
+  },
+  {
+    id: "HSL_04",
+    section: "Service Lines & Clinical Programs",
+    prompt: "Quality metrics are consistently tracked and reported for all major service lines.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    helpText: "Quality tracking ensures clinical excellence and regulatory compliance."
+  },
+
+  // Business Operations (Corporate/Public Sector)
+  {
+    id: "BOP_01",
+    section: "Business Operations & Services",
+    prompt: "Core business processes are regularly reviewed for efficiency using performance metrics and customer feedback.",
+    type: "likert",
+    organizationTypes: ["corporate", "public-sector"],
+    required: true,
+    helpText: "Regular process review ensures operations align with organizational goals and customer needs."
+  },
+  {
+    id: "BOP_02",
+    section: "Business Operations & Services",
+    prompt: "Service delivery standards are documented and consistently measured across all departments.",
+    type: "likert",
+    organizationTypes: ["corporate", "public-sector"],
+    helpText: "Standardized service delivery improves quality and operational efficiency."
+  },
+  {
+    id: "BOP_03",
+    section: "Business Operations & Services",
+    prompt: "Customer or stakeholder feedback is systematically collected and integrated into process improvements.",
+    type: "likert",
+    organizationTypes: ["corporate", "public-sector"],
+    helpText: "Customer feedback drives continuous improvement and service quality."
+  },
+  {
+    id: "BOP_04",
+    section: "Business Operations & Services",
+    prompt: "Cross-departmental collaboration protocols facilitate efficient project delivery and problem-solving.",
+    type: "likert",
+    organizationTypes: ["corporate", "public-sector"],
+    helpText: "Effective collaboration reduces silos and improves organizational agility."
+  },
+
   // Finance, Budget & Procurement
   {
     id: "FIN_01",
@@ -170,6 +240,29 @@ export const CORE_QUESTIONS: Question[] = [
     prompt: "Succession planning documentation exists for all key leadership positions (department chairs and above).",
     type: "likert",
     helpText: "Succession planning ensures leadership continuity and reduces transition risks."
+  },
+
+  // File Upload Questions - Essential for comprehensive analysis
+  {
+    id: "UPLOAD_01",
+    section: "Organizational Data Upload",
+    prompt: "Upload your current organizational chart or structure document (PDF, Excel, or image format)",
+    type: "upload",
+    helpText: "Current org charts help validate reporting structures and identify optimization opportunities."
+  },
+  {
+    id: "UPLOAD_02",
+    section: "Organizational Data Upload",
+    prompt: "Upload recent budget documents or financial summary (Excel or PDF format)",
+    type: "upload",
+    helpText: "Budget documents provide context for cost allocation and efficiency recommendations."
+  },
+  {
+    id: "UPLOAD_03",
+    section: "Organizational Data Upload",
+    prompt: "Upload staff roster or employee directory (Excel or CSV format)",
+    type: "upload",
+    helpText: "Staff data enables precise span-of-control analysis and role optimization recommendations."
   }
 ];
 

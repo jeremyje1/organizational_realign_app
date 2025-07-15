@@ -702,10 +702,10 @@ function AssessmentStartContent() {
             >
               <Button
                 onClick={() => {
-                  const surveyUrl = selectedOrgType 
-                    ? `/survey?orgType=${selectedOrgType}&sessionId=${sessionId || 'default'}`
-                    : '/survey';
-                  window.location.href = surveyUrl;
+                  const assessmentUrl = selectedOrgType 
+                    ? `/assessment/tier-based?tier=one-time-diagnostic&orgType=${selectedOrgType}&sessionId=${sessionId || 'default'}`
+                    : '/assessment/tier-based?tier=one-time-diagnostic';
+                  window.location.href = assessmentUrl;
                 }}
                 className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
