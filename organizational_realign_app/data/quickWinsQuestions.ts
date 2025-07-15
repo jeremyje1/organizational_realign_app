@@ -111,9 +111,10 @@ export const QUICK_WINS_QUESTIONS: QuickWinsQuestion[] = [
   // Cost Management (3 questions)
   {
     id: 'vendor_management',
-    type: 'rating',
+    type: 'multiple-choice',
     category: 'costs',
-    question: 'How often do you review and renegotiate vendor contracts? (1=Never, 5=Quarterly)',
+    question: 'How often do you review and renegotiate vendor contracts?',
+    options: ['Quarterly or more often', 'Annually', 'Every 2-3 years', 'Rarely or never'],
     weight: 8,
     description: 'Regular vendor reviews can uncover significant savings'
   },
