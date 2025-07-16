@@ -93,26 +93,6 @@ export default function AdminAssessmentViewer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assessmentId]);
 
-  const parseQuestionDetails = (assessmentData: AssessmentData) => {
-    const responses = assessmentData.responses || {};
-    const details: QuestionDetails[] = [];
-
-    // Parse responses and match with question bank
-    Object.entries(responses).forEach(([questionId, response]) => {
-      details.push({
-        id: questionId,
-        text: formatQuestionText(questionId),
-        type: determineQuestionType(questionId, response),
-        section: determineSection(questionId),
-        tier: assessmentData.tier,
-        organization_type: assessmentData.organization_type,
-        response: response
-      });
-    });
-
-    setQuestionDetails(details);
-  };
-
   const formatQuestionText = (questionId: string): string => {
     // Convert snake_case to readable text
     return questionId
