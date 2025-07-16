@@ -60,35 +60,44 @@ export default function AdminAssessmentViewer() {
     setQuestionDetails(details);
   };
 
-  useEffect(() => {
-    const fetchAssessmentData = async () => {
-      try {
-        setLoading(true);
-        
-        // Fetch assessment data
-        const response = await fetch(`/api/admin/assessment/${assessmentId}`, {
-          headers: {
-            'Authorization': 'Bearer admin-token', // In production, use proper auth
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch assessment data');
+  const fetchAssessmentData = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch assessment data
+      const response = await fetch(`/api/admin/assessment/${assessmentId}`, {
+        headers: {
+          'Authorization': 'Bearer admin-token', // In production, use proper auth
         }
+      });
 
-        const data = await response.json();
-        setAssessment(data);
-
-        // Parse question details from responses
-        parseQuestionDetails(data);
-
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('API Error Response:', errorText);
+        throw new Error(`Failed to fetch assessment data: ${response.status} ${response.statusText}`);
       }
-    };
 
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const responseText = await response.text();
+        console.error('Non-JSON response received:', responseText);
+        throw new Error('Server returned HTML instead of JSON. Check server logs for errors.');
+      }
+
+      const data = await response.json();
+      setAssessment(data);
+
+      // Parse question details from responses
+      parseQuestionDetails(data);
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchAssessmentData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assessmentId]);

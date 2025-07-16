@@ -25,15 +25,7 @@ export async function GET(
     // Fetch assessment data with admin privileges (bypassing RLS)
     const { data: assessment, error } = await supabase
       .from('assessments')
-      .select(`
-        *,
-        organizations!inner (
-          name,
-          type,
-          contact_email,
-          contact_name
-        )
-      `)
+      .select('*')
       .eq('id', assessmentId)
       .single();
 
@@ -56,10 +48,10 @@ export async function GET(
     const formattedAssessment = {
       id: assessment.id,
       tier: assessment.tier,
-      organization_type: assessment.organizations?.type || 'unknown',
-      institution_name: assessment.organizations?.name || 'Unknown Institution',
-      contact_email: assessment.organizations?.contact_email || '',
-      contact_name: assessment.organizations?.contact_name || '',
+      organization_type: assessment.organization_type || 'unknown',
+      institution_name: assessment.institution_name || 'Unknown Institution',
+      contact_email: assessment.contact_email || '',
+      contact_name: assessment.contact_name || '',
       responses: assessment.responses || {},
       uploaded_files: assessment.uploaded_files || [],
       created_at: assessment.created_at,
