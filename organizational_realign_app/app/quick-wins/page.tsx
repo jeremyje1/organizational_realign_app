@@ -130,19 +130,13 @@ export default function QuickWinsLandingPage() {
                 description: 'Uncover hidden costs and resource optimization opportunities'
               }
             ].map((area, index) => (
-              <motion.div
+              <NpsCard
                 key={area.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <NpsCard
-                  icon={area.icon}
-                  title={area.title}
-                  description={area.description}
-                />
-              </motion.div>
+                icon={area.icon}
+                title={area.title}
+                description={area.description}
+                index={index}
+              />
             ))}
           </div>
         </section>

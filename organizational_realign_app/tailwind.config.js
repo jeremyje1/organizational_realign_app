@@ -13,9 +13,48 @@ module.exports = {
       },
       colors: {
         // NorthPath Strategies Brand Colors
-        'nps-blue': '#1654A3',
-        'nps-slate': '#2A2E33',
-        'nps-light': '#F6F8FC',
+        'nps-blue': {
+          50: '#f0f7ff',
+          100: '#e0efff',
+          200: '#b8ddff',
+          300: '#78c2ff',
+          400: '#2da5ff',
+          500: '#1654A3', // Primary brand blue
+          600: '#1248a3',
+          700: '#0f3d8a',
+          800: '#0c3270',
+          900: '#0a2856',
+          950: '#051a3f',
+          DEFAULT: '#1654A3', // This allows bg-nps-blue to work
+        },
+        'nps-slate': {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#2A2E33', // Brand slate
+          900: '#1e293b',
+          950: '#0f172a',
+          DEFAULT: '#2A2E33', // This allows text-nps-slate to work
+        },
+        'nps-light': {
+          50: '#ffffff',
+          100: '#fefefe',
+          200: '#fcfcfc',
+          300: '#fafafa',
+          400: '#f8f8f8',
+          500: '#F6F8FC', // Brand light
+          600: '#f1f5f9',
+          700: '#e2e8f0',
+          800: '#cbd5e1',
+          900: '#94a3b8',
+          950: '#64748b',
+          DEFAULT: '#F6F8FC', // This allows bg-nps-light to work
+        },
         
         // Extended palette based on brand colors
         primary: {
