@@ -7,6 +7,10 @@ tailwind.config.js
 jest.config.js
 cypress.config.ts
 
+# Ignore test files that may be empty or incomplete
+test-*.js
+verify-*.js
+
 # Ignore build outputs
 .next/
 out/

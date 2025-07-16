@@ -1,9 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
+    /* NorthPath Strategies Brand Tokens */
+    --nps-blue: #1654A3;
+    --nps-slate: #2A2E33;
+    --nps-light: #F6F8FC;
+    --nps-radius: 0.5rem;
+    --nps-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    
+    /* Legacy shadcn tokens */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -64,8 +74,9 @@
 }
 
 body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--nps-light);
   color: hsl(var(--foreground));
-  background: hsl(var(--background));
 }
 
 /* Custom animations */

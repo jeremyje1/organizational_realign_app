@@ -8,46 +8,55 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui'],
+        sans: ['Inter', 'var(--font-sans)', 'ui-sans-serif', 'system-ui'],
         serif: ['var(--font-serif)', 'ui-serif', 'Georgia'],
       },
       colors: {
-        // New Professional Color System - Inspired by Hero Image
+        // NorthPath Strategies Brand Colors
+        'nps-blue': '#1654A3',
+        'nps-slate': '#2A2E33',
+        'nps-light': '#F6F8FC',
+        
+        // Extended palette based on brand colors
         primary: {
-          50: '#F0F9FF',   // Light sky blue
-          100: '#E0F2FE',
-          200: '#BAE6FD',
-          300: '#7DD3FC',
-          400: '#38BDF8',
-          500: '#0EA5E9',  // Professional sky blue
-          600: '#0284C7',
-          700: '#0369A1',
-          800: '#075985',
-          900: '#0C4A6E',
-          950: '#082F49',
+          50: '#F0F7FF',
+          100: '#E0EFFF',
+          200: '#BAD7FF',
+          300: '#7DB8FF',
+          400: '#3B94FF',
+          500: '#1654A3',  // nps-blue
+          600: '#1048A3',
+          700: '#0D3A8A',
+          800: '#0B2F70',
+          900: '#082456',
+          950: '#051A3F',
         },
         secondary: {
-          50: '#FEFCE8',   // Warm amber tones
+          50: '#FEFCE8',
           100: '#FEF9C3',
           200: '#FEF08A',
           300: '#FDE047',
           400: '#FACC15',
-          500: '#EAB308',  // Professional gold
+          500: '#EAB308',
           600: '#CA8A04',
           700: '#A16207',
           800: '#854D0E',
           900: '#713F12',
           950: '#422006',
         },
-        accent: {
-          50: '#F8FAFC',   // Modern slate accent
+        slate: {
+          50: '#F8FAFC',
           100: '#F1F5F9',
           200: '#E2E8F0',
           300: '#CBD5E1',
           400: '#94A3B8',
-          500: '#64748B',  // Sophisticated slate
+          500: '#64748B',
           600: '#475569',
           700: '#334155',
+          800: '#2A2E33',  // nps-slate
+          900: '#1E293B',
+          950: '#0F172A',
+        },
           800: '#1E293B',
           900: '#0F172A',
           950: '#020617',
@@ -221,6 +230,8 @@ module.exports = {
         '4xl': '2rem',
         '5xl': '2.5rem',
         'full': '9999px',
+        // NPS Brand Token
+        'nps': '0.5rem', // nps-radius
       },
       
       // Premium Shadow System
@@ -234,6 +245,9 @@ module.exports = {
         '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
         'inner': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
         'none': 'none',
+        
+        // NPS Brand Token
+        'nps': '0 4px 14px rgba(0,0,0,0.06)', // nps-shadow
         
         // Glass morphism shadows
         'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
