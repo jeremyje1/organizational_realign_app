@@ -134,6 +134,12 @@ function TierBasedAssessmentContent() {
   const submitAssessment = async () => {
     setLoading(true);
     
+    // Clear any previous validation errors
+    setAssessmentState(prev => ({
+      ...prev,
+      validationErrors: []
+    }));
+    
     // Validate responses
     const validation = validateResponses(
       assessmentState.responses, 
@@ -151,6 +157,14 @@ function TierBasedAssessmentContent() {
     }
 
     try {
+      console.log('Submitting assessment with data:', {
+        tier: assessmentState.tier,
+        organizationType: assessmentState.organizationType,
+        institutionName: assessmentState.institutionName,
+        responseCount: Object.keys(assessmentState.responses).length,
+        uploadedFileCount: assessmentState.uploadedFiles.length
+      });
+
       const response = await fetch('/api/assessment/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -159,19 +173,31 @@ function TierBasedAssessmentContent() {
           organizationType: assessmentState.organizationType,
           institutionName: assessmentState.institutionName,
           responses: assessmentState.responses,
-          uploadedFiles: assessmentState.uploadedFiles.map(f => f.name)
+          uploadedFiles: assessmentState.uploadedFiles.map(f => ({ name: f.name, size: f.size, type: f.type }))
         })
       });
 
+      const result = await response.json();
+      
       if (response.ok) {
+        console.log('Assessment submitted successfully:', result);
         setAssessmentState(prev => ({ ...prev, isComplete: true }));
+        
+        // Optional: Redirect to results page if provided
+        if (result.redirectUrl) {
+          setTimeout(() => {
+            window.location.href = result.redirectUrl;
+          }, 2000); // Give user time to see success message
+        }
       } else {
-        throw new Error('Assessment submission failed');
+        console.error('Assessment submission failed:', result);
+        throw new Error(result.error || 'Assessment submission failed');
       }
-    } catch {
+    } catch (error) {
+      console.error('Error submitting assessment:', error);
       setAssessmentState(prev => ({
         ...prev,
-        validationErrors: ['Failed to submit assessment. Please try again.']
+        validationErrors: [error instanceof Error ? error.message : 'Failed to submit assessment. Please try again.']
       }));
     } finally {
       setLoading(false);
