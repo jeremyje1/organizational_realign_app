@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
-import { CORE_QUESTIONS, PREMIUM_QUESTIONS, COMPREHENSIVE_QUESTIONS, ENTERPRISE_QUESTIONS } from '../../../lib/enhancedQuestionBankV3';
+import { CORE_QUESTIONS, MONTHLY_QUESTIONS, COMPREHENSIVE_QUESTIONS, ENTERPRISE_QUESTIONS } from '../../../../lib/enhancedQuestionBankV3';
 
 interface AssessmentData {
   id: string;
@@ -51,7 +51,7 @@ export default function AdminAssessmentViewer() {
     
     // Add tier-specific questions
     if (assessmentData.tier !== 'one-time-diagnostic') {
-      allQuestions.push(...PREMIUM_QUESTIONS);
+      allQuestions.push(...MONTHLY_QUESTIONS);
     }
     if (assessmentData.tier === 'comprehensive-package' || assessmentData.tier === 'enterprise-transformation') {
       allQuestions.push(...COMPREHENSIVE_QUESTIONS);
