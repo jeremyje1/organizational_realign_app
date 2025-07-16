@@ -173,6 +173,30 @@ class EmailNotifications {
   }
 
   /**
+   * Send assessment confirmation and thank you email to client
+   */
+  async sendAssessmentConfirmation(params: {
+    clientEmail: string;
+    clientName?: string;
+    assessmentId: string;
+    tier: string;
+    organizationType: string;
+    institutionName: string;
+    responseCount: number;
+    submittedAt: string;
+  }): Promise<boolean> {
+    const template = this.getAssessmentConfirmationTemplate(params);
+    
+    return this.sendEmail({
+      to: { email: params.clientEmail, name: params.clientName || 'Valued Client' },
+      subject: template.subject,
+      html: template.html,
+      text: template.text,
+      category: 'assessment-confirmation'
+    });
+  }
+
+  /**
    * Core email sending function
    */
   private async sendEmail(params: {
@@ -835,6 +859,222 @@ ACTION REQUIRED:
 This assessment submission requires processing. Please review the data in the admin dashboard and prepare the analysis report.
 
 View assessment details: ${this.baseUrl}/admin/assessments/${assessmentId}
+
+© ${new Date().getFullYear()} NorthPath Strategies. All rights reserved.
+    `;
+    
+    return { subject, html, text };
+  }
+
+  /**
+   * Generate assessment confirmation email template for clients
+   */
+  private getAssessmentConfirmationTemplate(params: {
+    assessmentId: string;
+    tier: string;
+    organizationType: string;
+    institutionName: string;
+    responseCount: number;
+    submittedAt: string;
+  }): EmailTemplate {
+    const { assessmentId, tier, organizationType, institutionName, responseCount, submittedAt } = params;
+    
+    const formattedDate = new Date(submittedAt).toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZoneName: 'short'
+    });
+
+    const tierDisplayNames = {
+      'one-time-diagnostic': 'One-Time Diagnostic',
+      'monthly-subscription': 'Monthly Subscription',
+      'comprehensive-package': 'Comprehensive Package',
+      'enterprise-transformation': 'Enterprise Transformation'
+    };
+
+    const orgTypeDisplayNames = {
+      'higher-education': 'Higher Education',
+      'community_college': 'Community College',
+      'public_university': 'Public University',
+      'private_university': 'Private University',
+      'hospital_healthcare': 'Hospital/Healthcare',
+      'nonprofit': 'Nonprofit Organization',
+      'government_agency': 'Government Agency',
+      'company_business': 'Company/Business',
+      'trade_technical': 'Trade/Technical School'
+    };
+
+    const subject = `✅ Thank You! Your Organizational Assessment Has Been Received`;
+    
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img src="${this.baseUrl}/images/NorthPath_logo_optimized.jpg" alt="NorthPath Strategies" style="max-width: 200px;">
+        </div>
+        
+        <div style="background-color: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin-bottom: 20px; border-radius: 4px;">
+          <h2 style="color: #1e40af; margin: 0 0 10px 0;">🎉 Assessment Received Successfully!</h2>
+          <p style="color: #1e40af; margin: 0; font-size: 16px;">Thank you for completing your organizational assessment with NorthPath Strategies.</p>
+        </div>
+        
+        <div style="background-color: #f9f9f9; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+          <h3 style="color: #333; margin-top: 0;">Assessment Summary</h3>
+          
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Institution:</td>
+              <td style="padding: 8px 0; color: #333;">${institutionName}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Assessment ID:</td>
+              <td style="padding: 8px 0; color: #333; font-family: monospace;">${assessmentId}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Package:</td>
+              <td style="padding: 8px 0; color: #333;">${tierDisplayNames[tier as keyof typeof tierDisplayNames] || tier}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Organization Type:</td>
+              <td style="padding: 8px 0; color: #333;">${orgTypeDisplayNames[organizationType as keyof typeof orgTypeDisplayNames] || organizationType}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Submitted:</td>
+              <td style="padding: 8px 0; color: #333;">${formattedDate}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Questions Completed:</td>
+              <td style="padding: 8px 0; color: #333;">${responseCount} responses</td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 20px; margin-bottom: 20px; border-radius: 4px;">
+          <h3 style="color: #065f46; margin: 0 0 15px 0;">🔄 What Happens Next?</h3>
+          
+          <div style="margin-bottom: 15px;">
+            <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
+              <span style="background-color: #10b981; color: white; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px; font-size: 12px;">1</span>
+              <div>
+                <strong style="color: #065f46;">AI Analysis Processing</strong>
+                <p style="margin: 4px 0 0 0; color: #047857; font-size: 14px;">Our advanced AI algorithms are analyzing your responses using our proprietary organizational frameworks (typically 15-30 minutes).</p>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 15px;">
+            <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
+              <span style="background-color: #10b981; color: white; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px; font-size: 12px;">2</span>
+              <div>
+                <strong style="color: #065f46;">Expert Review</strong>
+                <p style="margin: 4px 0 0 0; color: #047857; font-size: 14px;">Our team of organizational specialists will review and validate the AI insights (1-4 hours).</p>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 15px;">
+            <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
+              <span style="background-color: #10b981; color: white; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px; font-size: 12px;">3</span>
+              <div>
+                <strong style="color: #065f46;">Results Delivery</strong>
+                <p style="margin: 4px 0 0 0; color: #047857; font-size: 14px;">You'll receive an email notification when your comprehensive analysis report is ready for review.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <div style="display: flex; align-items: flex-start;">
+              <span style="background-color: #10b981; color: white; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px; font-size: 12px;">4</span>
+              <div>
+                <strong style="color: #065f46;">Implementation Support</strong>
+                <p style="margin: 4px 0 0 0; color: #047857; font-size: 14px;">Our team will reach out to schedule a consultation to discuss your results and implementation strategy.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+          <h4 style="color: #92400e; margin: 0 0 8px 0;">⏱️ Expected Timeline</h4>
+          <p style="color: #92400e; margin: 0; font-size: 14px;">
+            <strong>Initial Results:</strong> Within 4-6 hours<br>
+            <strong>Consultation Contact:</strong> Within 24 hours<br>
+            <strong>Full Implementation Plan:</strong> Within 2-3 business days
+          </p>
+        </div>
+        
+        <div style="text-align: center; margin: 20px 0;">
+          <a href="${this.baseUrl}/assessment/results?assessmentId=${assessmentId}" 
+             style="background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+            Check Results Status
+          </a>
+        </div>
+        
+        <div style="background-color: #f3f4f6; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h3 style="color: #333; margin-top: 0;">📞 Need Immediate Assistance?</h3>
+          <p style="color: #555; margin-bottom: 15px;">Our support team is here to help with any questions about your assessment or next steps.</p>
+          
+          <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            <div>
+              <strong style="color: #333;">📧 Email:</strong><br>
+              <a href="mailto:support@northpathstrategies.org" style="color: #3b82f6;">support@northpathstrategies.org</a>
+            </div>
+            <div>
+              <strong style="color: #333;">📅 Schedule Consultation:</strong><br>
+              <a href="${this.baseUrl}/contact" style="color: #3b82f6;">Book a Strategy Session</a>
+            </div>
+          </div>
+        </div>
+        
+        <div style="text-align: center; color: #888; font-size: 14px; margin-top: 30px;">
+          <p><strong>NorthPath Strategies</strong> - Organizational Realignment & Optimization</p>
+          <p>&copy; ${new Date().getFullYear()} NorthPath Strategies. All rights reserved.</p>
+          <p style="font-size: 12px; margin-top: 10px;">
+            Keep this email for your records. Your Assessment ID is: <strong>${assessmentId}</strong>
+          </p>
+        </div>
+      </div>
+    `;
+    
+    const text = `
+ASSESSMENT CONFIRMATION - Thank You!
+
+Your organizational assessment has been successfully received and is being processed.
+
+Assessment Summary:
+- Institution: ${institutionName}
+- Assessment ID: ${assessmentId}
+- Package: ${tierDisplayNames[tier as keyof typeof tierDisplayNames] || tier}
+- Organization Type: ${orgTypeDisplayNames[organizationType as keyof typeof orgTypeDisplayNames] || organizationType}
+- Submitted: ${formattedDate}
+- Questions Completed: ${responseCount} responses
+
+WHAT HAPPENS NEXT:
+
+1. AI Analysis Processing (15-30 minutes)
+   Our advanced AI algorithms are analyzing your responses using our proprietary organizational frameworks.
+
+2. Expert Review (1-4 hours)
+   Our team of organizational specialists will review and validate the AI insights.
+
+3. Results Delivery
+   You'll receive an email notification when your comprehensive analysis report is ready.
+
+4. Implementation Support
+   Our team will reach out to schedule a consultation to discuss your results and strategy.
+
+EXPECTED TIMELINE:
+- Initial Results: Within 4-6 hours
+- Consultation Contact: Within 24 hours
+- Full Implementation Plan: Within 2-3 business days
+
+NEED ASSISTANCE?
+- Email: support@northpathstrategies.org
+- Schedule Consultation: ${this.baseUrl}/contact
+- Check Results: ${this.baseUrl}/assessment/results?assessmentId=${assessmentId}
+
+Keep this email for your records. Your Assessment ID is: ${assessmentId}
 
 © ${new Date().getFullYear()} NorthPath Strategies. All rights reserved.
     `;

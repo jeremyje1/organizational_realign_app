@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     
     // Validate required fields
-    const { tier, organizationType, institutionName, responses, uploadedFiles } = body;
+    const { tier, organizationType, institutionName, responses, uploadedFiles, contactEmail, contactName } = body;
     
     if (!tier || !organizationType || !responses) {
       return NextResponse.json(
@@ -108,7 +108,6 @@ export async function POST(req: NextRequest) {
     // Send email notification to support team
     try {
       await emailNotifications.sendAssessmentSubmissionNotification({
-        toEmail: 'support@northpathstrategies.org',
         assessmentId: assessmentResult.id.toString(),
         tier,
         organizationType,
@@ -119,7 +118,26 @@ export async function POST(req: NextRequest) {
       });
     } catch (emailError) {
       // Log email error but don't fail the submission
-      console.error('[assessment/submit] Failed to send email notification:', emailError);
+      console.error('[assessment/submit] Failed to send support email notification:', emailError);
+    }
+
+    // Send confirmation email to client (if email provided)
+    if (contactEmail) {
+      try {
+        await emailNotifications.sendAssessmentConfirmation({
+          clientEmail: contactEmail,
+          clientName: contactName || undefined,
+          assessmentId: assessmentResult.id.toString(),
+          tier,
+          organizationType,
+          institutionName: institutionName || 'Anonymous Institution',
+          responseCount: Object.keys(responses).length,
+          submittedAt: new Date().toISOString()
+        });
+      } catch (emailError) {
+        // Log email error but don't fail the submission
+        console.error('[assessment/submit] Failed to send client confirmation email:', emailError);
+      }
     }
 
     // Generate a session ID for the results

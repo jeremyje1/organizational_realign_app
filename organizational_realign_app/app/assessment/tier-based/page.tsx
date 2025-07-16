@@ -35,6 +35,8 @@ interface AssessmentState {
   responses: Record<string, any>;
   organizationType: OrganizationType;
   institutionName: string;
+  contactEmail: string;
+  contactName: string;
   tier: PricingTier;
   uploadedFiles: File[];
   isComplete: boolean;
@@ -51,6 +53,8 @@ function TierBasedAssessmentContent() {
     responses: {},
     organizationType: (searchParams.get('orgType') as OrganizationType) || 'higher-education',
     institutionName: '',
+    contactEmail: '',
+    contactName: '',
     tier: (searchParams.get('tier') as PricingTier) || 'one-time-diagnostic',
     uploadedFiles: [],
     isComplete: false,
@@ -168,12 +172,13 @@ function TierBasedAssessmentContent() {
       const response = await fetch('/api/assessment/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tier: assessmentState.tier,
-          organizationType: assessmentState.organizationType,
-          institutionName: assessmentState.institutionName,
-          responses: assessmentState.responses,
-          uploadedFiles: assessmentState.uploadedFiles.map(f => ({ name: f.name, size: f.size, type: f.type }))
+        body: JSON.stringify({        tier: assessmentState.tier,
+        organizationType: assessmentState.organizationType,
+        institutionName: assessmentState.institutionName,
+        contactEmail: assessmentState.contactEmail,
+        contactName: assessmentState.contactName,
+        responses: assessmentState.responses,
+        uploadedFiles: assessmentState.uploadedFiles.map(f => ({ name: f.name, size: f.size, type: f.type }))
         })
       });
 
@@ -431,6 +436,67 @@ function TierBasedAssessmentContent() {
             {assessmentState.validationErrors.join('; ')}
           </AlertDescription>
         </Alert>
+      )}
+
+      {/* Contact Information Section - shown only on first section */}
+      {assessmentState.currentSection === 0 && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="text-lg">Contact Information</CardTitle>
+            <p className="text-sm text-gray-600">
+              We&apos;ll use this information to send you updates about your assessment and results.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <label htmlFor="institutionName" className="block text-sm font-medium text-gray-700 mb-2">
+                Institution/Organization Name *
+              </label>
+              <input
+                id="institutionName"
+                type="text"
+                value={assessmentState.institutionName}
+                onChange={(e) => setAssessmentState(prev => ({ ...prev, institutionName: e.target.value }))}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Enter your institution or organization name"
+                required
+              />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="contactName" className="block text-sm font-medium text-gray-700 mb-2">
+                  Your Name
+                </label>
+                <input
+                  id="contactName"
+                  type="text"
+                  value={assessmentState.contactName}
+                  onChange={(e) => setAssessmentState(prev => ({ ...prev, contactName: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter your full name"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address
+                </label>
+                <input
+                  id="contactEmail"
+                  type="email"
+                  value={assessmentState.contactEmail}
+                  onChange={(e) => setAssessmentState(prev => ({ ...prev, contactEmail: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter your email address"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Optional: We&apos;ll send you a confirmation email and notify you when results are ready
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* Current Section Questions */}
