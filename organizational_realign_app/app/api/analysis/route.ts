@@ -5,18 +5,28 @@ import { allQuestions } from '../../../data/northpathQuestionBank';
 
 export async function POST(request: NextRequest) {
   try {
-    // Get the session ID from the request
-    const { sessionId, assessmentId } = await request.json();
+    console.log('Analysis API called');
+    
+    // Get the request data
+    const requestData = await request.json();
+    console.log('Request data:', requestData);
+    
+    const { sessionId, assessmentId, tier: _requestTier, forceRerun: _forceRerun, testMode: _testMode } = requestData;
     
     // Fetch assessment data from database
     let assessment;
     if (sessionId) {
+      console.log('Finding assessment by session ID:', sessionId);
       assessment = await AssessmentDB.findAssessmentBySessionId(sessionId);
     } else if (assessmentId) {
+      console.log('Finding assessment by assessment ID:', assessmentId);
       assessment = await AssessmentDB.findAssessmentById(assessmentId);
     }
     
+    console.log('Assessment found:', assessment ? 'yes' : 'no');
+    
     if (!assessment) {
+      console.log('Assessment not found for sessionId:', sessionId, 'assessmentId:', assessmentId);
       return NextResponse.json({ error: 'Assessment not found' }, { status: 404 });
     }
 
@@ -60,9 +70,12 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Analysis generation error:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+    
     return NextResponse.json({ 
       error: 'Failed to generate analysis',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
+      success: false
     }, { status: 500 });
   }
 }
@@ -196,7 +209,7 @@ function generateAIImplementationPlan(analysis: any) {
   };
 }
 
-function generateStrategicInsights(responses: AssessmentResponse[], analysisResult: any, tier: string = 'one-time-diagnostic') {
+function generateStrategicInsights(responses: AssessmentResponse[], analysisResult: any, _tier: string = 'one-time-diagnostic') {
   const insights = [];
   const sectionAverages = analysisResult.sectionResults || [];
   
