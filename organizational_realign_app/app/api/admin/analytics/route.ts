@@ -32,15 +32,13 @@ export async function GET(request: NextRequest) {
       .select(`
         id,
         tier,
+        organization_type,
+        institution_name,
+        contact_email,
         responses,
         ai_readiness_score,
         analysis_results,
-        created_at,
-        organizations!inner (
-          name,
-          type,
-          contact_email
-        )
+        created_at
       `)
       .gte('created_at', startDate.toISOString())
       .lte('created_at', endDate.toISOString())
@@ -102,7 +100,7 @@ function processAnalyticsData(assessments: any[]) {
 
   assessments.forEach((assessment) => {
     const tier = assessment.tier || 'unknown';
-    const orgType = assessment.organizations?.type || 'unknown';
+    const orgType = assessment.organization_type || 'unknown';
     const responseCount = Object.keys(assessment.responses || {}).length;
     const hasAnalysis = !!assessment.analysis_results;
     const aiScore = assessment.ai_readiness_score;
@@ -177,8 +175,8 @@ function processAnalyticsData(assessments: any[]) {
   analytics.recentAssessments = assessments.slice(0, 10).map((assessment) => ({
     id: assessment.id,
     tier: assessment.tier || 'unknown',
-    industry: assessment.organizations?.type || 'unknown',
-    institution: assessment.organizations?.name || 'Unknown Institution',
+    industry: assessment.organization_type || 'unknown',
+    institution: assessment.institution_name || 'Unknown Institution',
     created_at: assessment.created_at,
     status: assessment.analysis_results ? 'completed' : 'in-progress'
   }));

@@ -80,6 +80,15 @@ export async function POST(req: NextRequest) {
     // Try assessments table first with the new schema
     try {
       console.log('[assessment/submit] Attempting to save to assessments table with new schema...');
+      console.log('[assessment/submit] Payload:', {
+        tier,
+        organization_type: organizationType,
+        institution_name: institutionName || 'Anonymous Institution',
+        contact_email: contactEmail,
+        contact_name: contactName,
+        responses_count: Object.keys(responses || {}).length,
+        test_mode: testMode || false
+      });
       
       const assessmentPayload = {
         tier,
@@ -101,12 +110,17 @@ export async function POST(req: NextRequest) {
         .single();
 
       if (assessmentError) {
-        console.log('[assessment/submit] Assessments table failed:', assessmentError.message);
+        console.error('[assessment/submit] Assessments table error:', {
+          message: assessmentError.message,
+          details: assessmentError.details,
+          hint: assessmentError.hint,
+          code: assessmentError.code
+        });
         throw new Error(`Assessment table error: ${assessmentError.message}`);
       }
       
       assessmentResult = assessmentData;
-      console.log('[assessment/submit] ✅ Successfully saved to assessments table');
+      console.log('[assessment/submit] ✅ Successfully saved to assessments table with ID:', assessmentResult.id);
       
     } catch (dbError) {
       console.log('[assessment/submit] Assessments table failed, trying surveys table...');
