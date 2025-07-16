@@ -5,7 +5,7 @@ import {
   createServerClient,
   type CookieOptions,
 } from '@supabase/ssr';
-import { EmailNotifications } from '../../../lib/email-notifications';
+import { EmailNotifications } from '@/lib/email-notifications';
 
 export const dynamic = 'force-dynamic';
 
