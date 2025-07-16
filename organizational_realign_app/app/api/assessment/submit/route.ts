@@ -5,7 +5,7 @@ import {
   createServerClient,
   type CookieOptions,
 } from '@supabase/ssr';
-import { EmailNotifications } from '@/lib/email-notifications';
+import emailNotifications from '@/lib/email-notifications';
 
 export const dynamic = 'force-dynamic';
 
@@ -107,7 +107,6 @@ export async function POST(req: NextRequest) {
 
     // Send email notification to support team
     try {
-      const emailNotifications = new EmailNotifications();
       await emailNotifications.sendAssessmentSubmissionNotification({
         toEmail: 'support@northpathstrategies.org',
         assessmentId: assessmentResult.id.toString(),
