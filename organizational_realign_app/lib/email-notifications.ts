@@ -150,6 +150,29 @@ class EmailNotifications {
   }
 
   /**
+   * Send assessment submission notification to support team
+   */
+  async sendAssessmentSubmissionNotification(params: {
+    assessmentId: string;
+    tier: string;
+    organizationType: string;
+    institutionName: string;
+    responseCount: number;
+    uploadedFileCount: number;
+    submittedAt: string;
+  }): Promise<boolean> {
+    const template = this.getAssessmentSubmissionTemplate(params);
+    
+    return this.sendEmail({
+      to: { email: 'support@northpathstrategies.org', name: 'NorthPath Support Team' },
+      subject: template.subject,
+      html: template.html,
+      text: template.text,
+      category: 'assessment-submission'
+    });
+  }
+
+  /**
    * Core email sending function
    */
   private async sendEmail(params: {
@@ -680,6 +703,140 @@ Assessment ID: ${assessmentId}
       If you have any questions, please contact us at support@northpathstrategies.org
 
       © ${new Date().getFullYear()} North Path Strategies. All rights reserved.
+    `;
+    
+    return { subject, html, text };
+  }
+
+  /**
+   * Generate assessment submission notification template for support team
+   */
+  private getAssessmentSubmissionTemplate(params: {
+    assessmentId: string;
+    tier: string;
+    organizationType: string;
+    institutionName: string;
+    responseCount: number;
+    uploadedFileCount: number;
+    submittedAt: string;
+  }): EmailTemplate {
+    const { assessmentId, tier, organizationType, institutionName, responseCount, uploadedFileCount, submittedAt } = params;
+    
+    const formattedDate = new Date(submittedAt).toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZoneName: 'short'
+    });
+
+    const tierDisplayNames = {
+      'one-time-diagnostic': 'One-Time Diagnostic ($4,995)',
+      'monthly-subscription': 'Monthly Subscription',
+      'comprehensive-package': 'Comprehensive Package',
+      'enterprise-transformation': 'Enterprise Transformation'
+    };
+
+    const orgTypeDisplayNames = {
+      'higher-education': 'Higher Education',
+      'community_college': 'Community College',
+      'public_university': 'Public University',
+      'private_university': 'Private University',
+      'hospital_healthcare': 'Hospital/Healthcare',
+      'nonprofit': 'Nonprofit Organization',
+      'government_agency': 'Government Agency',
+      'company_business': 'Company/Business',
+      'trade_technical': 'Trade/Technical School'
+    };
+
+    const subject = `🎯 New Assessment Submission: ${institutionName} (${tierDisplayNames[tier as keyof typeof tierDisplayNames] || tier})`;
+    
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img src="${this.baseUrl}/images/NorthPath_logo_optimized.jpg" alt="NorthPath Strategies" style="max-width: 200px;">
+        </div>
+        
+        <div style="background-color: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin-bottom: 20px; border-radius: 4px;">
+          <h2 style="color: #1e40af; margin: 0 0 10px 0;">🎯 New Assessment Submission</h2>
+          <p style="color: #1e40af; margin: 0; font-size: 16px;">A new organizational assessment has been submitted and requires attention.</p>
+        </div>
+        
+        <div style="background-color: #f9f9f9; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+          <h3 style="color: #333; margin-top: 0;">Assessment Details</h3>
+          
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Institution:</td>
+              <td style="padding: 8px 0; color: #333;">${institutionName}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Assessment ID:</td>
+              <td style="padding: 8px 0; color: #333; font-family: monospace;">${assessmentId}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Tier:</td>
+              <td style="padding: 8px 0; color: #333;">${tierDisplayNames[tier as keyof typeof tierDisplayNames] || tier}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Organization Type:</td>
+              <td style="padding: 8px 0; color: #333;">${orgTypeDisplayNames[organizationType as keyof typeof orgTypeDisplayNames] || organizationType}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Submitted:</td>
+              <td style="padding: 8px 0; color: #333;">${formattedDate}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Responses:</td>
+              <td style="padding: 8px 0; color: #333;">${responseCount} questions answered</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Uploaded Files:</td>
+              <td style="padding: 8px 0; color: #333;">${uploadedFileCount} files</td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+          <h4 style="color: #92400e; margin: 0 0 8px 0;">⚡ Action Required</h4>
+          <p style="color: #92400e; margin: 0; font-size: 14px;">
+            This assessment submission requires processing. Please review the data in the admin dashboard and prepare the analysis report.
+          </p>
+        </div>
+        
+        <div style="text-align: center; margin: 20px 0;">
+          <a href="${this.baseUrl}/admin/assessments/${assessmentId}" 
+             style="background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+            View Assessment Details
+          </a>
+        </div>
+        
+        <div style="text-align: center; color: #888; font-size: 14px; margin-top: 30px;">
+          <p>NorthPath Strategies Assessment Platform</p>
+          <p>&copy; ${new Date().getFullYear()} NorthPath Strategies. All rights reserved.</p>
+        </div>
+      </div>
+    `;
+    
+    const text = `
+NEW ASSESSMENT SUBMISSION
+
+Assessment Details:
+- Institution: ${institutionName}
+- Assessment ID: ${assessmentId}
+- Tier: ${tierDisplayNames[tier as keyof typeof tierDisplayNames] || tier}
+- Organization Type: ${orgTypeDisplayNames[organizationType as keyof typeof orgTypeDisplayNames] || organizationType}
+- Submitted: ${formattedDate}
+- Responses: ${responseCount} questions answered
+- Uploaded Files: ${uploadedFileCount} files
+
+ACTION REQUIRED:
+This assessment submission requires processing. Please review the data in the admin dashboard and prepare the analysis report.
+
+View assessment details: ${this.baseUrl}/admin/assessments/${assessmentId}
+
+© ${new Date().getFullYear()} NorthPath Strategies. All rights reserved.
     `;
     
     return { subject, html, text };
