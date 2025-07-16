@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
+import { CORE_QUESTIONS, PREMIUM_QUESTIONS, COMPREHENSIVE_QUESTIONS, ENTERPRISE_QUESTIONS } from '../../../lib/enhancedQuestionBankV3';
 
 interface AssessmentData {
   id: string;
@@ -26,6 +27,7 @@ interface QuestionDetails {
   tier: string;
   organization_type?: string;
   response: any;
+  hasResponse?: boolean;
 }
 
 export default function AdminAssessmentViewer() {
@@ -44,17 +46,48 @@ export default function AdminAssessmentViewer() {
     const responses = assessmentData.responses || {};
     const details: QuestionDetails[] = [];
 
-    // Parse responses and match with question bank
-    Object.entries(responses).forEach(([questionId, response]) => {
+    // Get all questions based on tier
+    const allQuestions = [...CORE_QUESTIONS];
+    
+    // Add tier-specific questions
+    if (assessmentData.tier !== 'one-time-diagnostic') {
+      allQuestions.push(...PREMIUM_QUESTIONS);
+    }
+    if (assessmentData.tier === 'comprehensive-package' || assessmentData.tier === 'enterprise-transformation') {
+      allQuestions.push(...COMPREHENSIVE_QUESTIONS);
+    }
+    if (assessmentData.tier === 'enterprise-transformation') {
+      allQuestions.push(...ENTERPRISE_QUESTIONS);
+    }
+
+    // Create question details for all questions, showing response status
+    allQuestions.forEach((question) => {
+      const hasResponse = question.id in responses;
+      const response = hasResponse ? responses[question.id] : null;
+      
+      // Filter by organization type if specified
+      if (question.organizationTypes && !question.organizationTypes.includes(assessmentData.organization_type as any)) {
+        return;
+      }
+
       details.push({
-        id: questionId,
-        text: formatQuestionText(questionId),
-        type: determineQuestionType(questionId, response),
-        section: determineSection(questionId),
+        id: question.id,
+        text: question.prompt,
+        type: question.type,
+        section: question.section,
         tier: assessmentData.tier,
         organization_type: assessmentData.organization_type,
-        response: response
+        response: response,
+        hasResponse: hasResponse
       });
+    });
+
+    // Sort by section and then by ID for consistent ordering
+    details.sort((a, b) => {
+      if (a.section !== b.section) {
+        return a.section.localeCompare(b.section);
+      }
+      return a.id.localeCompare(b.id);
     });
 
     setQuestionDetails(details);
@@ -102,49 +135,16 @@ export default function AdminAssessmentViewer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assessmentId]);
 
-  const formatQuestionText = (questionId: string): string => {
-    // Convert snake_case to readable text
-    return questionId
-      .split('_')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
-
-  const determineQuestionType = (questionId: string, response: any): string => {
-    if (questionId.includes('likert')) return 'Likert Scale';
-    if (questionId.includes('numeric')) return 'Numeric';
-    if (questionId.includes('text')) return 'Text';
-    if (questionId.includes('upload')) return 'File Upload';
-    if (typeof response === 'number') return 'Numeric';
-    if (typeof response === 'string' && response.length > 50) return 'Text';
-    if (typeof response === 'number' && response >= 1 && response <= 5) return 'Likert Scale';
-    return 'Unknown';
-  };
-
-  const determineSection = (questionId: string): string => {
-    if (questionId.includes('leadership')) return 'Leadership & Vision';
-    if (questionId.includes('communication')) return 'Communication';
-    if (questionId.includes('organizational')) return 'Organizational Structure';
-    if (questionId.includes('financial')) return 'Financial Management';
-    if (questionId.includes('ai_') || questionId.includes('automation')) return 'AI & Automation';
-    if (questionId.includes('student') || questionId.includes('academic')) return 'Academic Excellence';
-    if (questionId.includes('patient') || questionId.includes('clinical')) return 'Clinical Operations';
-    if (questionId.includes('donor') || questionId.includes('program')) return 'Program Management';
-    if (questionId.includes('revenue') || questionId.includes('market')) return 'Business Operations';
-    if (questionId.includes('public') || questionId.includes('service')) return 'Public Service';
-    return 'General';
-  };
-
   const formatResponseValue = (response: any, type: string): string => {
     if (response === null || response === undefined) return 'No response';
     
     switch (type) {
-      case 'Likert Scale':
+      case 'likert':
         const likertLabels = ['N/A', 'Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
         return `${response} - ${likertLabels[response] || 'Unknown'}`;
-      case 'Numeric':
+      case 'numeric':
         return response.toLocaleString();
-      case 'Text':
+      case 'text':
         return response.length > 100 ? `${response.substring(0, 100)}...` : response;
       default:
         return String(response);
@@ -349,26 +349,48 @@ export default function AdminAssessmentViewer() {
           <div className="bg-white rounded-lg shadow">
             <div className="px-6 py-4 border-b border-gray-200">
               <h2 className="text-lg font-medium text-gray-900">Question Responses</h2>
-              <p className="text-sm text-gray-600">Total responses: {questionDetails.length}</p>
+              <div className="mt-1 flex items-center space-x-4 text-sm text-gray-600">
+                <span>Total questions: {questionDetails.length}</span>
+                <span>•</span>
+                <span>Responses provided: {questionDetails.filter(q => q.hasResponse).length}</span>
+                <span>•</span>
+                <span>Completion: {Math.round((questionDetails.filter(q => q.hasResponse).length / questionDetails.length) * 100)}%</span>
+              </div>
             </div>
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-gray-200 max-h-96 overflow-y-auto">
               {questionDetails.map((question, idx) => (
-                <div key={idx} className="px-6 py-4">
+                <div key={idx} className={`px-6 py-4 ${!question.hasResponse ? 'bg-gray-50' : ''}`}>
                   <div className="flex justify-between items-start">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-medium text-gray-900">{question.text}</h3>
-                      <div className="mt-1 flex items-center space-x-4">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
-                          {question.type}
-                        </span>
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
-                          {question.section}
-                        </span>
+                      <div className="flex items-start space-x-3">
+                        <div className={`flex-shrink-0 w-3 h-3 rounded-full mt-0.5 ${
+                          question.hasResponse ? 'bg-green-500' : 'bg-gray-300'
+                        }`}></div>
+                        <div className="flex-1">
+                          <h3 className={`text-sm font-medium ${question.hasResponse ? 'text-gray-900' : 'text-gray-500'}`}>
+                            {question.text}
+                          </h3>
+                          <div className="mt-1 flex items-center space-x-4">
+                            <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                              question.hasResponse ? 'bg-gray-100 text-gray-800' : 'bg-gray-200 text-gray-600'
+                            }`}>
+                              {question.type}
+                            </span>
+                            <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                              question.hasResponse ? 'bg-blue-100 text-blue-800' : 'bg-blue-50 text-blue-600'
+                            }`}>
+                              {question.section}
+                            </span>
+                            <span className="text-xs text-gray-400">ID: {question.id}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      <div className="text-sm text-gray-900 font-medium">
-                        {formatResponseValue(question.response, question.type)}
+                      <div className={`text-sm font-medium ${
+                        question.hasResponse ? 'text-gray-900' : 'text-gray-400'
+                      }`}>
+                        {question.hasResponse ? formatResponseValue(question.response, question.type) : 'No response'}
                       </div>
                     </div>
                   </div>
