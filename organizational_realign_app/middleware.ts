@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import SubscriptionManager from './lib/subscription-manager';
+import { PricingTier } from './lib/tierConfiguration';
 
 // Import security middleware
 import './middleware/security';
@@ -87,6 +89,7 @@ async function checkTierAccess(request: NextRequest, pathname: string): Promise<
 
     // Check user tier
     const userTier = (token as any)?.tier || 'INDIVIDUAL';
+    const userId = (token as any)?.sub || (token as any)?.id;
     
     if (!requiredTiers.includes(userTier)) {
       // Insufficient tier access
@@ -94,6 +97,30 @@ async function checkTierAccess(request: NextRequest, pathname: string): Promise<
       upgradeUrl.searchParams.set('requiredTier', requiredTiers[0]);
       upgradeUrl.searchParams.set('currentTier', userTier);
       return NextResponse.redirect(upgradeUrl);
+    }
+
+    // For subscription tiers, check subscription status
+    if (userId && (userTier === 'monthly-subscription' || userTier === 'comprehensive-package' || userTier === 'enterprise-transformation')) {
+      try {
+        const subscriptionAccess = await SubscriptionManager.checkSubscriptionAccess(userId, userTier as PricingTier);
+        
+        if (subscriptionAccess.access === 'denied') {
+          const expiredUrl = new URL('/subscription/expired', request.url);
+          expiredUrl.searchParams.set('tier', userTier);
+          expiredUrl.searchParams.set('reason', subscriptionAccess.reason || 'expired');
+          return NextResponse.redirect(expiredUrl);
+        }
+        
+        if (subscriptionAccess.access === 'limited') {
+          // Allow access but show warning banner
+          const response = NextResponse.next();
+          response.headers.set('X-Subscription-Warning', subscriptionAccess.reason || 'grace-period');
+          return response;
+        }
+      } catch (error) {
+        console.error('Subscription check failed, allowing access:', error);
+        // On error, allow access but log the issue
+      }
     }
 
     return null; // Access granted

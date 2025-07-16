@@ -19,20 +19,22 @@ export interface TierConfiguration {
     algorithms: string[];
     reportPages: number;
     followUpSupport: string;
-  };
-  features: {
-    uploadSupport: boolean;
-    dashboardRefresh: boolean;
-    customReporting: boolean;
-    powerBIEmbedded: boolean;
-    apiConnectors: boolean;
-    onSiteFacilitation: boolean;
-    progressAudits: boolean;
-    orgChartGenerator: boolean;
-    scenarioBuilder: boolean;
-    monteCarloSimulation: boolean;
-    realTimeCollaboration: boolean;
-  };
+  };    features: {
+      uploadSupport: boolean;
+      dashboardRefresh: boolean;
+      customReporting: boolean;
+      powerBIEmbedded: boolean;
+      apiConnectors: boolean;
+      onSiteFacilitation: boolean;
+      progressAudits: boolean;
+      orgChartGenerator: boolean;
+      scenarioBuilder: boolean;
+      monteCarloSimulation: boolean;
+      realTimeCollaboration: boolean;
+      aiOpportunityAssessment: boolean;
+      aiReadinessScore: boolean;
+      automationRecommendations: boolean;
+    };
   guardrails: {
     maxAssessments?: number;
     maxUsers?: number;
@@ -47,20 +49,30 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
     price: 4995,
     targetCustomer: 'Single-campus college, small hospital, department pilot',
     coreDeliverables: [
-      '100-item survey',
-      'Secure file upload',
+      '100+ comprehensive assessment questions (Likert, numeric, text, upload)',
+      'Secure file upload capability',
       'One-click interactive org chart generator',
-      '12-page PDF brief',
-      'Scenario cost comparison',
-      'OCI / HOCI / JCI scores',
-      '30-min Q&A call'
+      '15-page comprehensive PDF analysis',
+      'AI opportunity identification and readiness scoring',
+      'Basic automation recommendations',
+      'Scenario cost comparison with ROI projections',
+      'DSCH / CRF / LEI algorithm analysis',
+      '45-min strategy consultation call'
     ],
     assessmentScope: {
-      questionCount: 100,
-      sections: ['Governance & Leadership', 'Academic Programs & Curriculum', 'Finance, Budget & Procurement', 'Human Resources & Talent Management'],
-      algorithms: ['OCI', 'HOCI', 'JCI'],
-      reportPages: 12,
-      followUpSupport: '30-min Q&A call'
+      questionCount: 105, // 100 core + 5 contextual questions minimum
+      sections: [
+        'Governance & Leadership', 
+        'Administrative Processes & Communication',
+        'Structure, Capacity & Performance',
+        'Professional Development & Support',
+        'Technology & Digital Infrastructure',
+        'AI & Automation Opportunities',
+        'Organization-Specific Operations (Academic/Clinical/Program/Business/Public Service)'
+      ],
+      algorithms: ['DSCH', 'CRF', 'LEI', 'OREA'],
+      reportPages: 15,
+      followUpSupport: '45-min strategy consultation'
     },
     features: {
       uploadSupport: true,
@@ -73,7 +85,10 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       orgChartGenerator: true,
       scenarioBuilder: false,
       monteCarloSimulation: false,
-      realTimeCollaboration: false
+      realTimeCollaboration: false,
+      aiOpportunityAssessment: true,
+      aiReadinessScore: true,
+      automationRecommendations: true
     },
     guardrails: {
       maxAssessments: 1,
@@ -90,6 +105,8 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       'Unlimited assessments per month',
       'One-click org chart with advanced analytics',
       'Dashboard refresh (CSV exports)',
+      'Enhanced AI opportunity analysis with departmental breakdown',
+      'Automation ROI modeling and priority scoring',
       'Multi-scenario cost modeling',
       '60-min office-hours call / mo'
     ],
@@ -111,7 +128,10 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       orgChartGenerator: true,
       scenarioBuilder: false,
       monteCarloSimulation: false,
-      realTimeCollaboration: false
+      realTimeCollaboration: false,
+      aiOpportunityAssessment: true,
+      aiReadinessScore: true,
+      automationRecommendations: true
     },
     guardrails: {
       maxUsers: 10,
@@ -128,6 +148,9 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       'Everything in Monthly, plus',
       'One-click org chart with scenario modeling',
       '25–30 page PDF w/ AI narrative',
+      'Comprehensive AI transformation roadmap',
+      'Process automation feasibility analysis',
+      'AI readiness maturity model assessment',
       '90-min strategy session',
       'Cost-saving ranges (static model)',
       'Advanced scenario builder'
@@ -150,7 +173,10 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       orgChartGenerator: true,
       scenarioBuilder: true, // Add-on available
       monteCarloSimulation: false,
-      realTimeCollaboration: false
+      realTimeCollaboration: false,
+      aiOpportunityAssessment: true,
+      aiReadinessScore: true,
+      automationRecommendations: true
     },
     guardrails: {
       maxUsers: 25,
@@ -169,6 +195,9 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       'Unlimited scenario builder',
       'Power BI embedded live dashboard',
       'API & flat-file connectors',
+      'Advanced AI transformation strategy with predictive modeling',
+      'Real-time automation opportunity detection',
+      'AI-powered workforce planning and optimization',
       'On-site or virtual facilitation day',
       'Quarterly progress audits (4)'
     ],
@@ -190,7 +219,10 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       orgChartGenerator: true,
       scenarioBuilder: true,
       monteCarloSimulation: true,
-      realTimeCollaboration: true
+      realTimeCollaboration: true,
+      aiOpportunityAssessment: true,
+      aiReadinessScore: true,
+      automationRecommendations: true
     },
     guardrails: {
       dataRetentionMonths: 60

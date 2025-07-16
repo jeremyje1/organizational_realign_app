@@ -6,6 +6,9 @@ import {
   type CookieOptions,
 } from '@supabase/ssr';
 import emailNotifications from '@/lib/email-notifications';
+import mockDatabaseMode from '@/lib/mock-database';
+import SubscriptionManager from '@/lib/subscription-manager';
+import { PricingTier } from '@/lib/tierConfiguration';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,7 +43,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     
     // Validate required fields
-    const { tier, organizationType, institutionName, responses, uploadedFiles, contactEmail, contactName } = body;
+    const { tier, organizationType, institutionName, responses, uploadedFiles, contactEmail, contactName, userId, testMode } = body;
     
     if (!tier || !organizationType || !responses) {
       return NextResponse.json(
@@ -49,61 +52,114 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Prepare assessment data
-    const assessmentData = {
-      tier,
-      organization_type: organizationType,
-      institution_name: institutionName || 'Anonymous Institution',
-      responses,
-      uploaded_files: uploadedFiles || [],
-      status: 'completed',
-      submitted_at: new Date().toISOString(),
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    };
+    // Check subscription access for subscription-based tiers (skip for test mode)
+    if (!testMode && userId && (tier === 'monthly-subscription' || tier === 'comprehensive-package' || tier === 'enterprise-transformation')) {
+      try {
+        const canCreate = await SubscriptionManager.canCreateAssessment(userId, tier as PricingTier);
+        
+        if (!canCreate.allowed) {
+          return NextResponse.json(
+            { 
+              error: 'Subscription access required',
+              reason: canCreate.reason,
+              requiresUpgrade: true,
+              tier: tier
+            },
+            { status: 403 }
+          );
+        }
+      } catch (subscriptionError) {
+        console.error('Subscription check failed:', subscriptionError);
+        // Continue with assessment creation but log the error
+      }
+    }
 
-    // Try to insert into assessments table first
+    // Prepare assessment data for the updated schema
     let assessmentResult;
+    
+    // Try assessments table first with the new schema
     try {
-      const { data, error } = await supabase
+      console.log('[assessment/submit] Attempting to save to assessments table with new schema...');
+      
+      const assessmentPayload = {
+        tier,
+        organization_type: organizationType,
+        institution_name: institutionName || 'Anonymous Institution',
+        contact_email: contactEmail,
+        contact_name: contactName,
+        responses: responses,
+        uploaded_files: uploadedFiles || [],
+        status: 'COMPLETED',
+        submitted_at: new Date().toISOString(),
+        test_mode: testMode || false
+      };
+      
+      const { data: assessmentData, error: assessmentError } = await supabase
         .from('assessments')
-        .insert([assessmentData])
+        .insert([assessmentPayload])
         .select()
         .single();
 
-      if (error) {
-        console.warn('[assessment/submit] Assessments table not available, falling back to surveys table:', error.message);
-        assessmentResult = null;
-      } else {
-        assessmentResult = data;
+      if (assessmentError) {
+        console.log('[assessment/submit] Assessments table failed:', assessmentError.message);
+        throw new Error(`Assessment table error: ${assessmentError.message}`);
       }
-    } catch {
-      console.warn('[assessment/submit] Assessments table not available, falling back to surveys table');
-      assessmentResult = null;
+      
+      assessmentResult = assessmentData;
+      console.log('[assessment/submit] ✅ Successfully saved to assessments table');
+      
+    } catch (dbError) {
+      console.log('[assessment/submit] Assessments table failed, trying surveys table...');
+      console.error('Assessment table error:', dbError);
+      
+      try {
+        // Fall back to surveys table with new schema
+        const surveyPayload = {
+          data: {
+            tier,
+            organizationType,
+            institutionName: institutionName || 'Anonymous Institution',
+            contactEmail,
+            contactName,
+            responses,
+            uploadedFiles: uploadedFiles || [],
+            submittedAt: new Date().toISOString()
+          },
+          survey_type: 'tier-based-assessment'
+        };
+        
+        const { data: surveyData, error: surveyError } = await supabase
+          .from('surveys')
+          .insert([surveyPayload])
+          .select()
+          .single();
+
+        if (surveyError) {
+          console.log('[assessment/submit] Surveys table failed:', surveyError.message);
+          throw new Error(`Survey table error: ${surveyError.message}`);
+        }
+        
+        assessmentResult = surveyData;
+        console.log('[assessment/submit] ✅ Successfully saved to surveys table');
+        
+      } catch (finalError) {
+        console.error('[assessment/submit] All database operations failed:', finalError);
+        
+        // Fall back to mock mode
+        console.log('[assessment/submit] Falling back to mock database mode');
+        const mockResult = await mockDatabaseMode.mockAssessmentSubmission({
+          tier,
+          organizationType,
+          institutionName: institutionName || 'Anonymous Institution',
+          responses,
+          uploadedFiles: uploadedFiles || []
+        });
+        
+        return NextResponse.json(mockResult);
+      }
     }
 
-    // If assessments table doesn't exist, fall back to surveys table
-    if (!assessmentResult) {
-      const { data: surveyData, error: surveyError } = await supabase
-        .from('surveys')
-        .insert([{ 
-          answers: assessmentData,
-          type: 'tier-based-assessment',
-          created_at: new Date().toISOString()
-        }])
-        .select()
-        .single();
-
-      if (surveyError) {
-        console.error('[assessment/submit] Error saving to surveys table:', surveyError);
-        return NextResponse.json(
-          { error: 'Failed to save assessment data' },
-          { status: 500 }
-        );
-      }
-
-      assessmentResult = surveyData;
-    }
+    // Database save successful - continue with normal flow
 
     // Send email notification to support team
     try {

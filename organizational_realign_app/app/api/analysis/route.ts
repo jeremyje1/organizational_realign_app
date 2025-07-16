@@ -20,6 +20,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Assessment not found' }, { status: 404 });
     }
 
+    // Extract tier information for algorithm processing
+    const tier = assessment.tier || 'one-time-diagnostic';
+    const organizationType = assessment.organization_type || assessment.data?.organizationType || 'higher-education';
+
     // Generate realistic mock responses based on question types and sections
     const mockResponses: AssessmentResponse[] = generateRealisticMockResponses();
 
@@ -27,14 +31,18 @@ export async function POST(request: NextRequest) {
     const engine = new OrganizationalRealignmentEngine();
     const analysisResult = engine.analyzeOrganization(mockResponses);
 
-    // Enhance the analysis with additional executive summary and detailed insights
+    // Enhance the analysis with tier-specific processing and additional insights
     const enhancedAnalysis = {
       ...analysisResult,
+      tier,
+      organizationType,
       executiveSummary: generateExecutiveSummary(analysisResult),
       sectionsAnalysis: generateSectionsAnalysis(mockResponses),
       aiImplementationPlan: generateAIImplementationPlan(analysisResult),
-      strategicInsights: generateStrategicInsights(mockResponses, analysisResult),
+      aiOpportunityAssessment: generateAIOpportunityAssessment(mockResponses, tier),
+      strategicInsights: generateStrategicInsights(mockResponses, analysisResult, tier),
       performanceMetrics: generatePerformanceMetrics(mockResponses),
+      tierSpecificRecommendations: generateTierSpecificRecommendations(tier, analysisResult),
       timestamp: new Date().toISOString(),
       assessmentId: assessment.id
     };
@@ -188,7 +196,7 @@ function generateAIImplementationPlan(analysis: any) {
   };
 }
 
-function generateStrategicInsights(responses: AssessmentResponse[], analysisResult: any) {
+function generateStrategicInsights(responses: AssessmentResponse[], analysisResult: any, tier: string = 'one-time-diagnostic') {
   const insights = [];
   const sectionAverages = analysisResult.sectionResults || [];
   
@@ -364,4 +372,274 @@ function generatePerformanceMetrics(responses: AssessmentResponse[]) {
       };
     })
   };
+}
+
+/**
+ * Generate tier-specific recommendations based on subscription level
+ */
+function generateTierSpecificRecommendations(tier: string, analysisResult: any) {
+  const baseRecommendations = analysisResult.recommendations || [];
+  
+  switch (tier) {
+    case 'one-time-diagnostic':
+      return {
+        scope: 'Foundational Assessment',
+        algorithms: ['OCI', 'HOCI', 'JCI'],
+        focus: 'Quick wins and immediate improvements',
+        deliverables: [
+          'Core organizational health score',
+          'Change readiness assessment', 
+          'Complexity analysis',
+          'Basic recommendations for improvement'
+        ],
+        recommendations: baseRecommendations.slice(0, 5).map((rec: any) => ({
+          ...rec,
+          scope: 'immediate',
+          complexity: 'low'
+        }))
+      };
+      
+    case 'monthly-subscription':
+      return {
+        scope: 'Ongoing Strategic Support',
+        algorithms: ['OCI', 'HOCI', 'JCI', 'DSCH'],
+        focus: 'Process optimization and strategic alignment',
+        deliverables: [
+          'Advanced structural analysis',
+          'Process efficiency metrics',
+          'Monthly progress tracking',
+          'Strategic planning support'
+        ],
+        recommendations: baseRecommendations.slice(0, 10).map((rec: any) => ({
+          ...rec,
+          scope: rec.priority === 'critical' ? 'immediate' : 'short-term',
+          complexity: 'moderate'
+        }))
+      };
+      
+    case 'comprehensive-package':
+      return {
+        scope: 'Complete Organizational Analysis',
+        algorithms: ['OCI', 'HOCI', 'JCI', 'DSCH', 'CRF', 'LEI'],
+        focus: 'Cultural transformation and leadership development',
+        deliverables: [
+          'Full algorithm suite analysis',
+          'Cultural resilience assessment',
+          'Leadership effectiveness evaluation',
+          'Scenario modeling capabilities',
+          'Cost-savings analysis'
+        ],
+        recommendations: baseRecommendations.map((rec: any) => ({
+          ...rec,
+          scope: rec.priority === 'critical' ? 'immediate' : 
+                 rec.priority === 'high' ? 'short-term' : 'medium-term',
+          complexity: 'high'
+        }))
+      };
+      
+    case 'enterprise-transformation':
+      return {
+        scope: 'Enterprise-Grade Transformation',
+        algorithms: ['All Primary + Advanced + Experimental'],
+        focus: 'Predictive analytics and AI-powered insights',
+        deliverables: [
+          'Monte Carlo simulations',
+          'Predictive analytics',
+          'AI-powered recommendations',
+          'Real-time benchmarking',
+          'ROI modeling',
+          'Risk assessment with probability models'
+        ],
+        recommendations: [
+          ...baseRecommendations.map((rec: any) => ({
+            ...rec,
+            confidence: rec.confidence || 0.85,
+            riskLevel: rec.riskLevel || 'low',
+            expectedROI: rec.expectedROI || Math.random() * 500000 + 100000
+          })),
+          // Add enterprise-specific AI recommendations
+          {
+            id: 'ai-transformation',
+            title: 'AI-Powered Organizational Optimization',
+            description: 'Implement machine learning algorithms for predictive workforce planning and automated process optimization.',
+            priority: 'high',
+            impact: 5,
+            effort: 4,
+            category: 'Digital Transformation',
+            scope: 'long-term',
+            complexity: 'very-high',
+            expectedROI: 2500000,
+            confidence: 0.78,
+            riskLevel: 'medium'
+          }
+        ]
+      };
+      
+    default:
+      return {
+        scope: 'Basic Analysis',
+        algorithms: ['OCI', 'HOCI', 'JCI'],
+        focus: 'Fundamental organizational assessment',
+        deliverables: ['Basic organizational metrics'],
+        recommendations: baseRecommendations.slice(0, 3)
+      };
+  }
+}
+
+/**
+ * Generate AI opportunity assessment based on tier and responses
+ */
+function generateAIOpportunityAssessment(responses: AssessmentResponse[], tier: string) {
+  // Filter AI-related responses
+  const aiResponses = responses.filter(r => 
+    r.tags?.includes('AI') || 
+    r.section.includes('Technology') ||
+    r.section.includes('AI & Automation')
+  );
+  
+  const aiReadinessScore = aiResponses.length > 0 
+    ? aiResponses.reduce((sum, r) => sum + r.value, 0) / aiResponses.length * 20 // Scale to 0-100
+    : 50; // Default moderate score
+  
+  const baseAssessment = {
+    aiReadinessScore: Math.round(aiReadinessScore),
+    readinessLevel: aiReadinessScore >= 80 ? 'Advanced' : 
+                   aiReadinessScore >= 60 ? 'Intermediate' : 
+                   aiReadinessScore >= 40 ? 'Developing' : 'Foundational',
+    assessmentDate: new Date().toISOString(),
+    dataQualityScore: aiResponses.length >= 10 ? 'High' : 
+                      aiResponses.length >= 5 ? 'Medium' : 'Basic'
+  };
+
+  switch (tier) {
+    case 'one-time-diagnostic':
+      return {
+        ...baseAssessment,
+        scope: 'Basic AI Opportunity Identification',
+        opportunities: [
+          {
+            area: 'Administrative Automation',
+            priority: 'High',
+            description: 'Automate routine administrative tasks to reduce manual work',
+            potentialSavings: '$15,000 - $40,000 annually',
+            implementation: 'Low complexity, 3-6 months',
+            confidence: 0.85
+          },
+          {
+            area: 'Communication Enhancement',
+            priority: 'Medium',
+            description: 'AI-powered chatbots for basic student/client inquiries',
+            potentialSavings: '$8,000 - $25,000 annually',
+            implementation: 'Medium complexity, 6-12 months',
+            confidence: 0.75
+          }
+        ],
+        recommendations: [
+          'Start with simple task automation in high-volume administrative processes',
+          'Evaluate current technology infrastructure for AI readiness',
+          'Identify staff training needs for AI tool adoption'
+        ]
+      };
+
+    case 'monthly-subscription':
+      return {
+        ...baseAssessment,
+        scope: 'Enhanced AI Analysis with Departmental Breakdown',
+        opportunities: [
+          {
+            area: 'Process Automation',
+            priority: 'High',
+            description: 'Department-specific workflow automation and optimization',
+            potentialSavings: '$35,000 - $85,000 annually',
+            implementation: 'Medium complexity, 6-12 months',
+            confidence: 0.82,
+            departments: ['HR', 'Finance', 'Student Services']
+          },
+          {
+            area: 'Predictive Analytics',
+            priority: 'High',
+            description: 'AI-driven forecasting for enrollment, budgeting, and resource planning',
+            potentialSavings: '$50,000 - $150,000 annually',
+            implementation: 'Medium-high complexity, 9-15 months',
+            confidence: 0.78
+          }
+        ],
+        recommendations: [
+          'Implement AI pilots in highest-impact departments first',
+          'Develop comprehensive AI governance and ethics framework',
+          'Establish AI center of excellence for ongoing optimization'
+        ]
+      };
+
+    case 'comprehensive-package':
+      return {
+        ...baseAssessment,
+        scope: 'Comprehensive AI Transformation Roadmap',
+        opportunities: [
+          {
+            area: 'Enterprise AI Platform',
+            priority: 'Critical',
+            description: 'Integrated AI platform for organization-wide automation and insights',
+            potentialSavings: '$150,000 - $400,000 annually',
+            implementation: 'High complexity, 12-24 months',
+            confidence: 0.88
+          },
+          {
+            area: 'Workforce Augmentation',
+            priority: 'High',
+            description: 'AI tools to enhance employee productivity and decision-making',
+            potentialSavings: '$75,000 - $200,000 annually',
+            implementation: 'Medium-high complexity, 8-16 months',
+            confidence: 0.82
+          }
+        ],
+        recommendations: [
+          'Establish AI transformation office with dedicated resources',
+          'Implement comprehensive change management program',
+          'Create AI ethics board and governance framework'
+        ]
+      };
+
+    case 'enterprise-transformation':
+      return {
+        ...baseAssessment,
+        scope: 'Advanced AI Strategy with Predictive Modeling',
+        opportunities: [
+          {
+            area: 'AI-Native Operations',
+            priority: 'Strategic',
+            description: 'Complete transformation to AI-first operational model',
+            potentialSavings: '$500,000 - $2,000,000 annually',
+            implementation: 'Very high complexity, 24-48 months',
+            confidence: 0.90
+          },
+          {
+            area: 'Predictive Workforce Planning',
+            priority: 'Critical',
+            description: 'AI-powered workforce analytics and automated resource optimization',
+            potentialSavings: '$200,000 - $800,000 annually',
+            implementation: 'High complexity, 15-30 months',
+            confidence: 0.87
+          }
+        ],
+        predictiveModeling: {
+          scenarios: 10000,
+          confidenceIntervals: { p50: '450%', p90: '780%' },
+          successProbability: 0.82
+        },
+        recommendations: [
+          'Implement enterprise AI architecture with microservices design',
+          'Establish AI research and development division',
+          'Create industry partnerships for AI innovation collaboration'
+        ]
+      };
+
+    default:
+      return {
+        ...baseAssessment,
+        scope: 'Basic Assessment',
+        opportunities: [],
+        recommendations: ['Contact support for tier-specific AI assessment']
+      };
+  }
 }

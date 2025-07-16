@@ -25,10 +25,12 @@ import {
 } from '@/lib/tierConfiguration';
 import { 
   getQuestionsForTier, 
-  validateResponses, 
+  validateAssessmentResponses as validateResponses,
+  getAIOpportunityQuestions as _getAIOpportunityQuestions,
+  getAIReadinessAssessment as _getAIReadinessAssessment,
   type Question, 
   type OrganizationType 
-} from '@/lib/enhancedQuestionBank';
+} from '@/lib/enhancedQuestionBankV3';
 
 interface AssessmentState {
   currentSection: number;
@@ -267,6 +269,28 @@ function TierBasedAssessmentContent() {
         <p className="text-xs text-gray-500">
           Range: {question.validationRules.min} - {question.validationRules.max}
         </p>
+      )}
+    </div>
+  );
+
+  // Text Input Component
+  const TextInput = ({ question, value }: { question: Question; value?: string }) => (
+    <div className="space-y-2">
+      <textarea
+        value={value || ''}
+        onChange={(e) => handleResponse(question.id, e.target.value)}
+        rows={4}
+        maxLength={question.validationRules?.maxLength}
+        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+        placeholder="Enter your response here..."
+      />
+      {question.validationRules?.maxLength && (
+        <p className="text-xs text-gray-500">
+          {(value || '').length} / {question.validationRules.maxLength} characters
+        </p>
+      )}
+      {question.helpText && (
+        <p className="text-xs text-gray-600">{question.helpText}</p>
       )}
     </div>
   );
@@ -532,6 +556,12 @@ function TierBasedAssessmentContent() {
               )}
               {question.type === 'numeric' && (
                 <NumericInput 
+                  question={question} 
+                  value={assessmentState.responses[question.id]} 
+                />
+              )}
+              {question.type === 'text' && (
+                <TextInput 
                   question={question} 
                   value={assessmentState.responses[question.id]} 
                 />
