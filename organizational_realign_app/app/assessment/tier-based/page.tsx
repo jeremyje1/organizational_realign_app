@@ -189,31 +189,31 @@ function TierBasedAssessmentContent() {
     ];
 
     return (
-      <div className="space-y-3">
+      <div className="space-y-3" role="radiogroup" aria-labelledby={`question-${question.id}`}>
         {options.map((option) => (
           <label 
             key={option.value} 
-            className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+            className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all duration-200 ${
+              value === option.value 
+                ? 'border-blue-500 bg-blue-50 shadow-sm' 
+                : 'border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+            }`}
           >
             <input
               type="radio"
+              name={`likert-${question.id}`}
               value={option.value}
               checked={value === option.value}
-              onChange={() => handleResponse(question.id, option.value)}
-              className="sr-only"
+              onChange={(e) => handleResponse(question.id, parseInt(e.target.value))}
+              className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 focus:ring-2"
             />
-            <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
-              value === option.value ? 'bg-blue-500 border-blue-500' : 'border-gray-300'
-            }`}>
-              {value === option.value && (
-                <div className="w-full h-full rounded-full bg-white scale-50"></div>
-              )}
+            <div className="ml-3 flex-1">
+              <span className={`text-sm font-medium px-2 py-1 rounded ${
+                value === option.value ? option.color : 'text-gray-700'
+              }`}>
+                {option.label}
+              </span>
             </div>
-            <span className={`text-sm px-2 py-1 rounded ${
-              value === option.value ? option.color : 'text-gray-700'
-            }`}>
-              {option.label}
-            </span>
           </label>
         ))}
       </div>
@@ -416,7 +416,7 @@ function TierBasedAssessmentContent() {
         {currentSectionQuestions.map((question) => (
           <Card key={question.id}>
             <CardHeader>
-              <CardTitle className="text-lg flex items-start justify-between">
+              <CardTitle className="text-lg flex items-start justify-between" id={`question-${question.id}`}>
                 <span className="flex-1">{question.prompt}</span>
                 <div className="flex items-center space-x-2 ml-4">
                   {question.required && (
