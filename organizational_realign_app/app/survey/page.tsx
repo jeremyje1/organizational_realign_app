@@ -32,7 +32,7 @@ export default function SurveyPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-nps-light">
+    <div className="min-h-screen">
       <PageContainer>
         {/* Logo */}
         <div className="flex justify-center mb-8">

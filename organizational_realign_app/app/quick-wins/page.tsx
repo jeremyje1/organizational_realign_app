@@ -36,7 +36,7 @@ export default function QuickWinsLandingPage() {
 
   if (showAssessment) {
     return (
-      <div className="min-h-screen bg-nps-light">
+      <div className="min-h-screen">
         <PageContainer>
           <QuickWinsAssessment 
             onComplete={handleAssessmentComplete}
@@ -48,8 +48,15 @@ export default function QuickWinsLandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-nps-light">
-      <PageContainer>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Floating background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-nps-blue-100 rounded-full opacity-20 animate-float" style={{ animationDelay: '0s' }} />
+        <div className="absolute top-40 right-20 w-96 h-96 bg-nps-blue-200 rounded-full opacity-15 animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-nps-blue-150 rounded-full opacity-10 animate-float" style={{ animationDelay: '4s' }} />
+      </div>
+      
+      <PageContainer className="relative z-10">
         {/* Hero Section */}
         <PageHero
           title="Free Quick Wins Assessment"

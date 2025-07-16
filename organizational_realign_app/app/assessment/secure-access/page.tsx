@@ -40,7 +40,7 @@ export default function SecureAssessmentAccess() {
   };
 
   return (
-    <div className="min-h-screen bg-nps-light flex items-center justify-center py-12">
+    <div className="min-h-screen flex items-center justify-center py-12">
       <PageContainer className="max-w-md">
         {/* Logo */}
         <div className="flex justify-center mb-8">

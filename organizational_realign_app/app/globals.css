@@ -75,11 +75,27 @@
 
 body {
   font-family: "Inter", sans-serif;
-  background-color: var(--nps-light);
+  background: linear-gradient(135deg, #F6F8FC 0%, #E0EFFF 30%, #F6F8FC 100%);
+  background-attachment: fixed;
+  background-size: 400% 400%;
+  animation: gradientShift 10s ease infinite;
   color: hsl(var(--foreground));
+  min-height: 100vh;
 }
 
 /* Custom animations */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 @keyframes shimmer {
   0% {
     background-position: -200px 0;
@@ -91,10 +107,13 @@ body {
 
 @keyframes float {
   0%, 100% {
-    transform: translateY(0px);
+    transform: translateY(0px) scale(1);
   }
-  50% {
-    transform: translateY(-10px);
+  33% {
+    transform: translateY(-20px) scale(1.05);
+  }
+  66% {
+    transform: translateY(-10px) scale(0.95);
   }
 }
 
@@ -232,6 +251,17 @@ body {
 /* Focus states for accessibility */
 .focus-ring {
   @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+/* Utility classes */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  background-size: 200px 100%;
+  animation: shimmer 2s infinite;
 }
 
 /* Responsive utilities */
