@@ -46,6 +46,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
   
+  // Skip redirects for API routes
+  if (pathname.startsWith('/api/')) {
+    return NextResponse.next();
+  }
+  
   // If we're on the main domain and trying to access app-specific paths
   if (hostname === 'northpathstrategies.org' || hostname === 'www.northpathstrategies.org') {
     // Check if the path should redirect to app subdomain
@@ -54,8 +59,10 @@ export async function middleware(request: NextRequest) {
     );
     
     if (shouldRedirectToApp) {
+      // Use environment variable or fallback to app subdomain
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://app.northpathstrategies.org';
       return NextResponse.redirect(
-        new URL(`https://app.northpathstrategies.org${pathname}${request.nextUrl.search}`)
+        new URL(`${appUrl}${pathname}${request.nextUrl.search}`)
       );
     }
   }

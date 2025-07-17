@@ -113,7 +113,10 @@ export function generateStripeCheckoutUrl(
   cancelUrl?: string
 ): string {
   const mapping = getStripeMappingForTier(tier);
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://app.northpathstrategies.org';
+  // Get base URL from environment or use current request origin as fallback
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
+                  process.env.NEXT_PUBLIC_APP_URL || 
+                  (typeof window !== 'undefined' ? window.location.origin : 'https://app.northpathstrategies.org');
   
   const params = new URLSearchParams({
     price_id: mapping.stripePriceId,

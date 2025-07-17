@@ -53,7 +53,7 @@ let socketServer: SocketServer;
 export function initSocketServer(server: HTTPServer) {
   const io = new Server(server, {
     cors: {
-      origin: process.env.NEXT_PUBLIC_APP_URL || 'https://app.northpathstrategies.org',
+      origin: process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL || 'https://app.northpathstrategies.org',
       methods: ['GET', 'POST'],
       credentials: true,
     },

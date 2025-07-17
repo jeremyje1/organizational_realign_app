@@ -8,7 +8,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useMemo, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -44,6 +44,147 @@ interface AssessmentState {
   isComplete: boolean;
   validationErrors: string[];
 }
+
+// Memoized Input Components to prevent unnecessary re-renders
+const LikertInput = React.memo(({ question, value, onResponse }: { 
+  question: Question; 
+  value?: number; 
+  onResponse: (questionId: string, value: any) => void;
+}) => {
+  const options = [
+    { value: 1, label: 'Strongly Disagree', color: 'bg-red-100 text-red-800' },
+    { value: 2, label: 'Disagree', color: 'bg-orange-100 text-orange-800' },
+    { value: 3, label: 'Neutral', color: 'bg-gray-100 text-gray-800' },
+    { value: 4, label: 'Agree', color: 'bg-blue-100 text-blue-800' },
+    { value: 5, label: 'Strongly Agree', color: 'bg-green-100 text-green-800' }
+  ];
+
+  return (
+    <div className="space-y-3" role="radiogroup" aria-labelledby={`question-${question.id}`}>
+      {options.map((option) => (
+        <label 
+          key={option.value} 
+          className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all duration-200 ${
+            value === option.value 
+              ? 'border-blue-500 bg-blue-50 shadow-sm' 
+              : 'border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+          }`}
+        >
+          <input
+            type="radio"
+            name={`likert-${question.id}`}
+            value={option.value}
+            checked={value === option.value}
+            onChange={(e) => onResponse(question.id, parseInt(e.target.value))}
+            className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 focus:ring-2"
+          />
+          <div className="ml-3 flex-1">
+            <span className={`text-sm font-medium px-2 py-1 rounded ${
+              value === option.value ? option.color : 'text-gray-700'
+            }`}>
+              {option.label}
+            </span>
+          </div>
+        </label>
+      ))}
+    </div>
+  );
+});
+LikertInput.displayName = 'LikertInput';
+
+const NumericInput = React.memo(({ question, value, onResponse }: { 
+  question: Question; 
+  value?: number; 
+  onResponse: (questionId: string, value: any) => void;
+}) => (
+  <div className="space-y-2">
+    <input
+      type="number"
+      value={value || ''}
+      onChange={(e) => onResponse(question.id, parseInt(e.target.value))}
+      min={question.validationRules?.min}
+      max={question.validationRules?.max}
+      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      placeholder="Enter numeric value"
+    />
+    {question.validationRules && (
+      <p className="text-xs text-gray-500">
+        Range: {question.validationRules.min} - {question.validationRules.max}
+      </p>
+    )}
+  </div>
+));
+NumericInput.displayName = 'NumericInput';
+
+const TextInput = React.memo(({ question, value, onResponse }: { 
+  question: Question; 
+  value?: string; 
+  onResponse: (questionId: string, value: any) => void;
+}) => (
+  <div className="space-y-2">
+    <textarea
+      value={value || ''}
+      onChange={(e) => onResponse(question.id, e.target.value)}
+      rows={4}
+      maxLength={question.validationRules?.maxLength}
+      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+      placeholder="Enter your response here..."
+    />
+    {question.validationRules?.maxLength && (
+      <p className="text-xs text-gray-500">
+        {(value || '').length} / {question.validationRules.maxLength} characters
+      </p>
+    )}
+    {question.helpText && (
+      <p className="text-xs text-gray-600">{question.helpText}</p>
+    )}
+  </div>
+));
+TextInput.displayName = 'TextInput';
+
+const FileUpload = React.memo(({ 
+  question, 
+  onFileUpload, 
+  uploadedFiles 
+}: { 
+  question: Question;
+  onFileUpload: (files: File[]) => void;
+  uploadedFiles: File[];
+}) => (
+  <div className="space-y-4">
+    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+      <div className="h-8 w-8 text-gray-400 mx-auto mb-2 flex items-center justify-center text-2xl">📁</div>
+      <p className="text-gray-600 mb-2">Upload organizational charts, job descriptions, or budget documents</p>
+      <input
+        type="file"
+        multiple
+        accept=".pdf,.doc,.docx,.xls,.xlsx,.csv"
+        onChange={(e) => onFileUpload(Array.from(e.target.files || []))}
+        className="hidden"
+        id={`upload-${question.id}`}
+      />
+      <label 
+        htmlFor={`upload-${question.id}`}
+        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer"
+      >
+        Choose Files
+      </label>
+    </div>
+    
+    {uploadedFiles.length > 0 && (
+      <div className="space-y-2">
+        <p className="text-sm font-medium text-gray-700">Uploaded Files:</p>
+        {uploadedFiles.map((file, index) => (
+          <div key={index} className="flex items-center text-sm text-gray-600">
+            <span className="text-green-500 mr-2">✓</span>
+            {file.name}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+));
+FileUpload.displayName = 'FileUpload';
 
 function TierBasedAssessmentContent() {
   const searchParams = useSearchParams();
@@ -104,7 +245,7 @@ function TierBasedAssessmentContent() {
     }
   }, [assessmentState.tier]);
 
-  const handleResponse = (questionId: string, value: any) => {
+  const handleResponse = useCallback((questionId: string, value: any) => {
     setAssessmentState(prev => ({
       ...prev,
       responses: {
@@ -112,7 +253,7 @@ function TierBasedAssessmentContent() {
         [questionId]: value
       }
     }));
-  };
+  }, []);
 
   const handleFileUpload = (files: File[]) => {
     if (!hasFeatureAccess(assessmentState.tier, 'uploadSupport')) {
@@ -210,126 +351,6 @@ function TierBasedAssessmentContent() {
       setLoading(false);
     }
   };
-
-  // Likert Scale Component
-  const LikertInput = ({ question, value }: { question: Question; value?: number }) => {
-    const options = [
-      { value: 1, label: 'Strongly Disagree', color: 'bg-red-100 text-red-800' },
-      { value: 2, label: 'Disagree', color: 'bg-orange-100 text-orange-800' },
-      { value: 3, label: 'Neutral', color: 'bg-gray-100 text-gray-800' },
-      { value: 4, label: 'Agree', color: 'bg-blue-100 text-blue-800' },
-      { value: 5, label: 'Strongly Agree', color: 'bg-green-100 text-green-800' }
-    ];
-
-    return (
-      <div className="space-y-3" role="radiogroup" aria-labelledby={`question-${question.id}`}>
-        {options.map((option) => (
-          <label 
-            key={option.value} 
-            className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all duration-200 ${
-              value === option.value 
-                ? 'border-blue-500 bg-blue-50 shadow-sm' 
-                : 'border-gray-200 hover:bg-gray-50 hover:border-gray-300'
-            }`}
-          >
-            <input
-              type="radio"
-              name={`likert-${question.id}`}
-              value={option.value}
-              checked={value === option.value}
-              onChange={(e) => handleResponse(question.id, parseInt(e.target.value))}
-              className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 focus:ring-2"
-            />
-            <div className="ml-3 flex-1">
-              <span className={`text-sm font-medium px-2 py-1 rounded ${
-                value === option.value ? option.color : 'text-gray-700'
-              }`}>
-                {option.label}
-              </span>
-            </div>
-          </label>
-        ))}
-      </div>
-    );
-  };
-
-  // Numeric Input Component
-  const NumericInput = ({ question, value }: { question: Question; value?: number }) => (
-    <div className="space-y-2">
-      <input
-        type="number"
-        value={value || ''}
-        onChange={(e) => handleResponse(question.id, parseInt(e.target.value))}
-        min={question.validationRules?.min}
-        max={question.validationRules?.max}
-        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="Enter numeric value"
-      />
-      {question.validationRules && (
-        <p className="text-xs text-gray-500">
-          Range: {question.validationRules.min} - {question.validationRules.max}
-        </p>
-      )}
-    </div>
-  );
-
-  // Text Input Component
-  const TextInput = ({ question, value }: { question: Question; value?: string }) => (
-    <div className="space-y-2">
-      <textarea
-        value={value || ''}
-        onChange={(e) => handleResponse(question.id, e.target.value)}
-        rows={4}
-        maxLength={question.validationRules?.maxLength}
-        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
-        placeholder="Enter your response here..."
-      />
-      {question.validationRules?.maxLength && (
-        <p className="text-xs text-gray-500">
-          {(value || '').length} / {question.validationRules.maxLength} characters
-        </p>
-      )}
-      {question.helpText && (
-        <p className="text-xs text-gray-600">{question.helpText}</p>
-      )}
-    </div>
-  );
-
-  // File Upload Component
-  const FileUpload = ({ question }: { question: Question }) => (
-    <div className="space-y-4">
-      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-        <div className="h-8 w-8 text-gray-400 mx-auto mb-2 flex items-center justify-center text-2xl">📁</div>
-        <p className="text-gray-600 mb-2">Upload organizational charts, job descriptions, or budget documents</p>
-        <input
-          type="file"
-          multiple
-          accept=".pdf,.doc,.docx,.xls,.xlsx,.csv"
-          onChange={(e) => handleFileUpload(Array.from(e.target.files || []))}
-          className="hidden"
-          id={`upload-${question.id}`}
-        />
-        <label 
-          htmlFor={`upload-${question.id}`}
-          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer"
-        >
-          Choose Files
-        </label>
-      </div>
-      
-      {assessmentState.uploadedFiles.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-gray-700">Uploaded Files:</p>
-          {assessmentState.uploadedFiles.map((file, index) => (
-            <div key={index} className="flex items-center text-sm text-gray-600">
-              <span className="text-green-500 mr-2">✓</span>
-              {file.name}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
 
   if (assessmentState.isComplete) {
     return (
@@ -551,23 +572,30 @@ function TierBasedAssessmentContent() {
               {question.type === 'likert' && (
                 <LikertInput 
                   question={question} 
-                  value={assessmentState.responses[question.id]} 
+                  value={assessmentState.responses[question.id]}
+                  onResponse={handleResponse}
                 />
               )}
               {question.type === 'numeric' && (
                 <NumericInput 
                   question={question} 
-                  value={assessmentState.responses[question.id]} 
+                  value={assessmentState.responses[question.id]}
+                  onResponse={handleResponse}
                 />
               )}
               {question.type === 'text' && (
                 <TextInput 
                   question={question} 
-                  value={assessmentState.responses[question.id]} 
+                  value={assessmentState.responses[question.id]}
+                  onResponse={handleResponse}
                 />
               )}
               {question.type === 'upload' && (
-                <FileUpload question={question} />
+                <FileUpload 
+                  question={question}
+                  onFileUpload={handleFileUpload}
+                  uploadedFiles={assessmentState.uploadedFiles}
+                />
               )}
             </CardContent>
           </Card>
