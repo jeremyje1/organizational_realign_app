@@ -22,7 +22,7 @@ const testAssessmentSubmit = async () => {
     console.log('Testing assessment submit API...');
     console.log('Test data:', JSON.stringify(testData, null, 2));
 
-    const response = await fetch('https://organizational-realign-9vfuaqlh4-jeremys-projects-73929cad.vercel.app/api/assessment/submit', {
+    const response = await fetch('https://organizational-realign-e9q73nzn6-jeremys-projects-73929cad.vercel.app/api/assessment/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
