@@ -354,6 +354,33 @@ export class AssessmentDB {
     return result[0].changes;
   }
 
+  static async updateAnalysisResults(
+    id: string, 
+    analysisResults: any,
+    aiOpportunityAssessment: any,
+    aiReadinessScore?: number
+  ): Promise<Assessment | null> {
+    const now = new Date();
+    
+    try {
+      await prisma.$executeRaw`
+        UPDATE "public"."assessments" 
+        SET 
+          "analysis_results" = ${JSON.stringify(analysisResults)}::jsonb, 
+          "ai_opportunity_assessment" = ${JSON.stringify(aiOpportunityAssessment)}::jsonb,
+          "ai_readiness_score" = ${aiReadinessScore || null},
+          "status" = 'ANALYZED',
+          "updated_at" = ${now}
+        WHERE "id" = ${id}
+      `;
+
+      return this.findAssessmentById(id);
+    } catch (error) {
+      console.error('Error updating analysis results:', error);
+      return null;
+    }
+  }
+
   static async getAssessment(assessmentId: string): Promise<Assessment | null> {
     try {
       const result = await prisma.$queryRaw<Assessment[]>`
