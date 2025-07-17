@@ -4,13 +4,26 @@
 echo "🔍 Checking SendGrid DNS Records for northpathstrategies.org..."
 echo "================================================"
 
-echo -n "✅ em9819.northpathstrategies.org: "
-RESULT1=$(dig CNAME em9819.northpathstrategies.org +short)
-if [ "$RESULT1" = "u54400918.wl169.sendgrid.net." ]; then
-    echo "✅ CORRECT: $RESULT1"
+# Check both possible mail subdomains
+echo "🔍 Checking possible mail subdomains..."
+echo -n "📧 em4533.northpathstrategies.org: "
+RESULT_EM4533=$(dig CNAME em4533.northpathstrategies.org +short)
+if [ "$RESULT_EM4533" = "u54400918.wl169.sendgrid.net." ]; then
+    echo "✅ CORRECT: $RESULT_EM4533"
 else
-    echo "❌ MISSING/WRONG: '$RESULT1' (should be 'u54400918.wl169.sendgrid.net.')"
+    echo "❌ MISSING/WRONG: '$RESULT_EM4533' (should be 'u54400918.wl169.sendgrid.net.')"
 fi
+
+echo -n "📧 em9819.northpathstrategies.org: "
+RESULT_EM9819=$(dig CNAME em9819.northpathstrategies.org +short)
+if [ "$RESULT_EM9819" = "u54400918.wl169.sendgrid.net." ]; then
+    echo "✅ CORRECT: $RESULT_EM9819"
+else
+    echo "❌ MISSING/WRONG: '$RESULT_EM9819' (should be 'u54400918.wl169.sendgrid.net.')"
+fi
+
+echo ""
+echo "🔍 Checking DKIM records..."
 
 echo -n "✅ s1._domainkey.northpathstrategies.org: "
 RESULT2=$(dig CNAME s1._domainkey.northpathstrategies.org +short)
