@@ -5,6 +5,7 @@
 Use these URLs to test the full assessment experience for each tier and industry:
 
 ### **ONE-TIME DIAGNOSTIC (Basic Tier)**
+
 - Higher Education: http://localhost:3001/assessment/tier-based?tier=one-time-diagnostic&org=higher-education
 - Healthcare: http://localhost:3001/assessment/tier-based?tier=one-time-diagnostic&org=healthcare
 - Nonprofit: http://localhost:3001/assessment/tier-based?tier=one-time-diagnostic&org=nonprofit
@@ -12,6 +13,7 @@ Use these URLs to test the full assessment experience for each tier and industry
 - Government: http://localhost:3001/assessment/tier-based?tier=one-time-diagnostic&org=government
 
 ### **TEAM COLLABORATION (Team Tier)**
+
 - Higher Education: http://localhost:3001/assessment/tier-based?tier=team-collaboration&org=higher-education
 - Healthcare: http://localhost:3001/assessment/tier-based?tier=team-collaboration&org=healthcare
 - Nonprofit: http://localhost:3001/assessment/tier-based?tier=team-collaboration&org=nonprofit
@@ -19,6 +21,7 @@ Use these URLs to test the full assessment experience for each tier and industry
 - Government: http://localhost:3001/assessment/tier-based?tier=team-collaboration&org=government
 
 ### **ENTERPRISE TRANSFORMATION (Enterprise Tier)**
+
 - Higher Education: http://localhost:3001/assessment/tier-based?tier=enterprise-transformation&org=higher-education
 - Healthcare: http://localhost:3001/assessment/tier-based?tier=enterprise-transformation&org=healthcare
 - Nonprofit: http://localhost:3001/assessment/tier-based?tier=enterprise-transformation&org=nonprofit
@@ -30,6 +33,7 @@ Use these URLs to test the full assessment experience for each tier and industry
 For each combination above:
 
 ### Step 1: Start Assessment
+
 1. Click the URL for the tier/industry you want to test
 2. Fill in your organization details:
    - Organization Name: Your actual organization or test name
@@ -38,6 +42,7 @@ For each combination above:
    - Additional context fields as shown
 
 ### Step 2: Complete Survey Questions
+
 - Answer all questions with realistic data relevant to your organization
 - Each tier has different question sets:
   - **Basic**: ~100 questions (core assessment)
@@ -45,6 +50,7 @@ For each combination above:
   - **Enterprise**: ~175 questions (comprehensive analysis)
 
 ### Step 3: File Uploads (if applicable)
+
 - Upload relevant documents like:
   - Organizational charts
   - Process documentation
@@ -53,6 +59,7 @@ For each combination above:
   - Any supporting materials
 
 ### Step 4: Submit & View Results
+
 - Complete the assessment
 - You'll get a unique Assessment ID
 - View your personalized results and recommendations
@@ -68,12 +75,14 @@ To see all assessments and analyze them:
 ## 📊 **What You'll Get for Each Tier**
 
 ### **One-Time Diagnostic ($2,500)**
+
 - Basic organizational assessment
 - Core efficiency analysis
 - High-level recommendations
 - Basic AI readiness score
 
 ### **Team Collaboration ($12,000)**
+
 - Everything in Basic +
 - Team collaboration analysis
 - Workflow optimization
@@ -81,6 +90,7 @@ To see all assessments and analyze them:
 - Team access features
 
 ### **Enterprise Transformation ($24,000)**
+
 - Everything in Team +
 - Comprehensive organizational analysis
 - Advanced AI implementation planning

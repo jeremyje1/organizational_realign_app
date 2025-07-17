@@ -8,7 +8,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useMemo, useCallback, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -96,50 +96,104 @@ const NumericInput = React.memo(({ question, value, onResponse }: {
   question: Question; 
   value?: number; 
   onResponse: (questionId: string, value: any) => void;
-}) => (
-  <div className="space-y-2">
-    <input
-      type="number"
-      value={value || ''}
-      onChange={(e) => onResponse(question.id, parseInt(e.target.value))}
-      min={question.validationRules?.min}
-      max={question.validationRules?.max}
-      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-      placeholder="Enter numeric value"
-    />
-    {question.validationRules && (
-      <p className="text-xs text-gray-500">
-        Range: {question.validationRules.min} - {question.validationRules.max}
-      </p>
-    )}
-  </div>
-));
+}) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onResponse(question.id, parseInt(e.target.value));
+  }, [onResponse, question.id]);
+
+  return (
+    <div className="space-y-2">
+      <input
+        key={`number-${question.id}`}
+        type="number"
+        value={value || ''}
+        onChange={handleChange}
+        min={question.validationRules?.min}
+        max={question.validationRules?.max}
+        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="Enter numeric value"
+        autoComplete="off"
+      />
+      {question.validationRules && (
+        <p className="text-xs text-gray-500">
+          Range: {question.validationRules.min} - {question.validationRules.max}
+        </p>
+      )}
+    </div>
+  );
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.question.id === nextProps.question.id &&
+    prevProps.value === nextProps.value &&
+    prevProps.onResponse === nextProps.onResponse
+  );
+});
 NumericInput.displayName = 'NumericInput';
 
 const TextInput = React.memo(({ question, value, onResponse }: { 
   question: Question; 
   value?: string; 
   onResponse: (questionId: string, value: any) => void;
-}) => (
-  <div className="space-y-2">
-    <textarea
-      value={value || ''}
-      onChange={(e) => onResponse(question.id, e.target.value)}
-      rows={4}
-      maxLength={question.validationRules?.maxLength}
-      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
-      placeholder="Enter your response here..."
-    />
-    {question.validationRules?.maxLength && (
-      <p className="text-xs text-gray-500">
-        {(value || '').length} / {question.validationRules.maxLength} characters
-      </p>
-    )}
-    {question.helpText && (
-      <p className="text-xs text-gray-600">{question.helpText}</p>
-    )}
-  </div>
-));
+}) => {
+  const [localValue, setLocalValue] = useState(value || '');
+  const timeoutRef = useRef<NodeJS.Timeout>();
+
+  // Update local value when prop changes (for external updates)
+  useEffect(() => {
+    setLocalValue(value || '');
+  }, [value]);
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    setLocalValue(newValue);
+
+    // Debounce the callback to parent
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      onResponse(question.id, newValue);
+    }, 500); // 500ms debounce
+  }, [onResponse, question.id]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div className="space-y-2">
+      <textarea
+        value={localValue}
+        onChange={handleChange}
+        rows={4}
+        maxLength={question.validationRules?.maxLength}
+        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+        placeholder="Enter your response here..."
+        autoComplete="off"
+      />
+      {question.validationRules?.maxLength && (
+        <p className="text-xs text-gray-500">
+          {localValue.length} / {question.validationRules.maxLength} characters
+        </p>
+      )}
+      {question.helpText && (
+        <p className="text-xs text-gray-600">{question.helpText}</p>
+      )}
+    </div>
+  );
+}, (prevProps, nextProps) => {
+  // Custom comparison function to prevent unnecessary re-renders
+  return (
+    prevProps.question.id === nextProps.question.id &&
+    prevProps.value === nextProps.value &&
+    prevProps.onResponse === nextProps.onResponse
+  );
+});
 TextInput.displayName = 'TextInput';
 
 const FileUpload = React.memo(({ 
