@@ -31,8 +31,34 @@ export default function AdminAnalytics() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dateRange, setDateRange] = useState('30'); // days
+  
+  // Admin authentication state
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(true);
+  const [adminPassword, setAdminPassword] = useState('');
+
+  // Check for existing admin session
+  useEffect(() => {
+    const adminAuth = sessionStorage.getItem('admin_authenticated');
+    if (adminAuth === 'true') {
+      setIsAdmin(true);
+      setShowPasswordPrompt(false);
+    }
+  }, []);
+
+  const handleAdminLogin = () => {
+    if (adminPassword === 'northpath-admin-2025') {
+      setIsAdmin(true);
+      setShowPasswordPrompt(false);
+      sessionStorage.setItem('admin_authenticated', 'true');
+    } else {
+      alert('Invalid admin password');
+    }
+  };
 
   useEffect(() => {
+    if (!isAdmin) return; // Only fetch when admin is authenticated
+    
     const fetchAnalytics = async () => {
       try {
         setLoading(true);
@@ -44,7 +70,9 @@ export default function AdminAnalytics() {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch analytics data');
+          const errorText = await response.text();
+          console.error('Analytics API Error Response:', errorText.substring(0, 500));
+          throw new Error(`Failed to fetch analytics data (${response.status}): ${errorText.substring(0, 100)}`);
         }
 
         const data = await response.json();
@@ -58,7 +86,7 @@ export default function AdminAnalytics() {
     };
 
     fetchAnalytics();
-  }, [dateRange]);
+  }, [dateRange, isAdmin]);
 
   const formatPercentage = (value: number): string => {
     return `${(value * 100).toFixed(1)}%`;
@@ -88,6 +116,40 @@ export default function AdminAnalytics() {
     };
     return names[industry as keyof typeof names] || industry;
   };
+
+  // Show password prompt if not authenticated
+  if (showPasswordPrompt) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <div className="text-center mb-6">
+              <h2 className="text-lg font-medium text-gray-900">Admin Access Required</h2>
+              <p className="mt-2 text-sm text-gray-600">Enter admin password to access analytics</p>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <input
+                  type="password"
+                  placeholder="Admin Password"
+                  value={adminPassword}
+                  onChange={(e) => setAdminPassword(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleAdminLogin()}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <button
+                onClick={handleAdminLogin}
+                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
+              >
+                Access Analytics
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
