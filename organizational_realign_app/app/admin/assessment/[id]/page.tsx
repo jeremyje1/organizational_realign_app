@@ -65,10 +65,13 @@ export default function AdminAssessmentViewer() {
       const hasResponse = question.id in responses;
       const response = hasResponse ? responses[question.id] : null;
       
-      // Filter by organization type if specified
-      if (question.organizationTypes && !question.organizationTypes.includes(assessmentData.organization_type as any)) {
-        return;
+      // Filter by organization type if specified - but show questions without organizationTypes to all
+      if (question.organizationTypes && question.organizationTypes.length > 0) {
+        if (!question.organizationTypes.includes(assessmentData.organization_type as any)) {
+          return; // Skip this question as it's not for this organization type
+        }
       }
+      // If organizationTypes is not specified or empty, show to all organization types
 
       details.push({
         id: question.id,
@@ -317,6 +320,14 @@ export default function AdminAssessmentViewer() {
                 <div>
                   <dt className="text-sm font-medium text-gray-500">Total Responses</dt>
                   <dd className="text-sm text-gray-900">{Object.keys(assessment.responses || {}).length}</dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-gray-500">Total Questions Available</dt>
+                  <dd className="text-sm text-gray-900">{questionDetails.length}</dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-gray-500">Questions Answered</dt>
+                  <dd className="text-sm text-gray-900">{questionDetails.filter(q => q.hasResponse).length}</dd>
                 </div>
                 <div>
                   <dt className="text-sm font-medium text-gray-500">AI Readiness Score</dt>
