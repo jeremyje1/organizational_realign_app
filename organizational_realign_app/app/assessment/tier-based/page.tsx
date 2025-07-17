@@ -8,7 +8,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useMemo, useCallback, useRef, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -104,7 +104,6 @@ const NumericInput = React.memo(({ question, value, onResponse }: {
   return (
     <div className="space-y-2">
       <input
-        key={`number-${question.id}`}
         type="number"
         value={value || ''}
         onChange={handleChange}
@@ -112,7 +111,6 @@ const NumericInput = React.memo(({ question, value, onResponse }: {
         max={question.validationRules?.max}
         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         placeholder="Enter numeric value"
-        autoComplete="off"
       />
       {question.validationRules && (
         <p className="text-xs text-gray-500">
@@ -120,12 +118,6 @@ const NumericInput = React.memo(({ question, value, onResponse }: {
         </p>
       )}
     </div>
-  );
-}, (prevProps, nextProps) => {
-  return (
-    prevProps.question.id === nextProps.question.id &&
-    prevProps.value === nextProps.value &&
-    prevProps.onResponse === nextProps.onResponse
   );
 });
 NumericInput.displayName = 'NumericInput';
@@ -135,63 +127,29 @@ const TextInput = React.memo(({ question, value, onResponse }: {
   value?: string; 
   onResponse: (questionId: string, value: any) => void;
 }) => {
-  const [localValue, setLocalValue] = useState(value || '');
-  const timeoutRef = useRef<NodeJS.Timeout>();
-
-  // Update local value when prop changes (for external updates)
-  useEffect(() => {
-    setLocalValue(value || '');
-  }, [value]);
-
   const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newValue = e.target.value;
-    setLocalValue(newValue);
-
-    // Debounce the callback to parent
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    timeoutRef.current = setTimeout(() => {
-      onResponse(question.id, newValue);
-    }, 500); // 500ms debounce
+    onResponse(question.id, e.target.value);
   }, [onResponse, question.id]);
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
 
   return (
     <div className="space-y-2">
       <textarea
-        value={localValue}
+        value={value || ''}
         onChange={handleChange}
         rows={4}
         maxLength={question.validationRules?.maxLength}
         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
         placeholder="Enter your response here..."
-        autoComplete="off"
       />
       {question.validationRules?.maxLength && (
         <p className="text-xs text-gray-500">
-          {localValue.length} / {question.validationRules.maxLength} characters
+          {(value || '').length} / {question.validationRules.maxLength} characters
         </p>
       )}
       {question.helpText && (
         <p className="text-xs text-gray-600">{question.helpText}</p>
       )}
     </div>
-  );
-}, (prevProps, nextProps) => {
-  // Custom comparison function to prevent unnecessary re-renders
-  return (
-    prevProps.question.id === nextProps.question.id &&
-    prevProps.value === nextProps.value &&
-    prevProps.onResponse === nextProps.onResponse
   );
 });
 TextInput.displayName = 'TextInput';
@@ -625,6 +583,7 @@ function TierBasedAssessmentContent() {
             <CardContent>
               {question.type === 'likert' && (
                 <LikertInput 
+                  key={`likert-input-${question.id}`}
                   question={question} 
                   value={assessmentState.responses[question.id]}
                   onResponse={handleResponse}
@@ -632,6 +591,7 @@ function TierBasedAssessmentContent() {
               )}
               {question.type === 'numeric' && (
                 <NumericInput 
+                  key={`numeric-input-${question.id}`}
                   question={question} 
                   value={assessmentState.responses[question.id]}
                   onResponse={handleResponse}
@@ -639,6 +599,7 @@ function TierBasedAssessmentContent() {
               )}
               {question.type === 'text' && (
                 <TextInput 
+                  key={`text-input-${question.id}`}
                   question={question} 
                   value={assessmentState.responses[question.id]}
                   onResponse={handleResponse}
@@ -646,6 +607,7 @@ function TierBasedAssessmentContent() {
               )}
               {question.type === 'upload' && (
                 <FileUpload 
+                  key={`file-upload-${question.id}`}
                   question={question}
                   onFileUpload={handleFileUpload}
                   uploadedFiles={assessmentState.uploadedFiles}
