@@ -126,11 +126,15 @@ export default function AdminTestingPanel() {
         const data = await response.json();
         setRecentAssessments(data.assessments || []);
       } else {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ error: 'Failed to parse error response' }));
         console.error('Failed to load recent assessments:', errorData);
+        // For development/debugging - you can uncomment the line below to see the actual error
+        // alert(`Error loading assessments: ${JSON.stringify(errorData)}`);
       }
     } catch (error) {
       console.error('Error loading recent assessments:', error);
+      // For development/debugging
+      // alert(`Network error: ${error.message}`);
     } finally {
       setLoadingAssessments(false);
     }
@@ -174,7 +178,15 @@ export default function AdminTestingPanel() {
         body: JSON.stringify(testData),
       });
 
-      const result = await response.json();
+      let result;
+      const responseText = await response.text();
+      
+      try {
+        result = JSON.parse(responseText);
+      } catch {
+        console.error('Failed to parse response as JSON:', responseText.substring(0, 500));
+        throw new Error(`Invalid JSON response. Got: ${responseText.substring(0, 200)}...`);
+      }
 
       if (response.ok) {
         const newResult: TestResult = {
