@@ -99,6 +99,8 @@ export default function AdminTestingPanel() {
   const [runningTests, setRunningTests] = useState<Set<string>>(new Set());
   const [adminPassword, setAdminPassword] = useState('');
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(true);
+  const [recentAssessments, setRecentAssessments] = useState<any[]>([]);
+  const [loadingAssessments, setLoadingAssessments] = useState(false);
 
   useEffect(() => {
     // Check if user is already authenticated as admin
@@ -106,9 +108,32 @@ export default function AdminTestingPanel() {
     if (adminAuth === 'true') {
       setIsAdmin(true);
       setShowPasswordPrompt(false);
+      loadRecentAssessments();
     }
     setLoading(false);
   }, []);
+
+  const loadRecentAssessments = async () => {
+    setLoadingAssessments(true);
+    try {
+      const response = await fetch('/api/admin/assessments/list', {
+        headers: {
+          'Authorization': 'Bearer admin-token',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setRecentAssessments(data.assessments || []);
+      } else {
+        console.error('Failed to load recent assessments');
+      }
+    } catch (error) {
+      console.error('Error loading recent assessments:', error);
+    } finally {
+      setLoadingAssessments(false);
+    }
+  };
 
   const authenticateAdmin = () => {
     // Simple admin authentication (in production, use proper auth)
@@ -116,6 +141,7 @@ export default function AdminTestingPanel() {
       setIsAdmin(true);
       setShowPasswordPrompt(false);
       sessionStorage.setItem('admin_authenticated', 'true');
+      loadRecentAssessments();
     } else {
       alert('Invalid admin password');
     }
@@ -401,6 +427,79 @@ export default function AdminTestingPanel() {
               View Analytics
             </button>
           </div>
+        </div>
+
+        {/* Recent Assessments */}
+        <div className="mb-8 bg-white rounded-lg shadow p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-medium text-gray-900">Recent Assessments</h2>
+            <button
+              onClick={loadRecentAssessments}
+              disabled={loadingAssessments}
+              className="text-blue-600 hover:text-blue-800 text-sm font-medium disabled:opacity-50"
+            >
+              {loadingAssessments ? 'Loading...' : 'Refresh'}
+            </button>
+          </div>
+          
+          {loadingAssessments ? (
+            <div className="text-center py-4">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
+              <p className="mt-2 text-sm text-gray-600">Loading assessments...</p>
+            </div>
+          ) : recentAssessments.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Assessment ID
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Tier
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Industry
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Submitted
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {recentAssessments.slice(0, 10).map((assessment) => (
+                    <tr key={assessment.id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-900">
+                        {assessment.id.slice(0, 8)}...
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {assessment.tier_type}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {assessment.industry_type}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(assessment.created_at).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+                        <button
+                          onClick={() => router.push(`/admin/assessment/${assessment.id}`)}
+                          className="hover:text-blue-800 font-medium"
+                        >
+                          View Details →
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-500 text-center py-4">No assessments found</p>
+          )}
         </div>
 
         {/* Tier Configuration Overview */}
