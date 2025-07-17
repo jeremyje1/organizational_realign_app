@@ -98,14 +98,17 @@ const NumericInput = React.memo(({ question, value, onResponse }: {
   onResponse: (questionId: string, value: any) => void;
 }) => {
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    onResponse(question.id, parseInt(e.target.value));
+    const inputValue = e.target.value;
+    // Handle empty string as undefined, otherwise parse as number
+    const numericValue = inputValue === '' ? undefined : parseInt(inputValue);
+    onResponse(question.id, numericValue);
   }, [onResponse, question.id]);
 
   return (
     <div className="space-y-2">
       <input
         type="number"
-        value={value || ''}
+        value={value !== undefined ? value : ''}
         onChange={handleChange}
         min={question.validationRules?.min}
         max={question.validationRules?.max}
