@@ -126,7 +126,8 @@ export default function AdminTestingPanel() {
         const data = await response.json();
         setRecentAssessments(data.assessments || []);
       } else {
-        console.error('Failed to load recent assessments');
+        const errorData = await response.json();
+        console.error('Failed to load recent assessments:', errorData);
       }
     } catch (error) {
       console.error('Error loading recent assessments:', error);
