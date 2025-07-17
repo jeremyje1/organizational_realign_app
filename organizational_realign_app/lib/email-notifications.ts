@@ -1,6 +1,9 @@
 // lib/email-notifications.ts
 // Email notification system for organizational assessment platform
 
+import sgMail from '@sendgrid/mail';
+import nodemailer from 'nodemailer';
+
 interface EmailTemplate {
   subject: string;
   html: string;
@@ -12,13 +15,118 @@ interface EmailRecipient {
   name?: string;
 }
 
+interface EmailOptions {
+  to: EmailRecipient;
+  subject: string;
+  html: string;
+  text: string;
+  category?: string;
+}
+
 class EmailNotifications {
   private apiKey: string;
   private baseUrl: string;
+  private fromEmail: string;
+  private fromName: string;
+  private isProduction: boolean;
+  private nodemailerTransporter: any;
 
   constructor() {
     this.apiKey = process.env.SENDGRID_API_KEY || '';
     this.baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://northpathstrategies.org';
+    this.fromEmail = process.env.FROM_EMAIL || 'info@northpathstrategies.org';
+    this.fromName = process.env.FROM_NAME || 'NorthPath Strategies';
+    this.isProduction = process.env.NODE_ENV === 'production' && !!this.apiKey;
+    
+    // Initialize SendGrid if in production
+    if (this.isProduction) {
+      sgMail.setApiKey(this.apiKey);
+    }
+    
+    // Initialize nodemailer for development/fallback
+    this.setupNodemailer();
+  }
+
+  private setupNodemailer() {
+    // Use a test SMTP service or Gmail for development
+    const useTestAccount = !process.env.SMTP_HOST;
+    
+    if (useTestAccount) {
+      // For development, we'll still log but structure it as if it would send
+      this.nodemailerTransporter = null;
+    } else {
+      // Production SMTP fallback
+      this.nodemailerTransporter = nodemailer.createTransporter({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        secure: process.env.SMTP_SECURE === 'true',
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      });
+    }
+  }
+
+  /**
+   * Send email using SendGrid (production) or log (development)
+   */
+  private async sendEmail(options: EmailOptions): Promise<boolean> {
+    const emailData = {
+      to: options.to.email,
+      from: {
+        email: this.fromEmail,
+        name: this.fromName
+      },
+      subject: options.subject,
+      html: options.html,
+      text: options.text
+    };
+
+    try {
+      if (this.isProduction && this.apiKey) {
+        // Send via SendGrid in production
+        await sgMail.send(emailData);
+        console.log(`✅ Email sent via SendGrid to ${options.to.email}: ${options.subject}`);
+        return true;
+      } else if (this.nodemailerTransporter) {
+        // Send via SMTP in development/staging
+        await this.nodemailerTransporter.sendMail({
+          ...emailData,
+          from: `${this.fromName} <${this.fromEmail}>`,
+          to: options.to.email
+        });
+        console.log(`✅ Email sent via SMTP to ${options.to.email}: ${options.subject}`);
+        return true;
+      } else {
+        // Development mode - log the email
+        console.log('\n🔥 EMAIL WOULD BE SENT IN PRODUCTION:');
+        console.log('================================================');
+        console.log(`To: ${options.to.email} (${options.to.name || 'No name'})`);
+        console.log(`From: ${this.fromName} <${this.fromEmail}>`);
+        console.log(`Subject: ${options.subject}`);
+        console.log(`Category: ${options.category || 'general'}`);
+        console.log('================================================');
+        console.log('HTML Content:');
+        console.log(options.html);
+        console.log('================================================');
+        console.log('Text Content:');
+        console.log(options.text);
+        console.log('================================================\n');
+        return false; // Return false to indicate email was not actually sent
+      }
+    } catch (error) {
+      console.error('❌ Email sending failed:', error);
+      
+      // Fallback: log the email if sending fails
+      console.log('\n📧 EMAIL FALLBACK - WOULD BE SENT:');
+      console.log('================================================');
+      console.log(`To: ${options.to.email}`);
+      console.log(`Subject: ${options.subject}`);
+      console.log(`Error: ${error}`);
+      console.log('================================================\n');
+      return false;
+    }
   }
 
   /**
@@ -194,48 +302,6 @@ class EmailNotifications {
       text: template.text,
       category: 'assessment-confirmation'
     });
-  }
-
-  /**
-   * Core email sending function
-   */
-  private async sendEmail(params: {
-    to: EmailRecipient;
-    subject: string;
-    html: string;
-    text: string;
-    category?: string;
-  }): Promise<boolean> {
-    if (!this.apiKey) {
-      console.log('Email would be sent:', params);
-      return true; // Mock success for development
-    }
-
-    try {
-      // This would integrate with SendGrid, AWS SES, or your preferred email service
-      // For now, we'll log the email details
-      console.log('📧 Email notification:', {
-        to: params.to.email,
-        subject: params.subject,
-        category: params.category,
-        timestamp: new Date().toISOString()
-      });
-
-      // TODO: Implement actual email sending
-      // const response = await sendGridClient.send({
-      //   to: params.to.email,
-      //   from: 'no-reply@northpathstrategies.org',
-      //   subject: params.subject,
-      //   html: params.html,
-      //   text: params.text,
-      //   categories: [params.category || 'general']
-      // });
-
-      return true;
-    } catch (error) {
-      console.error('Email sending failed:', error);
-      return false;
-    }
   }
 
   /**

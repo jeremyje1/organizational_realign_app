@@ -74,7 +74,7 @@ To see all assessments and analyze them:
 
 ## 📊 **What You'll Get for Each Tier**
 
-### **One-Time Diagnostic ($2,500)**
+### **One-Time Diagnostic ($4,995)**
 
 - Basic organizational assessment
 - Core efficiency analysis
@@ -120,6 +120,7 @@ To see all assessments and analyze them:
 ## � **Email Notifications Status**
 
 ### **Development Environment (localhost):**
+
 - **Status**: Email content is generated but NOT actually sent
 - **Behavior**: Email templates are logged to server console
 - **Client Emails**: No confirmation emails sent to jeremy.estrella@gmail.com
@@ -127,12 +128,15 @@ To see all assessments and analyze them:
 - **Timeline**: Assessment data is saved immediately, but email delivery is simulated
 
 ### **Expected Email Content:**
+
 When configured in production, clients receive:
+
 1. **Immediate Confirmation Email** with Assessment ID and timeline
 2. **Results Ready Email** (within 4-6 hours) with download link
-3. **Consultation Scheduling** (within 24 hours) 
+3. **Consultation Scheduling** (within 24 hours)
 
 ### **To Enable Real Emails (Production Setup):**
+
 1. Configure SENDGRID_API_KEY environment variable
 2. Set up verified sender domain
 3. Enable production email service
