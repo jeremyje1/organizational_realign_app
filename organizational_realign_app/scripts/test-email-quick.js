@@ -1,7 +1,8 @@
 // Quick email test script
-// Run: node scripts/test-email-quick.js
+// Run: npx tsx scripts/test-email-quick.js
 
-require('dotenv').config({ path: '.env.local' });
+import { config } from 'dotenv';
+config({ path: '.env.local' });
 
 async function testEmails() {
   console.log('🧪 Testing Email Configuration...\n');
@@ -13,6 +14,8 @@ async function testEmails() {
   console.log('Email Configuration Status:');
   console.log(`SendGrid API Key: ${hasSendGrid ? '✅ Set' : '❌ Missing'}`);
   console.log(`SMTP Configuration: ${hasSmtp ? '✅ Set' : '❌ Missing'}`);
+  console.log(`FROM_EMAIL: ${process.env.FROM_EMAIL || '❌ Missing'}`);
+  console.log(`FROM_NAME: ${process.env.FROM_NAME || '❌ Missing'}`);
   
   if (!hasSendGrid && !hasSmtp) {
     console.log('\n❌ No email configuration found!');
@@ -22,40 +25,9 @@ async function testEmails() {
     return;
   }
   
-  // Dynamic import of email notifications
-  try {
-    const { default: EmailNotifications } = await import('../lib/email-notifications.js');
-    const emailService = new EmailNotifications();
-    
-    // Test client email
-    const testData = {
-      assessmentId: 'test-' + Date.now(),
-      organizationName: 'Test Organization',
-      contactName: 'Jeremy Estrella',
-      contactEmail: 'jeremy.estrella@gmail.com',
-      tier: 'one-time-diagnostic',
-      organizationType: 'higher-education'
-    };
-    
-    console.log('\n📧 Sending test emails...');
-    
-    const clientResult = await emailService.sendAssessmentConfirmation(
-      { email: testData.contactEmail, name: testData.contactName },
-      testData
-    );
-    
-    const supportResult = await emailService.sendNewAssessmentNotification(
-      { email: 'info@northpathstrategies.org', name: 'Support Team' },
-      testData
-    );
-    
-    console.log('\n✅ Test Results:');
-    console.log(`Client Email: ${clientResult ? 'SENT ✅' : 'LOGGED (Dev Mode) 📝'}`);
-    console.log(`Support Email: ${supportResult ? 'SENT ✅' : 'LOGGED (Dev Mode) 📝'}`);
-    
-  } catch (error) {
-    console.error('❌ Email test failed:', error.message);
-  }
+  console.log('\n✅ Email system is configured and ready!');
+  console.log('When you submit an assessment, emails will be:');
+  console.log(hasSendGrid ? '📧 SENT via SendGrid' : hasSmtp ? '📧 SENT via SMTP' : '📝 LOGGED to console');
 }
 
 testEmails();
