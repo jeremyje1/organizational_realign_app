@@ -45,6 +45,11 @@ export async function POST(req: NextRequest) {
     // Validate required fields
     const { tier, organizationType, institutionName, responses, uploadedFiles, contactEmail, contactName, userId, testMode } = body;
     
+    // Debug logging for test mode
+    if (testMode) {
+      console.log('Test mode assessment submission:', { tier, organizationType, userId, testMode });
+    }
+    
     if (!tier || !organizationType || !responses) {
       return NextResponse.json(
         { error: 'Missing required fields: tier, organizationType, and responses are required' },
@@ -54,10 +59,12 @@ export async function POST(req: NextRequest) {
 
     // Check subscription access for subscription-based tiers (skip for test mode)
     if (!testMode && userId && (tier === 'monthly-subscription' || tier === 'comprehensive-package' || tier === 'enterprise-transformation')) {
+      console.log('Checking subscription for non-test mode:', { userId, tier });
       try {
         const canCreate = await SubscriptionManager.canCreateAssessment(userId, tier as PricingTier);
         
         if (!canCreate.allowed) {
+          console.log('Subscription check failed:', canCreate);
           return NextResponse.json(
             { 
               error: 'Subscription access required',
@@ -72,6 +79,8 @@ export async function POST(req: NextRequest) {
         console.error('Subscription check failed:', subscriptionError);
         // Continue with assessment creation but log the error
       }
+    } else if (testMode) {
+      console.log('Skipping subscription check for test mode');
     }
 
     // Prepare assessment data for the updated schema
