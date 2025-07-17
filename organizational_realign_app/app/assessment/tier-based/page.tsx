@@ -43,6 +43,7 @@ interface AssessmentState {
   uploadedFiles: File[];
   isComplete: boolean;
   validationErrors: string[];
+  assessmentId?: string;
 }
 
 // Memoized Input Components to prevent unnecessary re-renders
@@ -344,14 +345,18 @@ function TierBasedAssessmentContent() {
       
       if (response.ok) {
         console.log('Assessment submitted successfully:', result);
-        setAssessmentState(prev => ({ ...prev, isComplete: true }));
+        setAssessmentState(prev => ({ 
+          ...prev, 
+          isComplete: true,
+          assessmentId: result.assessmentId // Store the assessment ID
+        }));
         
-        // Optional: Redirect to results page if provided
-        if (result.redirectUrl) {
-          setTimeout(() => {
-            window.location.href = result.redirectUrl;
-          }, 2000); // Give user time to see success message
-        }
+        // Remove automatic redirect - let user control their next step
+        // if (result.redirectUrl) {
+        //   setTimeout(() => {
+        //     window.location.href = result.redirectUrl;
+        //   }, 2000);
+        // }
       } else {
         console.error('Assessment submission failed:', result);
         throw new Error(result.error || 'Assessment submission failed');
@@ -374,11 +379,17 @@ function TierBasedAssessmentContent() {
           <CardHeader className="text-center">
             <div className="text-6xl text-green-500 mx-auto mb-4">✅</div>
             <CardTitle className="text-2xl text-green-700">Assessment Complete!</CardTitle>
+            {assessmentState.assessmentId && (
+              <p className="text-sm text-gray-500 mt-2">
+                Assessment ID: <code className="bg-gray-100 px-2 py-1 rounded">{assessmentState.assessmentId}</code>
+              </p>
+            )}
           </CardHeader>
-          <CardContent className="text-center space-y-4">
+          <CardContent className="text-center space-y-6">
             <p className="text-gray-600">
               Your {tierConfig.name} assessment has been submitted successfully.
             </p>
+            
             <div className="bg-blue-50 p-4 rounded-lg">
               <h3 className="font-semibold text-blue-900 mb-2">What happens next:</h3>
               <ul className="text-sm text-blue-800 space-y-1 text-left">
@@ -390,9 +401,49 @@ function TierBasedAssessmentContent() {
                 ))}
               </ul>
             </div>
+            
+            <div className="bg-green-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-green-900 mb-2">📧 Email Confirmation</h3>
+              <p className="text-sm text-green-800">
+                A confirmation email has been sent to <strong>{assessmentState.contactEmail}</strong> with your assessment details and next steps.
+              </p>
+            </div>
+            
             <p className="text-sm text-gray-500">
-              Processing time: {tierConfig.assessmentScope.followUpSupport}
+              <strong>Processing time:</strong> {tierConfig.assessmentScope.followUpSupport}
             </p>
+            
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+              <Button
+                onClick={() => window.location.href = '/'}
+                variant="outline"
+                className="px-6 py-3"
+              >
+                Return to Home
+              </Button>
+              <Button
+                onClick={() => window.location.href = `/assessment/tier-based?tier=${assessmentState.tier}&org=${assessmentState.organizationType}`}
+                variant="outline"
+                className="px-6 py-3"
+              >
+                Start New Assessment
+              </Button>
+              {assessmentState.tier !== 'enterprise-transformation' && (
+                <Button
+                  onClick={() => window.location.href = `/assessment/tier-based?tier=enterprise-transformation&org=${assessmentState.organizationType}`}
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700"
+                >
+                  Upgrade to Enterprise
+                </Button>
+              )}
+            </div>
+            
+            <div className="border-t pt-4 mt-6">
+              <p className="text-xs text-gray-500">
+                Need help? Contact us at support@northpathstrategies.com or save your Assessment ID for reference.
+              </p>
+            </div>
           </CardContent>
         </Card>
       </div>
