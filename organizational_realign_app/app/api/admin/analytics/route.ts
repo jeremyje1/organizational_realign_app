@@ -7,26 +7,44 @@ const supabase = createClient(
 );
 
 export async function GET(request: NextRequest) {
+  console.log('Analytics API called');
+  
   try {
     const authHeader = request.headers.get('Authorization');
+    console.log('Authorization header:', authHeader ? 'present' : 'missing');
     
     // Simple admin authentication check
     if (!authHeader || !authHeader.includes('admin-token')) {
+      console.log('Authorization failed');
       return NextResponse.json(
         { error: 'Unauthorized - Admin access required' },
         { status: 401 }
       );
     }
 
+    console.log('Authorization successful');
+
     const { searchParams } = new URL(request.url);
     const range = parseInt(searchParams.get('range') || '30');
+    console.log('Date range:', range, 'days');
+    
+    // Check environment variables
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.error('Missing Supabase environment variables');
+      const emptyAnalytics = processAnalyticsData([]);
+      return NextResponse.json(emptyAnalytics);
+    }
+
+    console.log('Environment variables present');
     
     // Calculate date range
     const endDate = new Date();
     const startDate = new Date();
     startDate.setDate(endDate.getDate() - range);
+    console.log('Date range:', startDate.toISOString(), 'to', endDate.toISOString());
 
     // Fetch assessments with admin privileges (bypassing RLS)
+    console.log('Fetching assessments from Supabase...');
     const { data: assessments, error } = await supabase
       .from('assessments')
       .select(`
@@ -53,8 +71,11 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(emptyAnalytics);
     }
 
+    console.log('Fetched', assessments?.length || 0, 'assessments');
+
     // Process analytics data
     const analytics = processAnalyticsData(assessments || []);
+    console.log('Processed analytics successfully');
 
     return NextResponse.json(analytics);
 
