@@ -36,11 +36,15 @@ class EmailNotifications {
     this.baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://northpathstrategies.org';
     this.fromEmail = process.env.FROM_EMAIL || 'info@northpathstrategies.org';
     this.fromName = process.env.FROM_NAME || 'NorthPath Strategies';
-    this.isProduction = process.env.NODE_ENV === 'production' && !!this.apiKey;
+    // Use SendGrid if API key is available, regardless of environment
+    this.isProduction = !!this.apiKey;
     
-    // Initialize SendGrid if in production
-    if (this.isProduction) {
+    // Initialize SendGrid if API key is available
+    if (this.apiKey) {
       sgMail.setApiKey(this.apiKey);
+      console.log('🔧 SendGrid initialized with API key');
+    } else {
+      console.log('⚠️ No SENDGRID_API_KEY found, falling back to console logging');
     }
     
     // Initialize nodemailer for development/fallback
@@ -84,13 +88,13 @@ class EmailNotifications {
     };
 
     try {
-      if (this.isProduction && this.apiKey) {
-        // Send via SendGrid in production
+      if (this.apiKey) {
+        // Send via SendGrid when API key is available
         await sgMail.send(emailData);
         console.log(`✅ Email sent via SendGrid to ${options.to.email}: ${options.subject}`);
         return true;
       } else if (this.nodemailerTransporter) {
-        // Send via SMTP in development/staging
+        // Send via SMTP as fallback
         await this.nodemailerTransporter.sendMail({
           ...emailData,
           from: `${this.fromName} <${this.fromEmail}>`,
