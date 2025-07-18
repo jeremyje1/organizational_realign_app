@@ -10,6 +10,7 @@ export type OrganizationType = 'higher-education' | 'healthcare' | 'nonprofit' |
 export interface ValidationRules {
   min?: number;
   max?: number;
+  maxLength?: number;
   pattern?: string;
   required?: boolean;
 }
@@ -23,9 +24,19 @@ export interface Question {
   required?: boolean;
   helpText?: string;
   validationRules?: ValidationRules;
-  tierMinimum?: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation';
+  tierMinimum?: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation';
   tags?: string[];
+  enableContext?: boolean; // Allows users to provide additional context for richer analysis
+  contextPrompt?: string; // Custom prompt for the context field
 }
+
+/**
+ * CONTEXT FEATURE:
+ * Questions with enableContext: true will display an optional text area where users can provide
+ * additional details, departmental variations, or unique circumstances. This contextual data
+ * is stored with the key pattern `${questionId}_context` and enables AI analysis to produce
+ * more tailored and nuanced recommendations across all tiers and industries.
+ */
 
 /**
  * CORE QUESTIONS - Available across ALL tiers (100+ questions for One-Time Diagnostic)
@@ -46,7 +57,9 @@ export const CORE_QUESTIONS: Question[] = [
     section: "Governance & Leadership",
     prompt: "Decision-making authority is clearly defined and understood at each organizational level.",
     type: "likert",
-    required: true
+    required: true,
+    enableContext: true,
+    contextPrompt: "Please describe any variations in decision-making authority across different departments or functions, and any challenges with unclear authority that impact your organization."
   },
   {
     id: "GL_03",
@@ -85,10 +98,13 @@ export const CORE_QUESTIONS: Question[] = [
   {
     id: "GL_08",
     section: "Governance & Leadership",
-    prompt: "Describe your organization's biggest leadership challenge in the next 12 months.",
+    prompt: "Describe your organization's key leadership challenges over the next 12 months. Please identify multiple challenges if applicable.",
     type: "text",
     required: true,
-    validationRules: { min: 50 }
+    validationRules: { min: 100, maxLength: 1500 },
+    helpText: "💡 Thinking prompts: Consider leadership areas such as: (1) succession planning, (2) skill gaps, (3) decision-making processes, (4) change management, (5) stakeholder engagement, (6) strategic execution, (7) team development, (8) communication effectiveness. Most organizations face 2-4 significant leadership challenges.",
+    enableContext: true,
+    contextPrompt: "If certain leadership challenges are more pressing in specific departments or time periods, please elaborate here."
   },
   {
     id: "GL_09",
@@ -139,9 +155,12 @@ export const CORE_QUESTIONS: Question[] = [
   {
     id: "GL_16",
     section: "Governance & Leadership",
-    prompt: "Describe your organization's approach to change management and communication.",
+    prompt: "Describe your organization's approaches to change management and communication. Please identify multiple strategies or methods if applicable.",
     type: "text",
-    validationRules: { min: 50 }
+    validationRules: { min: 100, maxLength: 1500 },
+    helpText: "💡 Consider various change management aspects: (1) communication strategies during change, (2) stakeholder engagement methods, (3) training and support systems, (4) feedback collection processes, (5) resistance management techniques, (6) change champion programs, (7) timeline and milestone communication. Most organizations use multiple approaches.",
+    enableContext: true,
+    contextPrompt: "If change management approaches vary by type of change (e.g., technology vs. organizational vs. policy changes) or by department, please elaborate here."
   },
   {
     id: "GL_17",
@@ -184,7 +203,9 @@ export const CORE_QUESTIONS: Question[] = [
     prompt: "How many different communication platforms does your organization currently use?",
     type: "numeric",
     required: true,
-    validationRules: { min: 1, max: 20 }
+    validationRules: { min: 1, max: 20 },
+    enableContext: true,
+    contextPrompt: "Please list the main communication platforms you use (e.g., email, Slack, Teams, intranet) and describe any challenges with platform fragmentation or user adoption."
   },
   {
     id: "APC_03",
@@ -209,9 +230,12 @@ export const CORE_QUESTIONS: Question[] = [
   {
     id: "APC_06",
     section: "Administrative Processes & Communication",
-    prompt: "Describe the biggest communication breakdown your organization has experienced recently.",
+    prompt: "Describe significant communication breakdowns or challenges your organization has experienced. Please identify multiple issues if applicable.",
     type: "text",
-    validationRules: { min: 50 }
+    validationRules: { min: 100, maxLength: 1500 },
+    helpText: "💡 Consider different types of communication issues: (1) information not reaching intended recipients, (2) conflicting messages from different sources, (3) timing issues with announcements, (4) technology failures, (5) language or cultural barriers, (6) hierarchical communication bottlenecks. Most organizations face several communication challenges.",
+    enableContext: true,
+    contextPrompt: "If certain communication issues are more problematic in specific departments or during particular times/situations, please provide additional context here."
   },
   {
     id: "APC_07",
@@ -275,9 +299,12 @@ export const CORE_QUESTIONS: Question[] = [
   {
     id: "APC_16",
     section: "Administrative Processes & Communication",
-    prompt: "Describe your organization's approach to knowledge management and institutional memory.",
+    prompt: "Describe your organization's approaches to knowledge management and institutional memory. Please identify multiple strategies or methods if applicable.",
     type: "text",
-    validationRules: { min: 50 }
+    validationRules: { min: 100, maxLength: 1800 },
+    helpText: "💡 Consider various knowledge management approaches: (1) formal documentation systems, (2) mentorship programs, (3) knowledge bases/wikis, (4) training and onboarding materials, (5) exit interviews, (6) cross-training initiatives, (7) communities of practice, (8) process documentation, (9) digital repositories, (10) succession planning protocols. Most organizations use multiple methods to capture and transfer knowledge.",
+    enableContext: true,
+    contextPrompt: "If different departments use different knowledge management approaches or if certain types of knowledge are harder to capture, please provide additional context about challenges or variations across your organization."
   },
   {
     id: "APC_17",
@@ -321,20 +348,26 @@ export const CORE_QUESTIONS: Question[] = [
     prompt: "What is your organization's current staff turnover rate (annual percentage)?",
     type: "numeric",
     required: true,
-    validationRules: { min: 0, max: 100 }
+    validationRules: { min: 0, max: 100 },
+    enableContext: true,
+    contextPrompt: "Please provide context about turnover patterns (e.g., which departments/roles have higher turnover, seasonal patterns, or specific retention challenges) and any initiatives you've implemented to address turnover."
   },
   {
     id: "SCP_03",
     section: "Structure, Capacity & Performance",
     prompt: "Performance metrics are clearly defined and regularly tracked across all departments.",
-    type: "likert"
+    type: "likert",
+    enableContext: true,
+    contextPrompt: "Please describe what performance metrics are most important for different departments in your organization and any challenges you face in standardizing metrics across diverse functional areas."
   },
   {
     id: "SCP_04",
     section: "Structure, Capacity & Performance",
     prompt: "How many layers of management exist between front-line staff and executive leadership?",
     type: "numeric",
-    validationRules: { min: 1, max: 10 }
+    validationRules: { min: 1, max: 10 },
+    enableContext: true,
+    contextPrompt: "Please provide additional context about how management layers differ across departments (e.g., academic affairs vs. student services vs. IT) or any unique structural considerations for your organization."
   },
   {
     id: "SCP_05",
@@ -345,10 +378,13 @@ export const CORE_QUESTIONS: Question[] = [
   {
     id: "SCP_06",
     section: "Structure, Capacity & Performance",
-    prompt: "Describe your organization's biggest structural challenge or bottleneck.",
+    prompt: "Describe your organization's key structural challenges or bottlenecks. Please list multiple challenges if applicable, explaining how each impacts your operations.",
     type: "text",
     required: true,
-    validationRules: { min: 50 }
+    validationRules: { min: 100, maxLength: 2000 },
+    helpText: "💡 Thinking prompts: Consider challenges across different areas: (1) reporting structures, (2) decision-making processes, (3) resource allocation, (4) communication flows, (5) role clarity, (6) capacity constraints, (7) interdepartmental coordination, (8) workflow bottlenecks. List as many as relevant - most organizations have 3-5 key structural issues. You can format as: Challenge 1: [description], Challenge 2: [description], etc.",
+    enableContext: true,
+    contextPrompt: "If these challenges vary significantly across departments or have seasonal patterns, please provide that additional context here."
   },
   {
     id: "SCP_07",
@@ -361,7 +397,9 @@ export const CORE_QUESTIONS: Question[] = [
     section: "Structure, Capacity & Performance",
     prompt: "What percentage of your staff are currently working at or above capacity?",
     type: "numeric",
-    validationRules: { min: 0, max: 100 }
+    validationRules: { min: 0, max: 100 },
+    enableContext: true,
+    contextPrompt: "Please describe which departments or roles are most affected by capacity issues and any seasonal or cyclical patterns that impact staffing demands in your organization."
   },
   {
     id: "SCP_09",
@@ -380,7 +418,9 @@ export const CORE_QUESTIONS: Question[] = [
     section: "Structure, Capacity & Performance",
     prompt: "How many unfilled positions does your organization currently have?",
     type: "numeric",
-    validationRules: { min: 0, max: 500 }
+    validationRules: { min: 0, max: 500 },
+    enableContext: true,
+    contextPrompt: "Please describe which types of positions are hardest to fill, how long positions typically remain vacant, and any specific challenges with recruitment in your industry or location."
   },
   {
     id: "SCP_12",
@@ -411,9 +451,12 @@ export const CORE_QUESTIONS: Question[] = [
   {
     id: "SCP_16",
     section: "Structure, Capacity & Performance",
-    prompt: "Describe how your organization measures and improves operational efficiency.",
+    prompt: "Describe how your organization measures and improves operational efficiency. Please identify multiple approaches or metrics if applicable.",
     type: "text",
-    validationRules: { min: 50 }
+    validationRules: { min: 100, maxLength: 1600 },
+    helpText: "💡 Consider various efficiency approaches: (1) performance metrics and KPIs, (2) process analysis and optimization, (3) technology adoption and automation, (4) resource allocation and utilization, (5) time and motion studies, (6) cost-benefit analysis, (7) benchmarking against industry standards, (8) employee feedback and suggestions, (9) continuous improvement programs, (10) data analytics and reporting. Effective efficiency improvement typically involves multiple measurement and improvement strategies.",
+    enableContext: true,
+    contextPrompt: "If different departments use different efficiency measures or if certain improvements have been more successful, please provide additional context about what works best for your organization."
   },
   {
     id: "SCP_17",
@@ -481,9 +524,12 @@ export const CORE_QUESTIONS: Question[] = [
   {
     id: "PDS_06",
     section: "Professional Development & Support",
-    prompt: "Describe your organization's approach to onboarding new employees.",
+    prompt: "Describe your organization's approaches to onboarding new employees. Please identify multiple components or methods if applicable.",
     type: "text",
-    validationRules: { min: 50 }
+    validationRules: { min: 100, maxLength: 1800 },
+    helpText: "💡 Consider various onboarding elements: (1) pre-boarding communications, (2) orientation sessions, (3) role-specific training, (4) mentorship or buddy systems, (5) technology setup and access, (6) cultural integration activities, (7) goal setting and performance expectations, (8) department introductions, (9) feedback checkpoints, (10) extended support periods. Effective onboarding typically involves multiple touchpoints and methods.",
+    enableContext: true,
+    contextPrompt: "If different roles or departments have different onboarding experiences, or if certain aspects are more challenging, please provide additional context about variations or improvements needed."
   },
   {
     id: "PDS_07",
@@ -534,9 +580,12 @@ export const CORE_QUESTIONS: Question[] = [
   {
     id: "PDS_14",
     section: "Professional Development & Support",
-    prompt: "Describe your organization's strategy for knowledge transfer and succession planning.",
+    prompt: "Describe your organization's strategies for knowledge transfer and succession planning. Please identify multiple approaches or components if applicable.",
     type: "text",
-    validationRules: { min: 50 }
+    validationRules: { min: 100, maxLength: 1800 },
+    helpText: "💡 Consider various succession planning elements: (1) identification of key positions and talent, (2) leadership development programs, (3) cross-training and job rotation, (4) mentorship and coaching, (5) knowledge documentation, (6) emergency succession protocols, (7) internal promotion pathways, (8) external recruitment planning, (9) competency gap analysis, (10) timeline planning for transitions. Effective succession planning typically involves multiple strategic components.",
+    enableContext: true,
+    contextPrompt: "If certain roles are harder to fill or if succession planning varies by department or level, please provide additional context about specific challenges or successes."
   },
   {
     id: "PDS_15",
@@ -586,9 +635,12 @@ export const CORE_QUESTIONS: Question[] = [
   {
     id: "TDI_06",
     section: "Technology & Digital Infrastructure",
-    prompt: "Describe your organization's biggest technology challenge or limitation.",
+    prompt: "Describe your organization's key technology challenges or limitations. Please identify multiple areas if applicable.",
     type: "text",
-    validationRules: { min: 50 }
+    validationRules: { min: 100, maxLength: 1800 },
+    helpText: "Consider various technology areas: outdated systems, integration issues, security concerns, user training gaps, budget constraints, vendor management, data management, etc. List all significant technology challenges your organization faces.",
+    enableContext: true,
+    contextPrompt: "If technology challenges vary by department or have specific timelines for resolution, please provide additional details here."
   },
   {
     id: "TDI_07",
@@ -602,7 +654,9 @@ export const CORE_QUESTIONS: Question[] = [
     section: "Technology & Digital Infrastructure",
     prompt: "What percentage of your annual budget is allocated to technology and IT infrastructure?",
     type: "numeric",
-    validationRules: { min: 0, max: 50 }
+    validationRules: { min: 0, max: 50 },
+    enableContext: true,
+    contextPrompt: "Please provide details about how your technology budget is distributed (e.g., hardware, software licenses, staff, consulting) and any unique technology needs specific to your industry or organizational structure."
   },
   {
     id: "TDI_09",
@@ -693,10 +747,13 @@ export const CORE_QUESTIONS: Question[] = [
   {
     id: "AI_06",
     section: "AI & Automation Opportunities",
-    prompt: "Describe the specific administrative tasks in your organization that could benefit most from automation.",
+    prompt: "Describe the specific administrative tasks and processes in your organization that could benefit from automation. Please identify multiple areas if applicable.",
     type: "text",
     required: true,
-    validationRules: { min: 100 },
+    validationRules: { min: 100, maxLength: 2000 },
+    helpText: "💡 Consider various automation opportunities: (1) data entry and processing, (2) report generation, (3) scheduling and calendar management, (4) invoice processing, (5) employee onboarding workflows, (6) compliance reporting, (7) inventory management, (8) customer service inquiries, (9) HR processes, (10) financial reconciliation. List all tasks that involve repetitive, rule-based work.",
+    enableContext: true,
+    contextPrompt: "If automation opportunities vary significantly by department or if there are specific technical constraints or opportunities unique to your organization, please provide additional details here.",
     tags: ["ai-opportunity"]
   },
   {
@@ -724,9 +781,12 @@ export const CORE_QUESTIONS: Question[] = [
   {
     id: "AI_10",
     section: "AI & Automation Opportunities",
-    prompt: "Describe your organization's biggest concerns or barriers to AI adoption.",
+    prompt: "Describe your organization's key concerns or barriers to AI adoption. Please identify multiple barriers if applicable.",
     type: "text",
-    validationRules: { min: 50 },
+    validationRules: { min: 100, maxLength: 1500 },
+    helpText: "Consider various barriers: cost/budget, technical expertise, data privacy/security, staff resistance, regulatory concerns, unclear ROI, integration challenges, vendor selection, etc. Most organizations face multiple barriers to AI adoption.",
+    enableContext: true,
+    contextPrompt: "If certain barriers are more significant for specific departments or use cases, please elaborate here.",
     tags: ["ai-barriers"]
   }
 ];
@@ -765,14 +825,19 @@ export const MONTHLY_QUESTIONS: Question[] = [
     prompt: "How many new process improvements has your organization implemented in the past quarter?",
     type: "numeric",
     validationRules: { min: 0, max: 50 },
-    tierMinimum: "monthly-subscription"
+    tierMinimum: "monthly-subscription",
+    enableContext: true,
+    contextPrompt: "Please describe the types of process improvements (e.g., technology adoption, workflow changes, policy updates) and which departments or areas have seen the most improvement activity."
   },
   {
     id: "MT_05",
     section: "Progress Tracking & Trends",
-    prompt: "Describe the most significant operational change your organization has made recently.",
+    prompt: "Describe significant operational changes your organization has made recently. Please identify multiple changes if applicable.",
     type: "text",
-    validationRules: { min: 75 },
+    validationRules: { min: 100, maxLength: 1800 },
+    helpText: "💡 Consider various types of operational changes: (1) technology implementations, (2) process redesigns, (3) organizational restructuring, (4) policy updates, (5) service delivery changes, (6) facility modifications, (7) vendor/partnership changes, (8) workflow automation, (9) staff role changes. Most organizations implement multiple operational changes concurrently.",
+    enableContext: true,
+    contextPrompt: "If changes were implemented at different times or had varying levels of success across departments, please provide additional context about timing and outcomes.",
     tierMinimum: "monthly-subscription"
   },
   {
@@ -840,9 +905,12 @@ export const MONTHLY_QUESTIONS: Question[] = [
   {
     id: "MT_14",
     section: "Progress Tracking & Trends",
-    prompt: "Describe your organization's process for identifying and scaling successful innovations.",
+    prompt: "Describe your organization's processes for identifying and scaling successful innovations. Please identify multiple approaches or stages if applicable.",
     type: "text",
-    validationRules: { min: 75 },
+    validationRules: { min: 100, maxLength: 1600 },
+    helpText: "💡 Consider various innovation management processes: (1) idea generation and submission systems, (2) evaluation and selection criteria, (3) pilot program development and testing, (4) success measurement and validation, (5) resource allocation and funding decisions, (6) scaling planning and implementation, (7) stakeholder engagement and communication, (8) risk assessment and mitigation, (9) training and change management, (10) performance monitoring and optimization. Effective innovation management typically involves multiple systematic stages.",
+    enableContext: true,
+    contextPrompt: "If certain types of innovations are easier to identify or scale, or if different departments have varying success with innovation processes, please provide additional context about what drives successful innovation in your organization.",
     tierMinimum: "monthly-subscription"
   },
   {
@@ -895,9 +963,12 @@ export const COMPREHENSIVE_QUESTIONS: Question[] = [
   {
     id: "CP_05",
     section: "Strategic Scenario Analysis",
-    prompt: "Describe your organization's approach to risk assessment and mitigation planning.",
+    prompt: "Describe your organization's approaches to risk assessment and mitigation planning. Please identify multiple strategies or processes if applicable.",
     type: "text",
-    validationRules: { min: 100 },
+    validationRules: { min: 100, maxLength: 1800 },
+    helpText: "💡 Consider various risk management approaches: (1) risk identification and categorization, (2) probability and impact assessment, (3) mitigation strategies and controls, (4) contingency planning, (5) regular monitoring and review, (6) stakeholder communication, (7) insurance and financial protections, (8) business continuity planning, (9) scenario planning and stress testing, (10) compliance and regulatory risk management. Comprehensive risk management typically involves multiple integrated processes.",
+    enableContext: true,
+    contextPrompt: "If different types of risks require different approaches or if certain risks are particularly challenging for your organization, please provide additional context about your risk priorities and management challenges.",
     tierMinimum: "comprehensive-package",
     required: true
   },
@@ -966,9 +1037,12 @@ export const COMPREHENSIVE_QUESTIONS: Question[] = [
   {
     id: "CP_14",
     section: "Strategic Scenario Analysis",
-    prompt: "Describe your organization's methodology for validating and testing strategic scenarios.",
+    prompt: "Describe your organization's methodologies for validating and testing strategic scenarios. Please identify multiple approaches or processes if applicable.",
     type: "text",
-    validationRules: { min: 100 },
+    validationRules: { min: 100, maxLength: 1800 },
+    helpText: "💡 Consider various scenario validation approaches: (1) historical data analysis and back-testing, (2) expert consultation and peer review, (3) pilot programs and small-scale testing, (4) financial modeling and quantitative analysis, (5) stakeholder feedback and input gathering, (6) sensitivity analysis and stress testing, (7) external benchmarking and market research, (8) simulation and modeling tools, (9) cross-functional team evaluation, (10) iterative refinement and updates. Robust scenario planning typically involves multiple validation methods.",
+    enableContext: true,
+    contextPrompt: "If certain validation methods work better for different types of scenarios, or if resource constraints limit your validation approaches, please provide additional context about your scenario planning challenges and successes.",
     tierMinimum: "comprehensive-package"
   },
   {
@@ -1001,7 +1075,9 @@ export const ENTERPRISE_QUESTIONS: Question[] = [
     type: "numeric",
     validationRules: { min: 1, max: 1000 },
     tierMinimum: "enterprise-transformation",
-    required: true
+    required: true,
+    enableContext: true,
+    contextPrompt: "Please describe the nature of your locations/divisions (e.g., satellite campuses, regional offices, specialized facilities) and any unique operational differences between them."
   },
   {
     id: "ET_03",
@@ -1022,9 +1098,12 @@ export const ENTERPRISE_QUESTIONS: Question[] = [
   {
     id: "ET_05",
     section: "System-Wide Integration & Analytics",
-    prompt: "Describe your organization's approach to managing complexity across multiple locations or divisions.",
+    prompt: "Describe your organization's approaches to managing complexity across multiple locations or divisions. Please identify multiple strategies or frameworks if applicable.",
     type: "text",
-    validationRules: { min: 150 },
+    validationRules: { min: 150, maxLength: 2000 },
+    helpText: "💡 Consider various complexity management approaches: (1) standardized policies and procedures, (2) centralized vs. decentralized decision-making, (3) shared services and centers of excellence, (4) technology integration and common platforms, (5) communication and coordination mechanisms, (6) performance measurement and reporting systems, (7) cultural alignment initiatives, (8) governance structures and oversight, (9) resource allocation and budgeting processes, (10) change management and training programs. Large organizations typically employ multiple integrated strategies.",
+    enableContext: true,
+    contextPrompt: "If certain locations or divisions present unique challenges, or if some complexity management approaches work better than others, please provide additional context about what drives success or difficulties in your multi-location operations.",
     tierMinimum: "enterprise-transformation",
     required: true
   },
@@ -1088,14 +1167,19 @@ export const ENTERPRISE_QUESTIONS: Question[] = [
     type: "numeric",
     validationRules: { min: 0, max: 100 },
     tierMinimum: "enterprise-transformation",
-    tags: ["ai-adoption"]
+    tags: ["ai-adoption"],
+    enableContext: true,
+    contextPrompt: "Please describe the types of AI/automation tools in use (e.g., chatbots, predictive analytics, process automation) and how they're distributed across different departments or functions."
   },
   {
     id: "ET_14",
     section: "System-Wide Integration & Analytics",
-    prompt: "Describe your organization's strategy for scaling successful innovations across all locations.",
+    prompt: "Describe your organization's strategies for scaling successful innovations across all locations. Please identify multiple approaches or mechanisms if applicable.",
     type: "text",
-    validationRules: { min: 150 },
+    validationRules: { min: 150, maxLength: 2000 },
+    helpText: "💡 Consider various innovation scaling approaches: (1) pilot program evaluation and validation, (2) standardization and documentation processes, (3) training and change management programs, (4) resource allocation and funding mechanisms, (5) technology infrastructure and support, (6) performance measurement and success metrics, (7) communication and knowledge sharing, (8) local adaptation and customization, (9) leadership sponsorship and governance, (10) timeline and phased rollout planning. Effective scaling typically requires multiple coordinated strategies.",
+    enableContext: true,
+    contextPrompt: "If certain types of innovations are easier or harder to scale, or if some locations are more receptive to new innovations, please provide additional context about what factors drive successful scaling in your organization.",
     tierMinimum: "enterprise-transformation"
   },
   {
@@ -1140,9 +1224,12 @@ export const ENTERPRISE_QUESTIONS: Question[] = [
   {
     id: "ET_20",
     section: "System-Wide Integration & Analytics",
-    prompt: "Describe your organization's approach to enterprise-wide digital transformation and AI adoption.",
+    prompt: "Describe your organization's approaches to enterprise-wide digital transformation and AI adoption. Please identify multiple strategies or initiatives if applicable.",
     type: "text",
-    validationRules: { min: 200 },
+    validationRules: { min: 200, maxLength: 2200 },
+    helpText: "💡 Consider various digital transformation approaches: (1) strategic planning and roadmap development, (2) technology infrastructure modernization, (3) data integration and analytics platforms, (4) AI and automation implementation, (5) digital workflow and process redesign, (6) employee training and change management, (7) governance and oversight structures, (8) vendor partnerships and technology selection, (9) pilot programs and phased rollouts, (10) performance measurement and ROI tracking. Enterprise transformation typically requires multiple coordinated initiatives.",
+    enableContext: true,
+    contextPrompt: "If certain areas of your organization are further along in digital transformation or if specific technologies have been more successful, please provide additional context about your transformation journey and key learnings.",
     tierMinimum: "enterprise-transformation",
     tags: ["digital-transformation", "ai-strategy"]
   }
@@ -1181,9 +1268,12 @@ export const CONTEXTUAL_QUESTIONS: Question[] = [
   {
     id: "HE_04",
     section: "Academic Excellence & Student Success",
-    prompt: "Describe your institution's approach to personalized learning and adaptive educational technologies.",
+    prompt: "Describe your institution's approaches to personalized learning and adaptive educational technologies. Please identify multiple strategies or tools if applicable.",
     type: "text",
-    validationRules: { min: 100 },
+    validationRules: { min: 100, maxLength: 1800 },
+    helpText: "💡 Consider various personalized learning approaches: (1) adaptive learning platforms and software, (2) learning analytics and student progress tracking, (3) individualized learning paths and curricula, (4) AI-powered tutoring and support systems, (5) competency-based progression models, (6) multimedia and multimodal content delivery, (7) student self-assessment and reflection tools, (8) faculty training and support for personalization, (9) data-driven intervention and support services, (10) flexible scheduling and pacing options. Effective personalized learning typically combines multiple technologies and pedagogical approaches.",
+    enableContext: true,
+    contextPrompt: "If certain programs or student populations benefit more from personalized approaches, or if implementation challenges vary across departments, please provide additional context about what works best in your educational environment.",
     organizationTypes: ["higher-education"],
     tags: ["ai-opportunity", "personalization"]
   },
@@ -1225,9 +1315,12 @@ export const CONTEXTUAL_QUESTIONS: Question[] = [
   {
     id: "HC_04",
     section: "Patient Care & Clinical Excellence",
-    prompt: "Describe your organization's approach to predictive analytics and AI-assisted clinical decision support.",
+    prompt: "Describe your organization's approaches to predictive analytics and AI-assisted clinical decision support. Please identify multiple tools or applications if applicable.",
     type: "text",
-    validationRules: { min: 100 },
+    validationRules: { min: 100, maxLength: 1800 },
+    helpText: "💡 Consider various clinical AI applications: (1) risk prediction and early warning systems, (2) diagnostic assistance and imaging analysis, (3) treatment recommendation engines, (4) medication management and drug interaction alerts, (5) patient deterioration monitoring, (6) population health analytics, (7) clinical workflow optimization, (8) evidence-based practice integration, (9) quality improvement and outcome prediction, (10) personalized treatment planning. Healthcare AI typically involves multiple specialized applications across different clinical areas.",
+    enableContext: true,
+    contextPrompt: "If certain clinical areas or specialties have been more successful with AI implementation, or if specific tools have shown better outcomes, please provide additional context about your clinical AI journey and results.",
     organizationTypes: ["healthcare"],
     tags: ["ai-opportunity", "clinical-decision-support"]
   },
@@ -1268,9 +1361,12 @@ export const CONTEXTUAL_QUESTIONS: Question[] = [
   {
     id: "NP_04",
     section: "Mission Impact & Community Engagement",
-    prompt: "Describe your organization's approach to community engagement and stakeholder relationship management.",
+    prompt: "Describe your organization's approaches to community engagement and stakeholder relationship management. Please identify multiple strategies or methods if applicable.",
     type: "text",
-    validationRules: { min: 100 },
+    validationRules: { min: 100, maxLength: 1800 },
+    helpText: "💡 Consider various engagement approaches: (1) community outreach and education programs, (2) stakeholder advisory groups and committees, (3) social media and digital communication, (4) partnership development and collaboration, (5) volunteer recruitment and management, (6) donor and supporter engagement, (7) advocacy and policy work, (8) cultural competency and inclusivity initiatives, (9) feedback collection and responsiveness, (10) impact measurement and transparency. Effective community engagement typically involves multiple touchpoints and relationship-building strategies.",
+    enableContext: true,
+    contextPrompt: "If certain communities or stakeholder groups require different engagement approaches, or if some strategies have been more successful, please provide additional context about what works best for your organization's mission and community.",
     organizationTypes: ["nonprofit"]
   },
   {
@@ -1310,9 +1406,12 @@ export const CONTEXTUAL_QUESTIONS: Question[] = [
   {
     id: "CR_04",
     section: "Market Competitiveness & Innovation",
-    prompt: "Describe your organization's approach to digital transformation and AI integration in core business processes.",
+    prompt: "Describe your organization's approaches to digital transformation and AI integration in core business processes. Please identify multiple initiatives or areas if applicable.",
     type: "text",
-    validationRules: { min: 100 },
+    validationRules: { min: 100, maxLength: 1800 },
+    helpText: "💡 Consider various digital transformation areas: (1) customer experience and interface optimization, (2) supply chain and operations automation, (3) data analytics and business intelligence, (4) AI-powered decision making and recommendations, (5) process digitization and workflow automation, (6) digital marketing and sales enablement, (7) cybersecurity and data protection, (8) cloud infrastructure and scalability, (9) employee productivity and collaboration tools, (10) innovation and R&D acceleration. Business transformation typically involves multiple interconnected digital initiatives.",
+    enableContext: true,
+    contextPrompt: "If certain business areas or processes have been more successful with digital transformation, or if specific AI applications have delivered better ROI, please provide additional context about your digital strategy priorities and results.",
     organizationTypes: ["corporate"],
     tags: ["digital-transformation", "ai-strategy"]
   },
@@ -1354,9 +1453,12 @@ export const CONTEXTUAL_QUESTIONS: Question[] = [
   {
     id: "GV_04",
     section: "Public Service & Regulatory Compliance",
-    prompt: "Describe your organization's approach to transparency, accountability, and public engagement.",
+    prompt: "Describe your organization's approaches to transparency, accountability, and public engagement. Please identify multiple strategies or mechanisms if applicable.",
     type: "text",
-    validationRules: { min: 100 },
+    validationRules: { min: 100, maxLength: 1800 },
+    helpText: "💡 Consider various transparency and engagement approaches: (1) open data initiatives and public information access, (2) public meetings and community forums, (3) digital engagement platforms and online participation, (4) performance reporting and outcome transparency, (5) citizen feedback and complaint mechanisms, (6) participatory budgeting and decision-making, (7) social media and digital communication, (8) accessibility and multi-language services, (9) ethics and conflict of interest policies, (10) audit and oversight systems. Effective public engagement typically involves multiple channels and accountability mechanisms.",
+    enableContext: true,
+    contextPrompt: "If certain engagement methods work better with different community groups, or if transparency initiatives face specific challenges, please provide additional context about what has been most effective for your organization's public service mission.",
     organizationTypes: ["government"]
   },
   {
@@ -1374,9 +1476,44 @@ export const CONTEXTUAL_QUESTIONS: Question[] = [
  * NOW GUARANTEES 100+ QUESTIONS FOR EVERY TIER
  */
 export function getQuestionsForTier(
-  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
   organizationType: OrganizationType = 'higher-education'
 ): Question[] {
+  // Express Diagnostic gets a curated set of 60 core questions
+  if (tier === 'express-diagnostic') {
+    // Strategic selection of the most impactful questions from each core section
+    const essentialQuestions = CORE_QUESTIONS.filter(q => {
+      const questionNumber = parseInt(q.id.split('_')[1]);
+      
+      // Take first 12 from each major section for balanced coverage
+      if (q.section === 'Governance & Leadership' && questionNumber <= 12) return true;
+      if (q.section === 'Administrative Processes & Communication' && questionNumber <= 12) return true;
+      if (q.section === 'Structure, Capacity & Performance' && questionNumber <= 12) return true;
+      if (q.section === 'Professional Development & Support' && questionNumber <= 8) return true;
+      if (q.section === 'Technology & Digital Infrastructure' && questionNumber <= 8) return true;
+      if (q.section === 'AI & Automation Opportunities' && questionNumber <= 8) return true;
+      
+      return false;
+    }).slice(0, 55); // Ensure we don't exceed 55 core questions
+    
+    // Add 5 contextual questions for the specific organization type
+    const contextualQuestions = CONTEXTUAL_QUESTIONS.filter(q => 
+      !q.organizationTypes || q.organizationTypes.includes(organizationType)
+    ).slice(0, 5);
+    
+    const totalQuestions = [...essentialQuestions, ...contextualQuestions];
+    
+    // Ensure exactly 60 questions by padding with additional core questions if needed
+    if (totalQuestions.length < 60) {
+      const additionalQuestions = CORE_QUESTIONS
+        .filter(q => !totalQuestions.some(existing => existing.id === q.id))
+        .slice(0, 60 - totalQuestions.length);
+      totalQuestions.push(...additionalQuestions);
+    }
+    
+    return totalQuestions.slice(0, 60); // Cap at exactly 60 questions
+  }
+
   let questions = [...CORE_QUESTIONS]; // Starts with 100 questions
 
   // Add contextual questions based on organization type (5+ additional)
@@ -1403,6 +1540,7 @@ export function getQuestionsForTier(
     if (!q.tierMinimum) return true;
     
     const tierHierarchy = {
+      'express-diagnostic': 0,
       'one-time-diagnostic': 1,
       'monthly-subscription': 2,
       'comprehensive-package': 3,
@@ -1431,7 +1569,7 @@ export function getSectionsForTier(
  * Get only required questions for a tier and organization type
  */
 export function getRequiredQuestions(
-  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
   organizationType: OrganizationType = 'higher-education'
 ): Question[] {
   const allQuestions = getQuestionsForTier(tier, organizationType);
@@ -1442,7 +1580,7 @@ export function getRequiredQuestions(
  * Get AI and automation opportunity questions specifically
  */
 export function getAIOpportunityQuestions(
-  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
   organizationType: OrganizationType = 'higher-education'
 ): Question[] {
   const allQuestions = getQuestionsForTier(tier, organizationType);
@@ -1454,7 +1592,7 @@ export function getAIOpportunityQuestions(
  */
 export function validateAssessmentResponses(
   responses: Record<string, any>,
-  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
   organizationType: OrganizationType = 'higher-education'
 ): { valid: boolean; missingRequired: string[]; warningOptional: string[]; aiOpportunityScore: number } {
   const requiredQuestions = getRequiredQuestions(tier, organizationType);
@@ -1525,7 +1663,7 @@ export function getQuestionStats(
  */
 export function getAIReadinessAssessment(
   responses: Record<string, any>,
-  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
   organizationType: OrganizationType = 'higher-education'
 ): {
   readinessScore: number;

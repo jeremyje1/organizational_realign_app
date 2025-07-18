@@ -1,15 +1,33 @@
 export const ASSESSMENT_PRODUCTS = [
   {
+    id: 'express-diagnostic',
+    name: 'NorthPath Express Diagnostic',
+    description: 'Perfect for small teams, pilot initiatives, or getting quick organizational insights.',
+    tagline: 'Rapid Insight, Immediate Action',
+    features: [
+      '60‑question smart survey',
+      '6‑8 page organizational snapshot',
+      'Core index scores: OCI™, HOCI™, JCI™',
+      'One‑click org chart generator',
+      '30‑minute debrief call with strategist',
+      '2‑3 immediate action recommendations',
+      'Results within 3‑5 business days'
+    ],
+    price: 2495,
+    recommended: true,
+    stripeUrl: 'https://organizational-realign-app.vercel.app/api/stripe/create-tier-checkout?tier=express-diagnostic'
+  },
+  {
     id: 'one-time-diagnostic',
     name: 'One‑Time Diagnostic',
     description: 'Ideal for a single‑campus college, small hospital unit, or departmental pilot.',
     tagline: 'Best for Pilots',
     features: [
       '100‑item survey + secure file upload',
-      '12‑page PDF executive brief',
-      'OCI / HOCI / JCI scores',
-      '30‑min Q&A call with analyst',
-      'One‑Click Org‑Chart + 3 cost scenarios'
+      '15‑page comprehensive PDF analysis',
+      'OCI / HOCI / JCI scores + AI analysis',
+      '45‑min strategy consultation call',
+      'One‑Click Org‑Chart + scenario modeling'
     ],
     price: 4995,
     recommended: false,
@@ -29,7 +47,7 @@ export const ASSESSMENT_PRODUCTS = [
     ],
     price: 2995,
     isMonthly: true,
-    recommended: true,
+    recommended: false,
     stripeUrl: 'https://organizational-realign-app.vercel.app/api/stripe/create-tier-checkout?tier=monthly-subscription'
   },
   {

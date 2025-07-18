@@ -277,25 +277,38 @@ export default function QuickWinsAssessment({ onComplete, onUpgrade }: QuickWins
             <CardContent className="p-8">
               <h3 className="text-2xl font-bold mb-4">Ready for the Complete Analysis?</h3>
               <p className="text-lg text-blue-100 mb-6 max-w-2xl mx-auto">
-                This Quick Wins assessment only scratches the surface. Our comprehensive evaluation 
-                provides detailed implementation roadmaps, ROI projections, and industry-specific insights.
+                Based on your {Math.round(averageScore)}% organizational efficiency score and potential savings of{' '}
+                <strong>{overallInsights.totalPotentialSavings}</strong>, our <strong>Express Diagnostic</strong> can 
+                provide 60 targeted questions specifically focused on your <strong>{overallInsights.topPriority}</strong> challenges, 
+                detailed OCI™/HOCI™/JCI™ analysis, and a 30-minute strategy call—all for just $2,495.
               </p>
+              <div className="bg-white/10 rounded-lg p-4 mb-6 text-left max-w-md mx-auto">
+                <div className="text-yellow-300 font-semibold mb-2">🚀 Tailored to Your {overallInsights.topPriority} Focus:</div>
+                <ul className="text-sm text-blue-100 space-y-1">
+                  <li>✓ 60-question comprehensive survey targeting your weakest areas</li>
+                  <li>✓ 6-8 page organizational snapshot with {overallInsights.topPriority.toLowerCase()} deep-dive</li>
+                  <li>✓ Core diagnostic scores (OCI™, HOCI™, JCI™) with improvement roadmap</li>
+                  <li>✓ One-click org chart generator with efficiency recommendations</li>
+                  <li>✓ 30-minute strategist debrief focused on your {overallInsights.totalPotentialSavings} savings potential</li>
+                  <li>✓ Results in 3-5 business days with priority action items</li>
+                </ul>
+              </div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
-                  onClick={onUpgrade}
+                  onClick={() => window.location.href = '/api/stripe/create-tier-checkout?tier=express-diagnostic'}
                   size="lg"
-                  className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 text-lg font-semibold"
+                  className="bg-yellow-400 text-slate-800 hover:bg-yellow-300 px-8 py-3 text-lg font-semibold"
                 >
-                  Get Full Assessment
+                  Unlock {overallInsights.totalPotentialSavings} Savings - $2,495
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button
+                  onClick={onUpgrade}
                   variant="outline"
                   size="lg"
                   className="border-white text-white hover:bg-white/10 px-8 py-3"
-                  onClick={() => window.print()}
                 >
-                  Download Results
+                  View All Options
                 </Button>
               </div>
             </CardContent>

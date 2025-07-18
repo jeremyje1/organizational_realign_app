@@ -20,6 +20,16 @@ export interface StripeTierMapping {
 }
 
 export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
+  'express-diagnostic': {
+    tierKey: 'express-diagnostic',
+    stripeProductId: 'prod_express_diagnostic',
+    stripePriceId: (process.env.STRIPE_EXPRESS_DIAGNOSTIC_PRICE_ID || 'price_1RmCmsELd2WOuqIWeM0rb7Gx').trim(),
+    stripeMode: 'payment',
+    successRedirect: '/assessment/tier-based?tier=express-diagnostic',
+    cancelRedirect: '/upgrade?tier=express-diagnostic',
+    tierName: 'NorthPath Express Diagnostic',
+    tierPrice: 2495
+  },
   'one-time-diagnostic': {
     tierKey: 'one-time-diagnostic',
     stripeProductId: 'prod_diagnostic',

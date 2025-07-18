@@ -607,12 +607,12 @@ function TierBasedAssessmentContent() {
             <div className="bg-blue-50 p-4 rounded-lg">
               <h3 className="font-semibold text-blue-900 mb-2">What happens next:</h3>
               <ul className="text-sm text-blue-800 space-y-1 text-left">
-                {(tierConfig?.coreDeliverables || []).map((deliverable, index) => (
+                {tierConfig?.coreDeliverables?.map((deliverable, index) => (
                   <li key={index} className="flex items-start">
                     <span className="text-blue-600 mr-2 mt-0.5 flex-shrink-0">✓</span>
                     {deliverable}
                   </li>
-                ))}
+                )) || <li>Analysis will be completed within 3-5 business days</li>}
               </ul>
             </div>
             
@@ -624,7 +624,7 @@ function TierBasedAssessmentContent() {
             </div>
             
             <p className="text-sm text-gray-500">
-              <strong>Processing time:</strong> {tierConfig?.assessmentScope?.followUpSupport || 'Contact us for timeline'}
+              <strong>Processing time:</strong> {tierConfig?.assessmentScope?.followUpSupport || '3-5 business days'}
             </p>
             
             {/* Express Diagnostic Upsell Section */}
@@ -751,8 +751,8 @@ function TierBasedAssessmentContent() {
     );
   }
 
-  // Show loading until client-side mounting is complete
-  if (!mounted || !tierConfig) {
+  // Show loading until everything is properly initialized
+  if (!mounted || !tierConfig || !tierConfig.name) {
     return (
       <div className="max-w-6xl mx-auto p-6">
         <div className="mb-8">
@@ -1071,7 +1071,7 @@ function TierBasedAssessmentContent() {
               <h4 className="font-semibold mb-2">Assessment Scope:</h4>
               <ul className="text-sm space-y-1">
                 <li>• {tierConfig?.assessmentScope?.questionCount || 0} targeted questions</li>
-                <li>• {(tierConfig?.assessmentScope?.algorithms || []).join(', ') || 'Standard algorithms'} analysis algorithms</li>
+                <li>• {tierConfig?.assessmentScope?.algorithms?.join(', ') || 'Standard'} analysis algorithms</li>
                 <li>• {tierConfig?.assessmentScope?.reportPages || 0} page comprehensive report</li>
               </ul>
             </div>

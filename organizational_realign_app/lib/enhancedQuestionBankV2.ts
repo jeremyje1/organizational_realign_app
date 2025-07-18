@@ -10,6 +10,7 @@ export type OrganizationType = 'higher-education' | 'healthcare' | 'nonprofit' |
 export interface ValidationRules {
   min?: number;
   max?: number;
+  maxLength?: number;
   pattern?: string;
   required?: boolean;
 }

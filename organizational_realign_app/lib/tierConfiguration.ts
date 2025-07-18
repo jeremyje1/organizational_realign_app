@@ -6,7 +6,7 @@
  * @author NorthPath Strategies
  */
 
-export type PricingTier = 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation';
+export type PricingTier = 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation';
 
 export interface TierConfiguration {
   name: string;
@@ -44,6 +44,55 @@ export interface TierConfiguration {
 }
 
 export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
+  'express-diagnostic': {
+    name: 'NorthPath Express Diagnostic',
+    price: 2495,
+    targetCustomer: 'Small teams, pilot initiatives, or institutions looking for a quick, budget-friendly assessment',
+    coreDeliverables: [
+      '60-question smart survey focused on core functions',
+      'Quick-turnaround organizational snapshot (6-8 page PDF)',
+      'Core index scores: OCI™, HOCI™, JCI™',
+      'One-click org chart generator with efficiency insights',
+      '30-minute debrief call with NorthPath strategist',
+      'Immediate action recommendations (2-3 quick wins)',
+      'Results within 3-5 business days'
+    ],
+    assessmentScope: {
+      questionCount: 60,
+      sections: [
+        'Leadership Clarity', 
+        'Strategic Alignment',
+        'Communication Efficiency',
+        'Resource Deployment',
+        'Quick AI Opportunities'
+      ],
+      algorithms: ['OCI', 'HOCI', 'JCI'],
+      reportPages: 8,
+      followUpSupport: '30-min strategy debrief call'
+    },
+    features: {
+      uploadSupport: true,
+      dashboardRefresh: false,
+      customReporting: false,
+      powerBIEmbedded: false,
+      apiConnectors: false,
+      onSiteFacilitation: false,
+      progressAudits: false,
+      orgChartGenerator: true,
+      scenarioBuilder: false,
+      monteCarloSimulation: false,
+      realTimeCollaboration: false,
+      aiOpportunityAssessment: false,
+      aiReadinessScore: false,
+      automationRecommendations: false
+    },
+    guardrails: {
+      maxAssessments: 1,
+      maxUsers: 2,
+      dataRetentionMonths: 3
+    }
+  },
+
   'one-time-diagnostic': {
     name: 'One-Time Diagnostic',
     price: 4995,

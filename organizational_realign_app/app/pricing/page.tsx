@@ -44,18 +44,47 @@ export default function PricingPage() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Choose the Package That Fits Your Mission
+              Start with Our Express Diagnostic – Just $2,495
             </h1>
             <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              Whether you need a one‑time diagnostic or enterprise‑wide transformation, 
-              NorthPath has a tier designed to surface hidden capacity and realign your organization for impact.
+              Get rapid organizational insights in 3-5 days. Perfect for teams exploring transformation 
+              or needing quick wins before committing to comprehensive analysis.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+              <Button 
+                onClick={() => window.location.href = '/assessment/tier-based?tier=express-diagnostic&org=higher-education'}
+                className="bg-white text-blue-600 hover:bg-blue-50 font-semibold px-8 py-3 text-lg"
+              >
+                Start Express Diagnostic
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button 
+                variant="outline" 
+                className="border-white text-white hover:bg-white hover:text-blue-600 font-semibold px-8 py-3 text-lg"
+                onClick={() => {
+                  const element = document.getElementById('all-packages');
+                  element?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                View All Packages
+              </Button>
+            </div>
+            <p className="text-sm text-blue-200">
+              ⚡ Quick turnaround • 💡 Immediate action items • 🎯 Perfect for pilots
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Pricing Cards */}
-      <section className="container mx-auto px-4 py-16 -mt-8">
+      <section id="all-packages" className="container mx-auto px-4 py-16 -mt-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-slate-800 mb-4">All Assessment Packages</h2>
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            From rapid insights to enterprise transformation – choose the depth that matches your needs.
+          </p>
+        </div>
+        
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {ASSESSMENT_PRODUCTS.map((product, index) => (
             <motion.div
