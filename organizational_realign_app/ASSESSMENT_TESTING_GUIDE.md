@@ -4,29 +4,37 @@
 
 Use these URLs to test the full assessment experience for each tier and industry:
 
-### **ONE-TIME DIAGNOSTIC (Basic Tier)**
+### **EXPRESS DIAGNOSTIC (Quick Assessment)**
 
-- Higher Education: http://localhost:3001/assessment/tier-based?tier=one-time-diagnostic&org=higher-education
-- Healthcare: http://localhost:3001/assessment/tier-based?tier=one-time-diagnostic&org=healthcare
-- Nonprofit: http://localhost:3001/assessment/tier-based?tier=one-time-diagnostic&org=nonprofit
-- Corporate: http://localhost:3001/assessment/tier-based?tier=one-time-diagnostic&org=corporate
-- Government: http://localhost:3001/assessment/tier-based?tier=one-time-diagnostic&org=government
+- Higher Education: http://localhost:3000/assessment/tier-based?tier=express-diagnostic&org=higher-education
+- Healthcare: http://localhost:3000/assessment/tier-based?tier=express-diagnostic&org=healthcare
+- Nonprofit: http://localhost:3000/assessment/tier-based?tier=express-diagnostic&org=nonprofit
+- Corporate: http://localhost:3000/assessment/tier-based?tier=express-diagnostic&org=corporate
+- Government: http://localhost:3000/assessment/tier-based?tier=express-diagnostic&org=government
 
-### **TEAM COLLABORATION (Team Tier)**
+### **ESSENTIAL READINESS (Basic Tier)**
 
-- Higher Education: http://localhost:3001/assessment/tier-based?tier=team-collaboration&org=higher-education
-- Healthcare: http://localhost:3001/assessment/tier-based?tier=team-collaboration&org=healthcare
-- Nonprofit: http://localhost:3001/assessment/tier-based?tier=team-collaboration&org=nonprofit
-- Corporate: http://localhost:3001/assessment/tier-based?tier=team-collaboration&org=corporate
-- Government: http://localhost:3001/assessment/tier-based?tier=team-collaboration&org=government
+- Higher Education: http://localhost:3000/assessment/tier-based?tier=essential-readiness&org=higher-education
+- Healthcare: http://localhost:3000/assessment/tier-based?tier=essential-readiness&org=healthcare
+- Nonprofit: http://localhost:3000/assessment/tier-based?tier=essential-readiness&org=nonprofit
+- Corporate: http://localhost:3000/assessment/tier-based?tier=essential-readiness&org=corporate
+- Government: http://localhost:3000/assessment/tier-based?tier=essential-readiness&org=government
 
-### **ENTERPRISE TRANSFORMATION (Enterprise Tier)**
+### **ADVANCED STRATEGY (Team Tier)**
 
-- Higher Education: http://localhost:3001/assessment/tier-based?tier=enterprise-transformation&org=higher-education
-- Healthcare: http://localhost:3001/assessment/tier-based?tier=enterprise-transformation&org=healthcare
-- Nonprofit: http://localhost:3001/assessment/tier-based?tier=enterprise-transformation&org=nonprofit
-- Corporate: http://localhost:3001/assessment/tier-based?tier=enterprise-transformation&org=corporate
-- Government: http://localhost:3001/assessment/tier-based?tier=enterprise-transformation&org=government
+- Higher Education: http://localhost:3000/assessment/tier-based?tier=advanced-strategy&org=higher-education
+- Healthcare: http://localhost:3000/assessment/tier-based?tier=advanced-strategy&org=healthcare
+- Nonprofit: http://localhost:3000/assessment/tier-based?tier=advanced-strategy&org=nonprofit
+- Corporate: http://localhost:3000/assessment/tier-based?tier=advanced-strategy&org=corporate
+- Government: http://localhost:3000/assessment/tier-based?tier=advanced-strategy&org=government
+
+### **COMPREHENSIVE PACKAGE (Premium Tier)**
+
+- Higher Education: http://localhost:3000/assessment/tier-based?tier=comprehensive-package&org=higher-education
+- Healthcare: http://localhost:3000/assessment/tier-based?tier=comprehensive-package&org=healthcare
+- Nonprofit: http://localhost:3000/assessment/tier-based?tier=comprehensive-package&org=nonprofit
+- Corporate: http://localhost:3000/assessment/tier-based?tier=comprehensive-package&org=corporate
+- Government: http://localhost:3000/assessment/tier-based?tier=comprehensive-package&org=government
 
 ## 📋 **Testing Workflow**
 
@@ -45,9 +53,11 @@ For each combination above:
 
 - Answer all questions with realistic data relevant to your organization
 - Each tier has different question sets:
-  - **Basic**: ~100 questions (core assessment)
-  - **Team**: ~125 questions (includes collaboration features)
-  - **Enterprise**: ~175 questions (comprehensive analysis)
+  - **Express Diagnostic**: 60 questions (quick assessment)
+  - **One-Time Diagnostic**: 105 questions (comprehensive baseline)
+  - **Monthly Subscription**: 120 questions (ongoing monitoring)
+  - **Comprehensive Package**: 135 questions (board-ready analysis)
+  - **Enterprise Transformation**: 155 questions (full transformation planning)
 
 ### Step 3: File Uploads (if applicable)
 
@@ -68,35 +78,58 @@ For each combination above:
 
 To see all assessments and analyze them:
 
-1. **Admin Testing Panel**: http://localhost:3001/admin/testing
-2. **Admin Analytics**: http://localhost:3001/admin/analytics (password: admin123)
-3. **Individual Assessment Review**: http://localhost:3001/admin/assessment/[ASSESSMENT_ID]
+1. **Admin Testing Panel**: http://localhost:3000/admin/testing
+2. **Admin Analytics**: http://localhost:3000/admin/analytics (password: admin123)
+3. **Individual Assessment Review**: http://localhost:3000/admin/assessment/[ASSESSMENT_ID]
 
 ## 📊 **What You'll Get for Each Tier**
 
+### **Express Diagnostic ($2,495)**
+
+- 60-question streamlined assessment
+- 6-8 page organizational snapshot
+- Core diagnostic scores (OCI™, HOCI™, JCI™)
+- One-click org chart generator
+- 30-minute strategist debrief call
+- Results in 3-5 business days
+
 ### **One-Time Diagnostic ($4,995)**
 
-- Basic organizational assessment
-- Core efficiency analysis
-- High-level recommendations
-- Basic AI readiness score
+- 105-question comprehensive assessment
+- 15-page detailed analysis
+- AI opportunity identification
+- Basic automation recommendations
+- Advanced scenario modeling
+- 45-minute strategy consultation
 
-### **Team Collaboration ($12,000)**
+### **Monthly Subscription ($2,995/month)**
 
-- Everything in Basic +
-- Team collaboration analysis
-- Workflow optimization
+- Everything in One-Time Diagnostic +
+- 120 questions with ongoing monitoring
+- Unlimited assessments per month
 - Enhanced reporting
-- Team access features
+- Dashboard refresh & CSV exports
+- Monthly office-hours calls
+
+### **Comprehensive Package ($9,900)**
+
+- Everything in Monthly +
+- 135 questions with deeper analysis
+- 25-30 page AI narrative PDF
+- Board-ready reports
+- Advanced scenario modeling
+- 90-minute strategy session
 
 ### **Enterprise Transformation ($24,000)**
 
-- Everything in Team +
-- Comprehensive organizational analysis
+- Everything in Comprehensive +
+- 155 questions with full organizational analysis
+- 50-page comprehensive report
 - Advanced AI implementation planning
+- Real-time collaborative features
 - Custom scenario modeling
-- Executive-level insights
-- Priority implementation roadmap
+- On-site facilitation
+- Quarterly progress audits
 
 ## 🧪 **Testing Tips**
 
@@ -108,7 +141,7 @@ To see all assessments and analyze them:
 
 ## 📝 **Testing Checklist**
 
-- [ ] Test at least one assessment per tier (3 total)
+- [ ] Test at least one assessment per tier (5 total including Express Diagnostic)
 - [ ] Test your primary industry type
 - [ ] Upload relevant files during assessment
 - [ ] Complete all questions with realistic answers
@@ -141,9 +174,9 @@ When configured in production, clients receive:
 2. Set up verified sender domain
 3. Enable production email service
 
-## �🚀 **Production Testing**
+## 🚀 **Production Testing**
 
-For production testing, replace `localhost:3001` with:
-`https://organizational-realign-e51qrvaxy-jeremys-projects-73929cad.vercel.app`
+For production testing, replace `localhost:3000` with:
+`https://organizational-realign-70w8i52if-jeremys-projects-73929cad.vercel.app`
 
-Example: https://organizational-realign-e51qrvaxy-jeremys-projects-73929cad.vercel.app/assessment/tier-based?tier=enterprise-transformation&org=higher-education
+Example: https://organizational-realign-70w8i52if-jeremys-projects-73929cad.vercel.app/assessment/tier-based?tier=enterprise-transformation&org=higher-education
