@@ -10,6 +10,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -135,21 +136,30 @@ const TextInput = React.memo(({ question, value, onResponse }: {
     onResponse(question.id, e.target.value);
   }, [onResponse, question.id]);
 
+  const maxLength = question.validationRules?.maxLength || 1000; // Default to 1000 characters
+  const minLength = question.validationRules?.min || 0;
+  const currentLength = (value || '').length;
+  const rows = maxLength > 500 ? 6 : 4; // More rows for longer expected responses
+
   return (
     <div className="space-y-2">
       <textarea
         value={value || ''}
         onChange={handleChange}
-        rows={4}
-        maxLength={question.validationRules?.maxLength}
+        rows={rows}
+        maxLength={maxLength}
         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
-        placeholder="Enter your response here..."
+        placeholder={maxLength > 500 ? "Please provide detailed responses. You can list multiple items, challenges, or considerations..." : "Enter your response here..."}
       />
-      {question.validationRules?.maxLength && (
-        <p className="text-xs text-gray-500">
-          {(value || '').length} / {question.validationRules.maxLength} characters
-        </p>
-      )}
+      <div className="flex justify-between text-xs text-gray-500">
+        <span>
+          {currentLength} / {maxLength} characters
+          {minLength > 0 && ` (minimum: ${minLength})`}
+        </span>
+        {maxLength > 500 && (
+          <span className="text-blue-600">💡 Feel free to list multiple items or elaborate on different aspects</span>
+        )}
+      </div>
       {question.helpText && (
         <p className="text-xs text-gray-600">{question.helpText}</p>
       )}
@@ -157,6 +167,39 @@ const TextInput = React.memo(({ question, value, onResponse }: {
   );
 });
 TextInput.displayName = 'TextInput';
+
+const ContextInput = React.memo(({ question, value, onResponse }: { 
+  question: Question; 
+  value?: string; 
+  onResponse: (questionId: string, value: any) => void;
+}) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onResponse(`${question.id}_context`, e.target.value);
+  }, [onResponse, question.id]);
+
+  return (
+    <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <label className="block text-sm font-medium text-blue-900 mb-2">
+        📝 Provide Additional Context (Optional)
+      </label>
+      <p className="text-sm text-blue-700 mb-3">
+        {question.contextPrompt || "Please provide any additional context, variations across departments, or unique circumstances that would help us better understand your organization's situation."}
+      </p>
+      <textarea
+        value={value || ''}
+        onChange={handleChange}
+        rows={3}
+        maxLength={500}
+        className="w-full p-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical bg-white"
+        placeholder="Share additional details that help explain your response..."
+      />
+      <p className="text-xs text-blue-600 mt-1">
+        {(value || '').length} / 500 characters • This helps our AI provide more tailored analysis
+      </p>
+    </div>
+  );
+});
+ContextInput.displayName = 'ContextInput';
 
 const FileUpload = React.memo(({ 
   question, 
@@ -206,25 +249,116 @@ function TierBasedAssessmentContent() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [dataRestored, setDataRestored] = useState(false);
+  
+  // Initialize with URL params immediately to prevent hydration mismatches
+  const initialTier = useMemo(() => {
+    const tier = searchParams.get('tier');
+    const validTiers: PricingTier[] = ['express-diagnostic', 'one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
+    return validTiers.includes(tier as PricingTier) ? tier as PricingTier : 'express-diagnostic';
+  }, [searchParams]);
+  
+  const initialOrgType = useMemo(() => {
+    const orgType = searchParams.get('org');
+    const validOrgTypes: OrganizationType[] = ['higher-education', 'healthcare', 'nonprofit', 'corporate', 'government'];
+    return validOrgTypes.includes(orgType as OrganizationType) ? orgType as OrganizationType : 'higher-education';
+  }, [searchParams]);
+  
+  // Ensure component is mounted on client to prevent hydration issues
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // Validate URL parameters with fallbacks
+  const validateTier = (tier: string | null): PricingTier => {
+    const validTiers: PricingTier[] = ['express-diagnostic', 'one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
+    return validTiers.includes(tier as PricingTier) ? tier as PricingTier : 'express-diagnostic';
+  };
+  
+  const validateOrgType = (orgType: string | null): OrganizationType => {
+    const validOrgTypes: OrganizationType[] = ['higher-education', 'healthcare', 'nonprofit', 'corporate', 'government'];
+    return validOrgTypes.includes(orgType as OrganizationType) ? orgType as OrganizationType : 'higher-education';
+  };
   
   const [assessmentState, setAssessmentState] = useState<AssessmentState>({
     currentSection: 0,
     responses: {},
-    organizationType: (searchParams.get('orgType') as OrganizationType) || 'higher-education',
+    organizationType: initialOrgType,
     institutionName: '',
     contactEmail: '',
     contactName: '',
-    tier: (searchParams.get('tier') as PricingTier) || 'one-time-diagnostic',
+    tier: initialTier,
     uploadedFiles: [],
     isComplete: false,
     validationErrors: []
   });
-
-  // Get tier configuration and questions
-  const tierConfig = useMemo(() => 
-    getTierConfiguration(assessmentState.tier), 
-    [assessmentState.tier]
+  
+  // Auto-save functionality
+  const saveKey = useMemo(() => 
+    `assessment-draft-${assessmentState.tier}-${assessmentState.organizationType}`,
+    [assessmentState.tier, assessmentState.organizationType]
   );
+  
+  // Load saved assessment data on mount
+  useEffect(() => {
+    if (mounted && typeof window !== 'undefined') {
+      const savedData = localStorage.getItem(saveKey);
+      if (savedData) {
+        try {
+          const parsed = JSON.parse(savedData);
+          // Only restore if the tier and org type match current URL params
+          if (parsed.tier === assessmentState.tier && 
+              parsed.organizationType === assessmentState.organizationType) {
+            setAssessmentState(prev => ({
+              ...prev,
+              ...parsed,
+              isComplete: false, // Never restore as complete
+              validationErrors: [] // Clear any old errors
+            }));
+            
+            setDataRestored(true);
+            // Show notification that we restored data
+            console.log('Assessment progress restored from previous session');
+          }
+        } catch (e) {
+          console.warn('Could not restore assessment data:', e);
+        }
+      }
+    }
+  }, [mounted, assessmentState.tier, assessmentState.organizationType, saveKey]);
+  
+  // Auto-save assessment state changes (debounced)
+  useEffect(() => {
+    if (mounted && !assessmentState.isComplete) {
+      const timeoutId = setTimeout(() => {
+        const dataToSave = {
+          ...assessmentState,
+          lastSaved: new Date().toISOString()
+        };
+        localStorage.setItem(saveKey, JSON.stringify(dataToSave));
+      }, 2000); // Save 2 seconds after last change
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, [assessmentState, mounted, saveKey]);
+  
+  // Clear saved data when assessment is submitted successfully
+  const clearSavedData = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(saveKey);
+    }
+  }, [saveKey]);
+
+  // Get tier configuration and questions with safety checks
+  const tierConfig = useMemo(() => {
+    const config = getTierConfiguration(assessmentState.tier);
+    if (!config) {
+      console.error('Invalid tier configuration for:', assessmentState.tier);
+      return getTierConfiguration('one-time-diagnostic'); // fallback to default
+    }
+    return config;
+  }, [assessmentState.tier]);
   
   const questions = useMemo(() => 
     getQuestionsForTier(assessmentState.tier, assessmentState.organizationType),
@@ -292,6 +426,12 @@ function TierBasedAssessmentContent() {
       ...prev,
       currentSection: newSection
     }));
+
+    // Scroll to top of the page when navigating to a new section
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   const submitAssessment = async () => {
@@ -345,6 +485,7 @@ function TierBasedAssessmentContent() {
       
       if (response.ok) {
         console.log('Assessment submitted successfully:', result);
+        clearSavedData(); // Clear auto-saved draft data
         setAssessmentState(prev => ({ 
           ...prev, 
           isComplete: true,
@@ -413,6 +554,55 @@ function TierBasedAssessmentContent() {
               <strong>Processing time:</strong> {tierConfig.assessmentScope.followUpSupport}
             </p>
             
+            {/* Express Diagnostic Upsell Section */}
+            {assessmentState.tier === 'express-diagnostic' && (
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg border border-blue-200">
+                <h3 className="font-bold text-blue-900 mb-3 text-lg">🚀 Ready to Go Deeper?</h3>
+                <p className="text-blue-800 mb-4">
+                  Your Express Diagnostic has identified key areas for improvement. Take the next step with our comprehensive assessments for deeper insights and actionable roadmaps.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div className="bg-white p-4 rounded-lg border border-blue-100">
+                    <h4 className="font-semibold text-blue-900 mb-2">One-Time Diagnostic</h4>
+                    <p className="text-2xl font-bold text-green-600 mb-1">$4,995</p>
+                    <p className="text-sm text-blue-700 mb-2">100+ questions • 15-page report • AI analysis</p>
+                    <ul className="text-xs text-blue-600 space-y-1">
+                      <li>✓ Complete organizational analysis</li>
+                      <li>✓ Advanced AI opportunity identification</li>
+                      <li>✓ 45-min strategy consultation</li>
+                    </ul>
+                  </div>
+                  
+                  <div className="bg-white p-4 rounded-lg border border-purple-100">
+                    <h4 className="font-semibold text-purple-900 mb-2">Monthly Subscription</h4>
+                    <p className="text-2xl font-bold text-green-600 mb-1">$2,995/mo</p>
+                    <p className="text-sm text-purple-700 mb-2">Unlimited assessments • Dashboard • ROI modeling</p>
+                    <ul className="text-xs text-purple-600 space-y-1">
+                      <li>✓ Perfect for iterative improvement</li>
+                      <li>✓ Track progress over time</li>
+                      <li>✓ Monthly strategy calls</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Button
+                    onClick={() => window.location.href = `/assessment/tier-based?tier=one-time-diagnostic&org=${assessmentState.organizationType}`}
+                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700"
+                  >
+                    Upgrade to One-Time Diagnostic
+                  </Button>
+                  <Button
+                    onClick={() => window.location.href = `/assessment/tier-based?tier=monthly-subscription&org=${assessmentState.organizationType}`}
+                    className="px-6 py-3 bg-purple-600 hover:bg-purple-700"
+                  >
+                    Start Monthly Subscription
+                  </Button>
+                </div>
+              </div>
+            )}
+            
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
               <Button
@@ -429,6 +619,14 @@ function TierBasedAssessmentContent() {
               >
                 Start New Assessment
               </Button>
+              {(assessmentState.tier === 'express-diagnostic' || assessmentState.tier === 'one-time-diagnostic' || assessmentState.tier === 'monthly-subscription') && (
+                <Button
+                  onClick={() => window.location.href = `/assessment/tier-based?tier=comprehensive-package&org=${assessmentState.organizationType}`}
+                  className="px-6 py-3 bg-green-600 hover:bg-green-700"
+                >
+                  Upgrade to Comprehensive
+                </Button>
+              )}
               {assessmentState.tier !== 'enterprise-transformation' && (
                 <Button
                   onClick={() => window.location.href = `/assessment/tier-based?tier=enterprise-transformation&org=${assessmentState.organizationType}`}
@@ -480,6 +678,30 @@ function TierBasedAssessmentContent() {
     );
   }
 
+  // Show loading until client-side mounting is complete
+  if (!mounted) {
+    return (
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Organizational Assessment - Loading...
+              </h1>
+              <p className="text-gray-600 mt-2">Preparing your assessment</p>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-center min-h-96">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading assessment...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
@@ -520,7 +742,13 @@ function TierBasedAssessmentContent() {
             return (
               <button
                 key={section}
-                onClick={() => setAssessmentState(prev => ({ ...prev, currentSection: index }))}
+                onClick={() => {
+                  setAssessmentState(prev => ({ ...prev, currentSection: index }));
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                  });
+                }}
                 className={`px-3 py-2 text-sm rounded-lg transition-colors ${
                   index === assessmentState.currentSection
                     ? 'bg-blue-600 text-white'
@@ -538,6 +766,22 @@ function TierBasedAssessmentContent() {
           })}
         </div>
       </div>
+
+      {/* Restored Data Notification */}
+      {dataRestored && (
+        <Alert className="mb-6 bg-blue-50 border-blue-200">
+          <span className="text-blue-600 mr-2">🔄</span>
+          <AlertDescription className="text-blue-800">
+            Welcome back! We've restored your previous assessment progress. You can continue where you left off.
+            <button 
+              onClick={() => setDataRestored(false)}
+              className="ml-2 text-blue-600 underline text-sm"
+            >
+              Dismiss
+            </button>
+          </AlertDescription>
+        </Alert>
+      )}
 
       {/* Error Messages */}
       {assessmentState.validationErrors.length > 0 && (
@@ -667,22 +911,56 @@ function TierBasedAssessmentContent() {
                   uploadedFiles={assessmentState.uploadedFiles}
                 />
               )}
+              
+              {/* Context Input - Available for all question types when enabled */}
+              {question.enableContext && (
+                <ContextInput 
+                  key={`context-input-${question.id}`}
+                  question={question} 
+                  value={assessmentState.responses[`${question.id}_context`]}
+                  onResponse={handleResponse}
+                />
+              )}
             </CardContent>
           </Card>
         ))}
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-between mt-8">
-        <Button
-          onClick={() => navigateSection('prev')}
-          disabled={assessmentState.currentSection === 0}
-          variant="outline"
-        >
-          Previous Section
-        </Button>
+      <div className="flex justify-between items-center mt-8">
+        <div className="flex items-center space-x-4">
+          <Button
+            onClick={() => navigateSection('prev')}
+            disabled={assessmentState.currentSection === 0}
+            variant="outline"
+          >
+            Previous Section
+          </Button>
+          
+          {/* Auto-save status */}
+          <div className="text-sm text-gray-500 flex items-center">
+            <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+            Progress auto-saved
+          </div>
+        </div>
         
-        <div className="space-x-4">
+        <div className="space-x-4 flex items-center">
+          {/* Manual save button */}
+          <Button
+            onClick={() => {
+              const dataToSave = {
+                ...assessmentState,
+                lastSaved: new Date().toISOString()
+              };
+              localStorage.setItem(saveKey, JSON.stringify(dataToSave));
+              alert('Assessment progress saved! You can return to complete it later.');
+            }}
+            variant="outline"
+            size="sm"
+          >
+            💾 Save Progress
+          </Button>
+          
           {assessmentState.currentSection === sectionNames.length - 1 ? (
             <Button
               onClick={submitAssessment}
