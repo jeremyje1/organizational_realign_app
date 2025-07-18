@@ -587,6 +587,24 @@ function TierBasedAssessmentContent() {
   };
 
   if (assessmentState.isComplete) {
+    // Additional safety check for success state
+    if (!tierConfig || !tierConfig.name) {
+      return (
+        <div className="max-w-4xl mx-auto p-6">
+          <Card>
+            <CardHeader className="text-center">
+              <div className="text-6xl text-green-500 mx-auto mb-4">✅</div>
+              <CardTitle className="text-2xl text-green-700">Assessment Complete!</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-gray-600">Your assessment has been submitted successfully.</p>
+              <p className="text-sm text-gray-500 mt-4">Processing time: 3-5 business days</p>
+            </CardContent>
+          </Card>
+        </div>
+      );
+    }
+    
     return (
       <div className="max-w-4xl mx-auto p-6">
         <Card>
@@ -770,6 +788,25 @@ function TierBasedAssessmentContent() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
             <p className="mt-4 text-gray-600">Loading assessment...</p>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Additional safety check - if tierConfig is somehow still incomplete, provide fallback
+  if (!tierConfig || typeof tierConfig !== 'object' || !tierConfig.name) {
+    console.error('TierConfig is invalid:', tierConfig);
+    return (
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Configuration Error</h1>
+          <p className="text-gray-600 mb-4">Unable to load assessment configuration. Please try refreshing the page.</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Refresh Page
+          </button>
         </div>
       </div>
     );
