@@ -352,12 +352,85 @@ function TierBasedAssessmentContent() {
 
   // Get tier configuration and questions with safety checks
   const tierConfig = useMemo(() => {
-    const config = getTierConfiguration(assessmentState.tier);
-    if (!config) {
-      console.error('Invalid tier configuration for:', assessmentState.tier);
-      return getTierConfiguration('one-time-diagnostic'); // fallback to default
+    try {
+      const config = getTierConfiguration(assessmentState.tier);
+      if (!config) {
+        console.error('Invalid tier configuration for:', assessmentState.tier);
+        // Always return a valid config as fallback
+        return getTierConfiguration('express-diagnostic') || {
+          name: 'Express Diagnostic',
+          price: 2495,
+          targetCustomer: 'Default assessment tier',
+          coreDeliverables: ['Assessment and analysis'],
+          assessmentScope: {
+            questionCount: 60,
+            sections: ['General Assessment'],
+            algorithms: ['OCI'],
+            reportPages: 8,
+            followUpSupport: '30-min consultation'
+          },
+          features: {
+            uploadSupport: true,
+            dashboardRefresh: false,
+            customReporting: false,
+            powerBIEmbedded: false,
+            apiConnectors: false,
+            onSiteFacilitation: false,
+            progressAudits: false,
+            orgChartGenerator: true,
+            scenarioBuilder: false,
+            monteCarloSimulation: false,
+            realTimeCollaboration: false,
+            aiOpportunityAssessment: false,
+            aiReadinessScore: false,
+            automationRecommendations: false
+          },
+          guardrails: {
+            maxAssessments: 1,
+            maxUsers: 2,
+            dataRetentionMonths: 3
+          }
+        };
+      }
+      return config;
+    } catch (error) {
+      console.error('Error getting tier configuration:', error);
+      // Fallback to express-diagnostic if all else fails
+      return {
+        name: 'Express Diagnostic',
+        price: 2495,
+        targetCustomer: 'Default assessment tier',
+        coreDeliverables: ['Assessment and analysis'],
+        assessmentScope: {
+          questionCount: 60,
+          sections: ['General Assessment'],
+          algorithms: ['OCI'],
+          reportPages: 8,
+          followUpSupport: '30-min consultation'
+        },
+        features: {
+          uploadSupport: true,
+          dashboardRefresh: false,
+          customReporting: false,
+          powerBIEmbedded: false,
+          apiConnectors: false,
+          onSiteFacilitation: false,
+          progressAudits: false,
+          orgChartGenerator: true,
+          scenarioBuilder: false,
+          monteCarloSimulation: false,
+          realTimeCollaboration: false,
+          aiOpportunityAssessment: false,
+          aiReadinessScore: false,
+          automationRecommendations: false
+        },
+        guardrails: {
+          maxAssessments: 1,
+          maxUsers: 2,
+          dataRetentionMonths: 3
+        }
+      };
     }
-    return config;
   }, [assessmentState.tier]);
   
   const questions = useMemo(() => 
@@ -528,13 +601,13 @@ function TierBasedAssessmentContent() {
           </CardHeader>
           <CardContent className="text-center space-y-6">
             <p className="text-gray-600">
-              Your {tierConfig.name} assessment has been submitted successfully.
+              Your {tierConfig?.name || 'assessment'} assessment has been submitted successfully.
             </p>
             
             <div className="bg-blue-50 p-4 rounded-lg">
               <h3 className="font-semibold text-blue-900 mb-2">What happens next:</h3>
               <ul className="text-sm text-blue-800 space-y-1 text-left">
-                {tierConfig.coreDeliverables.map((deliverable, index) => (
+                {(tierConfig?.coreDeliverables || []).map((deliverable, index) => (
                   <li key={index} className="flex items-start">
                     <span className="text-blue-600 mr-2 mt-0.5 flex-shrink-0">✓</span>
                     {deliverable}
@@ -551,7 +624,7 @@ function TierBasedAssessmentContent() {
             </div>
             
             <p className="text-sm text-gray-500">
-              <strong>Processing time:</strong> {tierConfig.assessmentScope.followUpSupport}
+              <strong>Processing time:</strong> {tierConfig?.assessmentScope?.followUpSupport || 'Contact us for timeline'}
             </p>
             
             {/* Express Diagnostic Upsell Section */}
@@ -679,7 +752,7 @@ function TierBasedAssessmentContent() {
   }
 
   // Show loading until client-side mounting is complete
-  if (!mounted) {
+  if (!mounted || !tierConfig) {
     return (
       <div className="max-w-6xl mx-auto p-6">
         <div className="mb-8">
@@ -709,16 +782,16 @@ function TierBasedAssessmentContent() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
-              Organizational Assessment - {tierConfig.name}
+              Organizational Assessment - {tierConfig?.name || 'Loading...'}
             </h1>
-            <p className="text-gray-600 mt-2">{tierConfig.targetCustomer}</p>
+            <p className="text-gray-600 mt-2">{tierConfig?.targetCustomer || 'Preparing assessment...'}</p>
           </div>
           <div className="text-right">
             <Badge variant="secondary" className="mb-2">
               <span className="mr-1">💰</span>
-              ${tierConfig.price.toLocaleString()}
+              ${tierConfig?.price?.toLocaleString() || '0'}
             </Badge>
-            <p className="text-sm text-gray-500">{tierConfig.assessmentScope.reportPages} page report</p>
+            <p className="text-sm text-gray-500">{tierConfig?.assessmentScope?.reportPages || 0} page report</p>
           </div>
         </div>
 
@@ -990,26 +1063,26 @@ function TierBasedAssessmentContent() {
       {/* Tier Features Summary */}
       <Card className="mt-8">
         <CardHeader>
-          <CardTitle className="text-lg">Your {tierConfig.name} Package Includes:</CardTitle>
+          <CardTitle className="text-lg">Your {tierConfig?.name || 'Assessment'} Package Includes:</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <h4 className="font-semibold mb-2">Assessment Scope:</h4>
               <ul className="text-sm space-y-1">
-                <li>• {tierConfig.assessmentScope.questionCount} targeted questions</li>
-                <li>• {tierConfig.assessmentScope.algorithms.join(', ')} analysis algorithms</li>
-                <li>• {tierConfig.assessmentScope.reportPages} page comprehensive report</li>
+                <li>• {tierConfig?.assessmentScope?.questionCount || 0} targeted questions</li>
+                <li>• {(tierConfig?.assessmentScope?.algorithms || []).join(', ') || 'Standard algorithms'} analysis algorithms</li>
+                <li>• {tierConfig?.assessmentScope?.reportPages || 0} page comprehensive report</li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-2">Included Features:</h4>
               <ul className="text-sm space-y-1">
-                {tierConfig.features.uploadSupport && <li>• Secure file upload capability</li>}
-                {tierConfig.features.dashboardRefresh && <li>• Dashboard refresh & CSV exports</li>}
-                {tierConfig.features.powerBIEmbedded && <li>• Power BI embedded dashboards</li>}
-                {tierConfig.features.scenarioBuilder && <li>• Scenario modeling tools</li>}
-                {tierConfig.features.monteCarloSimulation && <li>• Monte Carlo simulations</li>}
+                {tierConfig?.features?.uploadSupport && <li>• Secure file upload capability</li>}
+                {tierConfig?.features?.dashboardRefresh && <li>• Dashboard refresh & CSV exports</li>}
+                {tierConfig?.features?.powerBIEmbedded && <li>• Power BI embedded dashboards</li>}
+                {tierConfig?.features?.scenarioBuilder && <li>• Scenario modeling tools</li>}
+                {tierConfig?.features?.monteCarloSimulation && <li>• Monte Carlo simulations</li>}
               </ul>
             </div>
           </div>
