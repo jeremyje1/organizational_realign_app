@@ -1,0 +1,6 @@
+Position_ID,Unit_ID,Title,FTE,Salary,Benefits_%,Vacant_YN
+P001,U001,Software Engineer,1.0,95000,25,N
+P002,U001,Senior Developer,1.0,120000,25,N
+P003,U002,Project Manager,1.0,85000,25,Y
+P004,U002,Business Analyst,0.8,70000,25,N
+P005,U003,Data Scientist,1.0,105000,25,N

@@ -246,6 +246,58 @@ function AssessmentResultsContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Handler for downloading the full report
+  const handleDownloadReport = async () => {
+    try {
+      if (!algoResult) {
+        alert('Please wait for the assessment results to load before downloading the report.');
+        return;
+      }
+
+      const response = await fetch('/api/reports/generate-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          analysis: {
+            assessmentId,
+            score: algoResult.score,
+            tier: algoResult.tier,
+            recommendations: algoResult.recommendations,
+            sectionScores: algoResult.sectionScores,
+            assessmentData
+          }
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate report');
+      }
+
+      // Download the PDF
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `organizational-analysis-${assessmentId || 'report'}-${new Date().toISOString().split('T')[0]}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading report:', error);
+      alert('Failed to download report. Please try again.');
+    }
+  };
+
+  // Handler for scheduling a consultation
+  const handleScheduleConsultation = () => {
+    // Open consultation scheduling in a new tab
+    const consultationUrl = 'https://calendly.com/northpath-strategies/consultation';
+    window.open(consultationUrl, '_blank');
+  };
+
   useEffect(() => {
     if (!assessmentId) {
       setError('No assessment ID provided');
@@ -641,7 +693,10 @@ function AssessmentResultsContent() {
           {/* Action Buttons */}
           <div className="text-center space-y-6 animate-slide-up" style={{animationDelay: '0.6s'}}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
+              <Button 
+                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                onClick={() => handleDownloadReport()}
+              >
                 <Download className="h-4 w-4 mr-2" />
                 Download Full Report
               </Button>
@@ -649,7 +704,7 @@ function AssessmentResultsContent() {
               <Button 
                 variant="outline"
                 className="bg-slate-700/30 hover:bg-slate-600/50 text-slate-200 border-slate-600/50"
-                onClick={() => window.location.href = '/contact'}
+                onClick={() => handleScheduleConsultation()}
               >
                 <Calendar className="h-4 w-4 mr-2" />
                 Schedule Consultation
