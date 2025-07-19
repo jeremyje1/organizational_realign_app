@@ -1,15 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { Lock, Shield, ArrowLeft, Eye, EyeOff } from 'lucide-react';
-import { PageContainer } from '@/components/ui/page-container';
-import { PageHero } from '@/components/ui/page-hero';
-import { NpsCard } from '@/components/ui/nps-card';
-import { NpsButton } from '@/components/ui/nps-button';
 
 export default function SecureAssessmentAccess() {
   const [password, setPassword] = useState('');
@@ -17,31 +11,95 @@ export default function SecureAssessmentAccess() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // Get redirect parameters
+  const redirect = searchParams.get('redirect');
+  const assessmentId = searchParams.get('assessmentId');
 
   // Development password - in production, this should be handled more securely
   const ASSESSMENT_PASSWORD = 'northpath2025';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('Form submitted!');
+    console.log('Password entered:', password);
+    console.log('Expected password:', ASSESSMENT_PASSWORD);
+    console.log('Redirect param:', redirect);
+    console.log('Assessment ID param:', assessmentId);
+    
     setLoading(true);
     setError('');
 
-    // Simulate authentication delay
+    // Authenticate and redirect
     setTimeout(() => {
+      console.log('Checking password...');
       if (password === ASSESSMENT_PASSWORD) {
+        console.log('Password is correct!');
+        
         // Set authorization flag in sessionStorage
         sessionStorage.setItem('assessment_authorized', 'true');
-        router.push('/assessment/start');
+        console.log('Session storage set');
+        
+        // Determine redirect URL
+        let redirectUrl = '/assessment/start'; // default
+        
+        if (redirect === 'results' && assessmentId) {
+          redirectUrl = `/assessment/results?assessmentId=${assessmentId}`;
+          console.log('Will redirect to results page:', redirectUrl);
+        } else if (redirect === 'admin' && assessmentId) {
+          redirectUrl = `/admin/assessment/${assessmentId}`;
+          console.log('Will redirect to admin page:', redirectUrl);
+        } else {
+          console.log('Will redirect to start page:', redirectUrl);
+        }
+        
+        console.log('Final redirect URL:', redirectUrl);
+        
+        // Perform redirect
+        try {
+          window.location.href = redirectUrl;
+          console.log('Redirect initiated');
+        } catch (error) {
+          console.error('Redirect failed:', error);
+          setError('Redirect failed. Please try again.');
+          setLoading(false);
+        }
       } else {
+        console.log('Password is incorrect');
         setError('Invalid password. Please try again.');
+        setLoading(false);
       }
-      setLoading(false);
-    }, 1000);
+    }, 500);
   };
 
+  // Get appropriate title and subtitle based on redirect type
+  const getPageInfo = () => {
+    if (redirect === 'results') {
+      return {
+        title: 'Access Assessment Results',
+        subtitle: 'Enter your access credentials to view your analysis'
+      };
+    } else if (redirect === 'admin') {
+      return {
+        title: 'Admin Access Required',
+        subtitle: 'Enter admin credentials to view assessment details'
+      };
+    } else {
+      return {
+        title: 'Secure Assessment Access',
+        subtitle: 'Enter your access credentials to continue'
+      };
+    }
+  };
+
+  const pageInfo = getPageInfo();
+
   return (
-    <div className="min-h-screen flex items-center justify-center py-12">
-      <PageContainer className="max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12">
+      <div className="max-w-md w-full mx-4">
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <Image
@@ -54,29 +112,35 @@ export default function SecureAssessmentAccess() {
         </div>
 
         {/* Header */}
-        <PageHero
-          title="Secure Assessment Access"
-          subtitle="Enter your access credentials to continue"
-          icon="🔒"
-          className="mb-8"
-        />
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{pageInfo.title}</h1>
+          <p className="text-gray-600">{pageInfo.subtitle}</p>
+        </div>
+
+        {/* Assessment Info Card */}
+        {assessmentId && (
+          <div className="mb-6">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <p className="text-blue-800 text-sm font-medium">
+                <span className="font-semibold">Assessment ID:</span> {assessmentId}
+              </p>
+              {redirect === 'results' && (
+                <p className="text-blue-700 text-xs mt-1">
+                  Your personalized analysis and recommendations are ready for review.
+                </p>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Form Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <NpsCard className="p-8">
-            <form onSubmit={handleSubmit} className="space-y-6 w-full">
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="password" className="block text-sm font-semibold text-nps-slate mb-3">
+                <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-3">
                   Assessment Password
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-nps-slate/50" />
-                  </div>
                   <input
                     id="password"
                     name="password"
@@ -84,86 +148,58 @@ export default function SecureAssessmentAccess() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-nps bg-white focus:outline-none focus:ring-2 focus:ring-nps-blue/50 focus:border-nps-blue text-nps-slate placeholder-gray-400 transition-all duration-200"
+                    className="block w-full py-3 px-4 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400"
                     placeholder="Enter your password"
                   />
                   <button
                     type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm text-blue-600 hover:text-blue-800"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5 text-nps-slate/50 hover:text-nps-slate transition-colors" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-nps-slate/50 hover:text-nps-slate transition-colors" />
-                    )}
+                    {showPassword ? 'Hide' : 'Show'}
                   </button>
                 </div>
+              </div>            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <p className="text-red-600 text-sm font-medium text-center">{error}</p>
               </div>
+            )}
 
-              {error && (
-                <motion.div 
-                  className="bg-red-50 border border-red-200 rounded-nps p-4"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <p className="text-red-600 text-sm font-medium text-center">{error}</p>
-                </motion.div>
-              )}
-
-              <NpsButton
-                type="submit"
-                disabled={loading}
-                size="lg"
-                className="w-full py-4"
-              >
-                {loading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Verifying Access...
-                  </>
-                ) : (
-                  <>
-                    <Shield className="h-5 w-5 mr-2" />
-                    Access Assessment
-                  </>
-                )}
-              </NpsButton>
-            </form>
-
-            <motion.div 
-              className="mt-6 text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex items-center justify-center py-4 px-6 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors duration-200"
             >
-              <Link 
-                href="/" 
-                className="inline-flex items-center gap-2 text-nps-slate hover:text-nps-blue font-medium transition-colors group"
-              >
-                <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-                Back to Home
-              </Link>
-            </motion.div>
-          </NpsCard>
-        </motion.div>
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Verifying Access...
+                </>
+              ) : (
+                'Access Assessment'
+              )}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <Link 
+              href="/" 
+              className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-600 font-medium transition-colors"
+            >
+              ← Back to Home
+            </Link>
+          </div>
+        </div>
 
         {/* Security Notice */}
-        <motion.div 
-          className="mt-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-        >
-          <div className="bg-blue-50/50 rounded-nps p-4 border border-blue-200/50 text-center">
-            <p className="text-sm text-nps-slate">
-              <Lock className="inline h-4 w-4 mr-1" />
+        <div className="mt-6 text-center">
+          <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+            <p className="text-xs text-gray-500">
               Your session is secured with enterprise-grade encryption
             </p>
           </div>
-        </motion.div>
-      </PageContainer>
+        </div>
+      </div>
     </div>
   );
 }

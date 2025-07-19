@@ -28,14 +28,18 @@ class EmailNotifications {
   private baseUrl: string;
   private fromEmail: string;
   private fromName: string;
+  private supportEmail: string;
+  private calendlyUrl: string;
   private isProduction: boolean;
   private nodemailerTransporter: any;
 
   constructor() {
     this.apiKey = process.env.SENDGRID_API_KEY || '';
-    this.baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://northpathstrategies.org';
+    this.baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://app.northpathstrategies.org';
     this.fromEmail = process.env.FROM_EMAIL || 'info@northpathstrategies.org';
     this.fromName = process.env.FROM_NAME || 'NorthPath Strategies';
+    this.supportEmail = process.env.SUPPORT_EMAIL || 'support@northpathstrategies.org';
+    this.calendlyUrl = process.env.CALENDLY_URL || 'https://calendly.com/jeremy-estrella-northpath';
     // Use SendGrid if API key is available, regardless of environment
     this.isProduction = !!this.apiKey;
     
@@ -276,7 +280,7 @@ class EmailNotifications {
     const template = this.getAssessmentSubmissionTemplate(params);
     
     return this.sendEmail({
-      to: { email: 'support@northpathstrategies.org', name: 'NorthPath Support Team' },
+      to: { email: this.supportEmail, name: 'NorthPath Support Team' },
       subject: template.subject,
       html: template.html,
       text: template.text,
@@ -305,6 +309,31 @@ class EmailNotifications {
       html: template.html,
       text: template.text,
       category: 'assessment-confirmation'
+    });
+  }
+
+  /**
+   * Send assessment results with analysis to client
+   */
+  async sendAssessmentResults(params: {
+    clientEmail: string;
+    clientName?: string;
+    assessmentId: string;
+    tier: string;
+    organizationType: string;
+    institutionName: string;
+    analysisData?: any; // The actual analysis results
+    recommendationsPreview?: string;
+    overallScore?: number;
+  }): Promise<boolean> {
+    const template = this.getAssessmentResultsTemplate(params);
+    
+    return this.sendEmail({
+      to: { email: params.clientEmail, name: params.clientName || 'Valued Client' },
+      subject: template.subject,
+      html: template.html,
+      text: template.text,
+      category: 'assessment-results'
     });
   }
 
@@ -900,7 +929,7 @@ Assessment ID: ${assessmentId}
         </div>
         
         <div style="text-align: center; margin: 20px 0;">
-          <a href="${this.baseUrl}/admin/assessments/${assessmentId}" 
+          <a href="${this.baseUrl}/assessment/secure-access?redirect=admin&assessmentId=${assessmentId}" 
              style="background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
             View Assessment Details
           </a>
@@ -928,7 +957,7 @@ Assessment Details:
 ACTION REQUIRED:
 This assessment submission requires processing. Please review the data in the admin dashboard and prepare the analysis report.
 
-View assessment details: ${this.baseUrl}/admin/assessments/${assessmentId}
+View assessment details: ${this.baseUrl}/assessment/secure-access?redirect=admin&assessmentId=${assessmentId}
 
 © ${new Date().getFullYear()} NorthPath Strategies. All rights reserved.
     `;
@@ -1075,7 +1104,7 @@ View assessment details: ${this.baseUrl}/admin/assessments/${assessmentId}
         </div>
         
         <div style="text-align: center; margin: 20px 0;">
-          <a href="${this.baseUrl}/assessment/results?assessmentId=${assessmentId}" 
+          <a href="${this.baseUrl}/assessment/secure-access?redirect=results&assessmentId=${assessmentId}" 
              style="background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
             Check Results Status
           </a>
@@ -1092,7 +1121,7 @@ View assessment details: ${this.baseUrl}/admin/assessments/${assessmentId}
             </div>
             <div>
               <strong style="color: #333;">📅 Schedule Consultation:</strong><br>
-              <a href="${this.baseUrl}/contact" style="color: #3b82f6;">Book a Strategy Session</a>
+              <a href="${this.calendlyUrl}" style="color: #3b82f6;">Book a Strategy Session</a>
             </div>
           </div>
         </div>
@@ -1141,8 +1170,8 @@ EXPECTED TIMELINE:
 
 NEED ASSISTANCE?
 - Email: support@northpathstrategies.org
-- Schedule Consultation: ${this.baseUrl}/contact
-- Check Results: ${this.baseUrl}/assessment/results?assessmentId=${assessmentId}
+- Schedule Consultation: ${this.calendlyUrl}
+- Check Results: ${this.baseUrl}/assessment/secure-access?redirect=results&assessmentId=${assessmentId}
 
 Keep this email for your records. Your Assessment ID is: ${assessmentId}
 
@@ -1222,6 +1251,168 @@ Keep this email for your records. Your Assessment ID is: ${assessmentId}
     return planFeatures.map(feature => 
       `<div class="feature"><span class="checkmark">✔️</span>${feature}</div>`
     ).join('');
+  }
+
+  /**
+   * Generate assessment results email template with actual analysis for clients
+   */
+  private getAssessmentResultsTemplate(params: {
+    assessmentId: string;
+    tier: string;
+    organizationType: string;
+    institutionName: string;
+    analysisData?: any;
+    recommendationsPreview?: string;
+    overallScore?: number;
+  }): EmailTemplate {
+    const { assessmentId, tier, organizationType, institutionName, analysisData, recommendationsPreview, overallScore } = params;
+    
+    const tierDisplayNames = {
+      'one-time-diagnostic': 'One-Time Diagnostic',
+      'monthly-subscription': 'Monthly Subscription',
+      'comprehensive-package': 'Comprehensive Package',
+      'enterprise-transformation': 'Enterprise Transformation',
+      'basic-organizational-health': 'Basic Organizational Health'
+    };
+
+    const subject = `🎯 Your Organizational Assessment Results Are Ready - ${institutionName}`;
+    
+    // Generate score display
+    const scoreDisplay = overallScore ? `${Math.round(overallScore * 100)}%` : 'Analysis Complete';
+    const scoreColor = overallScore ? (overallScore > 0.7 ? '#10b981' : overallScore > 0.5 ? '#f59e0b' : '#ef4444') : '#3b82f6';
+    
+    // Generate basic analysis summary if no detailed data provided
+    const analysisSummary = analysisData ? JSON.stringify(analysisData, null, 2) : `
+      Based on your responses, we've identified key areas for organizational improvement and growth opportunities.
+      Your assessment reveals insights into leadership effectiveness, operational efficiency, and cultural alignment.
+    `;
+
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img src="${this.baseUrl}/images/NorthPath_logo_optimized.jpg" alt="NorthPath Strategies" style="max-width: 200px;">
+        </div>
+        
+        <div style="background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 20px; margin-bottom: 20px; border-radius: 4px;">
+          <h2 style="color: #065f46; margin: 0 0 10px 0;">🎉 Your Assessment Results Are Ready!</h2>
+          <p style="color: #065f46; margin: 0; font-size: 16px;">Your comprehensive organizational analysis has been completed and is available for review.</p>
+        </div>
+        
+        <div style="background-color: #f9f9f9; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+          <h3 style="color: #333; margin-top: 0;">Assessment Overview</h3>
+          
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Institution:</td>
+              <td style="padding: 8px 0; color: #333;">${institutionName}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Assessment ID:</td>
+              <td style="padding: 8px 0; color: #333; font-family: monospace;">${assessmentId}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Package:</td>
+              <td style="padding: 8px 0; color: #333;">${tierDisplayNames[tier as keyof typeof tierDisplayNames] || tier}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Organization Type:</td>
+              <td style="padding: 8px 0; color: #333;">${organizationType}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Overall Score:</td>
+              <td style="padding: 8px 0; color: ${scoreColor}; font-weight: bold; font-size: 18px;">${scoreDisplay}</td>
+            </tr>
+          </table>
+        </div>
+
+        ${recommendationsPreview ? `
+        <div style="background-color: #fff7ed; border-left: 4px solid #f59e0b; padding: 20px; margin-bottom: 20px; border-radius: 4px;">
+          <h3 style="color: #92400e; margin: 0 0 15px 0;">🎯 Key Recommendations Preview</h3>
+          <p style="color: #92400e; margin: 0; font-size: 14px; line-height: 1.5;">${recommendationsPreview}</p>
+        </div>
+        ` : ''}
+
+        <div style="background-color: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin-bottom: 20px; border-radius: 4px;">
+          <h3 style="color: #1e40af; margin: 0 0 15px 0;">📊 Analysis Summary</h3>
+          <div style="color: #1e40af; font-size: 14px; line-height: 1.6;">
+            <p>${analysisSummary}</p>
+          </div>
+        </div>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${this.baseUrl}/assessment/secure-access?redirect=results&assessmentId=${assessmentId}" 
+             style="background-color: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px;">
+            📋 View Full Results & Analysis
+          </a>
+        </div>
+        
+        <div style="background-color: #f3f4f6; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h3 style="color: #333; margin-top: 0;">🚀 Next Steps</h3>
+          <div style="color: #555;">
+            <p style="margin-bottom: 10px;"><strong>1. Review Your Complete Analysis:</strong> Click the button above to access your full report with detailed insights and recommendations.</p>
+            <p style="margin-bottom: 10px;"><strong>2. Schedule a Strategy Session:</strong> Book a consultation to discuss implementation of your personalized recommendations.</p>
+            <p style="margin-bottom: 0;"><strong>3. Begin Implementation:</strong> Our team will provide ongoing support as you implement the recommended changes.</p>
+          </div>
+          
+          <div style="text-align: center; margin-top: 20px;">
+            <a href="${this.calendlyUrl}" style="background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+              📅 Schedule Strategy Session
+            </a>
+          </div>
+        </div>
+        
+        <div style="background-color: #f3f4f6; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h3 style="color: #333; margin-top: 0;">💬 Questions or Support</h3>
+          <p style="color: #555; margin-bottom: 15px;">Our expert team is available to help you understand and implement your results.</p>
+          
+          <div>
+            <strong style="color: #333;">📧 Email Support:</strong><br>
+            <a href="mailto:support@northpathstrategies.org" style="color: #3b82f6;">support@northpathstrategies.org</a>
+          </div>
+        </div>
+        
+        <div style="text-align: center; color: #888; font-size: 14px; margin-top: 30px;">
+          <p><strong>NorthPath Strategies</strong> - Organizational Realignment & Optimization</p>
+          <p>&copy; ${new Date().getFullYear()} NorthPath Strategies. All rights reserved.</p>
+          <p style="font-size: 12px; margin-top: 10px;">
+            Assessment ID: <strong>${assessmentId}</strong> | Results valid for 12 months
+          </p>
+        </div>
+      </div>
+    `;
+    
+    const text = `
+ASSESSMENT RESULTS READY - ${institutionName}
+
+Your comprehensive organizational analysis has been completed!
+
+Assessment Overview:
+- Institution: ${institutionName}
+- Assessment ID: ${assessmentId}
+- Package: ${tierDisplayNames[tier as keyof typeof tierDisplayNames] || tier}
+- Organization Type: ${organizationType}
+- Overall Score: ${scoreDisplay}
+
+${recommendationsPreview ? `Key Recommendations Preview:
+${recommendationsPreview}` : ''}
+
+Analysis Summary:
+${analysisSummary}
+
+NEXT STEPS:
+1. View Full Results: ${this.baseUrl}/assessment/secure-access?redirect=results&assessmentId=${assessmentId}
+2. Schedule Strategy Session: ${this.calendlyUrl}
+3. Begin Implementation with our team's support
+
+SUPPORT:
+- Email: support@northpathstrategies.org
+- Results are valid for 12 months
+
+Assessment ID: ${assessmentId}
+NorthPath Strategies - Organizational Realignment & Optimization
+    `;
+
+    return { subject, html, text };
   }
 }
 

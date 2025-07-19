@@ -1,6 +1,0 @@
-Unit_ID,Parent_ID,Name,Type,Location
-U001,,Engineering,Department,Building A
-U002,U001,Software Development,Team,Building A - Floor 2
-U003,U001,Data Analytics,Team,Building A - Floor 3
-U004,,Marketing,Department,Building B
-U005,U004,Digital Marketing,Team,Building B - Floor 1
