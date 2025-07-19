@@ -31,9 +31,27 @@ const TIER_ACCESS_CONTROL = {
   '/collaboration': ['TEAM', 'ENTERPRISE']
 };
 
+// Define admin routes that require special authentication
+const ADMIN_ROUTES = [
+  '/admin',
+  '/admin/assessment',
+  '/admin/analytics',
+  '/admin/testing'
+];
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hostname = request.headers.get('host');
+  
+  // Check for admin route access
+  const isAdminRoute = ADMIN_ROUTES.some(route => pathname.startsWith(route));
+  if (isAdminRoute && pathname !== '/admin/login') {
+    // For admin routes, redirect to admin login if not authenticated
+    const adminToken = request.cookies.get('admin-token')?.value;
+    if (adminToken !== 'stardynamics1124*') {
+      return NextResponse.redirect(new URL('/admin/login', request.url));
+    }
+  }
   
   // Skip redirects for local development
   if (hostname?.includes('localhost') || hostname?.includes('127.0.0.1')) {

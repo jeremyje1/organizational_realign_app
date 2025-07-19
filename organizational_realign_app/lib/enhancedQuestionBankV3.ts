@@ -1286,7 +1286,7 @@ export const CONTEXTUAL_QUESTIONS: Question[] = [
     tags: ["ai-readiness", "faculty-development"]
   },
 
-  // Healthcare Specific
+  // Healthcare Specific - Replacing education-specific questions with healthcare-relevant content
   {
     id: "HC_01",
     section: "Patient Care & Clinical Excellence",
@@ -1331,6 +1331,131 @@ export const CONTEXTUAL_QUESTIONS: Question[] = [
     type: "likert",
     organizationTypes: ["healthcare"],
     tags: ["ai-readiness", "clinical-training"]
+  },
+  {
+    id: "HC_06",
+    section: "Patient Experience & Support Services",
+    prompt: "Patient support services are integrated across the care continuum and provide comprehensive assistance.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    required: true,
+    helpText: "Patient support services include case management, social work, discharge planning, financial counseling, and patient advocacy."
+  },
+  {
+    id: "HC_07",
+    section: "Patient Experience & Support Services", 
+    prompt: "Patient satisfaction scores consistently meet or exceed national benchmarks.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    tags: ["patient-satisfaction", "quality-metrics"]
+  },
+  {
+    id: "HC_08",
+    section: "Patient Experience & Support Services",
+    prompt: "Care coordination processes effectively manage patient transitions between departments and levels of care.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    tags: ["care-coordination", "patient-flow"]
+  },
+  {
+    id: "HC_09",
+    section: "Clinical Operations & Quality Management",
+    prompt: "Clinical programs and care pathways are regularly reviewed and updated based on evidence-based practices.",
+    type: "likert", 
+    organizationTypes: ["healthcare"],
+    required: true,
+    helpText: "Regular review of clinical programs ensures alignment with best practices and quality standards."
+  },
+  {
+    id: "HC_10",
+    section: "Clinical Operations & Quality Management",
+    prompt: "Quality improvement initiatives are systematically implemented across all clinical departments.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    tags: ["quality-improvement", "clinical-excellence"]
+  },
+  {
+    id: "HC_11",
+    section: "Medical Staff & Professional Development",
+    prompt: "Clinical staff development programs include continuing education and competency training.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    required: true,
+    helpText: "Ongoing professional development is essential for maintaining clinical competency and patient safety."
+  },
+  {
+    id: "HC_12",
+    section: "Medical Staff & Professional Development", 
+    prompt: "Medical staff credentialing and privileging processes are efficient and up-to-date.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    tags: ["credentialing", "medical-staff"]
+  },
+  {
+    id: "HC_13",
+    section: "Regulatory Compliance & Safety",
+    prompt: "The organization consistently maintains compliance with all relevant healthcare regulations and accreditation standards.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    required: true,
+    tags: ["compliance", "regulatory", "accreditation"]
+  },
+  {
+    id: "HC_14",
+    section: "Regulatory Compliance & Safety",
+    prompt: "Patient safety protocols are systematically implemented and regularly updated.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    tags: ["patient-safety", "protocols"]
+  },
+  {
+    id: "HC_15",
+    section: "Revenue Cycle & Financial Operations",
+    prompt: "Revenue cycle processes from registration through collection are optimized for efficiency.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    required: true,
+    tags: ["revenue-cycle", "financial-operations"]
+  },
+  {
+    id: "HC_16",
+    section: "Clinical Technology & EHR Systems",
+    prompt: "Clinical information systems support seamless information sharing across all departments.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    tags: ["clinical-systems", "information-sharing"]
+  },
+  {
+    id: "HC_17", 
+    section: "Clinical Technology & EHR Systems",
+    prompt: "AI-powered clinical decision support tools are integrated into daily workflows.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    tags: ["ai-integration", "clinical-decision-support"]
+  },
+  {
+    id: "HC_18",
+    section: "Population Health & Community Outreach",
+    prompt: "Community health programs effectively address population health needs in our service area.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    tags: ["population-health", "community-outreach"]
+  },
+  {
+    id: "HC_19",
+    section: "Population Health & Community Outreach",
+    prompt: "Preventive care initiatives are systematically implemented and tracked for effectiveness.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    tags: ["preventive-care", "population-health"]
+  },
+  {
+    id: "HC_20",
+    section: "Clinical Operations & Quality Management",
+    prompt: "Length of stay and readmission rates are consistently monitored and optimized.",
+    type: "likert",
+    organizationTypes: ["healthcare"],
+    tags: ["clinical-metrics", "quality-improvement"]
   },
 
   // Nonprofit Specific
@@ -1561,7 +1686,11 @@ export function getSectionsForTier(
   organizationType: OrganizationType = 'higher-education'
 ): string[] {
   const questions = getQuestionsForTier(tier, organizationType);
-  const sections = [...new Set(questions.map(q => q.section))];
+  const sectionSet: { [key: string]: boolean } = {};
+  questions.forEach(q => {
+    sectionSet[q.section] = true;
+  });
+  const sections = Object.keys(sectionSet);
   return sections.sort();
 }
 

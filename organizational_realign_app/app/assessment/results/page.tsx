@@ -12,9 +12,12 @@ import {
   Calendar,
   BarChart3,
   Target,
-  Award
+  Award,
+  Zap
 } from 'lucide-react';
 import { calcScoreV21 } from '@/lib/algorithm/score';
+import { aiPartnershipService, type PlatformPortfolio } from '@/lib/ai-partnership-service';
+import AIRecommendationsDisplay from '@/components/ai/AIRecommendationsDisplay';
 
 // Generate recommendations based on algorithm result and answers
 const generateRecommendations = (algoResult: any, answers: any) => {
@@ -234,6 +237,17 @@ const getAIAutomationRecommendation = (industry: string, overallScore: number) =
   };
 };
 
+// Helper function to estimate budget based on organization size
+const getEstimatedBudget = (orgSize: string): number => {
+  const budgets = {
+    small: 100000,      // $100k
+    medium: 500000,     // $500k
+    large: 1500000,     // $1.5M
+    enterprise: 5000000 // $5M
+  };
+  return budgets[orgSize as keyof typeof budgets] || budgets.medium;
+};
+
 function AssessmentResultsContent() {
   const searchParams = useSearchParams();
   const assessmentId = searchParams.get('assessmentId');
@@ -245,6 +259,7 @@ function AssessmentResultsContent() {
   const [algoResult, setAlgoResult] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [aiRecommendations, setAiRecommendations] = useState<PlatformPortfolio | null>(null);
 
   // Handler for downloading the full report
   const handleDownloadReport = async () => {
@@ -296,6 +311,26 @@ function AssessmentResultsContent() {
     // Open consultation scheduling in a new tab
     const consultationUrl = 'https://calendly.com/northpath-strategies/consultation';
     window.open(consultationUrl, '_blank');
+  };
+
+  // Handler for requesting AI platform demo
+  const handleRequestDemo = (platform: string) => {
+    // Track the demo request
+    console.log(`Demo requested for platform: ${platform}`);
+    
+    // Open consultation form with pre-filled platform interest
+    const consultationUrl = `https://calendly.com/northpath-strategies/consultation?platform=${encodeURIComponent(platform)}`;
+    window.open(consultationUrl, '_blank');
+  };
+
+  // Handler for viewing platform details
+  const handleViewDetails = (platform: string) => {
+    // Track the detail view
+    console.log(`Details viewed for platform: ${platform}`);
+    
+    // For now, scroll to consultation section
+    // In future, could open a detailed modal or dedicated page
+    handleScheduleConsultation();
   };
 
   useEffect(() => {
@@ -421,10 +456,35 @@ function AssessmentResultsContent() {
           // Generate recommendations based on algorithm result
           const recommendations = generateRecommendations(result, answers);
           
-          setAlgoResult({
+          const enhancedResult = {
             ...result,
             recommendations
-          });
+          };
+          
+          setAlgoResult(enhancedResult);
+
+          // Generate AI platform recommendations if Professional or Enterprise tier
+          if (result.tier !== 'basic') {
+            try {
+              const organizationType = assessmentData?.organization_type?.toLowerCase() || 'corporate';
+              const orgSize = assessmentData?.company_size || 'medium';
+              const aiReadiness = result.sectionScores?.tech_fit || 0.5;
+              const estimatedBudget = getEstimatedBudget(orgSize);
+              
+              const platformRecommendations = aiPartnershipService.generateRecommendations(
+                organizationType,
+                orgSize as 'small' | 'medium' | 'large' | 'enterprise',
+                aiReadiness,
+                estimatedBudget,
+                result.tier
+              );
+              
+              setAiRecommendations(platformRecommendations);
+              console.log('AI platform recommendations generated:', platformRecommendations);
+            } catch (error) {
+              console.error('Error generating AI platform recommendations:', error);
+            }
+          }
         })
         .catch(error => {
           console.error('Algorithm error:', error);
@@ -689,6 +749,26 @@ function AssessmentResultsContent() {
               )}
             </div>
           </div>
+
+          {/* AI Platform Recommendations */}
+          {aiRecommendations && (algoResult?.tier === 'professional' || algoResult?.tier === 'enterprise') && (
+            <div className="mb-12 animate-slide-up" style={{animationDelay: '0.6s'}}>
+              <h2 className="text-2xl font-bold text-slate-100 mb-6 flex items-center gap-2">
+                <Zap className="h-6 w-6 text-yellow-400" />
+                AI Platform Recommendations
+              </h2>
+              
+              <div className="bg-slate-800/20 rounded-xl p-6 border border-slate-600/30">
+                <AIRecommendationsDisplay
+                  recommendations={aiRecommendations}
+                  tier={algoResult.tier}
+                  organizationType={assessmentData?.organization_type || 'corporate'}
+                  onRequestDemo={handleRequestDemo}
+                  onViewDetails={handleViewDetails}
+                />
+              </div>
+            </div>
+          )}
 
           {/* Action Buttons */}
           <div className="text-center space-y-6 animate-slide-up" style={{animationDelay: '0.6s'}}>

@@ -81,7 +81,20 @@ export async function POST(request: NextRequest) {
         'Predictive modeling'
       ],
       timeline: '6-12 months',
-      investment: 'moderate'
+      investment: 'moderate',
+      // NEW: Partnership transparency framework
+      partnershipDisclosure: {
+        hasPartnerRecommendations: true,
+        disclaimer: "NorthPath Strategies maintains strategic partnerships with select AI vendors. All recommendations are based on your organizational assessment and industry benchmarks. We may receive compensation for successful implementations.",
+        methodology: "Platform recommendations are generated using proprietary algorithms that prioritize organizational fit, technical compatibility, and expected ROI. Commercial relationships do not influence core assessment scores.",
+        independence: "Client success takes precedence over partnership revenue. Alternative solutions are always provided for comparison.",
+        partnerBenefits: [
+          "Preferred pricing and implementation support",
+          "Direct technical liaison for faster deployment",
+          "Ongoing optimization and success tracking",
+          "Priority customer support channels"
+        ]
+      }
     };
 
     // Save analysis results to database
@@ -638,7 +651,34 @@ function generateAIOpportunityAssessment(responses: AssessmentResponse[], tier: 
             description: 'Integrated AI platform for organization-wide automation and insights',
             potentialSavings: '$150,000 - $400,000 annually',
             implementation: 'High complexity, 12-24 months',
-            confidence: 0.88
+            confidence: 0.88,
+            // NEW: Platform recommendations with partnerships
+            platformRecommendations: {
+              primary: {
+                name: 'Microsoft Power Platform + AI Builder',
+                category: 'Enterprise Low-Code AI',
+                bestFor: 'Organizations with existing Microsoft infrastructure',
+                priceRange: '$40-$60/user/month',
+                expectedROI: '$200,000 - $400,000 annually',
+                partnershipType: 'Certified Partner',
+                implementationSupport: true,
+                partnerDiscount: '15% first year'
+              },
+              alternatives: [
+                {
+                  name: 'Salesforce Einstein Platform',
+                  category: 'CRM-Centric AI',
+                  priceRange: '$150-$300/user/month',
+                  expectedROI: '$180,000 - $350,000 annually'
+                },
+                {
+                  name: 'Google Cloud AI Platform',
+                  category: 'Cloud-Native AI',
+                  priceRange: 'Usage-based pricing',
+                  expectedROI: '$160,000 - $320,000 annually'
+                }
+              ]
+            }
           },
           {
             area: 'Workforce Augmentation',
@@ -646,7 +686,33 @@ function generateAIOpportunityAssessment(responses: AssessmentResponse[], tier: 
             description: 'AI tools to enhance employee productivity and decision-making',
             potentialSavings: '$75,000 - $200,000 annually',
             implementation: 'Medium-high complexity, 8-16 months',
-            confidence: 0.82
+            confidence: 0.82,
+            // NEW: Platform recommendations
+            platformRecommendations: {
+              primary: {
+                name: 'Microsoft 365 Copilot',
+                category: 'Productivity AI',
+                bestFor: 'Knowledge workers and administrative staff',
+                priceRange: '$30/user/month',
+                expectedROI: '$100,000 - $200,000 annually',
+                partnershipType: 'Certified Partner',
+                implementationSupport: true
+              },
+              alternatives: [
+                {
+                  name: 'OpenAI ChatGPT Enterprise',
+                  category: 'Conversational AI',
+                  priceRange: '$25/user/month',
+                  expectedROI: '$80,000 - $180,000 annually'
+                },
+                {
+                  name: 'Anthropic Claude for Business',
+                  category: 'AI Assistant',
+                  priceRange: 'Custom pricing',
+                  expectedROI: '$75,000 - $160,000 annually'
+                }
+              ]
+            }
           }
         ],
         recommendations: [
