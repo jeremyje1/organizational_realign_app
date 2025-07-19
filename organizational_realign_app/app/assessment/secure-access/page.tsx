@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function SecureAssessmentAccess() {
+function SecureAssessmentAccessContent() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -201,5 +201,21 @@ export default function SecureAssessmentAccess() {
         </div>
       </div>
     </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+    </div>
+  );
+}
+
+export default function SecureAssessmentAccess() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <SecureAssessmentAccessContent />
+    </Suspense>
   );
 }
