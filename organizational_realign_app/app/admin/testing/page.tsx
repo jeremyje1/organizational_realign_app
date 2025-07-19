@@ -142,7 +142,7 @@ export default function AdminTestingPanel() {
 
   const authenticateAdmin = () => {
     // Simple admin authentication (in production, use proper auth)
-    if (adminPassword === 'northpath-admin-2025') {
+    if (adminPassword === 'stardynamics1124*') {
       setIsAdmin(true);
       setShowPasswordPrompt(false);
       sessionStorage.setItem('admin_authenticated', 'true');
@@ -193,7 +193,7 @@ export default function AdminTestingPanel() {
           tier,
           industry,
           status: 'success',
-          message: `✅ Assessment created successfully`,
+          message: `Assessment created successfully`,
           assessmentId: result.id,
           timestamp: new Date().toISOString()
         };
@@ -208,7 +208,7 @@ export default function AdminTestingPanel() {
           tier,
           industry,
           status: 'error',
-          message: `❌ ${result.error || 'Unknown error'}`,
+          message: `${result.error || 'Unknown error'}`,
           timestamp: new Date().toISOString()
         };
         setTestResults(prev => [...prev, newResult]);
@@ -218,7 +218,7 @@ export default function AdminTestingPanel() {
         tier,
         industry,
         status: 'error',
-        message: `❌ Network error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        message: `Network error: ${error instanceof Error ? error.message : 'Unknown error'}`,
         timestamp: new Date().toISOString()
       };
       setTestResults(prev => [...prev, newResult]);
@@ -246,10 +246,10 @@ export default function AdminTestingPanel() {
       });
 
       if (analysisResponse.ok) {
-        console.log(`✅ Analysis triggered for assessment ${assessmentId}`);
+        console.log(`Analysis triggered for assessment ${assessmentId}`);
       }
     } catch (error) {
-      console.error(`❌ Failed to trigger analysis for ${assessmentId}:`, error);
+      console.error(`Failed to trigger analysis for ${assessmentId}:`, error);
     }
   };
 
