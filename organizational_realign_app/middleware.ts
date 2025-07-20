@@ -69,6 +69,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
   
+  // For single domain deployment (Vercel app), skip domain redirects
+  if (hostname?.includes('vercel.app')) {
+    // Check access control for protected routes
+    const accessControl = await checkTierAccess(request, pathname);
+    if (accessControl) {
+      return accessControl;
+    }
+    
+    return NextResponse.next();
+  }
+  
   // If we're on the main domain and trying to access app-specific paths
   if (hostname === 'northpathstrategies.org' || hostname === 'www.northpathstrategies.org') {
     // Check if the path should redirect to app subdomain
@@ -78,7 +89,7 @@ export async function middleware(request: NextRequest) {
     
     if (shouldRedirectToApp) {
       // Use environment variable or fallback to app subdomain
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://app.northpathstrategies.org';
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://organizational-realign-app.vercel.app';
       return NextResponse.redirect(
         new URL(`${appUrl}${pathname}${request.nextUrl.search}`)
       );
