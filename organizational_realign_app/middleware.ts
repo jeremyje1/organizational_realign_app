@@ -43,6 +43,11 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hostname = request.headers.get('host');
   
+  // Skip authentication for demo routes
+  if (pathname.startsWith('/demo/')) {
+    return NextResponse.next();
+  }
+  
   // Check for admin route access
   const isAdminRoute = ADMIN_ROUTES.some(route => pathname.startsWith(route));
   if (isAdminRoute && pathname !== '/admin/login') {
