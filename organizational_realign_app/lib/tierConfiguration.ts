@@ -67,7 +67,7 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
         'Quick AI Opportunities'
       ],
       algorithms: ['OCI', 'HOCI', 'JCI'],
-      reportPages: 8,
+      reportPages: 25,
       followUpSupport: '30-min strategy debrief call'
     },
     features: {
@@ -120,7 +120,7 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
         'Organization-Specific Operations (Academic/Clinical/Program/Business/Public Service)'
       ],
       algorithms: ['DSCH', 'CRF', 'LEI', 'OREA'],
-      reportPages: 15,
+      reportPages: 35,
       followUpSupport: '45-min strategy consultation'
     },
     features: {
@@ -163,7 +163,7 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       questionCount: 120,
       sections: ['All basic sections plus Faculty & Instructional Support', 'Student Affairs & Success Services'],
       algorithms: ['OCI', 'HOCI', 'JCI', 'DSCH'],
-      reportPages: 15,
+      reportPages: 35,
       followUpSupport: '60-min monthly office hours'
     },
     features: {
@@ -208,7 +208,7 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       questionCount: 150,
       sections: ['All sections including IT & Digital Learning', 'Facilities & Campus Operations', 'Institutional Research'],
       algorithms: ['OCI', 'HOCI', 'JCI', 'DSCH', 'CRF', 'LEI'],
-      reportPages: 30,
+      reportPages: 45,
       followUpSupport: '90-min strategy session'
     },
     features: {
@@ -254,7 +254,7 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       questionCount: 200,
       sections: ['All sections plus specialized industry modules'],
       algorithms: ['All algorithms including Monte Carlo, Advanced DSCH, Predictive Analytics'],
-      reportPages: 50,
+      reportPages: 55,
       followUpSupport: 'Quarterly progress audits + facilitation'
     },
     features: {

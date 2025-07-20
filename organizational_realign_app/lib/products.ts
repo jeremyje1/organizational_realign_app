@@ -6,7 +6,7 @@ export const ASSESSMENT_PRODUCTS = [
     tagline: 'Rapid Insight, Immediate Action',
     features: [
       '60‑question smart survey',
-      '6‑8 page organizational snapshot',
+      '25‑page AI‑enhanced analysis report',
       'Core index scores: OCI™, HOCI™, JCI™',
       'One‑click org chart generator',
       '30‑minute debrief call with strategist',
@@ -24,7 +24,7 @@ export const ASSESSMENT_PRODUCTS = [
     tagline: 'Best for Pilots',
     features: [
       '100‑item survey + secure file upload',
-      '15‑page comprehensive PDF analysis',
+      '35‑page comprehensive AI‑powered analysis',
       'OCI / HOCI / JCI scores + AI analysis',
       '45‑min strategy consultation call',
       'One‑Click Org‑Chart + scenario modeling'
@@ -58,7 +58,7 @@ export const ASSESSMENT_PRODUCTS = [
     features: [
       'Everything in Monthly tier',
       'One‑Click Org‑Chart + 3 cost scenarios',
-      '25–30 page board‑ready report',
+      '45‑page board‑ready executive report',
       '90‑min strategy session'
     ],
     price: 9900,
@@ -73,6 +73,7 @@ export const ASSESSMENT_PRODUCTS = [
     features: [
       'Everything in Comprehensive tier',
       'One‑Click Org‑Chart + 3 cost scenarios',
+      '55‑page enterprise transformation report',
       'Unlimited scenarios & API export',
       'Power BI embedded dashboard + API connectors',
       'On‑site facilitation & quarterly audits'

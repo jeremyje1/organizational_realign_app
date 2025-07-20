@@ -657,7 +657,7 @@ function TierBasedAssessmentContent() {
                   <div className="bg-white p-4 rounded-lg border border-blue-100">
                     <h4 className="font-semibold text-blue-900 mb-2">One-Time Diagnostic</h4>
                     <p className="text-2xl font-bold text-green-600 mb-1">$4,995</p>
-                    <p className="text-sm text-blue-700 mb-2">100+ questions • 15-page report • AI analysis</p>
+                    <p className="text-sm text-blue-700 mb-2">100+ questions • 35-page AI report • Advanced analysis</p>
                     <ul className="text-xs text-blue-600 space-y-1">
                       <li>✓ Complete organizational analysis</li>
                       <li>✓ Advanced AI opportunity identification</li>

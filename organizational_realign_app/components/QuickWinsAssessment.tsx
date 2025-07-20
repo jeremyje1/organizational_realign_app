@@ -286,7 +286,7 @@ export default function QuickWinsAssessment({ onComplete, onUpgrade }: QuickWins
                 <div className="text-yellow-300 font-semibold mb-2">🚀 Tailored to Your {overallInsights.topPriority} Focus:</div>
                 <ul className="text-sm text-blue-100 space-y-1">
                   <li>✓ 60-question comprehensive survey targeting your weakest areas</li>
-                  <li>✓ 6-8 page organizational snapshot with {overallInsights.topPriority.toLowerCase()} deep-dive</li>
+                  <li>✓ 25-page AI-enhanced analysis with {overallInsights.topPriority.toLowerCase()} deep-dive</li>
                   <li>✓ Core diagnostic scores (OCI™, HOCI™, JCI™) with improvement roadmap</li>
                   <li>✓ One-click org chart generator with efficiency recommendations</li>
                   <li>✓ 30-minute strategist debrief focused on your {overallInsights.totalPotentialSavings} savings potential</li>
