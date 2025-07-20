@@ -15,7 +15,7 @@ import { PageContainer } from '@/components/ui/page-container';
 import { PageHero } from '@/components/ui/page-hero';
 import { NpsCard } from '@/components/ui/nps-card';
 import { NpsButton } from '@/components/ui/nps-button';
-import QuickWinsAssessment from '@/components/QuickWinsAssessment';
+import QuickWinsAssessmentEnhanced from '@/components/QuickWinsAssessmentEnhanced';
 import { QuickWinsResult } from '@/data/quickWinsQuestions';
 
 export default function QuickWinsLandingPage() {
@@ -38,7 +38,7 @@ export default function QuickWinsLandingPage() {
     return (
       <div className="min-h-screen">
         <PageContainer>
-          <QuickWinsAssessment 
+          <QuickWinsAssessmentEnhanced 
             onComplete={handleAssessmentComplete}
             onUpgrade={handleUpgrade}
           />

@@ -15,29 +15,64 @@ export async function runOpenAI(prompt: string, options?: {
       throw new Error('OpenAI API key not configured');
     }
 
-    const completion = await openai.chat.completions.create({
-      model: options?.model || 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: 'You are an expert organizational analyst and technical writer. Create clear, professional, and actionable content for executive reports.'
-        },
-        {
-          role: 'user',
-          content: prompt
-        }
-      ],
-      max_tokens: options?.maxTokens || 2000,
-      temperature: options?.temperature || 0.7,
-    });
+    // Model fallback chain - try in order of preference
+    const modelChain = [
+      options?.model || 'gpt-4o',
+      'gpt-4o-mini',
+      'gpt-4-turbo-preview',
+      'gpt-3.5-turbo'
+    ];
 
-    const response = completion.choices[0]?.message?.content;
-    
-    if (!response) {
-      throw new Error('No response generated from OpenAI');
+    let lastError = null;
+
+    for (const model of modelChain) {
+      try {
+        console.log(`🤖 Attempting AI generation with ${model}...`);
+        
+        const completion = await openai.chat.completions.create({
+          model: model,
+          messages: [
+            {
+              role: 'system',
+              content: 'You are an expert organizational analyst and technical writer. Create clear, professional, and actionable content for executive reports.'
+            },
+            {
+              role: 'user',
+              content: prompt
+            }
+          ],
+          max_tokens: options?.maxTokens || 2000,
+          temperature: options?.temperature || 0.7,
+        });
+
+        const response = completion.choices[0]?.message?.content;
+        
+        if (!response) {
+          throw new Error('No response generated from OpenAI');
+        }
+
+        console.log(`✅ AI generation successful with ${model}`);
+        return response;
+
+      } catch (modelError) {
+        console.warn(`⚠️ ${model} failed:`, modelError instanceof Error ? modelError.message : 'Unknown error');
+        lastError = modelError;
+        
+        // Don't try fallbacks for quota/billing errors
+        if (modelError instanceof Error && 
+           (modelError.message.includes('quota') || 
+            modelError.message.includes('billing') ||
+            modelError.message.includes('insufficient'))) {
+          throw modelError;
+        }
+        
+        continue; // Try next model in chain
+      }
     }
 
-    return response;
+    // If all models failed
+    throw new Error(`All AI models failed. Last error: ${lastError instanceof Error ? lastError.message : 'Unknown error'}`);
+    
   } catch (error) {
     console.error('OpenAI API error:', error);
     throw new Error(`Failed to generate AI content: ${error instanceof Error ? error.message : 'Unknown error'}`);

@@ -55,8 +55,29 @@ export async function GET(_request: NextRequest) {
           created_by
         )
       `)
-      .eq('user_email', profile.email)
-      .order('invited_at', { ascending: false })
+      .eq('user_id', user.id)
+      .order('joined_at', { ascending: false })
+      .limit(10);
+    
+    // Get team invitations for this user
+    const { data: teamInvitations } = await supabase
+      .from('team_invitations')
+      .select(`
+        *,
+        teams:team_id (
+          id,
+          name,
+          description
+        ),
+        profiles:invited_by (
+          full_name,
+          email
+        )
+      `)
+      .eq('email', profile.email)
+      .is('accepted_at', null)
+      .gt('expires_at', new Date().toISOString())
+      .order('created_at', { ascending: false })
       .limit(10);
     
     // Generate notifications based on recent activity
@@ -92,6 +113,24 @@ export async function GET(_request: NextRequest) {
             type: 'analysis'
           });
         }
+      });
+    }
+    
+    
+    // Add team invitation notifications
+    if (teamInvitations?.length) {
+      teamInvitations.forEach((invitation) => {
+        const inviterName = invitation.profiles?.full_name || invitation.profiles?.email || 'Someone';
+        notifications.push({
+          id: `team-invite-${invitation.id}`,
+          title: 'Team Invitation',
+          message: `${inviterName} has invited you to join the ${invitation.teams?.name} team as ${invitation.role}`,
+          created_at: invitation.created_at,
+          action: 'View Invitation',
+          link: `/teams/accept-invitation?token=${invitation.token}`,
+          read: false,
+          type: 'team_invitation'
+        });
       });
     }
     

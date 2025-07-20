@@ -2,10 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { runOpenAI, generateRecommendations } from '@/lib/openai';
 import { AIReportGenerator } from '@/lib/ai-report-generator';
+import { generateComprehensivePDFReport } from '@/lib/comprehensive-pdf-generator';
+import { generateEnhancedAIPDFReport } from '@/lib/enhanced-ai-pdf-generator';
+import { generateFastEnhancedAIPDFReport } from '@/lib/fast-enhanced-ai-pdf-generator';
 
 export async function POST(request: NextRequest) {
   try {
-    const { answers, scores, options = {} } = await request.json();
+    const { answers, scores, tier = 'express-diagnostic', openEndedResponses = {}, orgChart, scenarios, options = {} } = await request.json();
 
     if (!answers || !scores) {
       return NextResponse.json(
@@ -14,33 +17,161 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('Generating AI narrative PDF report...');
+    console.log(`Generating comprehensive PDF report for tier: ${tier}...`);
     
-    // Use the enhanced AI report generator
-    const generator = new AIReportGenerator();
-    const pdfBytes = await generator.generateReport(answers, scores, {
-      includeRecommendations: options.includeRecommendations ?? true,
-      includeCharts: options.includeCharts ?? true,
-      templateStyle: options.templateStyle ?? 'executive',
-      organizationName: options.organizationName,
-      reportTitle: options.reportTitle
-    });
+    // Log org chart availability for debugging
+    if (orgChart) {
+      console.log('✅ Org chart data provided - will include in report');
+    } else {
+      console.log('ℹ️ No org chart data - basic organizational analysis only');
+    }
+    
+    // Validate OpenAI API key first
+    if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY.length < 10) {
+      console.error('❌ CRITICAL: OpenAI API key missing or invalid - clients will get fallback reports!');
+      throw new Error('OpenAI API key not properly configured');
+    }
+    
+    // Check if enhanced AI is requested and available
+    const useEnhancedAI = options.enhancedAI !== false && process.env.OPENAI_API_KEY;
+    
+    if (useEnhancedAI) {
+      // Try Enhanced AI with retry mechanism
+      let attempts = 0;
+      const maxRetries = 2; // Try twice before falling back
+      
+      while (attempts < maxRetries) {
+        attempts++;
+        try {
+          console.log(`🚀 Using Fast Enhanced AI PDF Generator with GPT-4o (attempt ${attempts}/${maxRetries})...`);
+        
+        // Format data for enhanced AI generator
+        const comprehensiveAnalysis = {
+          assessmentId: `assessment-${Date.now()}`,
+          score: scores.overall || 3.0,
+          tier,
+          recommendations: [],
+          sectionScores: scores,
+          assessmentData: answers,
+          responses: answers,
+          uploadedFiles: [],
+          submissionDetails: {
+            institution_name: options.organizationName || 'Your Organization',
+            organization_type: answers.industry || 'organization',
+            submitted_at: new Date().toISOString(),
+            total_responses: Object.keys(answers).length
+          },
+          orgChart,
+          scenarios,
+          openEndedResponses
+        };
 
-    // Return PDF response
-    return new NextResponse(pdfBytes, {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="ai-narrative-report-${Date.now()}.pdf"`,
-        'Content-Length': pdfBytes.length.toString(),
-      },
-    });
+        // Use fast enhanced AI generator for better performance
+        const pdfDoc = options.fullAI === true 
+          ? await generateEnhancedAIPDFReport(comprehensiveAnalysis)
+          : await generateFastEnhancedAIPDFReport(comprehensiveAnalysis);
+        
+        const pdfBytes = pdfDoc.output('arraybuffer');
+
+        console.log('✅ Enhanced AI PDF generated successfully!');
+        return new NextResponse(pdfBytes, {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': `attachment; filename="enhanced-ai-report-${Date.now()}.pdf"`,
+            'Content-Length': pdfBytes.byteLength.toString(),
+          },
+        });
+
+        } catch (aiError) {
+          console.warn(`⚠️ Enhanced AI attempt ${attempts} failed:`, aiError.message);
+          
+          // If it's a quota/billing error, don't retry - fall through to fallback
+          if (aiError.message?.includes('quota') || aiError.message?.includes('billing') || aiError.message?.includes('insufficient')) {
+            console.error('🔴 OpenAI quota/billing issue - using fallback immediately');
+            break;
+          }
+          
+          // If this was the last attempt, continue to fallback
+          if (attempts >= maxRetries) {
+            console.error('🔴 All Enhanced AI attempts failed - using fallback');
+            break;
+          }
+          
+          // Wait briefly before retry
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+      }
+    }
+    
+    try {
+      // Try the AI report generator first
+      const generator = new AIReportGenerator();
+      const pdfBytes = await generator.generateReport(answers, scores, {
+        includeRecommendations: options.includeRecommendations ?? true,
+        includeCharts: options.includeCharts ?? true,
+        templateStyle: options.templateStyle ?? 'executive',
+        organizationName: options.organizationName,
+        reportTitle: options.reportTitle
+      });
+
+      // Return AI-generated PDF response
+      return new NextResponse(pdfBytes, {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': `attachment; filename="ai-narrative-report-${Date.now()}.pdf"`,
+          'Content-Length': pdfBytes.length.toString(),
+        },
+      });
+
+    } catch (aiError) {
+      console.error('🔴 CRITICAL: All AI generation methods failed - client will receive fallback report!');
+      console.error('Error details:', aiError.message);
+      
+      // Log this as a high-priority issue since clients expect AI reports
+      console.error('⚠️  CLIENT IMPACT: Delivering basic 49KB report instead of 700KB+ AI-enhanced report');
+      
+      // Format data for comprehensive PDF generator
+      const comprehensiveAnalysis = {
+        assessmentId: `assessment-${Date.now()}`,
+        score: scores.overall || 3.0,
+        tier,
+        recommendations: [],
+        sectionScores: scores,
+        assessmentData: answers,
+        responses: answers,
+        uploadedFiles: [],
+        submissionDetails: {
+          institution_name: options.organizationName || 'Your Organization',
+          organization_type: answers.industry || 'organization',
+          submitted_at: new Date().toISOString(),
+          total_responses: Object.keys(answers).length
+        },
+        orgChart,
+        scenarios
+      };
+
+      // Use comprehensive PDF generator as fallback
+      const pdfDoc = generateComprehensivePDFReport(comprehensiveAnalysis);
+      const pdfBytes = pdfDoc.output('arraybuffer');
+
+      // Return comprehensive PDF response
+      return new NextResponse(pdfBytes, {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': `attachment; filename="comprehensive-report-${Date.now()}.pdf"`,
+          'Content-Length': pdfBytes.byteLength.toString(),
+        },
+      });
+    }
 
   } catch (error) {
-    console.error('AI PDF generation error:', error);
+    console.error('PDF generation error:', error);
     return NextResponse.json(
       { 
-        error: 'Failed to generate AI narrative PDF',
+        error: 'Failed to generate PDF report',
         message: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }

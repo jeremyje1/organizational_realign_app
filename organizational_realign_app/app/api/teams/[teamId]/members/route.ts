@@ -65,6 +65,39 @@ export async function POST(
       }
 
       // TODO: Send email invitation here
+      // Send team invitation email
+      try {
+        const { data: teamData } = await supabase
+          .from('teams')
+          .select('name')
+          .eq('id', params.teamId)
+          .single();
+
+        const inviterProfile = await supabase
+          .from('profiles')
+          .select('full_name, email')
+          .eq('id', user.id)
+          .single();
+
+        const inviterName = inviterProfile.data?.full_name || inviterProfile.data?.email || user.email;
+        
+        // Import email service
+        const { sendTeamInvitation } = await import('@/lib/email-notifications');
+        
+        await sendTeamInvitation({
+          teamName: teamData?.name || 'Team',
+          inviterName,
+          inviterEmail: user.email || '',
+          recipientEmail: email,
+          role,
+          invitationToken: invitation.token,
+        });
+        
+        console.log('Team invitation email sent successfully');
+      } catch (emailError) {
+        console.error('Failed to send team invitation email:', emailError);
+        // Continue even if email fails - invitation is still created
+      }
       return NextResponse.json({ invitation, message: 'Invitation sent' });
     }
 

@@ -281,7 +281,16 @@ function AssessmentResultsContent() {
             tier: algoResult.tier,
             recommendations: algoResult.recommendations,
             sectionScores: algoResult.sectionScores,
-            assessmentData
+            assessmentData,
+            // Include detailed assessment responses
+            responses: assessmentData?.responses || {},
+            uploadedFiles: assessmentData?.uploaded_files || [],
+            submissionDetails: {
+              institution_name: assessmentData?.institution_name,
+              organization_type: assessmentData?.organization_type,
+              submitted_at: assessmentData?.submitted_at,
+              total_responses: Object.keys(assessmentData?.responses || {}).length
+            }
           }
         }),
       });

@@ -266,6 +266,35 @@ class EmailNotifications {
   }
 
   /**
+   * Send team invitation email
+   */
+  async sendTeamInvitation(params: {
+    teamName: string;
+    inviterName: string;
+    inviterEmail: string;
+    recipientEmail: string;
+    role: string;
+    invitationToken: string;
+  }): Promise<boolean> {
+    const { teamName, inviterName, recipientEmail, role, invitationToken } = params;
+    
+    const template = this.getTeamInvitationTemplate(
+      teamName,
+      inviterName,
+      role,
+      invitationToken
+    );
+    
+    return this.sendEmail({
+      to: { email: recipientEmail },
+      subject: template.subject,
+      html: template.html,
+      text: template.text,
+      category: 'team-invite'
+    });
+  }
+
+  /**
    * Send assessment submission notification to support team
    */
   async sendAssessmentSubmissionNotification(params: {
@@ -832,6 +861,92 @@ Assessment ID: ${assessmentId}
   }
 
   /**
+   * Generate team invitation email template
+   */
+  private getTeamInvitationTemplate(
+    teamName: string,
+    inviterName: string,
+    role: string,
+    invitationToken: string
+  ): EmailTemplate {
+    const acceptUrl = `${this.baseUrl}/teams/accept-invitation?token=${invitationToken}`;
+    const roleDisplay = role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
+    
+    const subject = `${inviterName} has invited you to join the ${teamName} team`;
+    
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img src="${this.baseUrl}/logo.png" alt="North Path Strategies" style="max-width: 200px;">
+        </div>
+        
+        <div style="background-color: #f9f9f9; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+          <h1 style="color: #333; font-size: 24px; margin-bottom: 20px;">You've Been Invited to Join a Team</h1>
+          
+          <p style="color: #555; font-size: 16px; line-height: 1.5;">
+            <strong>${inviterName}</strong> has invited you to join the <strong>${teamName}</strong> team as a <strong>${roleDisplay}</strong>.
+          </p>
+          
+          <p style="color: #555; font-size: 16px; line-height: 1.5;">
+            This team will collaborate on organizational assessments using North Path Strategies' comprehensive framework to analyze organizational alignment and identify opportunities for improvement.
+          </p>
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${acceptUrl}" style="background-color: #4a6cf7; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">
+              Accept Invitation
+            </a>
+          </div>
+          
+          <p style="color: #555; font-size: 16px; line-height: 1.5;">
+            <strong>As a ${roleDisplay}, you will be able to:</strong>
+          </p>
+          
+          <ul style="color: #555; font-size: 16px; line-height: 1.5; margin: 15px 0;">
+            ${role === 'admin' ? '<li>Manage team members and settings</li>' : ''}
+            ${role === 'admin' || role === 'member' ? '<li>Collaborate on team assessments</li>' : ''}
+            <li>View team assessments and reports</li>
+            <li>Participate in team discussions</li>
+            ${role === 'admin' || role === 'member' ? '<li>Edit assigned assessment sections</li>' : ''}
+          </ul>
+          
+          <p style="color: #555; font-size: 16px; line-height: 1.5;">
+            This invitation will expire in 7 days. If you have any questions, please contact us at support@northpathstrategies.org
+          </p>
+        </div>
+        
+        <div style="text-align: center; color: #888; font-size: 12px; margin-top: 20px;">
+          © ${new Date().getFullYear()} North Path Strategies. All rights reserved.
+        </div>
+      </div>
+    `;
+    
+    const text = `
+      Team Invitation from North Path Strategies
+      
+      ${inviterName} has invited you to join the ${teamName} team as a ${roleDisplay}.
+      
+      This team will collaborate on organizational assessments using North Path Strategies' comprehensive framework.
+      
+      As a ${roleDisplay}, you will be able to:
+      ${role === 'admin' ? '- Manage team members and settings\n' : ''}
+      ${role === 'admin' || role === 'member' ? '- Collaborate on team assessments\n' : ''}
+      - View team assessments and reports
+      - Participate in team discussions
+      ${role === 'admin' || role === 'member' ? '- Edit assigned assessment sections\n' : ''}
+      
+      Accept your invitation: ${acceptUrl}
+      
+      This invitation expires in 7 days.
+      
+      If you have any questions, please contact us at support@northpathstrategies.org
+      
+      © ${new Date().getFullYear()} North Path Strategies. All rights reserved.
+    `;
+    
+    return { subject, html, text };
+  }
+
+  /**
    * Generate assessment submission notification template for support team
    */
   private getAssessmentSubmissionTemplate(params: {
@@ -1346,6 +1461,14 @@ Keep this email for your records. Your Assessment ID is: ${assessmentId}
           </a>
         </div>
         
+        <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; margin-bottom: 20px; border-radius: 4px;">
+          <h3 style="color: #92400e; margin: 0 0 15px 0;">🔐 Access Information</h3>
+          <p style="color: #92400e; margin: 0; font-size: 14px; line-height: 1.5;">
+            <strong>Password for Results Access:</strong> <span style="font-family: monospace; background: #fff; padding: 2px 6px; border-radius: 3px;">northpath2025</span><br>
+            <em style="font-size: 13px;">Use this password when prompted to view your assessment results.</em>
+          </p>
+        </div>
+        
         <div style="background-color: #f3f4f6; border-radius: 8px; padding: 20px; margin: 20px 0;">
           <h3 style="color: #333; margin-top: 0;">🚀 Next Steps</h3>
           <div style="color: #555;">
@@ -1401,6 +1524,8 @@ ${analysisSummary}
 
 NEXT STEPS:
 1. View Full Results: ${this.baseUrl}/assessment/secure-access?redirect=results&assessmentId=${assessmentId}
+   ACCESS PASSWORD: northpath2025
+   (Use this password when prompted to view your results)
 2. Schedule Strategy Session: ${this.calendlyUrl}
 3. Begin Implementation with our team's support
 
@@ -1419,3 +1544,4 @@ NorthPath Strategies - Organizational Realignment & Optimization
 const emailNotifications = new EmailNotifications();
 export default emailNotifications;
 export const sendCollaborationInvite = emailNotifications.sendCollaborationInvite.bind(emailNotifications);
+export const sendTeamInvitation = emailNotifications.sendTeamInvitation.bind(emailNotifications);

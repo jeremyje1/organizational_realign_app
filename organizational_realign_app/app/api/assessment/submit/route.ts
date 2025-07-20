@@ -12,9 +12,25 @@ import { PricingTier } from '@/lib/tierConfiguration';
 
 export const dynamic = 'force-dynamic';
 
+// Handle CORS preflight requests
+export async function OPTIONS(req: NextRequest) {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  });
+}
+
 /** POST /api/assessment/submit – persists tier-based assessment data */
 export async function POST(req: NextRequest) {
   try {
+    console.log('[assessment/submit] Received POST request');
+    console.log('[assessment/submit] Content-Type:', req.headers.get('content-type'));
+    console.log('[assessment/submit] Method:', req.method);
+    
     // Build a fresh Supabase client **inside** the request scope so that
     // the cookies helper receives the current request/response context.
     const cookieStore = nextCookies();
@@ -40,7 +56,24 @@ export async function POST(req: NextRequest) {
       },
     );
 
-    const body = await req.json();
+    let body;
+    try {
+      body = await req.json();
+      console.log('[assessment/submit] Successfully parsed JSON body');
+    } catch (parseError) {
+      console.error('[assessment/submit] Failed to parse JSON:', parseError);
+      return NextResponse.json(
+        { error: 'Invalid JSON in request body' },
+        { 
+          status: 400,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          }
+        }
+      );
+    }
     
     // Validate required fields
     const { tier, organizationType, institutionName, responses, uploadedFiles, contactEmail, contactName, userId, testMode } = body;
@@ -53,12 +86,19 @@ export async function POST(req: NextRequest) {
     if (!tier || !organizationType || !responses) {
       return NextResponse.json(
         { error: 'Missing required fields: tier, organizationType, and responses are required' },
-        { status: 400 }
+        { 
+          status: 400,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          }
+        }
       );
     }
 
     // Check subscription access for subscription-based tiers (skip for test mode)
-    if (!testMode && userId && (tier === 'monthly-subscription' || tier === 'comprehensive-package' || tier === 'enterprise-transformation')) {
+    if (!testMode && userId && (tier === 'monthly-subscription')) {
       console.log('Checking subscription for non-test mode:', { userId, tier });
       try {
         const canCreate = await SubscriptionManager.canCreateAssessment(userId, tier as PricingTier);
@@ -72,7 +112,14 @@ export async function POST(req: NextRequest) {
               requiresUpgrade: true,
               tier: tier
             },
-            { status: 403 }
+            { 
+              status: 403,
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+              }
+            }
           );
         }
       } catch (subscriptionError) {
@@ -81,6 +128,8 @@ export async function POST(req: NextRequest) {
       }
     } else if (testMode) {
       console.log('Skipping subscription check for test mode');
+    } else {
+      console.log('Skipping subscription check - one-time purchase tier or no userId:', { tier, userId: !!userId });
     }
 
     // Prepare assessment data for the updated schema
@@ -228,13 +277,26 @@ export async function POST(req: NextRequest) {
       sessionId,
       message: 'Assessment submitted successfully',
       redirectUrl: `/assessment/results?sessionId=${sessionId}&tier=${tier}&orgType=${organizationType}`
+    }, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      }
     });
 
   } catch (error) {
     console.error('[assessment/submit] Unexpected error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      }
     );
   }
 }

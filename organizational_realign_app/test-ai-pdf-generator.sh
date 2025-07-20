@@ -28,7 +28,7 @@ TEST_DATA='{
 }'
 
 echo "1. Testing AI narrative PDF generation..."
-curl -X POST http://localhost:3000/api/report/generate \
+curl -X POST http://localhost:3001/api/report/generate \
   -H "Content-Type: application/json" \
   -d "$TEST_DATA" \
   -o "test-ai-report.pdf"
@@ -49,7 +49,7 @@ MINIMAL_DATA='{
   "scores": {"overallScore": 8.0}
 }'
 
-curl -X POST http://localhost:3000/api/report/generate \
+curl -X POST http://localhost:3001/api/report/generate \
   -H "Content-Type: application/json" \
   -d "$MINIMAL_DATA" \
   -o "test-minimal-report.pdf"
@@ -64,7 +64,7 @@ echo ""
 
 # Test 3: Error handling
 echo "3. Testing error handling..."
-curl -X POST http://localhost:3000/api/report/generate \
+curl -X POST http://localhost:3001/api/report/generate \
   -H "Content-Type: application/json" \
   -d '{"invalid": "data"}'
 

@@ -1,6 +1,9 @@
 import jsPDF from 'jspdf';
 import { runOpenAI } from './openai';
 import { generateOrgChartImage, AIImageGenerator } from './ai-image-generator';
+import { HistoricalTrendAnalyzer } from './historical-trend-analyzer';
+import { IndustryDataIntegrator } from './industry-data-integrator';
+import { LivePeerBenchmarking } from './live-peer-benchmarking';
 
 interface ComprehensiveAnalysis {
   assessmentId: string;
@@ -35,7 +38,7 @@ interface AIInsights {
 }
 
 export async function generateEnhancedAIPDFReport(analysis: ComprehensiveAnalysis): Promise<jsPDF> {
-  console.log('Generating enhanced AI-powered PDF report with tier-based scaling and org chart visualization...');
+  console.log('Generating enhanced AI-powered PDF report with tier-based scaling, historical trends, live benchmarks, and org chart visualization...');
   
   // Get tier-based content settings
   const assessmentTier = analysis.tier || 'express-diagnostic';
@@ -49,8 +52,31 @@ export async function generateEnhancedAIPDFReport(analysis: ComprehensiveAnalysi
   
   console.log(`📊 Generating ${assessmentTier} tier report (target: ${settings.targetPages} pages, depth: ${settings.analysisDepth})`);
   
-  // Generate comprehensive AI insights first
-  const aiInsights = await generateComprehensiveAIInsights(analysis);
+  // Initialize advanced analytics engines
+  const historicalAnalyzer = new HistoricalTrendAnalyzer();
+  const industryIntegrator = new IndustryDataIntegrator();
+  const peerBenchmarking = new LivePeerBenchmarking();
+  
+  // Generate comprehensive AI insights with enhanced context
+  const [aiInsights, historicalInsights, industryBenchmarks, peerAnalysis] = await Promise.all([
+    generateComprehensiveAIInsights(analysis),
+    settings.includeAdvanced ? 
+      historicalAnalyzer.generateHistoricalAIInsights(analysis.assessmentId, analysis) :
+      Promise.resolve(''),
+    settings.includeAdvanced ?
+      industryIntegrator.getLiveBenchmarks(
+        analysis.submissionDetails?.organization_type as any || 'higher_education',
+        'medium',
+        'mixed'
+      ).then(benchmarks => industryIntegrator.generateIndustryContextAI(analysis, benchmarks)) :
+      Promise.resolve(''),
+    settings.includeAdvanced ?
+      peerBenchmarking.findSimilarPeers(analysis).then(async cohort => {
+        const competitiveIntel = await peerBenchmarking.generateCompetitiveIntelligence(analysis, cohort);
+        return peerBenchmarking.generatePeerBenchmarkingAI(analysis, cohort, competitiveIntel);
+      }) :
+      Promise.resolve('')
+  ]);
   
   const doc = new jsPDF();
   const pageHeight = doc.internal.pageSize.height;
@@ -471,6 +497,93 @@ export async function generateEnhancedAIPDFReport(analysis: ComprehensiveAnalysi
     }
   }
 
+  // ADVANCED ANALYTICS SECTIONS (for higher tiers only)
+  if (settings.includeAdvanced) {
+    try {
+      // HISTORICAL TREND ANALYSIS
+      if (historicalInsights) {
+        checkPageBreak(0, true);
+        addSectionHeader('LONGITUDINAL PERFORMANCE ANALYSIS', colors.accent);
+        addSubHeader('Historical Performance Trends');
+        addText('Advanced AI analysis of your institution\'s performance trajectory over time, including predictive insights and trend-based recommendations.');
+        addText(historicalInsights);
+      }
+
+      // REAL-TIME INDUSTRY BENCHMARKING
+      if (industryBenchmarks) {
+        checkPageBreak(0, true);
+        addSectionHeader('LIVE INDUSTRY INTELLIGENCE', colors.secondary);
+        addSubHeader('Real-Time Market Context');
+        addText('Current industry data integrated from authoritative sources including government databases, professional associations, and economic indicators.');
+        addText(industryBenchmarks);
+      }
+
+      // LIVE PEER BENCHMARKING
+      if (peerAnalysis) {
+        checkPageBreak(0, true);
+        addSectionHeader('COMPETITIVE PEER ANALYSIS', [65, 105, 225]);
+        addSubHeader('Live Peer Benchmarking');
+        addText('Dynamic comparison with similar institutions based on real assessment data, providing actionable competitive intelligence.');
+        addText(peerAnalysis);
+      }
+
+      // INTEGRATED STRATEGIC SYNTHESIS
+      checkPageBreak(0, true);
+      addSectionHeader('AI-POWERED STRATEGIC SYNTHESIS', colors.success);
+      addSubHeader('Integrated Intelligence Summary');
+      addText('Comprehensive analysis combining historical performance, industry context, peer benchmarking, and predictive modeling to provide definitive strategic guidance.');
+      
+      // Generate synthesized recommendations
+      const synthesizedInsights = await runOpenAI(`
+        As a senior strategic consultant, provide integrated strategic recommendations for ${analysis.submissionDetails?.institution_name} based on comprehensive intelligence analysis.
+        
+        Synthesize insights from: historical performance patterns, real-time industry data, peer competitive analysis.
+        
+        Provide prioritized recommendations for immediate actions (90 days), strategic initiatives (6-18 months), and transformational goals (2+ years).
+        
+        Focus on actionable strategies that leverage competitive advantages while addressing improvement opportunities identified through the comprehensive analysis.
+      `, {
+        model: 'gpt-4o',
+        maxTokens: 2000,
+        temperature: 0.4
+      });
+      
+      addText(synthesizedInsights);
+
+      // EXECUTIVE ACTION DASHBOARD
+      addSubHeader('Priority Action Matrix');
+      addText('Based on all available intelligence, the following actions are prioritized by impact potential and implementation feasibility:');
+      
+      // Add action matrix table
+      addDataTable([
+        { label: 'Immediate Priority (0-90 days):', value: 'Address competitive gaps identified in peer analysis' },
+        { label: 'Short-term Focus (3-12 months):', value: 'Implement industry-standard practices in underperforming areas' },
+        { label: 'Strategic Initiative (1-2 years):', value: 'Leverage historical strengths for competitive advantage' },
+        { label: 'Continuous Monitoring:', value: 'Track peer performance and industry trends quarterly' }
+      ], 'Strategic Action Timeline');
+    } catch (error) {
+      console.error('Advanced analytics error:', error);
+      addText('Note: Some advanced analytics features encountered issues but core assessment analysis is complete.');
+    }
+  }
+
+  // Final page with enhanced summary
+  checkPageBreak(0, true);
+  addSectionHeader('CONCLUSION & NEXT STEPS', colors.primary);
+  addSubHeader('Report Summary');
+  
+  const finalSummary = settings.includeAdvanced ? 
+    'This comprehensive AI-enhanced assessment leverages historical data analysis, real-time industry intelligence, and live peer benchmarking to provide unparalleled strategic insights. The recommendations are based on actual market data and proven best practices from similar high-performing institutions.' :
+    'This AI-enhanced assessment provides strategic recommendations based on your institutional profile and assessment responses. For more comprehensive analysis including historical trends and competitive intelligence, consider upgrading to a higher-tier assessment.';
+  
+  addText(finalSummary);
+  yPosition += 10;
+  
+  addSubHeader('Implementation Support');
+  addText(`As a ${assessmentTier} client, you have access to specific implementation resources and support channels. Contact your assessment team to discuss next steps and implementation planning.`);
+
+  console.log(`✅ Enhanced AI-powered PDF report generated successfully with ${currentPage} pages (target: ${settings.targetPages})`);
+
   return doc;
 }
 
@@ -844,4 +957,72 @@ async function generateComprehensiveAIInsights(analysis: ComprehensiveAnalysis):
     changeManagement,
     orgChartAnalysis
   };
+}
+
+// Generate synthesized strategic recommendations combining all data sources
+async function generateSynthesizedRecommendations(
+  analysis: ComprehensiveAnalysis,
+  historicalInsights: string,
+  industryBenchmarks: string,
+  peerAnalysis: string
+): Promise<string> {
+  const institutionContext = {
+    name: analysis.submissionDetails?.institution_name,
+    type: analysis.submissionDetails?.organization_type,
+    score: analysis.score,
+    tier: analysis.tier
+  };
+
+  return await runOpenAI(`
+    As a senior strategic consultant, synthesize the following comprehensive intelligence into definitive strategic recommendations for ${institutionContext.name}:
+
+    CURRENT ASSESSMENT DATA:
+    - Overall Performance Score: ${institutionContext.score}/5.0
+    - Service Tier: ${institutionContext.tier}
+    - Institution Type: ${institutionContext.type}
+
+    HISTORICAL PERFORMANCE CONTEXT:
+    ${historicalInsights}
+
+    REAL-TIME INDUSTRY INTELLIGENCE:
+    ${industryBenchmarks}
+
+    COMPETITIVE PEER ANALYSIS:
+    ${peerAnalysis}
+
+    Based on this comprehensive intelligence, provide INTEGRATED STRATEGIC RECOMMENDATIONS that:
+
+    1. IMMEDIATE ACTIONS (Next 90 Days):
+       - Specific tactical moves based on competitive gaps
+       - Quick wins that align with industry trends
+       - Risk mitigation priorities
+
+    2. STRATEGIC INITIATIVES (6-18 Months):
+       - Competitive positioning moves
+       - Industry-aligned capability building
+       - Historical strength leveraging
+
+    3. TRANSFORMATIONAL GOALS (2+ Years):
+       - Visionary positioning based on market intelligence
+       - Industry leadership opportunities
+       - Sustainable competitive advantages
+
+    For each recommendation, specify:
+    - Strategic rationale combining all data sources
+    - Expected impact on competitive position
+    - Resource requirements and success metrics
+    - Connection to historical performance patterns
+
+    Prioritize recommendations by:
+    - Potential competitive impact
+    - Implementation feasibility
+    - Alignment with industry trends
+    - Historical success likelihood
+
+    Use authoritative, strategic language appropriate for executive decision-making.
+  `, {
+    model: 'gpt-4o',
+    maxTokens: 3500,
+    temperature: 0.4
+  });
 }

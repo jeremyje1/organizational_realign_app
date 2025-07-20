@@ -38,7 +38,7 @@ export class SubscriptionManager {
   ): Promise<AccessControlResult> {
     try {
       // One-time tiers don't require subscription checking
-      if (tier === 'one-time-diagnostic' || tier === 'comprehensive-package') {
+      if (tier === 'one-time-diagnostic' || tier === 'comprehensive-package' || tier === 'enterprise-transformation' || tier === 'express-diagnostic') {
         return { access: 'granted' };
       }
 
