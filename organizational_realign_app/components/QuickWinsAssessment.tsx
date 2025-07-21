@@ -539,7 +539,6 @@ export default function QuickWinsAssessment({ onComplete, onUpgrade }: QuickWins
       </>
     );
   }
-  }
 
   if (isComplete) {
     return (
