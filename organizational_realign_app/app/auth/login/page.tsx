@@ -1,14 +1,10 @@
 import { Suspense } from 'react';
-import { cookies } from 'next/headers';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { redirect } from 'next/navigation';
 import { AuthForm } from '@/components/auth/AuthForm';
 
 async function LoginPageContent() {
-  const cookieStore = await cookies();
-  const supabase = createServerComponentClient({ 
-    cookies: () => Promise.resolve(cookieStore) 
-  });
+  const supabase = await createSupabaseServerClient();
 
   // Check if user is already authenticated
   const { data: { session } } = await supabase.auth.getSession();

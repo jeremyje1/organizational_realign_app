@@ -1,6 +1,5 @@
 // app/(secure)/assessment-details/[assessmentId]/page.tsx
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { redirect } from 'next/navigation';
 import { AssessmentDB } from '@/lib/assessment-db';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -22,7 +21,7 @@ export default async function AssessmentDetailPage({
 }: {
   params: { assessmentId: string };
 }) {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = await createSupabaseServerClient();
   
   // Check if user is authenticated
   const {
