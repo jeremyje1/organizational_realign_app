@@ -1,14 +1,10 @@
 import { Suspense } from 'react';
-import { cookies } from 'next/headers';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { redirect } from 'next/navigation';
 import { TeamDashboard } from '@/components/collaboration/TeamDashboard';
 
 async function TeamsPageContent() {
-  const cookieStore = await cookies();
-  const supabase = createServerComponentClient({ 
-    cookies: () => Promise.resolve(cookieStore) 
-  });
+  const supabase = await createSupabaseServerClient();
 
   // Check if user is authenticated
   const { data: { session } } = await supabase.auth.getSession();
