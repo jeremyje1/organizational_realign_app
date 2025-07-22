@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { supabase } from '@/lib/supabase-browser';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,7 +21,8 @@ export function AuthForm() {
   const redirectTo = searchParams.get('redirectTo') || '/teams';
   const { toast } = useToast();
   
-  const supabase = createClientComponentClient();
+  // Use the pre-configured supabase client
+  // const supabase = supabase; // Already imported
 
   const [signInData, setSignInData] = useState({
     email: '',
@@ -303,6 +304,8 @@ export function AuthForm() {
               </TabsContent>
             </Tabs>
 
+            {/* Google OAuth temporarily disabled until properly configured */}
+            {false && (
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -341,6 +344,7 @@ export function AuthForm() {
                 Continue with Google
               </Button>
             </div>
+            )}
           </CardContent>
         </Card>
       </div>
