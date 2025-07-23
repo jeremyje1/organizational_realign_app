@@ -1,4 +1,10 @@
-# AI Readiness Database Configuration Instructions
+# AI Readiness Database Co- **Project URL*```bash
+NEXT_PUBLIC_AI_READINESS_SUPABASE_URL=https://jocignzsthhcpspxfdfxae.supabase.co
+NEXT_PUBLIC_AI_READINESS_SUPABASE_ANON_KEY=[REGENERATE_YOUR_KEY_SECURITY_INCIDENT]
+AI_READINESS_SUPABASE_URL=https://jocignzsthhcpspxfdfxae.supabase.co
+AI_READINESS_SUPABASE_ANON_KEY=[REGENERATE_YOUR_KEY_SECURITY_INCIDENT]
+``` `https://jocignzsthhcpspxfdfxae.supabase.co`
+- **Anon Key**: `[REGENERATE YOUR KEY - SECURITY INCIDENT]`iguration Instructions
 
 ## 🎯 Separate Database Setup for AI Readiness Assessment
 
