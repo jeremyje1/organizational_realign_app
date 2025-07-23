@@ -8,10 +8,10 @@
 
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-export default function AIReadinessStartPage() {
+function AIReadinessStartContent() {
   const searchParams = useSearchParams();
   const tier = searchParams.get('tier');
   const [isLoading, setIsLoading] = useState(true);
@@ -68,5 +68,25 @@ export default function AIReadinessStartPage() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function AIReadinessStartPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Loading AI Readiness Assessment
+          </h1>
+          <p className="text-sm text-gray-500">
+            Please wait...
+          </p>
+        </div>
+      </div>
+    }>
+      <AIReadinessStartContent />
+    </Suspense>
   );
 }
