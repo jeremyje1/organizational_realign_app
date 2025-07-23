@@ -1,0 +1,28 @@
+# Git attributes for NorthPath Strategies project
+# This file specifies file patterns and how Git should handle them
+
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# Don't include these files in GitHub language statistics
+*.md linguist-detectable=false
+*.json linguist-detectable=true
+*.ts linguist-detectable=true
+*.tsx linguist-detectable=true
+*.js linguist-detectable=true
+*.css linguist-detectable=true
+
+# Prevent showing diffs for potentially sensitive files
+*.env filter=git-crypt diff=git-crypt
+*.pem filter=git-crypt diff=git-crypt
+*_key* filter=git-crypt diff=git-crypt
+*_secret* filter=git-crypt diff=git-crypt
+
+# Treat these files as binary to prevent accidental modifications
+*.png binary
+*.jpg binary
+*.pdf binary
+*.ico binary
+
+# Make shell scripts executable
+*.sh text eol=lf

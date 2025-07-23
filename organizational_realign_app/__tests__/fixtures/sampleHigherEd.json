@@ -1,0 +1,17 @@
+{
+  "segment": "HIGHER_ED",
+  "answers": {
+    "span_control_1": 2,
+    "span_control_2": 3,
+    "culture_1": 3,
+    "culture_2": 3,
+    "tech_fit_1": 2,
+    "tech_fit_2": 3,
+    "readiness_1": 3,
+    "readiness_2": 3
+  },
+  "expectedScore": 0.613,
+  "expectedTier": "Transformation Planning",
+  "expectedCI": 0.04,
+  "expectedPercentile": 68
+}

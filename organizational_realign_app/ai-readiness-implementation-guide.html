@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Readiness Assessment - Implementation Guide & User Manual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://northpathstrategies.org/wp-content/uploads/2025/07/—Pngtree—intriguingly-dark-geometric-backdrop-perfect_11036843.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 0 0 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            padding-top: 40px;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .section h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            margin: 15px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            position: relative;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -2px;
+            top: -2px;
+            background: #28a745;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .step-list li strong {
+            color: #28a745;
+            margin-left: 35px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .step-list li p {
+            margin-left: 35px;
+            color: #666;
+        }
+
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .domain-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .domain-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .domain-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .domain-card .weight {
+            background: #667eea;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            float: right;
+        }
+
+        .tier-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .tier-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tier-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .tier-card.premium {
+            border-color: #ffd700;
+            background: linear-gradient(145deg, #fff9e6, #ffffff);
+        }
+
+        .tier-card h4 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .tier-card .price {
+            font-size: 2em;
+            color: #28a745;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .tier-card .features {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .tier-card .features li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .tier-card .features li::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .alert {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .alert.warning {
+            background: #fff3cd;
+            border-color: #ffeaa7;
+        }
+
+        .alert.info {
+            background: #d1ecf1;
+            border-color: #bee5eb;
+        }
+
+        .alert h4 {
+            color: #155724;
+            margin-bottom: 10px;
+        }
+
+        .alert.warning h4 {
+            color: #856404;
+        }
+
+        .alert.info h4 {
+            color: #0c5460;
+        }
+
+        .button {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .button:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .button.secondary {
+            background: #28a745;
+        }
+
+        .button.secondary:hover {
+            background: #218838;
+        }
+
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .faq {
+            margin: 30px 0;
+        }
+
+        .faq-item {
+            margin: 15px 0;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+        }
+
+        .faq-question {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .faq-answer {
+            padding: 15px 20px;
+            border-top: 1px solid #e9ecef;
+            background: white;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 20px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #28a745, #20c997);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #667eea;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 20px 0;
+            padding-left: 80px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+
+        .timeline-item h4 {
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                background-attachment: scroll;
+                padding: 0 0 40px 0;
+                margin-bottom: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.5em;
+                padding-top: 30px;
+            }
+            
+            .header .subtitle {
+                font-size: 1.1em;
+                padding: 0 20px;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+            
+            .step-list li {
+                padding: 15px;
+            }
+            
+            .step-list li strong,
+            .step-list li p {
+                margin-left: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI Readiness Assessment</h1>
+            <p class="subtitle">Complete Implementation Guide & User Manual for Higher Education Institutions</p>
+        </div>
+
+        <!-- Overview Section -->
+        <div class="section">
+            <h2>🎯 Overview</h2>
+            <p>The AI Readiness Assessment is the most comprehensive evaluation tool available for higher education institutions seeking to assess, plan, and implement AI strategies that enhance student success, maintain academic integrity, and support institutional mission alignment.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📊 105 Comprehensive Questions</h4>
+                    <p>Most exhaustive assessment covering every aspect of institutional AI readiness across 8 specialized domains.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🏛️ Higher Education Focused</h4>
+                    <p>Specifically designed for colleges and universities with questions addressing academic integrity, learning outcomes, and student success.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📋 Automated Policy Generation</h4>
+                    <p>Unique capability to generate custom AI policies for faculty, students, and staff based on assessment results.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📄 30+ Page Reports</h4>
+                    <p>Comprehensive PDF reports with actionable recommendations, implementation frameworks, and ready-to-use policy templates.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessment Domains Section -->
+        <div class="section">
+            <h2>🏗️ Assessment Domains</h2>
+            <p>The assessment evaluates your institution across 8 critical domains, each weighted according to its impact on successful AI implementation:</p>
+            
+            <div class="domain-grid">
+                <div class="domain-card">
+                    <span class="weight">18%</span>
+                    <h4>Strategic Leadership & Vision</h4>
+                    <p>Leadership commitment, strategic planning, and organizational vision for AI integration.</p>
+                </div>
+                <div class="domain-card">
+                    <span class="weight">20%</span>
+                    <h4>Governance & Policy Development</h4>
+                    <p>Institutional policies, decision-making frameworks, and governance structures for AI oversight.</p>
+                </div>
+                <div class="domain-card">
+                    <span class="weight">18%</span>
+                    <h4>Faculty AI Integration & Classroom Policy</h4>
+                    <p>Faculty readiness, pedagogical integration, and classroom AI use guidelines.</p>
+                </div>
+                <div class="domain-card">
+                    <span class="weight">12%</span>
+                    <h4>Student AI Use & Academic Integrity</h4>
+                    <p>Student guidelines, academic integrity frameworks, and learning outcome preservation.</p>
+                </div>
+                <div class="domain-card">
+                    <span class="weight">10%</span>
+                    <h4>Employee AI Use & Workplace Integration</h4>
+                    <p>Staff AI adoption, workplace policies, and administrative AI integration.</p>
+                </div>
+                <div class="domain-card">
+                    <span class="weight">10%</span>
+                    <h4>Technology Infrastructure & Security</h4>
+                    <p>Technical capabilities, data security, and infrastructure readiness for AI systems.</p>
+                </div>
+                <div class="domain-card">
+                    <span class="weight">8%</span>
+                    <h4>Culture & Change Management</h4>
+                    <p>Organizational culture, change readiness, and stakeholder engagement strategies.</p>
+                </div>
+                <div class="domain-card">
+                    <span class="weight">4%</span>
+                    <h4>Mission & Student Success Alignment</h4>
+                    <p>Alignment with institutional mission and commitment to student success outcomes.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Getting Started Section -->
+        <div class="section">
+            <h2>🚀 Getting Started</h2>
+            <p>Follow these steps to conduct your institution's AI readiness assessment:</p>
+            
+            <ol class="step-list">
+                <li>
+                    <strong>Choose Your Assessment Tier</strong>
+                    <p>Select the assessment level that best fits your institution's needs and budget. Higher tiers provide more comprehensive analysis and additional features.</p>
+                </li>
+                <li>
+                    <strong>Gather Your Team</strong>
+                    <p>Involve key stakeholders including academic leadership, IT staff, faculty representatives, and student affairs personnel for comprehensive input.</p>
+                </li>
+                <li>
+                    <strong>Prepare Institutional Documents</strong>
+                    <p>Collect relevant documents such as strategic plans, current AI policies, technology roadmaps, and student success data for enhanced analysis.</p>
+                </li>
+                <li>
+                    <strong>Complete the Assessment</strong>
+                    <p>Answer all questions thoughtfully, providing accurate information about your institution's current state and future goals.</p>
+                </li>
+                <li>
+                    <strong>Review Results & Recommendations</strong>
+                    <p>Analyze your comprehensive report, review generated policies, and develop an implementation plan based on recommendations.</p>
+                </li>
+                <li>
+                    <strong>Implement & Monitor</strong>
+                    <p>Execute recommended actions, implement suggested policies, and track progress toward your AI readiness goals.</p>
+                </li>
+            </ol>
+        </div>
+
+        <!-- Tier Comparison Section -->
+        <div class="section">
+            <h2>📊 Assessment Tiers</h2>
+            <p>Choose the assessment tier that best fits your institution's needs:</p>
+            
+            <div class="tier-comparison">
+                <div class="tier-card">
+                    <h4>Advanced AI Assessment</h4>
+                    <div class="price">$4,995</div>
+                    <ul class="features">
+                        <li>100-question comprehensive AI assessment</li>
+                        <li>All 8 domain analysis</li>
+                        <li>12-page detailed AI readiness report</li>
+                        <li>Custom AI policy generation</li>
+                        <li>AI opportunity identification</li>
+                        <li>Implementation roadmap</li>
+                        <li>60-minute strategy session</li>
+                    </ul>
+                </div>
+                
+                <div class="tier-card premium">
+                    <h4>Comprehensive AI Assessment</h4>
+                    <div class="price">$12,000</div>
+                    <ul class="features">
+                        <li>150-question comprehensive AI assessment</li>
+                        <li>Team collaboration features</li>
+                        <li>30+ page comprehensive AI analysis</li>
+                        <li>Complete AI policy suite generation</li>
+                        <li>Board-ready presentations</li>
+                        <li>AI implementation consulting</li>
+                        <li>Ongoing support package</li>
+                        <li>Priority response time</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Document Upload Guide -->
+        <div class="section">
+            <h2>📁 Document Upload Guide</h2>
+            <p>Enhance your assessment analysis by uploading relevant institutional documents:</p>
+            
+            <h3>Recommended Document Categories</h3>
+            
+            <h4>1. Student Success & Academic Outcomes</h4>
+            <ul>
+                <li>Student retention and persistence reports</li>
+                <li>Graduation rate analyses by demographic</li>
+                <li>Student learning outcome assessments</li>
+                <li>Course success rate data</li>
+                <li>Student satisfaction surveys</li>
+            </ul>
+            
+            <h4>2. Faculty Teaching & Learning Support</h4>
+            <ul>
+                <li>Faculty development program records</li>
+                <li>Teaching evaluation data</li>
+                <li>Curriculum maps and learning objectives</li>
+                <li>Technology adoption statistics</li>
+                <li>Professional development participation rates</li>
+            </ul>
+            
+            <h4>3. Strategic Planning & Governance</h4>
+            <ul>
+                <li>Institutional strategic plans</li>
+                <li>Technology roadmaps</li>
+                <li>Current AI or technology policies</li>
+                <li>Governance structure documents</li>
+                <li>Committee charters and responsibilities</li>
+            </ul>
+            
+            <h4>4. Technology Infrastructure</h4>
+            <ul>
+                <li>IT infrastructure assessments</li>
+                <li>Data security policies</li>
+                <li>System integration documentation</li>
+                <li>Technology budget allocations</li>
+                <li>Cybersecurity frameworks</li>
+            </ul>
+            
+            <div class="alert info">
+                <h4>📋 Document Upload Tips</h4>
+                <p>Upload documents in PDF format when possible. Ensure sensitive information is redacted. Documents should be recent (within 2 years) for most accurate analysis.</p>
+            </div>
+        </div>
+
+        <!-- Using Assessment Results -->
+        <div class="section">
+            <h2>📈 Using Your Assessment Results</h2>
+            
+            <h3>Understanding Your Scores</h3>
+            <p>Your assessment results include several key components:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Overall Readiness Score</h4>
+                    <p>Composite score from 0-100 indicating your institution's overall AI readiness level.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Domain-Specific Scores</h4>
+                    <p>Individual scores for each of the 8 assessment domains, highlighting strengths and improvement areas.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Maturity Level</h4>
+                    <p>Classification of your institution's AI maturity: Beginning, Developing, Advancing, or Leading.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Priority Recommendations</h4>
+                    <p>Specific, actionable recommendations ranked by impact and implementation feasibility.</p>
+                </div>
+            </div>
+            
+            <h3>Implementation Timeline</h3>
+            <p>Your report includes a suggested implementation timeline:</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>Immediate Actions (0-30 days)</h4>
+                    <p>Quick wins and foundational steps to begin your AI readiness journey.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Short-term Goals (1-6 months)</h4>
+                    <p>Policy development, stakeholder engagement, and infrastructure preparations.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Medium-term Objectives (6-12 months)</h4>
+                    <p>Pilot programs, training initiatives, and system implementations.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Long-term Vision (1-2 years)</h4>
+                    <p>Full AI integration, outcome measurement, and continuous improvement processes.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Policy Implementation -->
+        <div class="section">
+            <h2>📋 Policy Implementation Guide</h2>
+            
+            <p>Your assessment generates custom AI policies tailored to your institution. Here's how to implement them effectively:</p>
+            
+            <h3>Generated Policy Types</h3>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Faculty AI Integration Policies</h4>
+                    <p>Guidelines for faculty use of AI in teaching, research, and administrative tasks.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Student AI Use Guidelines</h4>
+                    <p>Academic integrity frameworks and acceptable use policies for student AI interaction.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Employee AI Workplace Policies</h4>
+                    <p>Professional standards and guidelines for staff AI use in administrative and support functions.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Institutional AI Governance</h4>
+                    <p>High-level governance frameworks for institutional AI oversight and decision-making.</p>
+                </div>
+            </div>
+            
+            <h3>Policy Implementation Steps</h3>
+            
+            <ol class="step-list">
+                <li>
+                    <strong>Review Generated Policies</strong>
+                    <p>Carefully review all generated policy documents and customize them to reflect your institution's specific context and values.</p>
+                </li>
+                <li>
+                    <strong>Stakeholder Consultation</strong>
+                    <p>Engage faculty senate, student government, staff councils, and other stakeholders in policy review and refinement.</p>
+                </li>
+                <li>
+                    <strong>Legal and Compliance Review</strong>
+                    <p>Have your legal counsel and compliance officers review policies for alignment with institutional policies and regulations.</p>
+                </li>
+                <li>
+                    <strong>Approval Process</strong>
+                    <p>Follow your institution's policy approval process, which may include committee review and administrative approval.</p>
+                </li>
+                <li>
+                    <strong>Communication and Training</strong>
+                    <p>Develop comprehensive communication plans and training programs to ensure stakeholder understanding and adoption.</p>
+                </li>
+                <li>
+                    <strong>Implementation and Monitoring</strong>
+                    <p>Deploy policies with clear enforcement mechanisms and establish regular review cycles for updates and improvements.</p>
+                </li>
+            </ol>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="section">
+            <h2>✅ Best Practices</h2>
+            
+            <h3>For Assessment Completion</h3>
+            <ul>
+                <li><strong>Involve Multiple Stakeholders:</strong> Include representatives from academic affairs, IT, student services, and faculty leadership</li>
+                <li><strong>Be Honest and Realistic:</strong> Accurate responses lead to more valuable recommendations</li>
+                <li><strong>Gather Supporting Data:</strong> Have relevant metrics and documentation readily available</li>
+                <li><strong>Consider Future Goals:</strong> Think about where your institution wants to be in 2-3 years</li>
+                <li><strong>Document Current State:</strong> Take detailed notes about your current AI-related activities and policies</li>
+            </ul>
+            
+            <h3>For Implementation Success</h3>
+            <ul>
+                <li><strong>Start with Quick Wins:</strong> Implement easy, high-impact recommendations first to build momentum</li>
+                <li><strong>Engage Champions:</strong> Identify and support AI advocates across different stakeholder groups</li>
+                <li><strong>Communicate Clearly:</strong> Develop clear messaging about AI benefits and guardrails</li>
+                <li><strong>Pilot Before Scaling:</strong> Test AI initiatives with small groups before institution-wide deployment</li>
+                <li><strong>Monitor and Adjust:</strong> Regularly assess progress and adjust strategies based on outcomes</li>
+            </ul>
+            
+            <div class="alert warning">
+                <h4>⚠️ Common Implementation Pitfalls</h4>
+                <p>Avoid these common mistakes: rushing into AI adoption without proper planning, neglecting stakeholder engagement, failing to address academic integrity concerns, and implementing technology without adequate training and support.</p>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="section">
+            <h2>❓ Frequently Asked Questions</h2>
+            
+            <div class="faq">
+                <div class="faq-item">
+                    <div class="faq-question">How long does the assessment take to complete?</div>
+                    <div class="faq-answer">The full 105-question assessment typically takes 45-90 minutes, depending on the depth of responses and whether you're uploading supporting documents. We recommend scheduling 2 hours to allow for thoughtful responses and team consultation.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Can multiple people contribute to one assessment?</div>
+                    <div class="faq-answer">Yes! Higher-tier assessments include team collaboration features. You can invite colleagues to contribute their expertise to specific sections, ensuring comprehensive and accurate responses across all domains.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">How often should we repeat the assessment?</div>
+                    <div class="faq-answer">We recommend annual assessments to track progress and identify new opportunities. Institutions undergoing rapid AI implementation may benefit from semi-annual assessments during active implementation phases.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Are the generated policies legally binding?</div>
+                    <div class="faq-answer">Generated policies are templates and recommendations that require customization and legal review before implementation. They provide a strong foundation but must be adapted to your institution's specific context and legal requirements.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">What support is available after completing the assessment?</div>
+                    <div class="faq-answer">Support varies by tier. All assessments include the comprehensive report and recommendations. Higher tiers include consultation calls, implementation support, and ongoing guidance. Additional consulting services are available separately.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">How does this assessment differ from other AI readiness tools?</div>
+                    <div class="faq-answer">Our assessment is specifically designed for higher education and includes unique features like automated policy generation, academic integrity focus, student success alignment, and learning outcome preservation. It's the most comprehensive assessment available for colleges and universities.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Requirements -->
+        <div class="section">
+            <h2>💻 Technical Requirements</h2>
+            
+            <h3>System Requirements</h3>
+            <ul>
+                <li><strong>Browser:</strong> Modern web browser (Chrome, Firefox, Safari, Edge)</li>
+                <li><strong>Internet:</strong> Stable internet connection for assessment completion and document upload</li>
+                <li><strong>Documents:</strong> PDF format preferred for document uploads (max 50MB per file)</li>
+                <li><strong>JavaScript:</strong> Must be enabled for full functionality</li>
+            </ul>
+            
+            <h3>Data Security & Privacy</h3>
+            <div class="alert info">
+                <h4>🔒 Your Data is Secure</h4>
+                <p>All assessment data is encrypted in transit and at rest. We follow FERPA guidelines and higher education privacy standards. Your institutional data is never shared with third parties and is used solely for generating your customized analysis and recommendations.</p>
+            </div>
+        </div>
+
+        <!-- Support & Contact -->
+        <div class="section">
+            <h2>📞 Support & Contact</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📧 Email Support</h4>
+                    <p>Get help via email at support@northpathstrategies.org</p>
+                    <p><em>Response time: 24-48 hours</em></p>
+                </div>
+                <div class="feature-card">
+                    <h4>📞 Phone Consultation</h4>
+                    <p>Schedule a consultation call for personalized guidance</p>
+                    <p><em>Available for Advanced and Comprehensive tiers</em></p>
+                </div>
+                <div class="feature-card">
+                    <h4>📚 Implementation Resources</h4>
+                    <p>Access additional guides, templates, and best practice resources</p>
+                    <p><em>Available in your assessment results portal</em></p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔄 Assessment Updates</h4>
+                    <p>Receive notifications about assessment updates and new features</p>
+                    <p><em>Automatic for all assessment tiers</em></p>
+                </div>
+            </div>
+            
+            <div class="alert">
+                <h4>🎯 Ready to Begin?</h4>
+                <p>Start your institution's AI readiness journey today. Choose your assessment tier and begin the most comprehensive evaluation of your AI readiness available in higher education.</p>
+            </div>
+            
+            <div style="text-align: center; margin: 40px 0;">
+                <a href="https://app.northpathstrategies.org/api/stripe/create-tier-checkout?tier=one-time-diagnostic" class="button">Start Advanced Assessment ($4,995)</a>
+                <a href="https://app.northpathstrategies.org/api/stripe/create-tier-checkout?tier=ai-readiness-custom" class="button">Start Comprehensive Assessment ($12,000)</a>
+                <a href="https://calendly.com/jeremyestrella/30min" class="button secondary">Schedule Consultation</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 40px 0; color: #666; border-top: 1px solid #e9ecef; margin-top: 40px;">
+            <p><strong>AI Readiness Assessment</strong> | Powered by North Path Strategies</p>
+            <p>The most comprehensive AI readiness evaluation for higher education institutions</p>
+            <p style="font-size: 0.9em; margin-top: 20px;">
+                © 2025 North Path Strategies. All rights reserved. | 
+                <a href="https://northpathstrategies.org/privacy" style="color: #667eea;">Privacy Policy</a> | 
+                <a href="https://northpathstrategies.org/terms" style="color: #667eea;">Terms of Service</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Simple FAQ toggle functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const isVisible = answer.style.display === 'block';
+                
+                // Hide all answers
+                document.querySelectorAll('.faq-answer').forEach(ans => {
+                    ans.style.display = 'none';
+                });
+                
+                // Show clicked answer if it wasn't visible
+                if (!isVisible) {
+                    answer.style.display = 'block';
+                }
+            });
+        });
+
+        // Initialize FAQ (hide all answers)
+        document.querySelectorAll('.faq-answer').forEach(answer => {
+            answer.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

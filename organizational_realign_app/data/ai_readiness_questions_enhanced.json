@@ -1,0 +1,1293 @@
+{
+  "meta": {
+    "title": "Comprehensive AI Readiness and Policy Development Assessment",
+    "description": "Exhaustive 100-question evaluation of institutional readiness for AI integration across all domains with policy development capabilities",
+    "version": "3.0.0",
+    "supportsTeams": true,
+    "totalQuestions": 105,
+    "policyDevelopment": true,
+    "domains": [
+      {
+        "id": "strategy",
+        "name": "Strategic Leadership & Vision",
+        "weight": 0.18,
+        "questionCount": 18,
+        "description": "Institutional commitment, leadership support, and strategic planning for AI integration"
+      },
+      {
+        "id": "governance",
+        "name": "Governance & Policy Development",
+        "weight": 0.20,
+        "questionCount": 20,
+        "description": "Policies, procedures, governance structures, and policy development needs for responsible AI use"
+      },
+      {
+        "id": "pedagogy",
+        "name": "Faculty AI Integration & Classroom Policy",
+        "weight": 0.18,
+        "questionCount": 21,
+        "description": "Integration of AI into teaching, learning, curriculum development, and classroom policies"
+      },
+      {
+        "id": "student_policy",
+        "name": "Student AI Use & Academic Integrity",
+        "weight": 0.12,
+        "questionCount": 15,
+        "description": "Student AI usage policies, academic integrity, and ethical considerations"
+      },
+      {
+        "id": "employee_policy",
+        "name": "Employee AI Use & Workplace Integration",
+        "weight": 0.10,
+        "questionCount": 10,
+        "description": "Staff and administrative AI usage policies, workplace integration, and professional development"
+      },
+      {
+        "id": "technology",
+        "name": "Technology Infrastructure & Security",
+        "weight": 0.10,
+        "questionCount": 10,
+        "description": "Technical capabilities, infrastructure, and security considerations for AI initiatives"
+      },
+      {
+        "id": "culture",
+        "name": "Culture & Change Management",
+        "weight": 0.08,
+        "questionCount": 8,
+        "description": "Organizational culture, faculty/staff readiness, and change management processes"
+      },
+      {
+        "id": "alignment",
+        "name": "Mission & Student Success Alignment",
+        "weight": 0.04,
+        "questionCount": 4,
+        "description": "How well AI initiatives map to institutional mission, strategic plan, and student success outcomes"
+      }
+    ]
+  },
+  "questions": [
+    {
+      "id": "strategy_1",
+      "domain": "strategy",
+      "type": "multiple_choice",
+      "required": true,
+      "allowsOpenEnded": true,
+      "enableTeamResponse": true,
+      "confidenceTracking": true,
+      "question": "How would you characterize your institution's current AI strategy?",
+      "options": [
+        {"value": "comprehensive_strategy", "label": "We have a comprehensive, board-approved AI strategy with clear goals and timelines", "score": 5},
+        {"value": "developing_strategy", "label": "We are actively developing an AI strategy with stakeholder input", "score": 4},
+        {"value": "initial_discussions", "label": "We have had initial discussions about AI strategy but no formal plan", "score": 3},
+        {"value": "informal_exploration", "label": "Individual departments are exploring AI informally", "score": 2},
+        {"value": "no_strategy", "label": "We have not yet developed an AI strategy", "score": 1}
+      ]
+    },
+    {
+      "id": "strategy_2",
+      "domain": "strategy",
+      "type": "likert",
+      "required": true,
+      "enableTeamResponse": true,
+      "question": "Senior leadership actively champions AI initiatives and communicates their importance to the institution"
+    },
+    {
+      "id": "strategy_3",
+      "domain": "strategy",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "What is your institution's primary motivation for AI adoption?",
+      "options": [
+        {"value": "student_outcomes", "label": "Improving student learning outcomes and success", "score": 5},
+        {"value": "operational_efficiency", "label": "Increasing operational efficiency and reducing costs", "score": 4},
+        {"value": "competitive_advantage", "label": "Maintaining competitive advantage in the market", "score": 4},
+        {"value": "faculty_support", "label": "Supporting faculty teaching and research", "score": 5},
+        {"value": "innovation_reputation", "label": "Building reputation as an innovative institution", "score": 3},
+        {"value": "external_pressure", "label": "Responding to external pressure or mandates", "score": 2}
+      ]
+    },
+    {
+      "id": "strategy_4",
+      "domain": "strategy",
+      "type": "likert",
+      "required": true,
+      "question": "We have allocated sufficient budget for AI implementation and ongoing operations"
+    },
+    {
+      "id": "strategy_5",
+      "domain": "strategy",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "How does your institution approach AI pilot projects?",
+      "options": [
+        {"value": "strategic_coordinated", "label": "Strategically coordinated pilots with clear scaling pathways", "score": 5},
+        {"value": "centrally_managed", "label": "Centrally managed with standardized evaluation criteria", "score": 4},
+        {"value": "department_led_coordination", "label": "Department-led with some coordination and oversight", "score": 3},
+        {"value": "ad_hoc_department", "label": "Ad hoc department initiatives with minimal coordination", "score": 2},
+        {"value": "no_pilots", "label": "We haven't started any AI pilot projects yet", "score": 1}
+      ]
+    },
+    {
+      "id": "strategy_6",
+      "domain": "strategy",
+      "type": "likert",
+      "required": true,
+      "question": "We have established clear success metrics for measuring AI implementation effectiveness"
+    },
+    {
+      "id": "strategy_7",
+      "domain": "strategy",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "What is your timeline for comprehensive AI integration?",
+      "options": [
+        {"value": "6_months", "label": "Within 6 months", "score": 3},
+        {"value": "1_year", "label": "Within 1 year", "score": 4},
+        {"value": "2_years", "label": "Within 2 years", "score": 5},
+        {"value": "3_plus_years", "label": "3+ years", "score": 3},
+        {"value": "no_timeline", "label": "No timeline established", "score": 1}
+      ]
+    },
+    {
+      "id": "strategy_8",
+      "domain": "strategy",
+      "type": "likert",
+      "required": true,
+      "question": "Our AI strategy includes specific provisions for faculty development and training"
+    },
+    {
+      "id": "strategy_9",
+      "domain": "strategy",
+      "type": "likert",
+      "required": true,
+      "question": "We have identified AI use cases that align with our institutional mission and values"
+    },
+    {
+      "id": "strategy_10",
+      "domain": "strategy",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "How do you prioritize AI initiatives across different areas?",
+      "options": [
+        {"value": "mission_driven", "label": "Based on mission alignment and student impact", "score": 5},
+        {"value": "roi_focused", "label": "Primarily on ROI and cost savings", "score": 3},
+        {"value": "low_hanging_fruit", "label": "Quick wins and low-hanging fruit first", "score": 3},
+        {"value": "faculty_interest", "label": "Based on faculty interest and readiness", "score": 4},
+        {"value": "technology_readiness", "label": "By technical feasibility and infrastructure readiness", "score": 3},
+        {"value": "no_prioritization", "label": "We don't have a clear prioritization framework", "score": 1}
+      ]
+    },
+    {
+      "id": "strategy_11",
+      "domain": "strategy",
+      "type": "likert",
+      "required": true,
+      "question": "Our strategic plan explicitly addresses AI integration across multiple functional areas"
+    },
+    {
+      "id": "strategy_12",
+      "domain": "strategy",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "How do you handle AI vendor selection and partnerships?",
+      "options": [
+        {"value": "strategic_partnerships", "label": "Strategic partnerships with comprehensive evaluation", "score": 5},
+        {"value": "centralized_procurement", "label": "Centralized procurement with standardized criteria", "score": 4},
+        {"value": "department_selection", "label": "Departments select vendors with IT approval", "score": 3},
+        {"value": "ad_hoc_selection", "label": "Ad hoc vendor selection without formal process", "score": 2},
+        {"value": "no_process", "label": "No formal vendor selection process", "score": 1}
+      ]
+    },
+    {
+      "id": "strategy_13",
+      "domain": "strategy",
+      "type": "likert",
+      "required": true,
+      "question": "We regularly review and update our AI strategy based on outcomes and changing needs"
+    },
+    {
+      "id": "strategy_14",
+      "domain": "strategy",
+      "type": "likert",
+      "required": true,
+      "question": "Our board and senior leadership understand the long-term implications of AI for higher education"
+    },
+    {
+      "id": "strategy_15",
+      "domain": "strategy",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "What level of AI transformation are you planning?",
+      "options": [
+        {"value": "comprehensive_transformation", "label": "Comprehensive transformation across all operations", "score": 5},
+        {"value": "significant_integration", "label": "Significant integration in key areas", "score": 4},
+        {"value": "selective_implementation", "label": "Selective implementation in specific departments", "score": 3},
+        {"value": "limited_pilots", "label": "Limited pilots and experimentation", "score": 2},
+        {"value": "minimal_adoption", "label": "Minimal adoption for compliance or pressure", "score": 1}
+      ]
+    },
+    {
+      "id": "strategy_16",
+      "domain": "strategy",
+      "type": "likert",
+      "required": true,
+      "question": "We have established partnerships with other institutions or organizations for AI knowledge sharing"
+    },
+    {
+      "id": "strategy_17",
+      "domain": "strategy",
+      "type": "likert",
+      "required": true,
+      "question": "Our AI strategy addresses both current needs and future technological developments"
+    },
+    {
+      "id": "strategy_18",
+      "domain": "strategy",
+      "type": "open_ended",
+      "required": false,
+      "question": "Describe your institution's most ambitious AI goal for the next 3 years and how you plan to achieve it."
+    },
+
+    {
+      "id": "governance_1",
+      "domain": "governance",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "What is the current state of your institutional AI governance structure?",
+      "options": [
+        {"value": "comprehensive_governance", "label": "Comprehensive governance with clear policies and oversight", "score": 5},
+        {"value": "developing_governance", "label": "Developing governance structure with some policies in place", "score": 4},
+        {"value": "basic_guidelines", "label": "Basic guidelines and informal oversight", "score": 3},
+        {"value": "minimal_governance", "label": "Minimal governance with ad hoc decision making", "score": 2},
+        {"value": "no_governance", "label": "No formal AI governance structure", "score": 1}
+      ]
+    },
+    {
+      "id": "governance_2",
+      "domain": "governance",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have established an AI ethics committee or review board"
+    },
+    {
+      "id": "governance_3",
+      "domain": "governance",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How comprehensive are your current AI use policies?",
+      "options": [
+        {"value": "comprehensive_policies", "label": "Comprehensive policies covering all stakeholder groups", "score": 5},
+        {"value": "policies_in_development", "label": "Policies in development with some areas covered", "score": 4},
+        {"value": "basic_guidelines", "label": "Basic guidelines without formal policy status", "score": 3},
+        {"value": "informal_guidance", "label": "Informal guidance and best practices", "score": 2},
+        {"value": "no_policies", "label": "No formal AI use policies", "score": 1}
+      ]
+    },
+    {
+      "id": "governance_4",
+      "domain": "governance",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have clear policies for data privacy and security in AI applications"
+    },
+    {
+      "id": "governance_5",
+      "domain": "governance",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you handle AI policy violations or concerns?",
+      "options": [
+        {"value": "formal_process", "label": "Formal investigation and resolution process", "score": 5},
+        {"value": "structured_review", "label": "Structured review with documented outcomes", "score": 4},
+        {"value": "case_by_case", "label": "Case-by-case review by relevant administrators", "score": 3},
+        {"value": "informal_discussion", "label": "Informal discussion and guidance", "score": 2},
+        {"value": "no_process", "label": "No established process for handling violations", "score": 1}
+      ]
+    },
+    {
+      "id": "governance_6",
+      "domain": "governance",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have established clear approval processes for new AI tools and applications"
+    },
+    {
+      "id": "governance_7",
+      "domain": "governance",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you ensure compliance with federal and state regulations regarding AI use?",
+      "options": [
+        {"value": "proactive_compliance", "label": "Proactive compliance monitoring and regular updates", "score": 5},
+        {"value": "regular_review", "label": "Regular review of regulations and policy updates", "score": 4},
+        {"value": "reactive_updates", "label": "Reactive updates when regulations change", "score": 3},
+        {"value": "minimal_monitoring", "label": "Minimal monitoring of regulatory requirements", "score": 2},
+        {"value": "no_monitoring", "label": "No formal regulatory compliance monitoring", "score": 1}
+      ]
+    },
+    {
+      "id": "governance_8",
+      "domain": "governance",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have policies addressing intellectual property rights for AI-generated content"
+    },
+    {
+      "id": "governance_9",
+      "domain": "governance",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you approach transparency in AI decision-making processes?",
+      "options": [
+        {"value": "full_transparency", "label": "Full transparency with documented decision rationale", "score": 5},
+        {"value": "structured_transparency", "label": "Structured transparency for key decisions", "score": 4},
+        {"value": "selective_transparency", "label": "Transparency on request or for major decisions", "score": 3},
+        {"value": "limited_transparency", "label": "Limited transparency with basic information sharing", "score": 2},
+        {"value": "minimal_transparency", "label": "Minimal transparency or documentation", "score": 1}
+      ]
+    },
+    {
+      "id": "governance_10",
+      "domain": "governance",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have established procedures for regular AI policy review and updates"
+    },
+    {
+      "id": "governance_11",
+      "domain": "governance",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you handle bias detection and mitigation in AI systems?",
+      "options": [
+        {"value": "systematic_monitoring", "label": "Systematic bias monitoring with mitigation protocols", "score": 5},
+        {"value": "regular_audits", "label": "Regular bias audits and corrective measures", "score": 4},
+        {"value": "periodic_review", "label": "Periodic review of AI outputs for bias", "score": 3},
+        {"value": "reactive_response", "label": "Reactive response when bias issues are identified", "score": 2},
+        {"value": "no_monitoring", "label": "No formal bias detection or mitigation process", "score": 1}
+      ]
+    },
+    {
+      "id": "governance_12",
+      "domain": "governance",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have clear guidelines for human oversight of AI-driven decisions"
+    },
+    {
+      "id": "governance_13",
+      "domain": "governance",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you ensure accountability for AI-related decisions and outcomes?",
+      "options": [
+        {"value": "clear_accountability", "label": "Clear accountability structures with designated responsible parties", "score": 5},
+        {"value": "defined_roles", "label": "Defined roles and responsibilities for AI oversight", "score": 4},
+        {"value": "general_oversight", "label": "General oversight by existing leadership structures", "score": 3},
+        {"value": "informal_responsibility", "label": "Informal assignment of responsibility", "score": 2},
+        {"value": "unclear_accountability", "label": "Unclear or undefined accountability structures", "score": 1}
+      ]
+    },
+    {
+      "id": "governance_14",
+      "domain": "governance",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have policies addressing the use of personal data in AI systems and applications"
+    },
+    {
+      "id": "governance_15",
+      "domain": "governance",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you approach AI vendor contracts and data sharing agreements?",
+      "options": [
+        {"value": "comprehensive_contracts", "label": "Comprehensive contracts with detailed data protection clauses", "score": 5},
+        {"value": "standard_protections", "label": "Standard data protection and privacy requirements", "score": 4},
+        {"value": "basic_requirements", "label": "Basic security and privacy requirements", "score": 3},
+        {"value": "minimal_requirements", "label": "Minimal contractual protections", "score": 2},
+        {"value": "no_requirements", "label": "No specific requirements for AI vendor contracts", "score": 1}
+      ]
+    },
+    {
+      "id": "governance_16",
+      "domain": "governance",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have established clear incident response procedures for AI-related issues or failures"
+    },
+    {
+      "id": "governance_17",
+      "domain": "governance",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you ensure AI accessibility and non-discrimination?",
+      "options": [
+        {"value": "comprehensive_accessibility", "label": "Comprehensive accessibility testing and compliance monitoring", "score": 5},
+        {"value": "standard_compliance", "label": "Standard accessibility compliance procedures", "score": 4},
+        {"value": "basic_consideration", "label": "Basic consideration of accessibility in AI deployment", "score": 3},
+        {"value": "minimal_attention", "label": "Minimal attention to accessibility issues", "score": 2},
+        {"value": "no_consideration", "label": "No formal accessibility consideration for AI systems", "score": 1}
+      ]
+    },
+    {
+      "id": "governance_18",
+      "domain": "governance",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have policies governing the retention and deletion of data used in AI systems"
+    },
+    {
+      "id": "governance_19",
+      "domain": "governance",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you approach international data transfer and privacy regulations (GDPR, etc.)?",
+      "options": [
+        {"value": "full_compliance", "label": "Full compliance with international privacy regulations", "score": 5},
+        {"value": "structured_compliance", "label": "Structured approach to international privacy compliance", "score": 4},
+        {"value": "basic_compliance", "label": "Basic compliance with applicable regulations", "score": 3},
+        {"value": "minimal_compliance", "label": "Minimal compliance efforts", "score": 2},
+        {"value": "no_compliance", "label": "No formal international privacy compliance program", "score": 1}
+      ]
+    },
+    {
+      "id": "governance_20",
+      "domain": "governance",
+      "type": "open_ended",
+      "required": false,
+      "policyDevelopment": true,
+      "question": "What AI governance or policy challenges does your institution face that require the most urgent attention?"
+    },
+
+    {
+      "id": "pedagogy_1",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How extensively do faculty currently use AI tools in their teaching?",
+      "options": [
+        {"value": "widespread_integration", "label": "Widespread integration across most disciplines", "score": 5},
+        {"value": "significant_adoption", "label": "Significant adoption in multiple departments", "score": 4},
+        {"value": "moderate_use", "label": "Moderate use by early adopters", "score": 3},
+        {"value": "limited_experimentation", "label": "Limited experimentation by individual faculty", "score": 2},
+        {"value": "minimal_use", "label": "Minimal or no current use", "score": 1}
+      ]
+    },
+    {
+      "id": "pedagogy_2",
+      "domain": "pedagogy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have clear guidelines for faculty on appropriate AI use in course development and delivery"
+    },
+    {
+      "id": "pedagogy_3",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you support faculty in developing AI-enhanced pedagogical approaches?",
+      "options": [
+        {"value": "comprehensive_support", "label": "Comprehensive training and ongoing support programs", "score": 5},
+        {"value": "structured_training", "label": "Structured training workshops and resources", "score": 4},
+        {"value": "basic_resources", "label": "Basic resources and peer sharing opportunities", "score": 3},
+        {"value": "informal_support", "label": "Informal support and individual assistance", "score": 2},
+        {"value": "no_support", "label": "No formal support for AI-enhanced teaching", "score": 1}
+      ]
+    },
+    {
+      "id": "pedagogy_4",
+      "domain": "pedagogy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "Faculty have access to AI tools specifically designed for educational purposes"
+    },
+    {
+      "id": "pedagogy_5",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you approach AI integration in curriculum design?",
+      "options": [
+        {"value": "systematic_integration", "label": "Systematic integration across programs with learning outcomes", "score": 5},
+        {"value": "planned_integration", "label": "Planned integration in key courses and programs", "score": 4},
+        {"value": "departmental_initiatives", "label": "Department-led curriculum integration initiatives", "score": 3},
+        {"value": "individual_faculty", "label": "Individual faculty incorporating AI in their courses", "score": 2},
+        {"value": "no_integration", "label": "No formal AI integration in curriculum design", "score": 1}
+      ]
+    },
+    {
+      "id": "pedagogy_6",
+      "domain": "pedagogy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have policies governing how faculty can use AI for grading and assessment"
+    },
+    {
+      "id": "pedagogy_7",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you ensure quality and consistency in AI-enhanced course delivery?",
+      "options": [
+        {"value": "quality_standards", "label": "Established quality standards and review processes", "score": 5},
+        {"value": "peer_review", "label": "Peer review and faculty collaboration", "score": 4},
+        {"value": "department_oversight", "label": "Department-level oversight and guidance", "score": 3},
+        {"value": "individual_responsibility", "label": "Individual faculty responsibility with minimal oversight", "score": 2},
+        {"value": "no_quality_control", "label": "No formal quality control for AI-enhanced teaching", "score": 1}
+      ]
+    },
+    {
+      "id": "pedagogy_8",
+      "domain": "pedagogy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "Faculty receive training on AI ethics and responsible use in educational contexts"
+    },
+    {
+      "id": "pedagogy_9",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you handle faculty concerns about AI impact on traditional teaching methods?",
+      "options": [
+        {"value": "collaborative_approach", "label": "Collaborative approach with faculty input and gradual integration", "score": 5},
+        {"value": "structured_dialogue", "label": "Structured dialogue and professional development", "score": 4},
+        {"value": "open_discussion", "label": "Open discussion forums and peer sharing", "score": 3},
+        {"value": "individual_consultation", "label": "Individual consultation and voluntary adoption", "score": 3},
+        {"value": "minimal_engagement", "label": "Minimal engagement with faculty concerns", "score": 1}
+      ]
+    },
+    {
+      "id": "pedagogy_10",
+      "domain": "pedagogy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have clear policies on faculty intellectual property rights for AI-assisted course materials"
+    },
+    {
+      "id": "pedagogy_11",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you approach AI use in different types of courses (lecture, lab, seminar, etc.)?",
+      "options": [
+        {"value": "differentiated_approach", "label": "Differentiated approaches based on course type and learning objectives", "score": 5},
+        {"value": "guided_implementation", "label": "Guided implementation with course-specific considerations", "score": 4},
+        {"value": "general_guidelines", "label": "General guidelines applied across all course types", "score": 3},
+        {"value": "faculty_discretion", "label": "Left to individual faculty discretion", "score": 2},
+        {"value": "no_guidance", "label": "No specific guidance for different course types", "score": 1}
+      ]
+    },
+    {
+      "id": "pedagogy_12",
+      "domain": "pedagogy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "Faculty are required to disclose AI use to students in their courses"
+    },
+    {
+      "id": "pedagogy_13",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you measure the effectiveness of AI integration in teaching?",
+      "options": [
+        {"value": "comprehensive_assessment", "label": "Comprehensive assessment including learning outcomes and student feedback", "score": 5},
+        {"value": "structured_evaluation", "label": "Structured evaluation with multiple metrics", "score": 4},
+        {"value": "basic_metrics", "label": "Basic metrics like student satisfaction and completion rates", "score": 3},
+        {"value": "informal_feedback", "label": "Informal feedback from faculty and students", "score": 2},
+        {"value": "no_measurement", "label": "No formal measurement of AI teaching effectiveness", "score": 1}
+      ]
+    },
+    {
+      "id": "pedagogy_14",
+      "domain": "pedagogy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have policies governing the use of student data in AI-powered educational tools"
+    },
+    {
+      "id": "pedagogy_15",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you approach AI use in research supervision and mentoring?",
+      "options": [
+        {"value": "structured_guidance", "label": "Structured guidance and training for research mentoring with AI", "score": 5},
+        {"value": "best_practices", "label": "Established best practices and resources", "score": 4},
+        {"value": "informal_guidance", "label": "Informal guidance and peer sharing", "score": 3},
+        {"value": "individual_approach", "label": "Individual faculty approach with minimal guidance", "score": 2},
+        {"value": "no_guidance", "label": "No specific guidance for AI in research supervision", "score": 1}
+      ]
+    },
+    {
+      "id": "pedagogy_16",
+      "domain": "pedagogy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "Faculty have access to technical support for implementing AI tools in their teaching"
+    },
+    {
+      "id": "pedagogy_17",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you handle conflicts between AI use and traditional academic values?",
+      "options": [
+        {"value": "balanced_approach", "label": "Balanced approach that respects both innovation and tradition", "score": 5},
+        {"value": "dialogue_integration", "label": "Ongoing dialogue to find integration points", "score": 4},
+        {"value": "case_by_case", "label": "Case-by-case resolution based on specific situations", "score": 3},
+        {"value": "minimal_conflict_resolution", "label": "Minimal formal conflict resolution", "score": 2},
+        {"value": "avoiding_conflicts", "label": "Avoiding AI use where conflicts might arise", "score": 1}
+      ]
+    },
+    {
+      "id": "pedagogy_18",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you ensure AI enhances rather than replaces critical thinking in student learning?",
+      "options": [
+        {"value": "structured_frameworks", "label": "Structured frameworks that require students to demonstrate reasoning alongside AI use", "score": 5},
+        {"value": "explicit_requirements", "label": "Explicit requirements for students to explain their thinking process", "score": 4},
+        {"value": "guided_reflection", "label": "Guided reflection activities that connect AI use to learning objectives", "score": 3},
+        {"value": "faculty_monitoring", "label": "Faculty monitoring and discussion of AI use in assignments", "score": 2},
+        {"value": "no_specific_approach", "label": "No specific approach to ensuring critical thinking with AI", "score": 1}
+      ]
+    },
+    {
+      "id": "pedagogy_19",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you design assignments that maintain academic integrity while allowing beneficial AI use?",
+      "options": [
+        {"value": "process_based_assessment", "label": "Process-based assessments that value thinking and methodology over final products", "score": 5},
+        {"value": "hybrid_approaches", "label": "Hybrid approaches combining AI-assisted and AI-free components", "score": 4},
+        {"value": "transparent_requirements", "label": "Transparent requirements for AI disclosure and appropriate use", "score": 3},
+        {"value": "modified_traditional", "label": "Modified traditional assignments with AI-specific guidelines", "score": 2},
+        {"value": "prohibition_based", "label": "Primarily prohibition-based approach limiting AI use", "score": 1}
+      ]
+    },
+    {
+      "id": "pedagogy_20",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you help students develop communication skills when AI can generate written content?",
+      "options": [
+        {"value": "authentic_communication", "label": "Focus on authentic communication tasks requiring personal voice and experience", "score": 5},
+        {"value": "iterative_improvement", "label": "Iterative improvement processes where students refine and personalize AI-generated content", "score": 4},
+        {"value": "presentation_focus", "label": "Emphasis on oral presentation and verbal communication skills", "score": 3},
+        {"value": "ai_collaboration", "label": "Teaching students to effectively collaborate with AI while maintaining their voice", "score": 2},
+        {"value": "ai_prohibited", "label": "AI prohibited in communication-focused assignments", "score": 1}
+      ]
+    },
+    {
+      "id": "pedagogy_21",
+      "domain": "pedagogy",
+      "type": "open_ended",
+      "required": false,
+      "policyDevelopment": true,
+      "question": "Describe the most challenging faculty policy issue you face regarding AI in the classroom and how you plan to address it."
+    },
+
+    {
+      "id": "student_policy_1",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How comprehensive are your current student AI use policies?",
+      "options": [
+        {"value": "comprehensive_policies", "label": "Comprehensive policies covering all aspects of student AI use", "score": 5},
+        {"value": "detailed_guidelines", "label": "Detailed guidelines with clear expectations", "score": 4},
+        {"value": "basic_policies", "label": "Basic policies covering major AI use scenarios", "score": 3},
+        {"value": "informal_guidance", "label": "Informal guidance without formal policy status", "score": 2},
+        {"value": "no_policies", "label": "No formal policies for student AI use", "score": 1}
+      ]
+    },
+    {
+      "id": "student_policy_2",
+      "domain": "student_policy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "Students receive clear communication about acceptable AI use in academic work"
+    },
+    {
+      "id": "student_policy_3",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you handle AI use in academic integrity violations?",
+      "options": [
+        {"value": "clear_procedures", "label": "Clear procedures with specific AI-related violation categories", "score": 5},
+        {"value": "adapted_procedures", "label": "Adapted existing procedures to include AI considerations", "score": 4},
+        {"value": "case_by_case", "label": "Case-by-case evaluation using general academic integrity policies", "score": 3},
+        {"value": "unclear_procedures", "label": "Unclear procedures for AI-related violations", "score": 2},
+        {"value": "no_procedures", "label": "No specific procedures for AI academic integrity issues", "score": 1}
+      ]
+    },
+    {
+      "id": "student_policy_4",
+      "domain": "student_policy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have clear policies about student data privacy in AI applications"
+    },
+    {
+      "id": "student_policy_5",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you approach AI detection and monitoring of student work?",
+      "options": [
+        {"value": "balanced_approach", "label": "Balanced approach with clear detection policies and educational focus", "score": 5},
+        {"value": "transparent_monitoring", "label": "Transparent monitoring with student awareness", "score": 4},
+        {"value": "selective_detection", "label": "Selective use of AI detection tools", "score": 3},
+        {"value": "minimal_detection", "label": "Minimal or inconsistent detection efforts", "score": 2},
+        {"value": "no_detection", "label": "No AI detection or monitoring", "score": 1}
+      ]
+    },
+    {
+      "id": "student_policy_6",
+      "domain": "student_policy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "Students receive training on ethical AI use and digital citizenship"
+    },
+    {
+      "id": "student_policy_7",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you handle different AI use expectations across different courses or programs?",
+      "options": [
+        {"value": "course_specific", "label": "Course-specific policies with clear syllabus requirements", "score": 5},
+        {"value": "program_guidelines", "label": "Program-level guidelines with course flexibility", "score": 4},
+        {"value": "general_policies", "label": "General institutional policies applied uniformly", "score": 3},
+        {"value": "faculty_discretion", "label": "Individual faculty discretion with minimal guidance", "score": 2},
+        {"value": "no_differentiation", "label": "No differentiation between courses or programs", "score": 1}
+      ]
+    },
+    {
+      "id": "student_policy_8",
+      "domain": "student_policy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have clear appeals processes for AI-related academic integrity decisions"
+    },
+    {
+      "id": "student_policy_9",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you approach student AI use in high-stakes assessments (exams, capstones, etc.)?",
+      "options": [
+        {"value": "comprehensive_protocols", "label": "Comprehensive protocols with clear restrictions and alternatives", "score": 5},
+        {"value": "assessment_specific", "label": "Assessment-specific policies based on learning objectives", "score": 4},
+        {"value": "general_restrictions", "label": "General restrictions applied to all high-stakes assessments", "score": 3},
+        {"value": "faculty_determined", "label": "Faculty-determined policies for their assessments", "score": 2},
+        {"value": "no_specific_policies", "label": "No specific policies for high-stakes assessments", "score": 1}
+      ]
+    },
+    {
+      "id": "student_policy_10",
+      "domain": "student_policy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "Students have access to approved AI tools for legitimate academic purposes"
+    },
+    {
+      "id": "student_policy_11",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you ensure equity in student access to AI tools and resources?",
+      "options": [
+        {"value": "universal_access", "label": "Universal access through institutional licenses and support", "score": 5},
+        {"value": "supported_access", "label": "Supported access with assistance for students in need", "score": 4},
+        {"value": "basic_access", "label": "Basic access to free or low-cost tools", "score": 3},
+        {"value": "limited_support", "label": "Limited institutional support for AI tool access", "score": 2},
+        {"value": "no_support", "label": "No institutional support for student AI tool access", "score": 1}
+      ]
+    },
+    {
+      "id": "student_policy_12",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you ensure students demonstrate critical thinking skills when AI can provide answers?",
+      "options": [
+        {"value": "process_documentation", "label": "Require students to document their thinking process and reasoning steps", "score": 5},
+        {"value": "reflection_requirements", "label": "Mandate reflection essays explaining how they arrived at conclusions", "score": 4},
+        {"value": "verbal_defense", "label": "Oral examinations or presentations where students defend their work", "score": 3},
+        {"value": "ai_free_components", "label": "Include AI-free components in major assessments", "score": 2},
+        {"value": "honor_system", "label": "Rely on honor system and traditional academic integrity policies", "score": 1}
+      ]
+    },
+    {
+      "id": "student_policy_13",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you assess authentic learning when students use AI tools?",
+      "options": [
+        {"value": "competency_demonstration", "label": "Competency-based assessments requiring students to demonstrate understanding", "score": 5},
+        {"value": "portfolio_approach", "label": "Portfolio approach showing learning progression and personal growth", "score": 4},
+        {"value": "authentic_tasks", "label": "Real-world, authentic tasks that require personal application", "score": 3},
+        {"value": "peer_collaboration", "label": "Collaborative projects requiring peer interaction and discussion", "score": 2},
+        {"value": "traditional_testing", "label": "Increased reliance on traditional testing methods", "score": 1}
+      ]
+    },
+    {
+      "id": "student_policy_14",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you help students develop self-reflection skills in an AI-assisted learning environment?",
+      "options": [
+        {"value": "structured_reflection", "label": "Structured reflection frameworks requiring students to analyze their learning process", "score": 5},
+        {"value": "learning_journals", "label": "Learning journals documenting insights, challenges, and growth", "score": 4},
+        {"value": "peer_feedback", "label": "Peer feedback sessions encouraging metacognitive awareness", "score": 3},
+        {"value": "faculty_guidance", "label": "Faculty-guided discussions about learning and AI use", "score": 2},
+        {"value": "minimal_emphasis", "label": "Minimal emphasis on self-reflection in AI contexts", "score": 1}
+      ]
+    },
+    {
+      "id": "student_policy_15",
+      "domain": "student_policy",
+      "type": "open_ended",
+      "required": false,
+      "policyDevelopment": true,
+      "question": "What is the most challenging student AI policy issue your institution faces, and how are you addressing it?"
+    },
+
+    {
+      "id": "employee_policy_1",
+      "domain": "employee_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How comprehensive are your employee AI use policies?",
+      "options": [
+        {"value": "comprehensive_policies", "label": "Comprehensive policies covering all employee AI use scenarios", "score": 5},
+        {"value": "detailed_guidelines", "label": "Detailed guidelines for major AI use cases", "score": 4},
+        {"value": "basic_policies", "label": "Basic policies with general expectations", "score": 3},
+        {"value": "informal_guidance", "label": "Informal guidance without formal policy status", "score": 2},
+        {"value": "no_policies", "label": "No formal employee AI use policies", "score": 1}
+      ]
+    },
+    {
+      "id": "employee_policy_2",
+      "domain": "employee_policy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "Employees receive clear training on appropriate AI use in their work functions"
+    },
+    {
+      "id": "employee_policy_3",
+      "domain": "employee_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you handle AI use in different employee categories (staff, administrators, faculty)?",
+      "options": [
+        {"value": "role_specific", "label": "Role-specific policies tailored to different employee functions", "score": 5},
+        {"value": "department_guidelines", "label": "Department-specific guidelines with institutional oversight", "score": 4},
+        {"value": "general_policies", "label": "General policies applied to all employees", "score": 3},
+        {"value": "minimal_differentiation", "label": "Minimal differentiation between employee types", "score": 2},
+        {"value": "no_policies", "label": "No differentiated policies for employee AI use", "score": 1}
+      ]
+    },
+    {
+      "id": "employee_policy_4",
+      "domain": "employee_policy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have clear policies governing employee use of personal AI tools for work purposes"
+    },
+    {
+      "id": "employee_policy_5",
+      "domain": "employee_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you approach AI use in employee performance evaluation and HR decisions?",
+      "options": [
+        {"value": "transparent_guidelines", "label": "Transparent guidelines with human oversight requirements", "score": 5},
+        {"value": "structured_approach", "label": "Structured approach with clear decision frameworks", "score": 4},
+        {"value": "limited_use", "label": "Limited use with traditional methods primary", "score": 3},
+        {"value": "case_by_case", "label": "Case-by-case decisions without formal policies", "score": 2},
+        {"value": "no_ai_use", "label": "No AI use in HR decisions", "score": 1}
+      ]
+    },
+    {
+      "id": "employee_policy_6",
+      "domain": "employee_policy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "Employees have access to institutional AI tools that enhance their productivity"
+    },
+    {
+      "id": "employee_policy_7",
+      "domain": "employee_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you handle employee concerns about AI impact on job security?",
+      "options": [
+        {"value": "proactive_communication", "label": "Proactive communication and retraining programs", "score": 5},
+        {"value": "transparent_dialogue", "label": "Transparent dialogue about AI implementation plans", "score": 4},
+        {"value": "responsive_communication", "label": "Responsive communication when concerns arise", "score": 3},
+        {"value": "minimal_communication", "label": "Minimal communication about AI job impacts", "score": 2},
+        {"value": "no_communication", "label": "No formal communication about AI job implications", "score": 1}
+      ]
+    },
+    {
+      "id": "employee_policy_8",
+      "domain": "employee_policy",
+      "type": "likert",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "We have policies protecting employee data privacy in AI-powered workplace systems"
+    },
+    {
+      "id": "employee_policy_9",
+      "domain": "employee_policy",
+      "type": "multiple_choice",
+      "required": true,
+      "policyDevelopment": true,
+      "question": "How do you ensure consistency in AI use across different departments?",
+      "options": [
+        {"value": "centralized_standards", "label": "Centralized standards with department-specific implementation", "score": 5},
+        {"value": "coordinated_approach", "label": "Coordinated approach with regular cross-department communication", "score": 4},
+        {"value": "general_guidelines", "label": "General guidelines with department interpretation", "score": 3},
+        {"value": "minimal_coordination", "label": "Minimal coordination between departments", "score": 2},
+        {"value": "no_coordination", "label": "No coordination of AI use across departments", "score": 1}
+      ]
+    },
+    {
+      "id": "employee_policy_10",
+      "domain": "employee_policy",
+      "type": "open_ended",
+      "required": false,
+      "policyDevelopment": true,
+      "question": "What employee AI policy challenges require the most attention at your institution?"
+    },
+
+    {
+      "id": "technology_1",
+      "domain": "technology",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "How would you rate your current technology infrastructure for AI implementation?",
+      "options": [
+        {"value": "fully_ready", "label": "Fully ready with robust infrastructure and resources", "score": 5},
+        {"value": "mostly_ready", "label": "Mostly ready with minor upgrades needed", "score": 4},
+        {"value": "partially_ready", "label": "Partially ready with significant investments required", "score": 3},
+        {"value": "limited_readiness", "label": "Limited readiness requiring major infrastructure development", "score": 2},
+        {"value": "not_ready", "label": "Not ready for AI implementation", "score": 1}
+      ]
+    },
+    {
+      "id": "technology_2",
+      "domain": "technology",
+      "type": "likert",
+      "required": true,
+      "question": "Our network infrastructure can handle the increased data demands of AI applications"
+    },
+    {
+      "id": "technology_3",
+      "domain": "technology",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "What is your approach to AI data storage and management?",
+      "options": [
+        {"value": "comprehensive_strategy", "label": "Comprehensive data strategy with dedicated AI infrastructure", "score": 5},
+        {"value": "structured_approach", "label": "Structured approach using existing systems with AI optimization", "score": 4},
+        {"value": "adapted_systems", "label": "Adapted existing systems for AI data needs", "score": 3},
+        {"value": "basic_storage", "label": "Basic storage solutions without AI-specific optimization", "score": 2},
+        {"value": "no_strategy", "label": "No specific strategy for AI data management", "score": 1}
+      ]
+    },
+    {
+      "id": "technology_4",
+      "domain": "technology",
+      "type": "likert",
+      "required": true,
+      "question": "We have adequate cybersecurity measures for AI applications and data protection"
+    },
+    {
+      "id": "technology_5",
+      "domain": "technology",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "How do you approach AI tool integration with existing systems?",
+      "options": [
+        {"value": "seamless_integration", "label": "Seamless integration with comprehensive API and data connectivity", "score": 5},
+        {"value": "planned_integration", "label": "Planned integration with standard protocols", "score": 4},
+        {"value": "basic_integration", "label": "Basic integration with manual data transfer", "score": 3},
+        {"value": "limited_integration", "label": "Limited integration capabilities", "score": 2},
+        {"value": "no_integration", "label": "No integration with existing systems", "score": 1}
+      ]
+    },
+    {
+      "id": "technology_6",
+      "domain": "technology",
+      "type": "likert",
+      "required": true,
+      "question": "Our IT staff have the skills and knowledge to support AI implementations"
+    },
+    {
+      "id": "technology_7",
+      "domain": "technology",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "What is your approach to cloud services for AI applications?",
+      "options": [
+        {"value": "strategic_cloud", "label": "Strategic use of cloud services optimized for AI workloads", "score": 5},
+        {"value": "planned_cloud", "label": "Planned cloud adoption for AI with appropriate security", "score": 4},
+        {"value": "basic_cloud", "label": "Basic cloud services for some AI applications", "score": 3},
+        {"value": "limited_cloud", "label": "Limited cloud use due to security or policy concerns", "score": 2},
+        {"value": "no_cloud", "label": "No cloud services for AI applications", "score": 1}
+      ]
+    },
+    {
+      "id": "technology_8",
+      "domain": "technology",
+      "type": "likert",
+      "required": true,
+      "question": "We have established disaster recovery and backup procedures for AI systems"
+    },
+    {
+      "id": "technology_9",
+      "domain": "technology",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "How do you handle AI system monitoring and performance management?",
+      "options": [
+        {"value": "comprehensive_monitoring", "label": "Comprehensive monitoring with automated alerts and performance optimization", "score": 5},
+        {"value": "structured_monitoring", "label": "Structured monitoring with regular performance reviews", "score": 4},
+        {"value": "basic_monitoring", "label": "Basic monitoring of system availability and usage", "score": 3},
+        {"value": "minimal_monitoring", "label": "Minimal monitoring with reactive problem solving", "score": 2},
+        {"value": "no_monitoring", "label": "No formal monitoring of AI system performance", "score": 1}
+      ]
+    },
+    {
+      "id": "technology_10",
+      "domain": "technology",
+      "type": "open_ended",
+      "required": false,
+      "question": "What are your biggest technology infrastructure challenges for AI implementation?"
+    },
+
+    {
+      "id": "culture_1",
+      "domain": "culture",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "How would you characterize your institutional culture regarding AI adoption?",
+      "options": [
+        {"value": "enthusiastic_adoption", "label": "Enthusiastic adoption with broad community support", "score": 5},
+        {"value": "positive_engagement", "label": "Generally positive with engaged early adopters", "score": 4},
+        {"value": "cautious_interest", "label": "Cautious interest with mixed opinions", "score": 3},
+        {"value": "skeptical_resistance", "label": "Skeptical with significant resistance", "score": 2},
+        {"value": "strong_resistance", "label": "Strong resistance to AI adoption", "score": 1}
+      ]
+    },
+    {
+      "id": "culture_2",
+      "domain": "culture",
+      "type": "likert",
+      "required": true,
+      "question": "Faculty and staff are generally open to learning about and experimenting with AI tools"
+    },
+    {
+      "id": "culture_3",
+      "domain": "culture",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "How do you address resistance to AI adoption?",
+      "options": [
+        {"value": "proactive_engagement", "label": "Proactive engagement with education and support", "score": 5},
+        {"value": "structured_dialogue", "label": "Structured dialogue and gradual introduction", "score": 4},
+        {"value": "responsive_support", "label": "Responsive support when resistance is encountered", "score": 3},
+        {"value": "minimal_intervention", "label": "Minimal intervention allowing natural adoption", "score": 2},
+        {"value": "no_addressing", "label": "Not actively addressing resistance", "score": 1}
+      ]
+    },
+    {
+      "id": "culture_4",
+      "domain": "culture",
+      "type": "likert",
+      "required": true,
+      "question": "We have a culture of innovation and experimentation that supports AI adoption"
+    },
+    {
+      "id": "culture_5",
+      "domain": "culture",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "How do you support cultural change management for AI adoption?",
+      "options": [
+        {"value": "comprehensive_program", "label": "Comprehensive change management program with ongoing support", "score": 5},
+        {"value": "structured_approach", "label": "Structured approach with training and communication", "score": 4},
+        {"value": "basic_support", "label": "Basic support and resources for adoption", "score": 3},
+        {"value": "informal_support", "label": "Informal support through champions and early adopters", "score": 2},
+        {"value": "no_support", "label": "No formal change management support", "score": 1}
+      ]
+    },
+    {
+      "id": "culture_6",
+      "domain": "culture",
+      "type": "likert",
+      "required": true,
+      "question": "Leadership demonstrates commitment to AI adoption through actions and resource allocation"
+    },
+    {
+      "id": "culture_7",
+      "domain": "culture",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "How do you celebrate and share AI adoption successes?",
+      "options": [
+        {"value": "systematic_recognition", "label": "Systematic recognition and sharing of success stories", "score": 5},
+        {"value": "regular_showcasing", "label": "Regular showcasing of achievements and best practices", "score": 4},
+        {"value": "informal_sharing", "label": "Informal sharing through meetings and communications", "score": 3},
+        {"value": "minimal_recognition", "label": "Minimal recognition of AI adoption successes", "score": 2},
+        {"value": "no_recognition", "label": "No formal recognition or sharing of successes", "score": 1}
+      ]
+    },
+    {
+      "id": "culture_8",
+      "domain": "culture",
+      "type": "open_ended",
+      "required": false,
+      "question": "What cultural barriers to AI adoption do you face, and how are you addressing them?"
+    },
+
+    {
+      "id": "alignment_1",
+      "domain": "alignment",
+      "type": "likert",
+      "required": true,
+      "question": "AI initiatives are clearly aligned with our institutional mission and values"
+    },
+    {
+      "id": "alignment_2",
+      "domain": "alignment",
+      "type": "multiple_choice",
+      "required": true,
+      "question": "How well do your AI initiatives support student success outcomes?",
+      "options": [
+        {"value": "direct_enhancement", "label": "Directly enhance student learning outcomes and success metrics", "score": 5},
+        {"value": "strong_support", "label": "Strongly support student success through improved services", "score": 4},
+        {"value": "moderate_support", "label": "Moderately support student success in specific areas", "score": 3},
+        {"value": "indirect_support", "label": "Indirectly support through operational improvements", "score": 2},
+        {"value": "unclear_connection", "label": "Unclear connection to student success outcomes", "score": 1}
+      ]
+    },
+    {
+      "id": "alignment_3",
+      "domain": "alignment",
+      "type": "likert",
+      "required": true,
+      "question": "Our AI strategy is integrated into our overall strategic planning process"
+    },
+    {
+      "id": "alignment_4",
+      "domain": "alignment",
+      "type": "open_ended",
+      "required": false,
+      "question": "How do your AI initiatives specifically advance your institution's mission and strategic goals?"
+    }
+  ],
+  "scoring": {
+    "maturity_levels": [
+      {"level": 1, "name": "Emerging", "min_score": 1.0, "max_score": 2.0, "description": "Initial awareness with limited formal structure"},
+      {"level": 2, "name": "Developing", "min_score": 2.1, "max_score": 3.0, "description": "Basic policies and procedures in development"},
+      {"level": 3, "name": "Defined", "min_score": 3.1, "max_score": 4.0, "description": "Established processes with some integration"},
+      {"level": 4, "name": "Managed", "min_score": 4.1, "max_score": 4.5, "description": "Well-managed processes with consistent application"},
+      {"level": 5, "name": "Optimized", "min_score": 4.6, "max_score": 5.0, "description": "Fully integrated and continuously improving"}
+    ],
+    "policy_recommendations": {
+      "governance": [
+        {"trigger": "governance_1 <= 3", "recommendation": "Develop comprehensive AI governance framework"},
+        {"trigger": "governance_3 <= 2", "recommendation": "Create formal AI use policies for all stakeholders"},
+        {"trigger": "governance_8 <= 3", "recommendation": "Establish intellectual property policies for AI-generated content"}
+      ],
+      "pedagogy": [
+        {"trigger": "pedagogy_2 <= 3", "recommendation": "Develop faculty AI use guidelines for teaching"},
+        {"trigger": "pedagogy_6 <= 3", "recommendation": "Create policies for AI use in grading and assessment"},
+        {"trigger": "pedagogy_12 <= 3", "recommendation": "Require faculty disclosure of AI use to students"}
+      ],
+      "student_policy": [
+        {"trigger": "student_policy_1 <= 3", "recommendation": "Develop comprehensive student AI use policies"},
+        {"trigger": "student_policy_3 <= 3", "recommendation": "Create clear procedures for AI academic integrity violations"},
+        {"trigger": "student_policy_4 <= 3", "recommendation": "Establish student data privacy policies for AI applications"}
+      ],
+      "employee_policy": [
+        {"trigger": "employee_policy_1 <= 3", "recommendation": "Develop employee AI use policies"},
+        {"trigger": "employee_policy_4 <= 3", "recommendation": "Create policies for personal AI tool use at work"},
+        {"trigger": "employee_policy_8 <= 3", "recommendation": "Establish employee data privacy protections in AI systems"}
+      ]
+    }
+  }
+}

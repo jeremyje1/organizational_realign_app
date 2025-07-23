@@ -1,0 +1,9 @@
+name: "Fix Next.js runtime 'call' error"
+description: Upgrade framework & build config to remove the undefined factory crash
+labels: ["copilot-agent"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please accept this task if the home page still throws  
+        `TypeError: Cannot read properties of undefined (reading 'call')`.
