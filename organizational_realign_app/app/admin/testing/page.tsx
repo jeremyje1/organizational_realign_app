@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface TestResult {
   tier: string;
@@ -118,8 +118,9 @@ const INDUSTRY_CONFIGS: IndustryTestConfig[] = [
   }
 ];
 
-export default function AdminTestingPanel() {
+function AdminTestingPanelContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [testResults, setTestResults] = useState<TestResult[]>([]);
@@ -128,12 +129,22 @@ export default function AdminTestingPanel() {
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(true);
   const [recentAssessments, setRecentAssessments] = useState<any[]>([]);
   const [loadingAssessments, setLoadingAssessments] = useState(false);
-  const [assessmentType, setAssessmentType] = useState<'organizational' | 'ai-readiness'>('organizational');
+  
+  // Check URL parameter for assessment type, default to organizational
+  const urlType = searchParams.get('type');
+  const [assessmentType, setAssessmentType] = useState<'organizational' | 'ai-readiness'>(
+    urlType === 'ai-readiness' ? 'ai-readiness' : 'organizational'
+  );
 
   // Get current tier configs based on assessment type
   const TIER_CONFIGS = assessmentType === 'ai-readiness' ? AI_READINESS_TIER_CONFIGS : ORG_TIER_CONFIGS;
 
   useEffect(() => {
+    // Set assessment type based on URL parameter
+    if (urlType === 'ai-readiness') {
+      setAssessmentType('ai-readiness');
+    }
+
     // Check if user is already authenticated as admin
     const adminAuth = sessionStorage.getItem('admin_authenticated');
     if (adminAuth === 'true') {
@@ -142,7 +153,7 @@ export default function AdminTestingPanel() {
       loadRecentAssessments();
     }
     setLoading(false);
-  }, []);
+  }, [urlType]);
 
   const loadRecentAssessments = async () => {
     setLoadingAssessments(true);
@@ -800,5 +811,13 @@ export default function AdminTestingPanel() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function AdminTestingPanel() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><div className="text-lg">Loading admin panel...</div></div>}>
+      <AdminTestingPanelContent />
+    </Suspense>
   );
 }

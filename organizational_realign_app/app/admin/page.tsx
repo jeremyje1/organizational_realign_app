@@ -187,15 +187,27 @@ function AdminDashboardContent() {
             <div className="bg-white shadow rounded-lg">
               <div className="px-4 py-5 sm:p-6">
                 <h3 className="text-lg leading-6 font-medium text-gray-900">System Testing</h3>
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Link
                     href="/admin/testing"
                     className="block p-6 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
                   >
                     <div className="flex items-center">
                       <div className="ml-4">
-                        <h4 className="text-lg font-medium text-gray-900">Full System Test</h4>
-                        <p className="text-sm text-gray-500">Run comprehensive system tests</p>
+                        <h4 className="text-lg font-medium text-gray-900">Organizational Testing</h4>
+                        <p className="text-sm text-gray-500">Test organizational assessments</p>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/admin/testing?type=ai-readiness"
+                    className="block p-6 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
+                  >
+                    <div className="flex items-center">
+                      <div className="ml-4">
+                        <h4 className="text-lg font-medium text-gray-900">🤖 AI Readiness Testing</h4>
+                        <p className="text-sm text-gray-500">Test AI readiness assessments (105/150 questions)</p>
                       </div>
                     </div>
                   </Link>
@@ -206,23 +218,11 @@ function AdminDashboardContent() {
                   >
                     <div className="flex items-center">
                       <div className="ml-4">
-                        <h4 className="text-lg font-medium text-gray-900">Test Assessment</h4>
-                        <p className="text-sm text-gray-500">Run a new test assessment</p>
+                        <h4 className="text-lg font-medium text-gray-900">Live Assessment Test</h4>
+                        <p className="text-sm text-gray-500">Run a new live test assessment</p>
                       </div>
                     </div>
                   </button>
-
-                  <Link
-                    href="/admin/analytics"
-                    className="block p-6 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
-                  >
-                    <div className="flex items-center">
-                      <div className="ml-4">
-                        <h4 className="text-lg font-medium text-gray-900">Analytics</h4>
-                        <p className="text-sm text-gray-500">View detailed analytics</p>
-                      </div>
-                    </div>
-                  </Link>
                 </div>
               </div>
             </div>
