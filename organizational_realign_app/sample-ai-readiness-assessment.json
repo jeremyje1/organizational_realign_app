@@ -1,0 +1,511 @@
+{
+  "organizationId": "test-university",
+  "institutionInfo": {
+    "name": "Test University",
+    "type": "public-university",
+    "size": "large",
+    "location": "United States"
+  },
+  "responses": [
+    {
+      "questionId": "strategy_1",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_2",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_3",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_4",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_5",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_6",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_7",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_8",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_9",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_10",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_11",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_12",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_13",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_14",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_15",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_16",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_17",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "strategy_18",
+      "value": 3,
+      "domain": "strategy"
+    },
+    {
+      "questionId": "governance_1",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_2",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_3",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_4",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_5",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_6",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_7",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_8",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_9",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_10",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_11",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_12",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_13",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_14",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_15",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_16",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_17",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_18",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_19",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "governance_20",
+      "value": 3,
+      "domain": "governance"
+    },
+    {
+      "questionId": "pedagogy_1",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_2",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_3",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_4",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_5",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_6",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_7",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_8",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_9",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_10",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_11",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_12",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_13",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_14",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_15",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_16",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_17",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "pedagogy_18",
+      "value": 3,
+      "domain": "pedagogy"
+    },
+    {
+      "questionId": "student_policy_1",
+      "value": 3,
+      "domain": "student_policy"
+    },
+    {
+      "questionId": "student_policy_2",
+      "value": 3,
+      "domain": "student_policy"
+    },
+    {
+      "questionId": "student_policy_3",
+      "value": 3,
+      "domain": "student_policy"
+    },
+    {
+      "questionId": "student_policy_4",
+      "value": 3,
+      "domain": "student_policy"
+    },
+    {
+      "questionId": "student_policy_5",
+      "value": 3,
+      "domain": "student_policy"
+    },
+    {
+      "questionId": "student_policy_6",
+      "value": 3,
+      "domain": "student_policy"
+    },
+    {
+      "questionId": "student_policy_7",
+      "value": 3,
+      "domain": "student_policy"
+    },
+    {
+      "questionId": "student_policy_8",
+      "value": 3,
+      "domain": "student_policy"
+    },
+    {
+      "questionId": "student_policy_9",
+      "value": 3,
+      "domain": "student_policy"
+    },
+    {
+      "questionId": "student_policy_10",
+      "value": 3,
+      "domain": "student_policy"
+    },
+    {
+      "questionId": "student_policy_11",
+      "value": 3,
+      "domain": "student_policy"
+    },
+    {
+      "questionId": "student_policy_12",
+      "value": 3,
+      "domain": "student_policy"
+    },
+    {
+      "questionId": "employee_policy_1",
+      "value": 3,
+      "domain": "employee_policy"
+    },
+    {
+      "questionId": "employee_policy_2",
+      "value": 3,
+      "domain": "employee_policy"
+    },
+    {
+      "questionId": "employee_policy_3",
+      "value": 3,
+      "domain": "employee_policy"
+    },
+    {
+      "questionId": "employee_policy_4",
+      "value": 3,
+      "domain": "employee_policy"
+    },
+    {
+      "questionId": "employee_policy_5",
+      "value": 3,
+      "domain": "employee_policy"
+    },
+    {
+      "questionId": "employee_policy_6",
+      "value": 3,
+      "domain": "employee_policy"
+    },
+    {
+      "questionId": "employee_policy_7",
+      "value": 3,
+      "domain": "employee_policy"
+    },
+    {
+      "questionId": "employee_policy_8",
+      "value": 3,
+      "domain": "employee_policy"
+    },
+    {
+      "questionId": "employee_policy_9",
+      "value": 3,
+      "domain": "employee_policy"
+    },
+    {
+      "questionId": "employee_policy_10",
+      "value": 3,
+      "domain": "employee_policy"
+    },
+    {
+      "questionId": "technology_1",
+      "value": 3,
+      "domain": "technology"
+    },
+    {
+      "questionId": "technology_2",
+      "value": 3,
+      "domain": "technology"
+    },
+    {
+      "questionId": "technology_3",
+      "value": 3,
+      "domain": "technology"
+    },
+    {
+      "questionId": "technology_4",
+      "value": 3,
+      "domain": "technology"
+    },
+    {
+      "questionId": "technology_5",
+      "value": 3,
+      "domain": "technology"
+    },
+    {
+      "questionId": "technology_6",
+      "value": 3,
+      "domain": "technology"
+    },
+    {
+      "questionId": "technology_7",
+      "value": 3,
+      "domain": "technology"
+    },
+    {
+      "questionId": "technology_8",
+      "value": 3,
+      "domain": "technology"
+    },
+    {
+      "questionId": "technology_9",
+      "value": 3,
+      "domain": "technology"
+    },
+    {
+      "questionId": "technology_10",
+      "value": 3,
+      "domain": "technology"
+    },
+    {
+      "questionId": "culture_1",
+      "value": 3,
+      "domain": "culture"
+    },
+    {
+      "questionId": "culture_2",
+      "value": 3,
+      "domain": "culture"
+    },
+    {
+      "questionId": "culture_3",
+      "value": 3,
+      "domain": "culture"
+    },
+    {
+      "questionId": "culture_4",
+      "value": 3,
+      "domain": "culture"
+    },
+    {
+      "questionId": "culture_5",
+      "value": 3,
+      "domain": "culture"
+    },
+    {
+      "questionId": "culture_6",
+      "value": 3,
+      "domain": "culture"
+    },
+    {
+      "questionId": "culture_7",
+      "value": 3,
+      "domain": "culture"
+    },
+    {
+      "questionId": "culture_8",
+      "value": 3,
+      "domain": "culture"
+    },
+    {
+      "questionId": "alignment_1",
+      "value": 3,
+      "domain": "alignment"
+    },
+    {
+      "questionId": "alignment_2",
+      "value": 3,
+      "domain": "alignment"
+    },
+    {
+      "questionId": "alignment_3",
+      "value": 3,
+      "domain": "alignment"
+    },
+    {
+      "questionId": "alignment_4",
+      "value": 3,
+      "domain": "alignment"
+    }
+  ]
+}

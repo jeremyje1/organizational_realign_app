@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Readiness Assessment - Higher Education AI Strategy | NorthPath Strategies</title>
+    <meta name="description" content="Comprehensive AI readiness assessment designed specifically for higher education. Strategic alignment, institutional mission integration, and actionable AI implementation roadmap.">
+    <link rel="canonical" href="https://northpathstrategies.org/ai-readiness/">
+    
+    <!-- Styling to match northpathstrategies.org -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .hero {
+            background: 
+                linear-gradient(rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8)),
+                url('https://northpathstrategies.org/wp-content/uploads/2025/07/—Pngtree—intriguingly-dark-geometric-backdrop-perfect_11036843.jpg') center/cover no-repeat;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .hero .cta-buttons {
+            margin-top: 40px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .btn-primary {
+            background: #fff;
+            color: #667eea;
+            border-color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background: transparent;
+            color: #fff;
+            border-color: #fff;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border-color: #fff;
+        }
+        
+        .btn-secondary:hover {
+            background: #fff;
+            color: #667eea;
+        }
+        
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .section-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        .comparison-section {
+            background: #f8f9fa;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .comparison-item h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .comparison-item.wrong h3 {
+            color: #e74c3c;
+        }
+        
+        .comparison-item.wrong h3:before {
+            content: "❌ ";
+        }
+        
+        .comparison-item.right h3 {
+            color: #27ae60;
+        }
+        
+        .comparison-item.right h3:before {
+            content: "✅ ";
+        }
+        
+        .comparison-item ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .comparison-item li {
+            padding: 8px 0;
+            color: #666;
+        }
+        
+        .comparison-item.wrong li:before {
+            content: "✗ ";
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .comparison-item.right li:before {
+            content: "✓ ";
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .pricing-section {
+            background: #fff;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .pricing-card {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.1);
+        }
+        
+        .pricing-card.popular {
+            border-color: #667eea;
+            position: relative;
+        }
+        
+        .pricing-card.popular:before {
+            content: "MOST POPULAR";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #667eea;
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .pricing-card h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .pricing-card .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .pricing-card .price-note {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .pricing-card li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .pricing-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .pricing-card .btn {
+            width: 100%;
+            margin: 0;
+        }
+        
+        .industries-section {
+            background: #f8f9fa;
+        }
+        
+        .industries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .industry-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .industry-card h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .industry-card ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+        
+        .industry-card li {
+            padding: 5px 0;
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Comprehensive AI Readiness Assessment for Higher Education</h1>
+            <p class="subtitle">100-question exhaustive analysis with AI policy development for faculty, students, and employees—powered by patent-pending algorithms for complete institutional AI transformation</p>
+            <p>🎯 <strong>Developed by a Former Faculty Member & Seasoned Administrator:</strong> Our comprehensive assessment uses 6 proprietary algorithms (AIRIX™, AIRS™, AICS™, AIMS™, AIPS™, AIBS™) plus automated policy development across governance, classroom use, student integrity, and employee integration—bridging the gap between faculty autonomy and institutional strategy for sustainable AI adoption.</p>
+            <div class="cta-buttons">
+                <a href="https://organizational-realign-app.vercel.app/api/stripe/create-tier-checkout?tier=ai-readiness-basic" class="btn btn-primary">Start 100-Question Assessment ($2,500)</a>
+                <a href="https://calendly.com/jeremyestrella/30min" class="btn btn-secondary">Book Strategy Call</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Who Should Participate Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Who Should Take This Assessment?</h2>
+                <p>Designed for cross-functional teams to ensure AI adoption bridges pedagogy, student support, technology infrastructure, and institutional strategy</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>👩‍🏫 Faculty & Academic Staff</h3>
+                    <p>Understand how AI tools can enhance your teaching effectiveness, protect academic integrity, and improve student learning outcomes while respecting pedagogical autonomy and academic freedom.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎓 Student Services Teams</h3>
+                    <p>Align AI-driven advising, retention analytics, and support systems with your student success goals while maintaining the personal touch that defines higher education.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💻 IT & Technology Teams</h3>
+                    <p>Navigate infrastructure requirements, data security, FERPA compliance, and integration challenges while building scalable AI systems that support institutional goals.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🏛️ Administration & Leadership</h3>
+                    <p>Navigate governance, compliance, and strategic planning to ensure AI implementation supports institutional mission while building faculty buy-in and sustainable change.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Policy Development Section -->
+    <section class="section comparison-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Automated AI Policy Development</h2>
+                <p>Beyond assessment—get custom-generated AI policies for every stakeholder group based on your institutional context and readiness level</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>🏛️ Governance Framework</h3>
+                    <p>Comprehensive AI governance structure with ethics committees, risk management, vendor policies, and compliance monitoring tailored to your institution</p>
+                </div>
+                <div class="feature-card">
+                    <h3>👩‍🏫 Faculty Teaching Policies</h3>
+                    <p>Clear guidelines for AI use in course development, grading, research supervision, and classroom integration with intellectual property protections</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎓 Student Integrity Policies</h3>
+                    <p>Academic integrity standards for student AI use, course-specific guidelines, violation procedures, and digital citizenship education frameworks</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💼 Employee Integration Policies</h3>
+                    <p>Workplace AI use guidelines, data protection requirements, professional development plans, and role-specific implementation strategies</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Where AI Implementation Goes Wrong</h2>
+                <p>Most institutions rush into AI without strategic alignment—leading to fragmented initiatives, faculty resistance, and missed opportunities for transformational learning outcome improvement.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>❌ Pilot Purgatory</h3>
+                    <p>Multiple AI projects with no institutional coherence or scaling strategy</p>
+                </div>
+                <div class="feature-card">
+                    <h3>❌ Faculty Resistance</h3>
+                    <p>AI tools perceived as conflicting with pedagogical values and academic freedom</p>
+                </div>
+                <div class="feature-card">
+                    <h3>❌ Learning Outcome Disconnection</h3>
+                    <p>AI initiatives that don't enhance student learning or faculty teaching effectiveness</p>
+                </div>
+                <div class="feature-card">
+                    <h3>❌ Mission Misalignment</h3>
+                    <p>AI implementations that don't connect to strategic goals or student success metrics</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How We Fix This Section -->
+    <section class="section comparison-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Generic AI Assessments Fail Higher Education</h2>
+            </div>
+            <div class="comparison-grid">
+                <div class="comparison-item wrong">
+                    <h3>Generic AI Consultants</h3>
+                    <ul>
+                        <li>Corporate-focused frameworks</li>
+                        <li>No understanding of shared governance</li>
+                        <li>Ignore accreditation requirements</li>
+                        <li>Generic recommendations</li>
+                        <li>No learning outcome integration</li>
+                        <li>Overlook faculty autonomy concerns</li>
+                    </ul>
+                </div>
+                <div class="comparison-item right">
+                    <h3>NorthPath: Faculty-Administrator Bridge</h3>
+                    <ul>
+                        <li>Created by former faculty member & seasoned administrator</li>
+                        <li>Balances classroom realities with institutional needs</li>
+                        <li>Patent-pending algorithms (AIRIX™, AIRS™, AICS™)</li>
+                        <li>Faculty-centered learning outcome mapping</li>
+                        <li>Academic governance integration</li>
+                        <li>Mission & pedagogical values alignment</li>
+                        <li>Student success outcome optimization</li>
+                        <li>AI-enhanced teaching effectiveness analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proprietary Algorithm Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Patent-Pending Algorithm Suite for Higher Education</h2>
+                <p>Six proprietary algorithms developed by a former faculty member and seasoned administrator—providing sophisticated analytics that understand both classroom dynamics and institutional strategy</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>🔬 AIRIX™ Algorithm</h3>
+                    <p>AI Readiness Index calculation with multi-dimensional scoring across strategy, technology, governance, workforce, culture, and alignment domains</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚠️ AIRS™ Algorithm</h3>
+                    <p>AI Implementation Risk Score analysis providing comprehensive risk assessment with mitigation strategies and timeline projections</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎯 AICS™ Algorithm</h3>
+                    <p>AI Cultural Compatibility Score assessing institutional culture alignment with AI transformation requirements and change management needs</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎓 AIMS™ Algorithm</h3>
+                    <p>AI Mission Alignment Score evaluating strategic alignment between AI initiatives and institutional mission, including learning outcome integration</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 AIPS™ Algorithm</h3>
+                    <p>AI Implementation Priority Score providing initiative ranking, sequencing optimization, and resource allocation for maximum learning impact</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💼 AIBS™ Algorithm</h3>
+                    <p>AI Business Strategy Score analyzing competitive positioning, market opportunities, and revenue impact specific to higher education</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Faculty Integration Section -->
+    <section class="section comparison-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Faculty AI Integration for Learning Outcomes</h2>
+                <p>Beyond institutional strategy—we help faculty integrate AI to enhance teaching effectiveness and student learning outcomes</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>📚 Pedagogical AI Integration</h3>
+                    <p>Faculty training on AI tools that enhance course design, assessment strategies, and personalized learning approaches aligned with learning objectives</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Learning Outcome Analytics</h3>
+                    <p>AI-powered analysis of student performance data to identify learning gaps and optimize instructional strategies for improved outcomes</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎯 Assessment Innovation</h3>
+                    <p>Faculty support for AI-enhanced formative and summative assessments that provide real-time feedback and improve learning measurement</p>
+                </div>
+                <div class="feature-card">
+                    <h3>👥 Student Engagement Tools</h3>
+                    <p>Implementation of AI tools that increase student engagement, participation, and achievement of course learning outcomes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Benefits Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Comprehensive 100-Question Assessment Framework</h2>
+                <p>Eight domains of exhaustive evaluation powered by proprietary algorithms and focused on complete institutional transformation</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>🎯 Strategic Leadership (18 Questions)</h3>
+                    <p>Leadership commitment, governance structure, budget allocation, vendor management, and institutional change capacity assessment</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🏛️ Governance & Policy (20 Questions)</h3>
+                    <p>Comprehensive policy framework evaluation with automated policy generation recommendations for all stakeholder groups</p>
+                </div>
+                <div class="feature-card">
+                    <h3>�‍🏫 Faculty AI Integration (18 Questions)</h3>
+                    <p>Deep-dive into classroom AI use, pedagogical integration, assessment strategies, and faculty development needs</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎓 Student AI Policy (12 Questions)</h3>
+                    <p>Academic integrity standards, acceptable use policies, digital citizenship education, and violation procedures</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💼 Employee Integration (10 Questions)</h3>
+                    <p>Workplace AI use policies, data protection, professional development, and role-specific implementation strategies</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🛡️ Technology Infrastructure (10 Questions)</h3>
+                    <p>Technical capacity, security frameworks, data management, cloud services, and system integration readiness</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔄 Cultural Transformation (8 Questions)</h3>
+                    <p>Change management readiness, faculty attitudes, resistance addressing, and innovation culture assessment</p>
+                </div>
+                <div class="feature-card">
+                    <h3>� Mission Alignment (4 Questions)</h3>
+                    <p>Strategic plan integration, student success mapping, learning outcome optimization, and values alignment</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="section pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Choose Your Comprehensive AI Assessment Level</h2>
+                <p>100-question exhaustive analysis with automated policy development—insights and policy frameworks unavailable anywhere else</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card popular">
+                    <h3>Comprehensive AI Assessment</h3>
+                    <div class="price">$2,500</div>
+                    <div class="price-note">100 Questions • Policy Development • Algorithm Suite</div>
+                    <ul>
+                        <li>100-question exhaustive diagnostic across 8 domains</li>
+                        <li>6 proprietary algorithms (AIRIX™, AIRS™, AICS™, AIMS™, AIPS™, AIBS™)</li>
+                        <li>Automated AI policy generation for all stakeholder groups</li>
+                        <li>Governance framework development recommendations</li>
+                        <li>Faculty classroom AI use policies</li>
+                        <li>Student academic integrity policy templates</li>
+                        <li>Employee workplace AI integration policies</li>
+                        <li>Strategic document upload & AI analysis</li>
+                        <li>Automated 30-page PDF report with policy frameworks</li>
+                        <li>Higher ed benchmarking & peer comparison</li>
+                        <li>Implementation priority matrix with policy roadmap</li>
+                        <li>30-day email support</li>
+                        <li>Resource library access</li>
+                    </ul>
+                    <a href="https://organizational-realign-app.vercel.app/api/stripe/create-tier-checkout?tier=ai-readiness-basic" class="btn btn-primary">Start 100-Question Assessment →</a>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3>AI Transformation Intensive</h3>
+                    <div class="price">$12,000</div>
+                    <div class="price-note">Custom Analysis + Expert Consulting + Policy Implementation</div>
+                    <ul>
+                        <li>All Comprehensive AI Assessment features</li>
+                        <li>Advanced proprietary algorithm customization</li>
+                        <li>Custom domain weighting & analysis</li>
+                        <li>Stakeholder-specific policy development</li>
+                        <li>Policy implementation roadmap with timelines</li>
+                        <li>Change management strategy for policy adoption</li>
+                        <li>Faculty training curriculum for AI policies</li>
+                        <li>Student education program development</li>
+                        <li>Employee onboarding protocol creation</li>
+                        <li>90-minute 1:1 strategy session</li>
+                        <li>60-page custom transformation report</li>
+                        <li>Executive presentation slides</li>
+                        <li>Policy template library (Word/PDF)</li>
+                        <li>Implementation roadmap with policy milestones</li>
+                        <li>30-day async advisory access</li>
+                    </ul>
+                    <a href="https://organizational-realign-app.vercel.app/api/stripe/create-tier-checkout?tier=ai-readiness-custom" class="btn btn-primary">Get Full Transformation →</a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <p style="color: #666; margin-bottom: 20px;">Not sure which option is right for you?</p>
+                <a href="https://calendly.com/jeremyestrella/30min" class="btn btn-secondary">Book Strategy Call →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industries Section -->
+    <section class="section industries-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Proven Faculty AI Integration Across Higher Education</h2>
+                <p>Specialized expertise in faculty development and learning outcome enhancement across all types of post-secondary institutions</p>
+            </div>
+            <div class="industries-grid">
+                <div class="industry-card">
+                    <h4>Community Colleges</h4>
+                    <ul>
+                        <li>Workforce development alignment</li>
+                        <li>Faculty AI tools for skill-based learning</li>
+                        <li>Transfer pathway optimization</li>
+                        <li>Adult learner AI support systems</li>
+                        <li>Industry partnership integration</li>
+                    </ul>
+                </div>
+                <div class="industry-card">
+                    <h4>Four-Year Universities</h4>
+                    <ul>
+                        <li>Faculty AI research integration</li>
+                        <li>Learning outcome analytics</li>
+                        <li>Academic program enhancement</li>
+                        <li>Student retention optimization</li>
+                        <li>AI-enhanced pedagogical development</li>
+                    </ul>
+                </div>
+                <div class="industry-card">
+                    <h4>Graduate Programs</h4>
+                    <ul>
+                        <li>Research methodology AI integration</li>
+                        <li>Advanced learning analytics</li>
+                        <li>Professional program alignment</li>
+                        <li>Faculty research acceleration</li>
+                        <li>Career outcome optimization</li>
+                    </ul>
+                </div>
+                <div class="industry-card">
+                    <h4>System Offices</h4>
+                    <ul>
+                        <li>Multi-campus faculty development</li>
+                        <li>Standardized AI learning tools</li>
+                        <li>Resource sharing strategies</li>
+                        <li>Cross-institutional learning initiatives</li>
+                        <li>System-wide outcome tracking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta-section">
+        <div class="container">
+            <h2>Ready to Lead Comprehensive AI Transformation?</h2>
+            <p>Join forward-thinking higher education leaders who are implementing AI with the most exhaustive assessment available—100 questions, automated policy development, and patent-pending algorithms developed by someone who's been in both the classroom and the boardroom. Ensure sustainable adoption that enhances faculty effectiveness, student success, and institutional excellence.</p>
+            <div class="cta-buttons">
+                <a href="https://organizational-realign-app.vercel.app/api/stripe/create-tier-checkout?tier=ai-readiness-basic" class="btn btn-primary">Start 100-Question Assessment ($2,500) →</a>
+                <a href="https://calendly.com/jeremyestrella/30min" class="btn btn-secondary">Book Strategy Call →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: #2c3e50; color: white; padding: 40px 0; text-align: center;">
+        <div class="container">
+            <p>&copy; 2025 NorthPath Strategies. All rights reserved.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">
+                <a href="https://northpathstrategies.org/privacy-policy/" style="color: #bdc3c7; text-decoration: none;">Privacy Policy</a> | 
+                <a href="https://northpathstrategies.org/contact/" style="color: #bdc3c7; text-decoration: none;">Contact</a> | 
+                <a href="https://northpathstrategies.org/" style="color: #bdc3c7; text-decoration: none;">Main Site</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

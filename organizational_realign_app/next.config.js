@@ -48,16 +48,13 @@ const nextConfig = {
     // keep typed routes if you use them
     typedRoutes: false,
     // Enable modern bundling optimizations
-    optimizePackageImports: ['@heroicons/react', '@headlessui/react', 'framer-motion', 'lucide-react'],
-    // Reduce compilation overhead
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons', '@heroicons/react', '@headlessui/react', 'framer-motion'],
+    // Improve build performance
+    webVitalsAttribution: ['CLS', 'LCP'],
+    // Reduce memory usage
+    memoryBasedWorkers: true,
+    // Use Turbopack for faster builds (stable in Next.js 15+)
+    turbopack: true
   },
 
   // ─── Performance Configuration ─────────────
@@ -68,9 +65,29 @@ const nextConfig = {
     pagesBufferLength: 2,
   },
 
-  // Optimize file watching
+  // Optimize file watching for VS Code performance
   watchOptions: {
-    ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**', '**/coverage/**', '**/__tests__/**'],
+    ignored: [
+      '**/node_modules/**', 
+      '**/.git/**', 
+      '**/.next/**', 
+      '**/coverage/**', 
+      '**/__tests__/**',
+      '**/cypress/**',
+      '**/docs/**',
+      '**/*.test.*',
+      '**/*.spec.*',
+      '**/test-*.sh',
+      '**/test-*.js',
+      '**/verify-*.js',
+      '**/.env*',
+      '**/pnpm-lock.yaml',
+      '**/package-lock.json',
+      '**/yarn.lock'
+    ],
+    // Reduce polling for better performance
+    aggregateTimeout: 300,
+    poll: 1000
   },
 
   // Built-in transpilePackages instead of next-transpile-modules
@@ -83,6 +100,52 @@ const nextConfig = {
   compiler: {
     // Remove console.log in production
     removeConsole: process.env.NODE_ENV === 'production',
+  },
+
+  // ─── Webpack Performance Optimizations ─────────────
+  webpack: (config, { dev, isServer }) => {
+    // Optimize for development performance
+    if (dev) {
+      config.watchOptions = {
+        ...config.watchOptions,
+        ignored: [
+          '**/node_modules/**',
+          '**/.git/**',
+          '**/.next/**',
+          '**/cypress/**',
+          '**/docs/**',
+          '**/*.test.*',
+          '**/*.spec.*'
+        ],
+        aggregateTimeout: 200,
+        poll: false
+      };
+      
+      // Reduce memory usage in development
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              priority: 10,
+              chunks: 'all'
+            }
+          }
+        }
+      };
+    }
+
+    // Optimize bundle size
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      // Tree shake unused lodash
+      'lodash': 'lodash-es'
+    };
+
+    return config;
   },
 
   // ─── Performance & Caching ─────────────

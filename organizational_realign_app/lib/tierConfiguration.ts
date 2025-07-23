@@ -6,7 +6,7 @@
  * @author NorthPath Strategies
  */
 
-export type PricingTier = 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation';
+export type PricingTier = 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'ai-readiness-basic' | 'ai-readiness-custom';
 
 export interface TierConfiguration {
   name: string;
@@ -276,7 +276,92 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
     guardrails: {
       dataRetentionMonths: 60
     }
-  }
+  },
+    'ai-readiness-basic': {
+    name: 'AI Readiness Assessment - Self-Service',
+    price: 2500,
+    targetCustomer: 'Higher education institutions seeking comprehensive AI readiness evaluation with automated insights',
+    coreDeliverables: [
+      'Full diagnostic assessment (40-60 questions across 5 domains)',
+      'Detailed maturity scores by domain (Strategy, Governance, Pedagogy, Technology, Culture)',
+      'Automated PDF report with prioritized recommendations',
+      'Executive summary with key findings and next steps',
+      'Benchmarking against higher education AI adoption patterns',
+      'Optional walkthrough video explaining results'
+    ],
+    assessmentScope: {
+      questionCount: 60,
+      sections: ['strategy', 'governance', 'pedagogy', 'technology', 'culture'],
+      algorithms: ['ai-readiness-scoring', 'maturity-assessment', 'recommendation-engine', 'higher-ed-benchmarking'],
+      reportPages: 15,
+      followUpSupport: 'Email support for 30 days + resource library access'
+    },
+    features: {
+      uploadSupport: false,
+      dashboardRefresh: false,
+      customReporting: true,
+      powerBIEmbedded: false,
+      apiConnectors: false,
+      onSiteFacilitation: false,
+      progressAudits: false,
+      orgChartGenerator: false,
+      scenarioBuilder: false,
+      monteCarloSimulation: false,
+      realTimeCollaboration: false,
+      aiOpportunityAssessment: true,
+      aiReadinessScore: true,
+      automationRecommendations: true
+    },
+    guardrails: {
+      maxAssessments: 1,
+      maxUsers: 5,
+      dataRetentionMonths: 12
+    }
+  },
+  'ai-readiness-custom': {
+    name: 'AI Roadmap Intensive - Custom Analysis + Consulting',
+    price: 12000,
+    targetCustomer: 'Higher education institutions ready for strategic AI implementation with expert guidance and custom analysis',
+    coreDeliverables: [
+      'All Self-Service tier features (comprehensive diagnostic + automated report)',
+      'Custom domain weighting based on institutional priorities',
+      'Additional assessment modules (e.g., QEP alignment, accreditation readiness)',
+      '90-minute 1:1 strategy session with NorthPath AI implementation expert',
+      'Custom narrative report with institution-specific recommendations',
+      'Executive presentation slides for leadership and board meetings',
+      '30-day async advisory access via dedicated communication channel',
+      'Implementation roadmap with 6-12 month timeline and milestones',
+      'Faculty/staff readiness assessment and change management recommendations'
+    ],
+    assessmentScope: {
+      questionCount: 75,
+      sections: ['strategy', 'governance', 'pedagogy', 'technology', 'culture', 'qep-alignment', 'change-readiness'],
+      algorithms: ['ai-readiness-scoring', 'maturity-assessment', 'recommendation-engine', 'custom-weighting', 'qep-integration', 'change-management-analysis'],
+      reportPages: 30,
+      followUpSupport: '30-day advisory access + 90-minute strategy session + implementation planning support'
+    },
+    features: {
+      uploadSupport: true,
+      dashboardRefresh: true,
+      customReporting: true,
+      powerBIEmbedded: false,
+      apiConnectors: false,
+      onSiteFacilitation: true,
+      progressAudits: true,
+      orgChartGenerator: false,
+      scenarioBuilder: true,
+      monteCarloSimulation: false,
+      realTimeCollaboration: true,
+      aiOpportunityAssessment: true,
+      aiReadinessScore: true,
+      automationRecommendations: true
+    },
+    guardrails: {
+      maxAssessments: 3,
+      maxUsers: 25,
+      dataRetentionMonths: 24
+    }
+  },
 };
 
 /**

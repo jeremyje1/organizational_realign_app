@@ -11,8 +11,15 @@ CREATE TABLE IF NOT EXISTS public.teams (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. Now modify the existing assessments table
--- Fix the id column to have proper UUID default (but keep existing type if text)
+-- 2. Create/modify the assessments table (organizational realignment assessments)
+CREATE TABLE IF NOT EXISTS public.assessments (
+    id TEXT DEFAULT gen_random_uuid()::text PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 3. Fix the id column to have proper UUID default (but keep existing type if text)
 DO $$
 BEGIN
     -- Check current data type of id column
@@ -52,6 +59,7 @@ ADD COLUMN IF NOT EXISTS uploaded_files JSONB DEFAULT '[]',
 ADD COLUMN IF NOT EXISTS analysis_results JSONB DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS ai_opportunity_assessment JSONB DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS ai_readiness_score INTEGER DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS alignment_score INTEGER DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS submitted_at TIMESTAMPTZ DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS analyzed_at TIMESTAMPTZ DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS team_id UUID REFERENCES public.teams(id) ON DELETE SET NULL,

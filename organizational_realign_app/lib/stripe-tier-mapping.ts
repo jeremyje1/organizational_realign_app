@@ -69,6 +69,26 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     cancelRedirect: '/upgrade?tier=enterprise-transformation',
     tierName: 'Enterprise Transformation',
     tierPrice: 24000
+  },
+  'ai-readiness-basic': {
+    tierKey: 'ai-readiness-basic',
+    stripeProductId: 'prod_ai_readiness_assessment',
+    stripePriceId: (process.env.STRIPE_AI_BASIC_PRICE_ID || 'price_1RniBIELd2WOuqIWlSDnbDNn').trim(),
+    stripeMode: 'payment',
+    successRedirect: '/ai-readiness/start?tier=basic',
+    cancelRedirect: '/ai-readiness?tier=basic',
+    tierName: 'AI Readiness Assessment - Self-Service',
+    tierPrice: 2500
+  },
+  'ai-readiness-custom': {
+    tierKey: 'ai-readiness-custom',
+    stripeProductId: 'prod_ai_roadmap_intensive',
+    stripePriceId: (process.env.STRIPE_AI_CUSTOM_PRICE_ID || 'price_1RniD9ELd2WOuqIW2zJKkdEJ').trim(),
+    stripeMode: 'payment',
+    successRedirect: '/ai-readiness/start?tier=custom',
+    cancelRedirect: '/ai-readiness?tier=custom',
+    tierName: 'AI Roadmap Intensive - Custom Analysis + Consulting',
+    tierPrice: 12000
   }
 };
 
