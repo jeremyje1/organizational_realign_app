@@ -256,7 +256,7 @@ function TierBasedAssessmentContent() {
   const initialTier = useMemo(() => {
     const tier = searchParams.get('tier');
     const validTiers: PricingTier[] = ['express-diagnostic', 'one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
-    const aiReadinessTiers = ['ai-readiness-basic', 'ai-readiness-custom'];
+    const aiReadinessTiers: PricingTier[] = ['ai-readiness-basic', 'ai-readiness-custom', 'ai-readiness-advanced', 'ai-readiness-comprehensive'];
     const allValidTiers = [...validTiers, ...aiReadinessTiers];
     return allValidTiers.includes(tier as any) ? tier as PricingTier : 'express-diagnostic';
   }, [searchParams]);
@@ -267,6 +267,10 @@ function TierBasedAssessmentContent() {
     return validOrgTypes.includes(orgType as OrganizationType) ? orgType as OrganizationType : 'higher-education';
   }, [searchParams]);
   
+  const assessmentType = useMemo(() => {
+    return searchParams.get('assessment_type') || 'organizational';
+  }, [searchParams]);
+  
   // Ensure component is mounted on client to prevent hydration issues
   useEffect(() => {
     setMounted(true);
@@ -275,7 +279,9 @@ function TierBasedAssessmentContent() {
   // Validate URL parameters with fallbacks
   const validateTier = (tier: string | null): PricingTier => {
     const validTiers: PricingTier[] = ['express-diagnostic', 'one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
-    return validTiers.includes(tier as PricingTier) ? tier as PricingTier : 'express-diagnostic';
+    const aiReadinessTiers: PricingTier[] = ['ai-readiness-basic', 'ai-readiness-custom', 'ai-readiness-advanced', 'ai-readiness-comprehensive'];
+    const allValidTiers = [...validTiers, ...aiReadinessTiers];
+    return allValidTiers.includes(tier as PricingTier) ? tier as PricingTier : 'express-diagnostic';
   };
   
   const validateOrgType = (orgType: string | null): OrganizationType => {
@@ -435,10 +441,17 @@ function TierBasedAssessmentContent() {
     }
   }, [assessmentState.tier]);
   
-  const questions = useMemo(() => 
-    getQuestionsForTier(assessmentState.tier, assessmentState.organizationType),
-    [assessmentState.tier, assessmentState.organizationType]
-  );
+  const questions = useMemo(() => {
+    // For AI readiness assessments, use the AI readiness questions
+    if (assessmentType === 'ai-readiness' || assessmentState.tier.startsWith('ai-readiness')) {
+      // Import and use AI readiness questions
+      const { getAIReadinessQuestions } = require('@/lib/enhancedQuestionBankV3');
+      return getAIReadinessQuestions(assessmentState.tier);
+    }
+    
+    // For organizational assessments, use the standard questions
+    return getQuestionsForTier(assessmentState.tier, assessmentState.organizationType);
+  }, [assessmentState.tier, assessmentState.organizationType, assessmentType]);
 
   // Group questions by section
   const questionSections = useMemo(() => {
@@ -518,20 +531,22 @@ function TierBasedAssessmentContent() {
       validationErrors: []
     }));
     
-    // Validate responses
-    const validation = validateResponses(
-      assessmentState.responses, 
-      assessmentState.tier, 
-      assessmentState.organizationType
-    );
-    
-    if (!validation.valid) {
-      setAssessmentState(prev => ({
-        ...prev,
-        validationErrors: [`Missing required responses: ${validation.missingRequired.join(', ')}`]
-      }));
-      setLoading(false);
-      return;
+    // Validate responses - skip validation for AI readiness assessments for now
+    if (!assessmentState.tier.startsWith('ai-readiness')) {
+      const validation = validateResponses(
+        assessmentState.responses, 
+        assessmentState.tier as Exclude<PricingTier, 'ai-readiness-basic' | 'ai-readiness-custom' | 'ai-readiness-advanced' | 'ai-readiness-comprehensive'>, 
+        assessmentState.organizationType
+      );
+      
+      if (!validation.valid) {
+        setAssessmentState(prev => ({
+          ...prev,
+          validationErrors: [`Missing required responses: ${validation.missingRequired.join(', ')}`]
+        }));
+        setLoading(false);
+        return;
+      }
     }
 
     try {
@@ -779,7 +794,9 @@ function TierBasedAssessmentContent() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Organizational Assessment - Loading...
+                {assessmentType === 'ai-readiness' || initialTier.startsWith('ai-readiness') 
+                  ? 'AI Readiness Assessment' 
+                  : 'Organizational Assessment'} - Loading...
               </h1>
               <p className="text-gray-600 mt-2">Preparing your assessment</p>
             </div>
@@ -821,7 +838,9 @@ function TierBasedAssessmentContent() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
-              Organizational Assessment - {tierConfig?.name || 'Loading...'}
+              {assessmentType === 'ai-readiness' || assessmentState.tier.startsWith('ai-readiness') 
+                ? 'AI Readiness Assessment' 
+                : 'Organizational Assessment'} - {tierConfig?.name || 'Loading...'}
             </h1>
             <p className="text-gray-600 mt-2">{tierConfig?.targetCustomer || 'Preparing assessment...'}</p>
           </div>
