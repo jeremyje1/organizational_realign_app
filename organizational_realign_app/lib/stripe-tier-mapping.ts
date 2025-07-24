@@ -75,19 +75,39 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     stripeProductId: 'prod_ai_readiness_assessment',
     stripePriceId: (process.env.STRIPE_AI_BASIC_PRICE_ID || 'price_1RniBIELd2WOuqIWlSDnbDNn').trim(),
     stripeMode: 'payment',
-    successRedirect: '/ai-readiness/start?tier=basic',
-    cancelRedirect: '/ai-readiness?tier=basic',
-    tierName: 'AI Readiness Assessment - Advanced (105 Questions)',
-    tierPrice: 4995
+    successRedirect: '/assessment/tier-based?tier=ai-readiness-basic&assessment_type=ai-readiness',
+    cancelRedirect: '/ai-readiness/pricing',
+    tierName: 'AI Readiness Assessment - Basic',
+    tierPrice: 2500
   },
   'ai-readiness-custom': {
     tierKey: 'ai-readiness-custom',
     stripeProductId: 'prod_ai_roadmap_intensive',
     stripePriceId: (process.env.STRIPE_AI_CUSTOM_PRICE_ID || 'price_1RniD9ELd2WOuqIW2zJKkdEJ').trim(),
     stripeMode: 'payment',
-    successRedirect: '/ai-readiness/start?tier=custom',
-    cancelRedirect: '/ai-readiness?tier=custom',
-    tierName: 'AI Readiness Assessment - Comprehensive (150 Questions)',
+    successRedirect: '/assessment/tier-based?tier=ai-readiness-custom&assessment_type=ai-readiness',
+    cancelRedirect: '/ai-readiness/pricing',
+    tierName: 'AI Readiness Assessment - Custom',
+    tierPrice: 12000
+  },
+  'ai-readiness-advanced': {
+    tierKey: 'ai-readiness-advanced',
+    stripeProductId: 'prod_ai_readiness_advanced',
+    stripePriceId: (process.env.STRIPE_AI_ADVANCED_PRICE_ID || 'price_1RniBIELd2WOuqIWlSDnbDNn').trim(),
+    stripeMode: 'payment',
+    successRedirect: '/assessment/tier-based?tier=ai-readiness-advanced&assessment_type=ai-readiness',
+    cancelRedirect: '/ai-readiness/pricing',
+    tierName: 'Advanced AI Assessment',
+    tierPrice: 4995
+  },
+  'ai-readiness-comprehensive': {
+    tierKey: 'ai-readiness-comprehensive',
+    stripeProductId: 'prod_ai_readiness_comprehensive',
+    stripePriceId: (process.env.STRIPE_AI_COMPREHENSIVE_PRICE_ID || 'price_1RniD9ELd2WOuqIW2zJKkdEJ').trim(),
+    stripeMode: 'payment',
+    successRedirect: '/assessment/tier-based?tier=ai-readiness-comprehensive&assessment_type=ai-readiness',
+    cancelRedirect: '/ai-readiness/pricing',
+    tierName: 'Comprehensive AI Assessment',
     tierPrice: 12000
   }
 };

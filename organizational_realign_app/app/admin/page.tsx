@@ -20,7 +20,10 @@ function AdminDashboardContent() {
     totalAssessments: 0,
     activeUsers: 0,
     systemHealth: 'Healthy',
-    assessmentsByType: {} as Record<string, number>
+    assessmentsByType: {
+      'organizational': 0,
+      'ai-readiness': 0
+    } as Record<string, number>
   });
 
   useEffect(() => {
@@ -255,6 +258,176 @@ function AdminDashboardContent() {
                       </div>
                     </div>
                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'testing':
+        return (
+          <div className="space-y-6">
+            {/* Assessment Testing Section */}
+            <div className="bg-white shadow rounded-lg">
+              <div className="px-4 py-5 sm:p-6">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Assessment Testing</h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  Test both assessment types with different tiers and configurations
+                </p>
+                
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Organizational Realignment Testing */}
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <h4 className="text-md font-medium text-gray-900 mb-4 flex items-center">
+                      <span className="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
+                      Organizational Realignment
+                    </h4>
+                    
+                    <div className="space-y-3">
+                      <Link
+                        href="/assessment/tier-based?tier=express-diagnostic&org=higher-education"
+                        className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        <div className="font-medium">Express Diagnostic ($2,495)</div>
+                        <div className="text-gray-500">60 questions • 25 page report</div>
+                      </Link>
+                      
+                      <Link
+                        href="/assessment/tier-based?tier=one-time-diagnostic&org=higher-education"
+                        className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        <div className="font-medium">One-Time Diagnostic ($4,995)</div>
+                        <div className="text-gray-500">100+ questions • 35 page report</div>
+                      </Link>
+                      
+                      <Link
+                        href="/assessment/tier-based?tier=comprehensive-package&org=higher-education"
+                        className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        <div className="font-medium">Comprehensive Package ($15,000)</div>
+                        <div className="text-gray-500">150+ questions • 60 page report</div>
+                      </Link>
+                      
+                      <Link
+                        href="/assessment/tier-based?tier=enterprise-transformation&org=higher-education"
+                        className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        <div className="font-medium">Enterprise Transformation ($45,000)</div>
+                        <div className="text-gray-500">200+ questions • 100 page report</div>
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* AI Readiness Testing */}
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <h4 className="text-md font-medium text-gray-900 mb-4 flex items-center">
+                      <span className="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
+                      AI Readiness Assessment
+                    </h4>
+                    
+                    <div className="space-y-3">
+                      <Link
+                        href="/assessment/tier-based?tier=ai-readiness-advanced&assessment_type=ai-readiness"
+                        className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        <div className="font-medium">Advanced AI Assessment ($4,995)</div>
+                        <div className="text-gray-500">105 questions • 12 page report</div>
+                      </Link>
+                      
+                      <Link
+                        href="/assessment/tier-based?tier=ai-readiness-comprehensive&assessment_type=ai-readiness"
+                        className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        <div className="font-medium">Comprehensive AI Assessment ($12,000)</div>
+                        <div className="text-gray-500">150 questions • 30 page report</div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Stripe Integration Testing */}
+            <div className="bg-white shadow rounded-lg">
+              <div className="px-4 py-5 sm:p-6">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Stripe Integration Testing</h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  Test Stripe checkout flows for different tier combinations
+                </p>
+                
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <h4 className="font-medium text-gray-900">Organizational Tiers</h4>
+                    <div className="space-y-2">
+                      <a
+                        href="/api/stripe/create-tier-checkout?tier=express-diagnostic"
+                        target="_blank"
+                        className="block px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        Test Express Diagnostic Checkout
+                      </a>
+                      <a
+                        href="/api/stripe/create-tier-checkout?tier=one-time-diagnostic"
+                        target="_blank"
+                        className="block px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        Test One-Time Diagnostic Checkout
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <h4 className="font-medium text-gray-900">AI Readiness Tiers</h4>
+                    <div className="space-y-2">
+                      <a
+                        href="/api/stripe/create-tier-checkout?tier=ai-readiness-advanced"
+                        target="_blank"
+                        className="block px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        Test AI Advanced Checkout
+                      </a>
+                      <a
+                        href="/api/stripe/create-tier-checkout?tier=ai-readiness-comprehensive"
+                        target="_blank"
+                        className="block px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        Test AI Comprehensive Checkout
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Access Links */}
+            <div className="bg-white shadow rounded-lg">
+              <div className="px-4 py-5 sm:p-6">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Quick Access</h3>
+                <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <Link
+                    href="/pricing"
+                    className="text-center px-4 py-3 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                  >
+                    Organizational Pricing
+                  </Link>
+                  <Link
+                    href="/ai-readiness/pricing"
+                    className="text-center px-4 py-3 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                  >
+                    AI Readiness Pricing
+                  </Link>
+                  <Link
+                    href="/admin/analytics"
+                    className="text-center px-4 py-3 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                  >
+                    Analytics Dashboard
+                  </Link>
+                  <Link
+                    href="/admin/testing"
+                    className="text-center px-4 py-3 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                  >
+                    Algorithmic Testing
+                  </Link>
                 </div>
               </div>
             </div>
