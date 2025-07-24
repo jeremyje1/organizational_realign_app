@@ -51,10 +51,6 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons', '@heroicons/react', '@headlessui/react', 'framer-motion'],
     // Improve build performance
     webVitalsAttribution: ['CLS', 'LCP'],
-    // Reduce memory usage
-    memoryBasedWorkers: true,
-    // Use Turbopack for faster builds (stable in Next.js 15+)
-    turbopack: true,
     // Optimize CSS loading
     optimizeCss: true,
     // Better CSS handling to reduce preload warnings
@@ -69,31 +65,6 @@ const nextConfig = {
     pagesBufferLength: 2,
   },
 
-  // Optimize file watching for VS Code performance
-  watchOptions: {
-    ignored: [
-      '**/node_modules/**', 
-      '**/.git/**', 
-      '**/.next/**', 
-      '**/coverage/**', 
-      '**/__tests__/**',
-      '**/cypress/**',
-      '**/docs/**',
-      '**/*.test.*',
-      '**/*.spec.*',
-      '**/test-*.sh',
-      '**/test-*.js',
-      '**/verify-*.js',
-      '**/.env*',
-      '**/pnpm-lock.yaml',
-      '**/package-lock.json',
-      '**/yarn.lock'
-    ],
-    // Reduce polling for better performance
-    aggregateTimeout: 300,
-    poll: 1000
-  },
-
   // Built-in transpilePackages instead of next-transpile-modules
   transpilePackages: ['lucide-react'],
   
@@ -105,10 +76,6 @@ const nextConfig = {
     // Remove console.log in production
     removeConsole: process.env.NODE_ENV === 'production',
   },
-
-  // ─── CSS Optimization ─────────────
-  optimizeFonts: true,
-  optimizeCss: true,
 
   // ─── Webpack Performance Optimizations ─────────────
   webpack: (config, { dev, isServer }) => {
