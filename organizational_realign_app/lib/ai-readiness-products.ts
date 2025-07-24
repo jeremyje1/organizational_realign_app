@@ -3,44 +3,51 @@
  * Comprehensive AI readiness assessment packages for higher education institutions
  */
 
-export const AI_READINESS_PRODUCTS = [
-  {
-    id: 'ai-readiness-basic',
-    name: 'AI Readiness Assessment',
-    description: 'Comprehensive evaluation of your institution\'s AI readiness across strategy, governance, pedagogy, and technology.',
-    tagline: 'Complete AI Readiness Evaluation',
+export const aiReadinessProducts = {
+  advanced: {
+    id: 'ai-readiness-advanced',
+    name: 'Advanced AI Assessment',
+    price: 4995,
+    description: 'Complete AI Readiness Evaluation with comprehensive analysis across 8 domains.',
+    duration: 'One-time assessment',
+    questionCount: 105,
     features: [
-      'Full diagnostic (25 questions)',
-      'Maturity scores by domain',
-      'Automated PDF report (15 pages)',
-      'Prioritized action plan',
-      'Higher ed benchmarking',
-      '30-day email support'
+      '105-question comprehensive AI readiness assessment',
+      'AI-enhanced analysis and recommendations',
+      '12-page detailed AI readiness report',
+      'AIRIX™, AIRS™, AICS™ algorithms',
+      'Strategic document upload & AI analysis',
+      'AI readiness scoring across 8 domains',
+      'AI implementation guidance',
+      'Single assessment access',
+      'Up to 3 users',
+      'Email support'
     ],
-    price: 2500,
-    recommended: false,
-    stripeUrl: 'https://organizational-realign-app.vercel.app/api/stripe/create-tier-checkout?tier=ai-readiness-basic&assessment_type=ai-readiness'
+    isPopular: false
   },
-  {
-    id: 'ai-readiness-custom',
-    name: 'AI Roadmap Intensive',
-    description: 'Comprehensive AI strategy development with custom analysis and consulting support.',
-    tagline: 'Custom Analysis + Consulting',
-    features: [
-      'All Tier 1 features included',
-      'Custom domain weighting',
-      'QEP & accreditation alignment analysis',
-      '90-minute 1:1 strategy session',
-      'Custom narrative report (30 pages)',
-      'Executive presentation slides',
-      '30-day async advisory access'
-    ],
+  comprehensive: {
+    id: 'ai-readiness-comprehensive',
+    name: 'Comprehensive AI Assessment',
     price: 12000,
-    recommended: true,
-    stripeUrl: 'https://organizational-realign-app.vercel.app/api/stripe/create-tier-checkout?tier=ai-readiness-custom&assessment_type=ai-readiness',
-    includesTier1: true
+    description: 'In-depth AI assessment with narrative reports and policy development.',
+    duration: 'Custom Analysis + Consulting',
+    questionCount: 150,
+    features: [
+      '150-question in-depth AI assessment',
+      'AI-generated narrative reports',
+      '30-page comprehensive AI analysis',
+      'Advanced AI scenario builder',
+      'Custom AI policy recommendations',
+      'Strategic AI roadmap development',
+      'Team collaboration features',
+      'Up to 25 users',
+      'Up to 15 AI scenarios',
+      'Priority support',
+      'AI implementation consulting'
+    ],
+    isPopular: true
   }
-];
+}
 
 export const AI_READINESS_FEATURES = {
   'ai-readiness-basic': {
@@ -68,16 +75,15 @@ export const AI_READINESS_FEATURES = {
 /**
  * Get AI readiness assessment configuration by tier
  */
-export function getAIReadinessConfig(tier: string) {
-  const product = AI_READINESS_PRODUCTS.find(p => p.id === tier);
-  const features = AI_READINESS_FEATURES[tier as keyof typeof AI_READINESS_FEATURES];
-  
-  return {
-    product,
-    features,
-    isAIReadiness: true
-  };
-}
+// Helper to get product by tier ID
+export const getAIReadinessProduct = (tier: string) => {
+  const products = Object.values(aiReadinessProducts);
+  const product = products.find(p => p.id === tier);
+  return product || null;
+};
+
+// Convert to array format for compatibility
+export const AI_READINESS_PRODUCTS = Object.values(aiReadinessProducts);
 
 /**
  * Check if a tier is an AI readiness assessment

@@ -105,26 +105,25 @@ export default function AIReadinessPricingPage() {
                     {product.name}
                   </CardTitle>
                   <p className="text-sm font-medium text-indigo-600 mb-4">
-                    {product.tagline}
+                    {product.description}
                   </p>
                   <div className="text-4xl font-bold text-slate-900 mb-2">
                     ${product.price.toLocaleString()}
                   </div>
                   <p className="text-sm text-slate-600">
-                    {product.includesTier1 ? 'Includes Tier 1 assessment value' : 'One-time payment'}
+                    {product.duration}
+                  </p>
+                  <p className="text-sm text-slate-600 mt-2">
+                    {product.questionCount} Questions • AI Analysis • Detailed Insights
                   </p>
                 </CardHeader>
                 
                 <CardContent className="pt-2">
-                  <p className="text-sm text-slate-600 mb-6 text-center">
-                    {product.description}
-                  </p>
-                  
                   <ul className="space-y-3 mb-8">
                     {product.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start gap-3">
                         <div className="text-indigo-500 mt-0.5">
-                          {getFeatureIcon(feature)}
+                          <CheckCircle2 className="h-4 w-4" />
                         </div>
                         <span className="text-sm text-slate-700">{feature}</span>
                       </li>
@@ -134,7 +133,7 @@ export default function AIReadinessPricingPage() {
                   <Button 
                     onClick={() => handleSelectPlan(product)}
                     className={`w-full font-semibold py-3 ${
-                      product.recommended
+                      product.isPopular
                         ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
                         : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
                     }`}
