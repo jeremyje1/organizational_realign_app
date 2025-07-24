@@ -12,8 +12,12 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AdminAuth } from '@/components/AdminAuth';
 import FeatureFlagsAdmin from '@/components/FeatureFlagsAdmin';
+import useDeferredStyles from '@/hooks/useDeferredStyles';
 
 function AdminDashboardContent() {
+  // Optimize CSS loading to reduce preload warnings
+  useDeferredStyles();
+  
   const [activeTab, setActiveTab] = useState('overview');
   const [assessments, setAssessments] = useState([]);
   const [systemStats, setSystemStats] = useState({

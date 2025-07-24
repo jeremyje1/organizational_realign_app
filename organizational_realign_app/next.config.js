@@ -54,7 +54,11 @@ const nextConfig = {
     // Reduce memory usage
     memoryBasedWorkers: true,
     // Use Turbopack for faster builds (stable in Next.js 15+)
-    turbopack: true
+    turbopack: true,
+    // Optimize CSS loading
+    optimizeCss: true,
+    // Better CSS handling to reduce preload warnings
+    cssChunking: 'strict'
   },
 
   // ─── Performance Configuration ─────────────
@@ -102,6 +106,10 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
+  // ─── CSS Optimization ─────────────
+  optimizeFonts: true,
+  optimizeCss: true,
+
   // ─── Webpack Performance Optimizations ─────────────
   webpack: (config, { dev, isServer }) => {
     // Optimize for development performance
@@ -135,6 +143,26 @@ const nextConfig = {
             }
           }
         }
+      };
+    }
+
+    // Optimize CSS loading and preloading
+    if (!isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          ...config.optimization.splitChunks,
+          cacheGroups: {
+            ...config.optimization.splitChunks.cacheGroups,
+            styles: {
+              name: 'styles',
+              test: /\.(css|scss|sass)$/,
+              chunks: 'all',
+              enforce: true,
+              priority: 20,
+            },
+          },
+        },
       };
     }
 

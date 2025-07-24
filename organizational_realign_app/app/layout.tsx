@@ -18,6 +18,11 @@ export const metadata: Metadata = {
   description: "We partner with mission-driven colleges, universities, and nonprofits to solve the root causes of misalignment, fragmentation, and underperformance.",
   keywords: "higher education transformation, institutional alignment, nonprofit strategy, systems design, university consulting, strategic planning, mission-driven institutions",
   metadataBase: new URL('https://northpathstrategies.org'),
+  other: {
+    // Optimize resource loading
+    'resource-hints': 'preload',
+    'font-display': 'swap',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -70,6 +75,28 @@ export default function RootLayout({
         {/* Skip to content link for accessibility */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Optimize CSS loading to reduce preload warnings */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Optimize preloaded CSS resources to reduce warnings
+              (function() {
+                if (typeof window !== 'undefined') {
+                  window.addEventListener('load', function() {
+                    const preloadedCSS = document.querySelectorAll('link[rel="preload"][as="style"]');
+                    preloadedCSS.forEach(function(link) {
+                      if (!link.sheet || !link.sheet.cssRules.length) {
+                        setTimeout(function() {
+                          link.rel = 'stylesheet';
+                        }, 100);
+                      }
+                    });
+                  });
+                }
+              })();
+            `,
+          }}
+        />
       </head>
       <body className={`min-h-screen bg-slate-900 text-white font-sans antialiased ${inter.variable}`}>
         <a href="#main-content" className="skip-to-content">Skip to content</a>
