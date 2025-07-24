@@ -102,14 +102,14 @@ export default function AppHomePage() {
               </p>
               <div className="flex flex-col gap-3">
                 <Button size="lg" asChild className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold">
-                  <Link href="/ai-readiness">
-                    Learn More
+                  <Link href="/ai-readiness/pricing">
+                    View Pricing
                     <ChevronRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button size="lg" asChild className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700">
-                  <Link href="/assessment/tier-based?assessment_type=ai-readiness&tier=comprehensive">
-                    Start AI Assessment
+                  <Link href="/ai-readiness">
+                    Learn More
                     <ChevronRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>

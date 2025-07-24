@@ -1601,9 +1601,14 @@ export const CONTEXTUAL_QUESTIONS: Question[] = [
  * NOW GUARANTEES 100+ QUESTIONS FOR EVERY TIER
  */
 export function getQuestionsForTier(
-  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'ai-readiness-basic' | 'ai-readiness-custom',
   organizationType: OrganizationType = 'higher-education'
 ): Question[] {
+  // Handle AI readiness tiers separately
+  if (tier === 'ai-readiness-basic' || tier === 'ai-readiness-custom') {
+    return getAIReadinessQuestions(tier);
+  }
+
   // Express Diagnostic gets a curated set of 60 core questions
   if (tier === 'express-diagnostic') {
     // Strategic selection of the most impactful questions from each core section
@@ -1850,4 +1855,254 @@ export function getAIReadinessAssessment(
     recommendations,
     priorityAreas
   };
+}
+
+/**
+ * DEDICATED AI READINESS ASSESSMENT QUESTIONS
+ * Comprehensive AI readiness evaluation across key domains
+ */
+export const AI_READINESS_QUESTIONS: Question[] = [
+  // === AI STRATEGY & GOVERNANCE (6 questions) ===
+  {
+    id: "AIR_01",
+    section: "AI Strategy & Governance",
+    prompt: "Our institution has a formal AI strategy that aligns with our mission and strategic plan.",
+    type: "likert",
+    required: true,
+    helpText: "Evaluate whether your institution has documented AI goals, policies, and implementation roadmap.",
+    enableContext: true,
+    contextPrompt: "Describe your current AI strategy documentation and governance structure."
+  },
+  {
+    id: "AIR_02", 
+    section: "AI Strategy & Governance",
+    prompt: "We have designated leadership responsible for AI initiatives and decision-making.",
+    type: "likert",
+    required: true,
+    helpText: "Consider whether there's clear accountability and decision-making authority for AI projects.",
+    enableContext: true
+  },
+  {
+    id: "AIR_03",
+    section: "AI Strategy & Governance", 
+    prompt: "Our AI governance framework addresses ethics, privacy, and responsible AI use.",
+    type: "likert",
+    required: true,
+    helpText: "Assess your policies for ethical AI use, bias prevention, and privacy protection.",
+    enableContext: true
+  },
+  {
+    id: "AIR_04",
+    section: "AI Strategy & Governance",
+    prompt: "We have established metrics and KPIs to measure AI initiative success.",
+    type: "likert", 
+    required: true,
+    helpText: "Consider whether you track ROI, efficiency gains, and other success indicators for AI projects."
+  },
+  {
+    id: "AIR_05",
+    section: "AI Strategy & Governance",
+    prompt: "Our budget planning includes dedicated funding for AI initiatives and infrastructure.",
+    type: "likert",
+    required: true,
+    helpText: "Evaluate whether AI investments are formally planned and budgeted."
+  },
+  {
+    id: "AIR_06",
+    section: "AI Strategy & Governance", 
+    prompt: "We regularly review and update our AI strategy based on emerging technologies and outcomes.",
+    type: "likert",
+    required: true,
+    helpText: "Consider how often you reassess AI strategy and adapt to new developments."
+  },
+
+  // === PEDAGOGICAL INTEGRATION (5 questions) ===
+  {
+    id: "AIR_07",
+    section: "Pedagogical Integration",
+    prompt: "Faculty are trained and supported in integrating AI tools into their teaching practices.",
+    type: "likert",
+    required: true,
+    helpText: "Assess the level of faculty development and support for AI-enhanced pedagogy.",
+    enableContext: true,
+    contextPrompt: "Describe current faculty training programs and support for AI integration."
+  },
+  {
+    id: "AIR_08",
+    section: "Pedagogical Integration",
+    prompt: "We have developed curriculum guidelines for appropriate AI use in coursework and assessments.",
+    type: "likert", 
+    required: true,
+    helpText: "Consider whether there are clear policies about when and how AI can be used academically."
+  },
+  {
+    id: "AIR_09",
+    section: "Pedagogical Integration",
+    prompt: "Students receive education about AI literacy, ethics, and responsible use.",
+    type: "likert",
+    required: true,
+    helpText: "Evaluate student preparation for working with AI tools responsibly.",
+    enableContext: true
+  },
+  {
+    id: "AIR_10",
+    section: "Pedagogical Integration", 
+    prompt: "Our learning management systems and educational technology integrate effectively with AI tools.",
+    type: "likert",
+    required: true,
+    helpText: "Assess technical integration between existing systems and AI applications."
+  },
+  {
+    id: "AIR_11",
+    section: "Pedagogical Integration",
+    prompt: "We regularly assess the impact of AI integration on learning outcomes and student success.",
+    type: "likert",
+    required: true,
+    helpText: "Consider whether you measure and evaluate the effectiveness of AI in education."
+  },
+
+  // === TECHNOLOGY INFRASTRUCTURE (6 questions) ===
+  {
+    id: "AIR_12",
+    section: "Technology Infrastructure",
+    prompt: "Our IT infrastructure can support the computational requirements of AI applications.",
+    type: "likert",
+    required: true,
+    helpText: "Evaluate processing power, storage, and network capacity for AI workloads.",
+    enableContext: true,
+    contextPrompt: "Describe your current computing infrastructure and any cloud resources."
+  },
+  {
+    id: "AIR_13",
+    section: "Technology Infrastructure",
+    prompt: "We have secure, accessible data systems that can support AI analytics and machine learning.",
+    type: "likert",
+    required: true,
+    helpText: "Consider data quality, accessibility, and security for AI applications."
+  },
+  {
+    id: "AIR_14", 
+    section: "Technology Infrastructure",
+    prompt: "Our cybersecurity measures are adequate for protecting AI systems and data.",
+    type: "likert",
+    required: true,
+    helpText: "Assess security protocols specifically for AI applications and sensitive data."
+  },
+  {
+    id: "AIR_15",
+    section: "Technology Infrastructure",
+    prompt: "We have established data governance practices that support AI development and deployment.",
+    type: "likert",
+    required: true,
+    helpText: "Evaluate data management, quality control, and governance processes."
+  },
+  {
+    id: "AIR_16",
+    section: "Technology Infrastructure",
+    prompt: "Our technology team has the skills and resources to implement and maintain AI systems.",
+    type: "likert",
+    required: true,
+    helpText: "Consider technical expertise, staffing, and ongoing support capabilities.",
+    enableContext: true
+  },
+  {
+    id: "AIR_17",
+    section: "Technology Infrastructure",
+    prompt: "We have reliable backup and disaster recovery systems for AI-critical applications.",
+    type: "likert",
+    required: true,
+    helpText: "Assess business continuity planning for AI-dependent processes."
+  },
+
+  // === ORGANIZATIONAL CULTURE & CHANGE MANAGEMENT (5 questions) ===
+  {
+    id: "AIR_18",
+    section: "Organizational Culture & Change Management",
+    prompt: "Our institution's culture is open to innovation and technological change.",
+    type: "likert",
+    required: true,
+    helpText: "Evaluate organizational readiness for adopting new technologies and processes.",
+    enableContext: true,
+    contextPrompt: "Describe your institution's approach to innovation and change management."
+  },
+  {
+    id: "AIR_19",
+    section: "Organizational Culture & Change Management",
+    prompt: "Staff and faculty are generally receptive to AI tools that can improve their work efficiency.",
+    type: "likert",
+    required: true,
+    helpText: "Consider attitudes toward automation and AI-assisted processes."
+  },
+  {
+    id: "AIR_20",
+    section: "Organizational Culture & Change Management",
+    prompt: "We have effective change management processes for implementing new AI initiatives.",
+    type: "likert",
+    required: true,
+    helpText: "Assess your ability to plan, communicate, and execute technology implementations."
+  },
+  {
+    id: "AIR_21",
+    section: "Organizational Culture & Change Management",
+    prompt: "Leadership actively champions AI adoption and provides visible support for initiatives.",
+    type: "likert",
+    required: true,
+    helpText: "Evaluate leadership engagement and communication about AI priorities."
+  },
+  {
+    id: "AIR_22",
+    section: "Organizational Culture & Change Management", 
+    prompt: "We have processes for addressing concerns and resistance to AI implementation.",
+    type: "likert",
+    required: true,
+    helpText: "Consider how you handle skepticism, fear, or resistance to AI adoption."
+  },
+
+  // === COMPLIANCE & RISK MANAGEMENT (3 questions) ===
+  {
+    id: "AIR_23",
+    section: "Compliance & Risk Management",
+    prompt: "We understand and comply with relevant regulations (FERPA, ADA, etc.) as they apply to AI use.",
+    type: "likert",
+    required: true,
+    helpText: "Assess regulatory compliance for AI applications in education.",
+    enableContext: true,
+    contextPrompt: "Describe your approach to regulatory compliance for AI systems."
+  },
+  {
+    id: "AIR_24",
+    section: "Compliance & Risk Management",
+    prompt: "We have conducted risk assessments for AI implementation across different operational areas.",
+    type: "likert",
+    required: true,
+    helpText: "Consider whether you've evaluated potential risks and mitigation strategies."
+  },
+  {
+    id: "AIR_25",
+    section: "Compliance & Risk Management",
+    prompt: "Our procurement and vendor management processes address AI-specific requirements and risks.",
+    type: "likert",
+    required: true,
+    helpText: "Evaluate your approach to selecting and managing AI vendors and services."
+  }
+];
+
+/**
+ * Get AI readiness questions for assessment
+ */
+export function getAIReadinessQuestions(tier: 'ai-readiness-basic' | 'ai-readiness-custom'): Question[] {
+  if (tier === 'ai-readiness-basic') {
+    return AI_READINESS_QUESTIONS;
+  }
+  
+  if (tier === 'ai-readiness-custom') {
+    // For custom tier, include all questions plus additional context opportunities
+    return AI_READINESS_QUESTIONS.map(q => ({
+      ...q,
+      enableContext: true,
+      contextPrompt: q.contextPrompt || `Provide additional context about ${q.section.toLowerCase()} at your institution.`
+    }));
+  }
+  
+  return AI_READINESS_QUESTIONS;
 }

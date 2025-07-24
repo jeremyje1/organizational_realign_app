@@ -256,7 +256,9 @@ function TierBasedAssessmentContent() {
   const initialTier = useMemo(() => {
     const tier = searchParams.get('tier');
     const validTiers: PricingTier[] = ['express-diagnostic', 'one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
-    return validTiers.includes(tier as PricingTier) ? tier as PricingTier : 'express-diagnostic';
+    const aiReadinessTiers = ['ai-readiness-basic', 'ai-readiness-custom'];
+    const allValidTiers = [...validTiers, ...aiReadinessTiers];
+    return allValidTiers.includes(tier as any) ? tier as PricingTier : 'express-diagnostic';
   }, [searchParams]);
   
   const initialOrgType = useMemo(() => {
