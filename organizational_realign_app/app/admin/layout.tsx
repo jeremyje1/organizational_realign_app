@@ -3,17 +3,9 @@
  * Optimized layout for admin pages to reduce CSS preload warnings
  */
 
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
+'use client';
 
-export const metadata: Metadata = {
-  title: "Admin Dashboard - NorthPath Strategies",
-  description: "Administrative interface for NorthPath Strategies",
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
+import type { ReactNode } from "react";
 
 export default function AdminLayout({
   children,
