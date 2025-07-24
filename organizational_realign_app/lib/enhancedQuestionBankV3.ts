@@ -2760,9 +2760,10 @@ export function getAIReadinessQuestions(tier: 'ai-readiness-basic' | 'ai-readine
       {
         id: 'ai_impl_1',
         prompt: 'How would you prioritize AI implementation across different institutional departments?',
-        type: 'likert',
+        type: 'text',
         section: 'Implementation Planning',
-        tags: ['ai-readiness', 'implementation', 'strategy']
+        tags: ['ai-readiness', 'implementation', 'strategy'],
+        helpText: 'Describe your approach to sequencing AI implementation across departments, considering factors like readiness, impact, and resources.'
       },
       // Organizational Change Management (20 questions)  
       {
