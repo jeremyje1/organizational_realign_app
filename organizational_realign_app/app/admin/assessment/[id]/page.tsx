@@ -7,6 +7,7 @@ import { CORE_QUESTIONS, MONTHLY_QUESTIONS, COMPREHENSIVE_QUESTIONS, ENTERPRISE_
 interface AssessmentData {
   id: string;
   tier: string;
+  type?: string;
   organization_type: string;
   institution_name: string;
   contact_email: string;
@@ -239,6 +240,16 @@ export default function AdminAssessmentViewer() {
               </p>
             </div>
             <div className="flex space-x-3">
+              <a
+                href={`/api/reports/download/${assessmentId}?type=${assessment.type || 'organizational'}`}
+                className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 inline-flex items-center"
+                target="_blank"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Download Report
+              </a>
               <button
                 onClick={triggerReanalysis}
                 className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"

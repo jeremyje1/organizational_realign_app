@@ -83,95 +83,143 @@ async function generateAIContent(
     teamSize: results.teamMembers?.length || 0
   };
 
-  // Generate Executive Summary
+  // Generate Executive Summary with Higher Education Focus
   const executiveSummary = await runOpenAI(`
-    Generate a comprehensive executive summary for an AI Readiness Assessment report for ${institutionInfo.name}.
+    Generate a comprehensive executive summary for an AI Readiness Assessment report for ${institutionInfo.name}, a higher education institution.
+    
+    This assessment was created by Jeremy Estrella, a former faculty member and seasoned administrator, using patent-pending algorithms specifically designed for higher education.
     
     Key Results:
-    - Overall AI Readiness Score: ${results.scores.overall}/5.0
+    - Overall AI Readiness Score: ${results.scores.overall}/5.0 (AIRIX™ Algorithm)
     - Current Maturity Level: ${results.maturityProfile.overall.name}
-    - Assessment Type: ${results.isTeamAssessment ? 'Team Assessment' : 'Individual Assessment'}
-    ${results.isTeamAssessment ? `- Team Size: ${results.teamMembers?.length} members` : ''}
+    - Assessment Type: ${results.isTeamAssessment ? 'Cross-Functional Team Assessment' : 'Individual Assessment'}
+    ${results.isTeamAssessment ? `- Team Size: ${results.teamMembers?.length} members across faculty, IT, and administration` : ''}
     
-    Domain Scores:
+    Domain Scores (Patent-Pending Analysis):
     ${Object.entries(results.scores.domains || {}).map(([domain, data]: [string, any]) => 
       `- ${domain}: ${data?.score || 0}/5.0 (${data?.percentage || 0}%)`
     ).join('\n') || 'No domain scores available'}
     
-    Top Recommendations:
+    Priority Recommendations (Faculty-Centered):
     ${results.recommendations.slice(0, 3).map(rec => `- ${rec.title}`).join('\n')}
     
-    Write a 300-word executive summary that:
-    1. Highlights the institution's current AI readiness state
-    2. Identifies key strengths and opportunities
-    3. Provides a clear assessment of readiness level
-    4. Sets the context for strategic planning
+    Write a 300-word executive summary that emphasizes:
+    1. Learning outcomes enhancement through strategic AI implementation
+    2. Academic integrity preservation while enabling beneficial AI use
+    3. Faculty autonomy and shared governance considerations
+    4. Mission alignment with institutional educational excellence
+    5. Practical bridge between pedagogical values and AI innovation
     
-    Focus on higher education context and use professional, strategic language appropriate for senior leadership.
+    Address this to higher education leadership (presidents, provosts, deans, CIOs) who need to understand both the strategic opportunity and the preservation of educational values.
+    
+    Use language that demonstrates understanding of higher education culture, shared governance, and the unique challenges of implementing AI in academic environments.
   `, {
     model: 'gpt-4o',
     maxTokens: 400,
     temperature: 0.7
   });
 
-  // Generate Detailed Analysis
+  // Generate Detailed Analysis with Higher Education Focus
   const detailedAnalysis = await runOpenAI(`
-    Generate a detailed analysis section for the AI Readiness Assessment report.
+    Generate a detailed analysis section for ${institutionInfo.name}'s AI Readiness Assessment using our patent-pending algorithm suite.
     
-    Institution: ${institutionInfo.name}
-    Overall Score: ${results.scores.overall}/5.0
+    Institution: ${institutionInfo.name} (Higher Education)
+    Overall AIRIX™ Score: ${results.scores.overall}/5.0
     Maturity Level: ${results.maturityProfile.overall.name}
+    Assessment by: NorthPath Strategies (Faculty-Administrator Bridge Expertise)
     
-    Domain Analysis:
+    Domain Analysis (AIRS™, AICS™, AIMS™ Algorithms):
     ${Object.entries(results.scores.domains).map(([domain, data]: [string, any]) => 
       `${domain}: ${data.score}/5.0 (${data.maturityLevel} level)`
     ).join('\n')}
     
     ${results.scores.teamAnalysis ? `
-    Team Analysis:
+    Team Analysis (Cross-Functional Higher Ed Team):
     - Consensus Level: ${results.scores.teamAnalysis.consensus}%
-    - Team Divergence: ${results.scores.teamAnalysis.divergence}%
-    - Department Representation: ${Object.keys(results.scores.teamAnalysis.departmentBreakdown || {}).length} departments
+    - Faculty-Admin Alignment: ${results.scores.teamAnalysis.divergence}% divergence
+    - Department Representation: ${Object.keys(results.scores.teamAnalysis.departmentBreakdown || {}).length} areas
     ` : ''}
     
-    Provide a detailed analysis that:
-    1. Analyzes each domain's performance and maturity level
-    2. Identifies patterns and correlations between domains
-    3. Explains what the scores mean in practical terms
-    4. Highlights specific strengths and gaps
-    5. Provides context for higher education AI adoption
-    ${results.scores.teamAnalysis ? '6. Analyzes team consensus and identifies areas of agreement/disagreement' : ''}
+    Structure your analysis around these higher education AI implementation priorities:
     
-    Write 500-600 words with specific insights and actionable observations.
+    1. LEARNING OUTCOMES & ACADEMIC INTEGRITY
+       - How AI can enhance student learning while preserving critical thinking
+       - Faculty development needs for pedagogical AI integration
+       - Assessment innovation that maintains academic rigor
+    
+    2. FACULTY AI INTEGRATION & AUTONOMY
+       - Current faculty attitudes and readiness for AI tools
+       - Pedagogical AI applications that respect teaching autonomy
+       - Research acceleration opportunities through AI
+    
+    3. INSTITUTIONAL READINESS & GOVERNANCE
+       - Shared governance structures for AI decision-making
+       - Technology infrastructure supporting educational AI
+       - Change management across faculty, staff, and students
+    
+    4. MISSION ALIGNMENT & STRATEGIC INTEGRATION
+       - How AI advances institutional mission and strategic goals
+       - Student success outcome improvements through AI
+       - Resource allocation for sustainable AI adoption
+    
+    Write for higher education professionals who understand both educational theory and institutional operations. Address the unique challenges of implementing AI in academic environments while preserving educational excellence.
+    
+    Length: 600-800 words with specific, higher education contextual insights.
   `, {
     model: 'gpt-4o',
-    maxTokens: 700,
+    maxTokens: 900,
     temperature: 0.6
   });
 
-  // Generate Strategic Recommendations
+  // Generate Strategic Recommendations with Policy Development Focus
   const strategicRecommendations = await runOpenAI(`
-    Generate strategic recommendations for ${institutionInfo.name} based on their AI readiness assessment.
+    Generate comprehensive strategic recommendations for ${institutionInfo.name} based on their AI readiness assessment, including automated AI policy development.
     
-    Current State:
-    - Overall Score: ${results.scores.overall}/5.0
+    Current State (Patent-Pending Analysis):
+    - Overall AIRIX™ Score: ${results.scores.overall}/5.0
     - Maturity Level: ${results.maturityProfile.overall.name}
+    - Assessment Tier: ${tier} (${tier === 'custom' ? 'Comprehensive with Policy Development' : 'Advanced Assessment'})
     
-    Assessment Recommendations:
+    Assessment Recommendations (Faculty-Centered):
     ${results.recommendations.map(rec => 
       `${rec.domain} (${rec.priority} priority): ${rec.title} - ${rec.description}`
     ).join('\n\n')}
     
-    Create comprehensive strategic recommendations that:
-    1. Prioritize the most critical areas for improvement
-    2. Provide specific, actionable steps
-    3. Include short-term (6 months) and long-term (2+ years) goals
-    4. Address resource requirements and change management
-    5. Consider higher education constraints and opportunities
-    6. Include metrics for measuring progress
+    Structure your recommendations around these key areas:
     
-    Structure as a strategic roadmap with clear priorities and timelines.
-    Write 600-700 words with concrete, implementable advice.
+    1. FACULTY AI INTEGRATION RECOMMENDATIONS
+       - Pedagogical AI tools for course design and assessment
+       - Faculty development programs for AI literacy
+       - Research acceleration through AI applications
+       - Teaching effectiveness enhancement strategies
+    
+    2. AUTOMATED AI POLICY DEVELOPMENT
+       ${tier === 'custom' ? `
+       - Faculty AI Teaching Policies (classroom use, grading, research)
+       - Student AI Integrity Policies (academic honesty, acceptable use)
+       - Employee AI Integration Policies (administrative use, data protection)
+       - Institutional AI Governance Policies (decision-making, vendor management)
+       ` : `
+       - Core AI use guidelines for faculty and students
+       - Basic governance framework recommendations
+       - Academic integrity standards for AI use
+       `}
+    
+    3. STUDENT SUCCESS & LEARNING OUTCOMES
+       - AI-powered student support and retention strategies
+       - Learning analytics for personalized education
+       - Academic integrity education and digital citizenship
+       - AI tools that enhance critical thinking skills
+    
+    4. IMPLEMENTATION ROADMAP
+       - Phase 1 (Months 1-6): Foundation building and faculty development
+       - Phase 2 (Months 7-12): Pilot implementations and policy rollout
+       - Phase 3 (Months 13-18): Scaling and institutional integration
+       - Timeline considerations for academic calendar and tenure processes
+    
+    Write strategic recommendations that demonstrate deep understanding of higher education culture, shared governance, and the need to balance innovation with educational values.
+    
+    Length: 700-800 words with specific, implementable guidance for higher education leaders.
   `, {
     model: 'gpt-4o',
     maxTokens: 800,
@@ -461,32 +509,64 @@ async function buildReportStructure(
 }
 
 function addTitlePage(pdf: jsPDF, data: AIReadinessReportData): void {
-  const { results, institutionInfo } = data;
+  const { results, institutionInfo, tier } = data;
+  const pageWidth = pdf.internal.pageSize.width;
   
+  // Background header
+  pdf.setFillColor(25, 43, 81); // NorthPath blue
+  pdf.rect(0, 0, pageWidth, 80, 'F');
+  
+  // NorthPath Strategies branding
+  pdf.setTextColor(255, 255, 255);
   pdf.setFontSize(24);
   pdf.setFont('helvetica', 'bold');
-  pdf.text('AI Readiness Assessment Report', 105, 40, { align: 'center' });
+  pdf.text('NorthPath Strategies', pageWidth / 2, 30, { align: 'center' });
   
-  pdf.setFontSize(18);
+  pdf.setFontSize(16);
   pdf.setFont('helvetica', 'normal');
-  pdf.text(institutionInfo.name, 105, 60, { align: 'center' });
+  pdf.text('Enhanced AI Readiness Assessment for Higher Education', pageWidth / 2, 50, { align: 'center' });
   
+  pdf.setFontSize(10);
+  pdf.text('Patent-Pending Algorithm Suite: AIRIX™ • AIRS™ • AICS™ • AIMS™', pageWidth / 2, 65, { align: 'center' });
+  
+  // Institution information
+  pdf.setTextColor(0, 0, 0);
+  pdf.setFont('helvetica', 'bold');
+  pdf.setFontSize(20);
+  pdf.text(institutionInfo.name, pageWidth / 2, 110, { align: 'center' });
+  
+  // Assessment results
+  pdf.setFont('helvetica', 'normal');
   pdf.setFontSize(14);
-  pdf.text(`Overall Readiness Score: ${results.scores.overall}/5.0`, 105, 80, { align: 'center' });
-  pdf.text(`Maturity Level: ${results.maturityProfile.overall.name}`, 105, 95, { align: 'center' });
+  pdf.text(`Overall AI Readiness Score: ${results.scores.overall.toFixed(1)}/5.0`, pageWidth / 2, 135, { align: 'center' });
+  pdf.text(`Maturity Level: ${results.maturityProfile.overall.name}`, pageWidth / 2, 152, { align: 'center' });
   
+  // Tier-specific messaging
+  const tierMessage = tier === 'custom' 
+    ? 'Comprehensive Assessment with AI Policy Development'
+    : 'Advanced Assessment with Strategic Recommendations';
   pdf.setFontSize(12);
-  pdf.text(`Generated on: ${new Date(data.submissionDate).toLocaleDateString()}`, 105, 115, { align: 'center' });
-  pdf.text(`Assessment Type: ${data.tier === 'basic' ? 'Self-Service Diagnostic' : 'Custom Analysis + Consulting'}`, 105, 130, { align: 'center' });
+  pdf.text(tierMessage, pageWidth / 2, 170, { align: 'center' });
   
   if (results.isTeamAssessment) {
-    pdf.text(`Team Assessment: ${results.teamMembers?.length} participants`, 105, 145, { align: 'center' });
+    pdf.text(`Cross-Functional Team Assessment: ${results.teamMembers?.length} participants`, pageWidth / 2, 185, { align: 'center' });
   }
   
-  // Add branding
+  // Higher education specialization
+  pdf.setFont('helvetica', 'italic');
+  pdf.setFontSize(11);
+  pdf.text('Faculty-Centered • Learning Outcome Focused • Academic Integrity Preserving', pageWidth / 2, 210, { align: 'center' });
+  
+  // Generation details
+  pdf.setFont('helvetica', 'normal');
   pdf.setFontSize(10);
-  pdf.text('Powered by NorthPath Strategies', 105, 270, { align: 'center' });
-  pdf.text('AI-Generated Analysis using GPT-4o', 105, 280, { align: 'center' });
+  pdf.text(`Generated: ${new Date(data.submissionDate).toLocaleDateString()}`, pageWidth / 2, 235, { align: 'center' });
+  pdf.text(`Assessment ID: ${data.assessmentId || 'AI-' + Date.now()}`, pageWidth / 2, 250, { align: 'center' });
+  
+  // Bottom branding
+  pdf.setFontSize(9);
+  pdf.text('Created by Jeremy Estrella - Former Faculty Member & Seasoned Administrator', pageWidth / 2, 270, { align: 'center' });
+  pdf.text('northpathstrategies.org/ai-alignment', pageWidth / 2, 280, { align: 'center' });
 }
 
 function addSection(pdf: jsPDF, title: string, content: string, pageNumber: number): void {

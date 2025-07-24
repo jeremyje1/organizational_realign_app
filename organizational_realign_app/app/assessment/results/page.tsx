@@ -255,6 +255,7 @@ function AssessmentResultsContent() {
 
   // State for assessment data and results
   const [assessmentData, setAssessmentData] = useState<any>(null);
+  const [assessmentType, setAssessmentType] = useState<'organizational' | 'ai-readiness' | null>(null);
   const [answers, setAnswers] = useState<Record<string, number> | null>(null);
   const [algoResult, setAlgoResult] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -368,7 +369,40 @@ function AssessmentResultsContent() {
         console.log('Assessment data loaded:', result.data);
         setAssessmentData(result.data);
 
-        // Convert responses to the expected format for the algorithm
+        // Check if this is an AI readiness assessment
+        const isAIReadiness = result.type === 'ai-readiness' || result.source === 'ai_readiness';
+        setAssessmentType(isAIReadiness ? 'ai-readiness' : 'organizational');
+        
+        if (isAIReadiness) {
+          // For AI readiness assessments, use the existing analysis results
+          console.log('Processing AI readiness assessment');
+          
+          if (result.data.analysis_results) {
+            // AI readiness assessment already has analysis results
+            setAlgoResult({
+              score: result.data.ai_readiness_score || 0.7,
+              tier: result.data.tier,
+              sectionScores: result.data.analysis_results.sectionScores || {},
+              recommendations: result.data.analysis_results.recommendations || [],
+              type: 'ai-readiness'
+            });
+          } else {
+            // If no analysis results, provide a basic structure for AI readiness
+            setAlgoResult({
+              score: result.data.ai_readiness_score || 0.7,
+              tier: result.data.tier,
+              sectionScores: {},
+              recommendations: [],
+              type: 'ai-readiness'
+            });
+          }
+          
+          // For AI readiness, we don't need to set numeric answers for the org algorithm
+          setLoading(false);
+          return;
+        }
+
+        // For organizational assessments, convert responses to the expected format for the algorithm
         const responses = result.data.responses;
         if (responses && typeof responses === 'object') {
           // Convert responses to numerical values if they're not already
@@ -456,8 +490,8 @@ function AssessmentResultsContent() {
   }, [assessmentId]);
 
   useEffect(() => {
-    if (answers) {
-      console.log('Running algorithm with answers:', answers);
+    if (answers && assessmentType === 'organizational') {
+      console.log('Running organizational algorithm with answers:', answers);
       calcScoreV21({ answers, segment: segment as any })
         .then(result => {
           console.log('Algorithm result:', result);
@@ -540,7 +574,7 @@ function AssessmentResultsContent() {
         })
         .finally(() => setLoading(false));
     }
-  }, [answers, segment]);
+  }, [answers, segment, assessmentType]);
 
   const _getScoreColor = (score: number) => {
     if (score >= 85) return 'text-emerald-400';

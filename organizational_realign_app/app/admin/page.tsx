@@ -120,30 +120,59 @@ function AdminDashboardContent() {
 
             <div className="bg-white shadow rounded-lg">
               <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">Recent Assessments</h3>
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Assessment Status Overview</h3>
                 <div className="mt-6 flow-root">
                   <ul className="-my-5 divide-y divide-gray-200">
-                    {assessments.slice(0, 5).map((assessment: any) => (
+                    {assessments.slice(0, 10).map((assessment: any) => (
                       <li key={assessment.id} className="py-4">
                         <div className="flex items-center space-x-4">
+                          <div className="flex-shrink-0">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${
+                              assessment.status === 'completed' 
+                                ? 'bg-green-100 text-green-800' 
+                                : assessment.status === 'in-progress'
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}>
+                              {assessment.status === 'completed' ? '✓' : assessment.status === 'in-progress' ? '◐' : '○'}
+                            </div>
+                          </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-gray-900 truncate">
-                              Assessment ID: {assessment.id}
+                              {assessment.institution_name || 'Institution Not Specified'} • ID: {assessment.id}
                             </p>
                             <p className="text-sm text-gray-500">
-                              Type: <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium mr-2 ${
                                 assessment.type === 'ai-readiness' 
                                   ? 'bg-purple-100 text-purple-800' 
                                   : 'bg-blue-100 text-blue-800'
                               }`}>
                                 {assessment.type === 'ai-readiness' ? 'AI Readiness' : 'Organizational'}
-                              </span> • Tier: {assessment.tier} • Created: {new Date(assessment.created_at).toLocaleDateString()}
+                              </span>
+                              <span className="font-medium">{assessment.tier}</span>
+                              <span className="mx-2">•</span>
+                              <span className={`px-2 py-1 text-xs rounded-full ${
+                                assessment.status === 'completed' 
+                                  ? 'bg-green-50 text-green-700' 
+                                  : assessment.status === 'in-progress'
+                                  ? 'bg-yellow-50 text-yellow-700'
+                                  : 'bg-gray-50 text-gray-700'
+                              }`}>
+                                {assessment.status || 'started'}
+                              </span>
+                              <span className="mx-2">•</span>
+                              <span>{new Date(assessment.created_at).toLocaleDateString()}</span>
                             </p>
+                            {assessment.contact_email && (
+                              <p className="text-xs text-gray-400 mt-1">
+                                Contact: {assessment.contact_email}
+                              </p>
+                            )}
                           </div>
-                          <div>
+                          <div className="flex-shrink-0 flex space-x-2">
                             <Link
                               href={`/admin/assessment/${assessment.id}?type=${assessment.type}`}
-                              className="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"
+                              className="inline-flex items-center px-3 py-1 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                             >
                               View Details
                             </Link>
@@ -285,35 +314,43 @@ function AdminDashboardContent() {
                     
                     <div className="space-y-3">
                       <Link
-                        href="/assessment/tier-based?tier=express-diagnostic&org=higher-education"
+                        href="/assessment/tier-based?tier=express-diagnostic&org=higher-education&test_mode=admin"
                         className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
                       >
                         <div className="font-medium">Express Diagnostic ($2,495)</div>
-                        <div className="text-gray-500">60 questions • 25 page report</div>
+                        <div className="text-gray-500">60 questions • 25 page report • <span className="text-blue-600">Test Mode</span></div>
                       </Link>
                       
                       <Link
-                        href="/assessment/tier-based?tier=one-time-diagnostic&org=higher-education"
+                        href="/assessment/tier-based?tier=one-time-diagnostic&org=higher-education&test_mode=admin"
                         className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
                       >
                         <div className="font-medium">One-Time Diagnostic ($4,995)</div>
-                        <div className="text-gray-500">100+ questions • 35 page report</div>
+                        <div className="text-gray-500">105 questions • 35 page report • <span className="text-blue-600">Test Mode</span></div>
                       </Link>
                       
                       <Link
-                        href="/assessment/tier-based?tier=comprehensive-package&org=higher-education"
+                        href="/assessment/tier-based?tier=monthly-subscription&org=higher-education&test_mode=admin"
                         className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
                       >
-                        <div className="font-medium">Comprehensive Package ($15,000)</div>
-                        <div className="text-gray-500">150+ questions • 60 page report</div>
+                        <div className="font-medium">Monthly Subscription ($2,995/month)</div>
+                        <div className="text-gray-500">120 questions • 35 page report • Unlimited assessments • <span className="text-blue-600">Test Mode</span></div>
                       </Link>
                       
                       <Link
-                        href="/assessment/tier-based?tier=enterprise-transformation&org=higher-education"
+                        href="/assessment/tier-based?tier=comprehensive-package&org=higher-education&test_mode=admin"
                         className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
                       >
-                        <div className="font-medium">Enterprise Transformation ($45,000)</div>
-                        <div className="text-gray-500">200+ questions • 100 page report</div>
+                        <div className="font-medium">Comprehensive Package ($9,900)</div>
+                        <div className="text-gray-500">150+ questions • 45 page report • <span className="text-blue-600">Test Mode</span></div>
+                      </Link>
+                      
+                      <Link
+                        href="/assessment/tier-based?tier=enterprise-transformation&org=higher-education&test_mode=admin"
+                        className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        <div className="font-medium">Enterprise Transformation ($24,000)</div>
+                        <div className="text-gray-500">200+ questions • 55 page report • <span className="text-blue-600">Test Mode</span></div>
                       </Link>
                     </div>
                   </div>
@@ -327,19 +364,19 @@ function AdminDashboardContent() {
                     
                     <div className="space-y-3">
                       <Link
-                        href="/assessment/tier-based?tier=ai-readiness-advanced&assessment_type=ai-readiness"
+                        href="/assessment/tier-based?tier=ai-readiness-advanced&assessment_type=ai-readiness&test_mode=admin"
                         className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
                       >
                         <div className="font-medium">Advanced AI Assessment ($4,995)</div>
-                        <div className="text-gray-500">105 questions • 12 page report</div>
+                        <div className="text-gray-500">105 questions • 12 page report • <span className="text-blue-600">Test Mode</span></div>
                       </Link>
                       
                       <Link
-                        href="/assessment/tier-based?tier=ai-readiness-comprehensive&assessment_type=ai-readiness"
+                        href="/assessment/tier-based?tier=ai-readiness-comprehensive&assessment_type=ai-readiness&test_mode=admin"
                         className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
                       >
                         <div className="font-medium">Comprehensive AI Assessment ($12,000)</div>
-                        <div className="text-gray-500">150 questions • 30 page report</div>
+                        <div className="text-gray-500">150 questions • 30 page report • <span className="text-blue-600">Test Mode</span></div>
                       </Link>
                     </div>
                   </div>
@@ -364,14 +401,35 @@ function AdminDashboardContent() {
                         target="_blank"
                         className="block px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
                       >
-                        Test Express Diagnostic Checkout
+                        Test Express Diagnostic Checkout ($2,495)
                       </a>
                       <a
                         href="/api/stripe/create-tier-checkout?tier=one-time-diagnostic"
                         target="_blank"
                         className="block px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
                       >
-                        Test One-Time Diagnostic Checkout
+                        Test One-Time Diagnostic Checkout ($4,995)
+                      </a>
+                      <a
+                        href="/api/stripe/create-tier-checkout?tier=monthly-subscription"
+                        target="_blank"
+                        className="block px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        Test Monthly Subscription Checkout ($2,995/mo)
+                      </a>
+                      <a
+                        href="/api/stripe/create-tier-checkout?tier=comprehensive-package"
+                        target="_blank"
+                        className="block px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        Test Comprehensive Package Checkout ($9,900)
+                      </a>
+                      <a
+                        href="/api/stripe/create-tier-checkout?tier=enterprise-transformation"
+                        target="_blank"
+                        className="block px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+                      >
+                        Test Enterprise Transformation Checkout ($24,000)
                       </a>
                     </div>
                   </div>
@@ -384,14 +442,14 @@ function AdminDashboardContent() {
                         target="_blank"
                         className="block px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
                       >
-                        Test AI Advanced Checkout
+                        Test AI Advanced Checkout ($4,995)
                       </a>
                       <a
                         href="/api/stripe/create-tier-checkout?tier=ai-readiness-comprehensive"
                         target="_blank"
                         className="block px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
                       >
-                        Test AI Comprehensive Checkout
+                        Test AI Comprehensive Checkout ($12,000)
                       </a>
                     </div>
                   </div>

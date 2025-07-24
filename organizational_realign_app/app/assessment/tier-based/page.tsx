@@ -558,17 +558,34 @@ function TierBasedAssessmentContent() {
         uploadedFileCount: assessmentState.uploadedFiles.length
       });
 
-      const response = await fetch('/api/assessment/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({        tier: assessmentState.tier,
+      // Determine which API endpoint to use based on assessment type
+      const isAIReadiness = assessmentType === 'ai-readiness' || assessmentState.tier.startsWith('ai-readiness');
+      const apiEndpoint = isAIReadiness ? '/api/ai-readiness/submit' : '/api/assessment/submit';
+      
+      // Prepare the request body based on assessment type
+      const requestBody = isAIReadiness ? {
+        responses: assessmentState.responses,
+        tier: assessmentState.tier,
+        industry: assessmentState.organizationType,
+        institutionName: assessmentState.institutionName,
+        contactEmail: assessmentState.contactEmail,
+        contactName: assessmentState.contactName,
+        uploadedFiles: assessmentState.uploadedFiles.map(f => ({ name: f.name, size: f.size, type: f.type })),
+        assessmentType: 'ai-readiness'
+      } : {
+        tier: assessmentState.tier,
         organizationType: assessmentState.organizationType,
         institutionName: assessmentState.institutionName,
         contactEmail: assessmentState.contactEmail,
         contactName: assessmentState.contactName,
         responses: assessmentState.responses,
         uploadedFiles: assessmentState.uploadedFiles.map(f => ({ name: f.name, size: f.size, type: f.type }))
-        })
+      };
+
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
       });
 
       const result = await response.json();

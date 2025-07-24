@@ -46,6 +46,85 @@ export function generateDataDrivenPDFReport(analysis: ComprehensiveAnalysis): js
     white: [255, 255, 255] as [number, number, number]
   };
 
+  // Generate Title Page with NorthPath Branding
+  const generateTitlePage = () => {
+    // Background
+    doc.setFillColor(colors.primary[0], colors.primary[1], colors.primary[2]);
+    doc.rect(0, 0, pageWidth, pageHeight, 'F');
+    
+    // NorthPath Logo Area (placeholder)
+    doc.setTextColor(colors.white[0], colors.white[1], colors.white[2]);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(24);
+    doc.text('NorthPath Strategies', pageWidth / 2, 60, { align: 'center' });
+    
+    // Report Type Based on Tier
+    doc.setFontSize(18);
+    const reportTitle = getTierSpecificTitle(analysis.tier);
+    doc.text(reportTitle, pageWidth / 2, 85, { align: 'center' });
+    
+    // Institution Name
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'normal');
+    doc.text(analysis.submissionDetails.institution_name, pageWidth / 2, 110, { align: 'center' });
+    
+    // Patent-Pending Technology Badge
+    doc.setFillColor(colors.accent[0], colors.accent[1], colors.accent[2]);
+    doc.roundedRect(pageWidth / 2 - 60, 130, 120, 30, 5, 5, 'F');
+    doc.setTextColor(colors.white[0], colors.white[1], colors.white[2]);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.text('PATENT-PENDING ALGORITHMS', pageWidth / 2, 148, { align: 'center' });
+    
+    // Algorithm Suite Display
+    const algorithms = getTierAlgorithms(analysis.tier);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(12);
+    doc.text(algorithms.join(' • '), pageWidth / 2, 175, { align: 'center' });
+    
+    // Date and Assessment ID
+    doc.setFontSize(10);
+    doc.text(`Generated: ${new Date().toLocaleDateString()}`, pageWidth / 2, 200, { align: 'center' });
+    doc.text(`Assessment ID: ${analysis.assessmentId}`, pageWidth / 2, 215, { align: 'center' });
+    
+    // Expert + Technology Tagline
+    doc.setFont('helvetica', 'italic');
+    doc.text('Combining Patent-Pending Technology with Expert Human Guidance', pageWidth / 2, 240, { align: 'center' });
+    
+    doc.addPage();
+    yPosition = margin;
+  };
+
+  const getTierSpecificTitle = (tier: string): string => {
+    switch (tier) {
+      case 'express-diagnostic':
+        return 'Express Diagnostic Assessment Report';
+      case 'one-time-diagnostic':
+        return 'Comprehensive Organizational Analysis';
+      case 'comprehensive-package':
+        return 'Board-Ready Strategic Analysis';
+      case 'enterprise-transformation':
+        return 'Enterprise Transformation Blueprint';
+      default:
+        return 'Organizational Assessment Report';
+    }
+  };
+
+  const getTierAlgorithms = (tier: string): string[] => {
+    switch (tier) {
+      case 'express-diagnostic':
+        return ['OCI™', 'HOCI™', 'JCI™'];
+      case 'one-time-diagnostic':
+        return ['DSCH', 'CRF', 'LEI', 'OREA'];
+      case 'comprehensive-package':
+        return ['All 6 Proprietary Algorithms'];
+      case 'enterprise-transformation':
+        return ['Full Algorithm Suite + Custom Modeling'];
+      default:
+        return ['Proprietary Analysis'];
+    }
+  };
+
   // Helper functions
   const checkPageBreak = (requiredHeight: number) => {
     if (yPosition + requiredHeight > pageHeight - margin) {
