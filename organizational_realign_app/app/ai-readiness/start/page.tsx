@@ -20,8 +20,8 @@ function AIReadinessStartContent() {
     // Simulate loading and redirect to assessment
     const timer = setTimeout(() => {
       setIsLoading(false);
-      // Redirect to the actual AI readiness assessment form
-      window.location.href = `/ai-readiness/assessment?tier=${tier}`;
+      // Redirect to the tier-based assessment with AI readiness focus
+      window.location.href = `/assessment/tier-based?assessment_type=ai-readiness&tier=${tier || 'basic'}`;
     }, 2000);
 
     return () => clearTimeout(timer);

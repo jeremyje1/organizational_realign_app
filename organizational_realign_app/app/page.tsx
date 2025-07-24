@@ -41,7 +41,10 @@ export default function AppHomePage() {
                 Quick Wins
               </Link>
               <Link href="/pricing" className="text-slate-300 hover:text-white transition-colors">
-                Take Assessment
+                Organizational Assessment
+              </Link>
+              <Link href="/ai-readiness" className="text-slate-300 hover:text-white transition-colors">
+                AI Readiness
               </Link>
               <Link href="/dashboard" className="text-slate-300 hover:text-white transition-colors">
                 Dashboard
@@ -59,28 +62,62 @@ export default function AppHomePage() {
             Assessment Platform
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Organizational Realignment Diagnostic
+            NorthPath Strategies
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-              {" "}Analytics
+              {" "}Assessment Platform
             </span>
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-8">
-            Advanced assessment and analytics platform for data-driven organizational transformation. 
+            Comprehensive assessment platform for organizational transformation and AI readiness. 
             Get insights, analyze patterns, and drive strategic decisions.
           </p>
+          
+          {/* Assessment Type Selection */}
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
+              <h3 className="text-2xl font-bold text-white mb-3">Organizational Realignment</h3>
+              <p className="text-slate-300 mb-4">
+                Comprehensive diagnostic for organizational transformation and strategic realignment.
+              </p>
+              <div className="flex flex-col gap-3">
+                <Button size="lg" asChild className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold">
+                  <Link href="/quick-wins">
+                    Free Quick Wins Assessment
+                    <ChevronRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button size="lg" asChild className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                  <Link href="/pricing">
+                    Full Assessment
+                    <ChevronRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+            
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-indigo-500/50 rounded-xl p-6">
+              <h3 className="text-2xl font-bold text-white mb-3">AI Readiness Assessment</h3>
+              <p className="text-slate-300 mb-4">
+                Evaluate your institution's AI readiness across strategy, governance, pedagogy, and technology.
+              </p>
+              <div className="flex flex-col gap-3">
+                <Button size="lg" asChild className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold">
+                  <Link href="/ai-readiness">
+                    Learn More
+                    <ChevronRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button size="lg" asChild className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700">
+                  <Link href="/assessment/tier-based?assessment_type=ai-readiness&tier=comprehensive">
+                    Start AI Assessment
+                    <ChevronRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+          
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold shadow-lg">
-              <Link href="/quick-wins">
-                Free Quick Wins Assessment
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button size="lg" asChild className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
-              <Link href="/pricing">
-                Full Assessment
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
             <Button size="lg" variant="outline" asChild className="border-slate-600 text-slate-300 hover:bg-slate-800">
               <Link href="/dashboard">
                 View Dashboard
