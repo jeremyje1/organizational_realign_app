@@ -6,6 +6,14 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+// AI Readiness Database Client (separate database)
+const aiReadinessSupabase = process.env.AI_READINESS_SUPABASE_URL && process.env.AI_READINESS_SUPABASE_ANON_KEY
+  ? createClient(
+      process.env.AI_READINESS_SUPABASE_URL,
+      process.env.AI_READINESS_SUPABASE_ANON_KEY
+    )
+  : null;
+
 export async function GET(request: NextRequest) {
   console.log('Analytics API called');
   
@@ -43,9 +51,9 @@ export async function GET(request: NextRequest) {
     startDate.setDate(endDate.getDate() - range);
     console.log('Date range:', startDate.toISOString(), 'to', endDate.toISOString());
 
-    // Fetch assessments with admin privileges (bypassing RLS)
-    console.log('Fetching assessments from Supabase...');
-    const { data: assessments, error } = await supabase
+    // Fetch organizational assessments with admin privileges (bypassing RLS)
+    console.log('Fetching organizational assessments from Supabase...');
+    const { data: orgAssessments, error: orgError } = await supabase
       .from('assessments')
       .select(`
         id,
@@ -62,19 +70,78 @@ export async function GET(request: NextRequest) {
       .lte('created_at', endDate.toISOString())
       .order('created_at', { ascending: false });
 
-    if (error) {
-      console.error('Error fetching assessments for analytics:', error);
+    if (orgError) {
+      console.error('Error fetching organizational assessments for analytics:', orgError);
+    }
+
+    // Fetch AI readiness assessments
+    console.log('Fetching AI readiness assessments from separate database...');
+    let aiAssessments = null;
+    let aiError = null;
+    
+    if (aiReadinessSupabase) {
+      const result = await aiReadinessSupabase
+        .from('ai_readiness_assessments')
+        .select(`
+          id,
+          tier,
+          institution_type,
+          institution_name,
+          contact_email,
+          responses,
+          ai_readiness_score,
+          ai_analysis,
+          created_at
+        `)
+        .gte('created_at', startDate.toISOString())
+        .lte('created_at', endDate.toISOString())
+        .order('created_at', { ascending: false });
       
-      // Return mock/empty analytics instead of error
-      console.log('Falling back to empty analytics data due to database error');
+      aiAssessments = result.data;
+      aiError = result.error;
+    } else {
+      console.warn('AI readiness database not configured');
+    }
+
+    // Handle case where AI readiness table doesn't exist yet
+    if (aiError && aiError.message?.includes('does not exist')) {
+      console.warn('AI readiness assessments table does not exist yet, skipping...');
+    } else if (aiError) {
+      console.error('Error fetching AI readiness assessments for analytics:', aiError);
+    }
+
+    // If both queries failed, return empty analytics
+    if (orgError && (aiError && !aiError.message?.includes('does not exist'))) {
+      console.log('Falling back to empty analytics data due to database errors');
       const emptyAnalytics = processAnalyticsData([]);
       return NextResponse.json(emptyAnalytics);
     }
 
-    console.log('Fetched', assessments?.length || 0, 'assessments');
+    // Combine assessments with type indicators
+    const formattedOrgAssessments = (orgAssessments || []).map(assessment => ({
+      ...assessment,
+      type: 'organizational',
+      organization_name: assessment.institution_name,
+      industry: assessment.organization_type
+    }));
+
+    const formattedAiAssessments = (aiAssessments || []).map(assessment => ({
+      ...assessment,
+      type: 'ai-readiness',
+      institution_name: assessment.institution_name,
+      industry: assessment.institution_type,
+      analysis_results: assessment.ai_analysis
+    }));
+
+    const allAssessments = [...formattedOrgAssessments, ...formattedAiAssessments]
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+    console.log('Fetched', allAssessments.length, 'total assessments (', 
+      formattedOrgAssessments.length, 'organizational,', 
+      formattedAiAssessments.length, 'AI readiness)');
 
     // Process analytics data
-    const analytics = processAnalyticsData(assessments || []);
+    const analytics = processAnalyticsData(allAssessments);
     console.log('Processed analytics successfully');
 
     return NextResponse.json(analytics);
@@ -92,6 +159,7 @@ export async function GET(request: NextRequest) {
 function processAnalyticsData(assessments: any[]) {
   const analytics = {
     totalAssessments: assessments.length,
+    assessmentsByType: {} as Record<string, number>,
     assessmentsByTier: {} as Record<string, number>,
     assessmentsByIndustry: {} as Record<string, number>,
     assessmentsByMonth: {} as Record<string, number>,
@@ -123,17 +191,21 @@ function processAnalyticsData(assessments: any[]) {
 
   assessments.forEach((assessment) => {
     const tier = assessment.tier || 'unknown';
-    const orgType = assessment.organization_type || 'unknown';
+    const type = assessment.type || 'unknown';
+    const industry = assessment.industry || assessment.organization_type || 'unknown';
     const responseCount = Object.keys(assessment.responses || {}).length;
     const hasAnalysis = !!assessment.analysis_results;
     const aiScore = assessment.ai_readiness_score;
+
+    // Count by type
+    analytics.assessmentsByType[type] = (analytics.assessmentsByType[type] || 0) + 1;
 
     // Count by tier
     tierCounts[tier] = (tierCounts[tier] || 0) + 1;
     analytics.assessmentsByTier[tier] = tierCounts[tier];
 
     // Count by industry
-    analytics.assessmentsByIndustry[orgType] = (analytics.assessmentsByIndustry[orgType] || 0) + 1;
+    analytics.assessmentsByIndustry[industry] = (analytics.assessmentsByIndustry[industry] || 0) + 1;
 
     // Track response counts by tier
     if (!tierResponseCounts[tier]) tierResponseCounts[tier] = [];

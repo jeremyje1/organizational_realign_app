@@ -21,8 +21,10 @@ export interface LEIResult {
 /**
  * Calculate LEI score based on leadership metrics
  */
-export function calcLEI(input: LEIInput): LEIResult {
-  const { leadership, effectiveness, impact } = input.licenses;
+export function calcLEI(input: LEIInput | LEIInput['licenses']): LEIResult {
+  // Handle both direct licenses object and wrapped input
+  const licenses = 'licenses' in input ? input.licenses : input;
+  const { leadership, effectiveness, impact } = licenses;
   const score = (leadership * 0.4 + effectiveness * 0.35 + impact * 0.25) * 100;
   
   return { score: Math.max(0, Math.min(100, score)) };

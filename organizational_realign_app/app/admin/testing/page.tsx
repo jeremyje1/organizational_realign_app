@@ -80,10 +80,24 @@ const ORG_TIER_CONFIGS: TierTestConfig[] = [
 ];
 
 // AI Readiness Assessment Tiers
-  const AI_READINESS_TIER_CONFIGS = [
-    { tier: 'ai-readiness-basic', displayName: 'Advanced AI Assessment (105 Questions)', name: 'Advanced AI Assessment', price: '$4,995' },
-    { tier: 'ai-readiness-custom', displayName: 'Comprehensive AI Assessment (150 Questions)', name: 'Comprehensive AI Assessment', price: '$12,000' }
-  ];
+const AI_READINESS_TIER_CONFIGS: TierTestConfig[] = [
+  {
+    tier: 'ai-readiness-basic',
+    displayName: 'Advanced AI Assessment (105 Questions)',
+    questionCount: 105,
+    algorithms: ['AI Readiness Index', 'Technology Maturity', 'Change Management'],
+    features: ['AI readiness score', 'Technology gaps analysis', 'Implementation roadmap', 'PDF report'],
+    assessmentType: 'ai-readiness'
+  },
+  {
+    tier: 'ai-readiness-custom',
+    displayName: 'Comprehensive AI Assessment (150 Questions)',
+    questionCount: 150,
+    algorithms: ['Advanced AI Index', 'Predictive Readiness', 'Risk Assessment', 'ROI Analysis'],
+    features: ['Comprehensive analysis', 'Custom recommendations', 'Strategic planning', 'Executive dashboard', 'Quarterly reviews'],
+    assessmentType: 'ai-readiness'
+  }
+];
 
 const INDUSTRY_CONFIGS: IndustryTestConfig[] = [
   {
@@ -701,13 +715,13 @@ function AdminTestingPanelContent() {
                 <h3 className="font-medium text-gray-900 mb-2">{tier.displayName}</h3>
                 <div className="text-sm text-gray-600 space-y-1">
                   <p><strong>Questions:</strong> {tier.questionCount}</p>
-                  <p><strong>Algorithms:</strong> {tier.algorithms.join(', ')}</p>
+                  <p><strong>Algorithms:</strong> {tier.algorithms?.join(', ') || 'N/A'}</p>
                   <div>
                     <strong>Features:</strong>
                     <ul className="list-disc list-inside mt-1">
-                      {tier.features.map((feature, idx) => (
+                      {tier.features?.map((feature, idx) => (
                         <li key={idx}>{feature}</li>
-                      ))}
+                      )) || <li>No features listed</li>}
                     </ul>
                   </div>
                 </div>

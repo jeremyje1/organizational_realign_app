@@ -6,12 +6,18 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+// AI Readiness database client
+const aiReadinessSupabase = createClient(
+  process.env.NEXT_PUBLIC_AI_READINESS_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_AI_READINESS_SUPABASE_ANON_KEY!
+);
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const assessmentId = params.id;
+    const { id: assessmentId } = await params;
     const authHeader = request.headers.get('Authorization');
     
     // Simple admin authentication check
@@ -22,12 +28,32 @@ export async function GET(
       );
     }
 
-    // Fetch assessment data with admin privileges (bypassing RLS)
-    const { data: assessment, error } = await supabase
-      .from('assessments')
-      .select('*')
-      .eq('id', assessmentId)
-      .single();
+    // Determine if this is an AI readiness assessment based on ID prefix
+    const isAiReadiness = assessmentId.startsWith('ai-') || assessmentId.startsWith('ai_');
+    let assessment;
+    let error;
+    
+    if (isAiReadiness) {
+      // Fetch from AI readiness database
+      const { data, error: aiError } = await aiReadinessSupabase
+        .from('ai_readiness_assessments')
+        .select('*')
+        .eq('id', assessmentId)
+        .single();
+      
+      assessment = data;
+      error = aiError;
+    } else {
+      // Fetch assessment data with admin privileges (bypassing RLS)
+      const { data, error: orgError } = await supabase
+        .from('assessments')
+        .select('*')
+        .eq('id', assessmentId)
+        .single();
+      
+      assessment = data;
+      error = orgError;
+    }
 
     if (error) {
       console.error('Error fetching assessment:', error);
@@ -73,10 +99,10 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const assessmentId = params.id;
+    const { id: assessmentId } = await params;
     const authHeader = request.headers.get('Authorization');
     
     // Simple admin authentication check
@@ -88,17 +114,35 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { action, data } = body;
+    const { action, updateData } = body;
 
     switch (action) {
       case 'update-status':
-        // Update assessment status or other admin-only fields
-        const { data: updated, error: updateError } = await supabase
-          .from('assessments')
-          .update(data)
-          .eq('id', assessmentId)
-          .select()
-          .single();
+        // Determine if this is an AI readiness assessment
+        const isAiReadiness = assessmentId.startsWith('ai-') || assessmentId.startsWith('ai_');
+        let updated, updateError;
+
+        if (isAiReadiness) {
+          // Update in AI readiness database
+          const { data, error } = await aiReadinessSupabase
+            .from('ai_readiness_assessments')
+            .update(updateData)
+            .eq('id', assessmentId)
+            .select()
+            .single();
+          updated = data;
+          updateError = error;
+        } else {
+          // Update assessment status or other admin-only fields
+          const { data, error } = await supabase
+            .from('assessments')
+            .update(updateData)
+            .eq('id', assessmentId)
+            .select()
+            .single();
+          updated = data;
+          updateError = error;
+        }
 
         if (updateError) {
           throw updateError;
@@ -107,11 +151,24 @@ export async function POST(
         return NextResponse.json({ success: true, data: updated });
 
       case 'delete':
-        // Admin-only delete operation
-        const { error: deleteError } = await supabase
-          .from('assessments')
-          .delete()
-          .eq('id', assessmentId);
+        // Determine database and delete
+        const isAiReadinessDelete = assessmentId.startsWith('ai-') || assessmentId.startsWith('ai_');
+        let deleteError;
+
+        if (isAiReadinessDelete) {
+          const { error } = await aiReadinessSupabase
+            .from('ai_readiness_assessments')
+            .delete()
+            .eq('id', assessmentId);
+          deleteError = error;
+        } else {
+          // Admin-only delete operation
+          const { error } = await supabase
+            .from('assessments')
+            .delete()
+            .eq('id', assessmentId);
+          deleteError = error;
+        }
 
         if (deleteError) {
           throw deleteError;

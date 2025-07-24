@@ -161,6 +161,22 @@ export async function testEnterpriseAlgorithms(): Promise<void> {
 // Export for use in other test files
 export { mockAssessmentData, mockOrganizationMetrics };
 
+describe('Enterprise Algorithm Integration', () => {
+  test('should calculate enterprise metrics successfully', async () => {
+    await expect(testEnterpriseAlgorithms()).resolves.not.toThrow();
+  });
+
+  test('should return valid organization metrics', async () => {
+    const results = await calculateEnterpriseMetrics(mockAssessmentData, mockOrganizationMetrics);
+    expect(results).toBeDefined();
+    expect(results.dsch).toBeDefined();
+    expect(results.crf).toBeDefined();
+    expect(results.lei).toBeDefined();
+    expect(results.oci).toBeDefined();
+    expect(results.hoci).toBeDefined();
+  });
+});
+
 // Self-executing test (can be commented out in production)
 if (process.env.NODE_ENV === 'development') {
   console.log('🧪 Running Enterprise Algorithm Integration Test...');

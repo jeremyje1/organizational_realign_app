@@ -153,10 +153,10 @@ export class HOCIAlgorithm {
 
   private assessProcessComplexity(data: AssessmentData): number {
     const processResponses = data.responses.filter(r => 
-      r.question.includes('process') || 
-      r.question.includes('workflow') ||
-      r.question.includes('procedure') ||
-      r.question.includes('steps')
+      (r.prompt && r.prompt.includes('process')) || 
+      (r.prompt && r.prompt.includes('workflow')) ||
+      (r.prompt && r.prompt.includes('procedure')) ||
+      (r.prompt && r.prompt.includes('steps'))
     );
     
     return this.calculateResponseScore(processResponses);
@@ -164,10 +164,10 @@ export class HOCIAlgorithm {
 
   private assessInformationComplexity(data: AssessmentData): number {
     const infoResponses = data.responses.filter(r => 
-      r.question.includes('information') || 
-      r.question.includes('data') ||
-      r.question.includes('knowledge') ||
-      r.question.includes('communication')
+      r.prompt.includes('information') || 
+      r.prompt.includes('data') ||
+      r.prompt.includes('knowledge') ||
+      r.prompt.includes('communication')
     );
     
     return this.calculateResponseScore(infoResponses);
@@ -175,10 +175,10 @@ export class HOCIAlgorithm {
 
   private assessDecisionComplexity(data: AssessmentData): number {
     const decisionResponses = data.responses.filter(r => 
-      r.question.includes('decision') || 
-      r.question.includes('approval') ||
-      r.question.includes('authority') ||
-      r.question.includes('governance')
+      r.prompt.includes('decision') || 
+      r.prompt.includes('approval') ||
+      r.prompt.includes('authority') ||
+      r.prompt.includes('governance')
     );
     
     return this.calculateResponseScore(decisionResponses);
@@ -186,10 +186,10 @@ export class HOCIAlgorithm {
 
   private assessRelationalComplexity(data: AssessmentData): number {
     const relationalResponses = data.responses.filter(r => 
-      r.question.includes('relationship') || 
-      r.question.includes('coordination') ||
-      r.question.includes('collaboration') ||
-      r.question.includes('interdependence')
+      r.prompt.includes('relationship') || 
+      r.prompt.includes('coordination') ||
+      r.prompt.includes('collaboration') ||
+      r.prompt.includes('interdependence')
     );
     
     return this.calculateResponseScore(relationalResponses);
@@ -197,10 +197,10 @@ export class HOCIAlgorithm {
 
   private assessTemporalComplexity(data: AssessmentData): number {
     const temporalResponses = data.responses.filter(r => 
-      r.question.includes('timing') || 
-      r.question.includes('sequence') ||
-      r.question.includes('deadline') ||
-      r.question.includes('cycle time')
+      r.prompt.includes('timing') || 
+      r.prompt.includes('sequence') ||
+      r.prompt.includes('deadline') ||
+      r.prompt.includes('cycle time')
     );
     
     return this.calculateResponseScore(temporalResponses);

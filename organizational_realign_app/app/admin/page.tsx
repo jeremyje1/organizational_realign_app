@@ -19,7 +19,8 @@ function AdminDashboardContent() {
   const [systemStats, setSystemStats] = useState({
     totalAssessments: 0,
     activeUsers: 0,
-    systemHealth: 'Healthy'
+    systemHealth: 'Healthy',
+    assessmentsByType: {} as Record<string, number>
   });
 
   useEffect(() => {
@@ -64,7 +65,7 @@ function AdminDashboardContent() {
       case 'overview':
         return (
           <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center">
                   <div className="ml-5 w-0 flex-1">
@@ -80,8 +81,23 @@ function AdminDashboardContent() {
                 <div className="flex items-center">
                   <div className="ml-5 w-0 flex-1">
                     <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">Active Users</dt>
-                      <dd className="text-lg font-medium text-gray-900">{systemStats.activeUsers}</dd>
+                      <dt className="text-sm font-medium text-gray-500 truncate">Organizational</dt>
+                      <dd className="text-lg font-medium text-blue-600">
+                        {systemStats.assessmentsByType?.organizational || 0}
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <div className="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt className="text-sm font-medium text-gray-500 truncate">AI Readiness</dt>
+                      <dd className="text-lg font-medium text-purple-600">
+                        {systemStats.assessmentsByType?.['ai-readiness'] || 0}
+                      </dd>
                     </dl>
                   </div>
                 </div>
@@ -112,12 +128,18 @@ function AdminDashboardContent() {
                               Assessment ID: {assessment.id}
                             </p>
                             <p className="text-sm text-gray-500">
-                              Tier: {assessment.tier} • Created: {new Date(assessment.created_at).toLocaleDateString()}
+                              Type: <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                                assessment.type === 'ai-readiness' 
+                                  ? 'bg-purple-100 text-purple-800' 
+                                  : 'bg-blue-100 text-blue-800'
+                              }`}>
+                                {assessment.type === 'ai-readiness' ? 'AI Readiness' : 'Organizational'}
+                              </span> • Tier: {assessment.tier} • Created: {new Date(assessment.created_at).toLocaleDateString()}
                             </p>
                           </div>
                           <div>
                             <Link
-                              href={`/admin/assessment/${assessment.id}`}
+                              href={`/admin/assessment/${assessment.id}?type=${assessment.type}`}
                               className="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"
                             >
                               View Details
@@ -144,6 +166,7 @@ function AdminDashboardContent() {
                     <thead className="bg-gray-50">
                       <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tier</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -156,7 +179,16 @@ function AdminDashboardContent() {
                             {assessment.id.slice(0, 8)}...
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              assessment.type === 'ai-readiness' 
+                                ? 'bg-purple-100 text-purple-800' 
+                                : 'bg-blue-100 text-blue-800'
+                            }`}>
+                              {assessment.type === 'ai-readiness' ? 'AI Readiness' : 'Organizational'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                               {assessment.tier}
                             </span>
                           </td>
@@ -165,7 +197,7 @@ function AdminDashboardContent() {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <Link
-                              href={`/admin/assessment/${assessment.id}`}
+                              href={`/admin/assessment/${assessment.id}?type=${assessment.type}`}
                               className="text-blue-600 hover:text-blue-900"
                             >
                               View Details

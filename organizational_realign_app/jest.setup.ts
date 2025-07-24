@@ -1,6 +1,24 @@
 // Jest setup file for TypeScript
 import '@testing-library/jest-dom';
 
+// Mock global Request for Next.js API route tests
+if (typeof global.Request === 'undefined') {
+  global.Request = class MockRequest {
+    constructor(input: RequestInfo | URL, init?: RequestInit) {
+      // Mock implementation
+    }
+  } as any;
+}
+
+// Mock global Response for Next.js API route tests
+if (typeof global.Response === 'undefined') {
+  global.Response = class MockResponse {
+    constructor(body?: BodyInit | null, init?: ResponseInit) {
+      // Mock implementation
+    }
+  } as any;
+}
+
 declare global {
   namespace jest {
     interface Matchers<R> {

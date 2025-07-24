@@ -27,7 +27,10 @@ const mockAssessmentDB = {
     return await mockPrismaQueryRaw(`SELECT * FROM assessment_collaborators WHERE assessment_id = $1`, assessmentId);
   }),
   checkCollaboratorAccess: createMockFn<(assessmentId: string, email: string) => Promise<boolean>>(),
-  addCollaborator: createMockFn<(assessmentId: string, email: string, role: string) => Promise<void>>(),
+  addCollaborator: createMockFn<(assessmentId: string, email: string, role: string) => Promise<void>>(async (assessmentId: string, email: string, role: string) => {
+    await mockPrismaExecuteRaw(`INSERT INTO assessment_collaborators...`, assessmentId, email, role);
+    await mockPrismaQueryRaw(`SELECT * FROM assessment_collaborators...`);
+  }),
   removeCollaborator: createMockFn<(assessmentId: string, email: string) => Promise<void>>()
 };
 
