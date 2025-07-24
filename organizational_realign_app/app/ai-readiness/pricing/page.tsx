@@ -87,11 +87,11 @@ export default function AIReadinessPricingPage() {
               transition={{ delay: index * 0.1, duration: 0.6 }}
             >
               <Card className={`relative h-full ${
-                product.recommended 
+                product.isPopular 
                   ? 'border-2 border-indigo-500 shadow-xl scale-105' 
                   : 'border border-slate-200 shadow-lg'
               }`}>
-                {product.recommended && (
+                {product.isPopular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                     <Badge className="bg-indigo-500 text-white px-4 py-1 text-sm font-medium">
                       <Star className="h-3 w-3 mr-1" />
