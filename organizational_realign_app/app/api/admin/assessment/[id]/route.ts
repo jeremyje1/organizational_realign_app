@@ -6,10 +6,10 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// AI Readiness database client - using anon key as fallback since service role key is invalid
+// AI Readiness database client - using service role key for admin access
 const aiReadinessSupabase = createClient(
-  process.env.AI_READINESS_SUPABASE_URL || process.env.NEXT_PUBLIC_AI_READINESS_SUPABASE_URL!,
-  process.env.AI_READINESS_SUPABASE_SERVICE_ROLE_KEY || process.env.AI_READINESS_SUPABASE_ANON_KEY!
+  process.env.AI_READINESS_SUPABASE_URL || process.env.NEXT_PUBLIC_AI_READINESS_SUPABASE_URL || 'https://placeholder.supabase.co',
+  process.env.AI_READINESS_SUPABASE_SERVICE_ROLE_KEY || process.env.AI_READINESS_SUPABASE_ANON_KEY || 'placeholder-key'
 );
 
 export async function GET(
