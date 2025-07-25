@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Implementation Guide - AI & Organizational Assessment Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://northpathstrategies.org/wp-content/uploads/2025/07/—Pngtree—intriguingly-dark-geometric-backdrop-perfect_11036843.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 0 0 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            padding-top: 40px;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .nav-menu {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+        }
+
+        .section h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        .service-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .service-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .service-card.ai-service {
+            border-left-color: #28a745;
+        }
+
+        .service-card.org-service {
+            border-left-color: #ffc107;
+        }
+
+        .service-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .service-card .price {
+            font-size: 1.5em;
+            color: #28a745;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            margin: 15px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            position: relative;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -2px;
+            top: -2px;
+            background: #28a745;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .step-list li strong {
+            color: #28a745;
+            margin-left: 35px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .step-list li p {
+            margin-left: 35px;
+            color: #666;
+        }
+
+        .algorithm-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .algorithm-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .algorithm-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .algorithm-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .algorithm-card .category {
+            background: #667eea;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            float: right;
+        }
+
+        .tier-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .tier-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tier-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .tier-card.premium {
+            border-color: #ffd700;
+            background: linear-gradient(145deg, #fff9e6, #ffffff);
+        }
+
+        .tier-card h4 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .tier-card .price {
+            font-size: 2em;
+            color: #28a745;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .tier-card .features {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .tier-card .features li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .tier-card .features li::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .implementation-timeline {
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .implementation-timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #667eea;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 20px 0;
+            padding-left: 80px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+
+        .timeline-item h4 {
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .alert {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .alert.warning {
+            background: #fff3cd;
+            border-color: #ffeaa7;
+        }
+
+        .alert.info {
+            background: #d1ecf1;
+            border-color: #bee5eb;
+        }
+
+        .alert h4 {
+            color: #155724;
+            margin-bottom: 10px;
+        }
+
+        .alert.warning h4 {
+            color: #856404;
+        }
+
+        .alert.info h4 {
+            color: #0c5460;
+        }
+
+        .button {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .button:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .button.secondary {
+            background: #28a745;
+        }
+
+        .button.secondary:hover {
+            background: #218838;
+        }
+
+        .faq {
+            margin: 30px 0;
+        }
+
+        .faq-item {
+            margin: 15px 0;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+        }
+
+        .faq-question {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .faq-answer {
+            padding: 15px 20px;
+            border-top: 1px solid #e9ecef;
+            background: white;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                background-attachment: scroll;
+                padding: 0 0 40px 0;
+                margin-bottom: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.5em;
+                padding-top: 30px;
+            }
+            
+            .header .subtitle {
+                font-size: 1.1em;
+                padding: 0 20px;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+            
+            .nav-menu ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step-list li {
+                padding: 15px;
+            }
+            
+            .step-list li strong,
+            .step-list li p {
+                margin-left: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Complete Implementation Guide</h1>
+            <p class="subtitle">Comprehensive user manual for all AI readiness and organizational assessment services</p>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#services">All Services</a></li>
+                <li><a href="#algorithms">Algorithms</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#implementation">Implementation</a></li>
+                <li><a href="#best-practices">Best Practices</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </div>
+
+        <!-- Overview Section -->
+        <div id="overview" class="section">
+            <h2>🎯 Overview</h2>
+            <p>North Path Strategies offers the most comprehensive suite of organizational and AI readiness assessment tools available for higher education institutions. Our services combine 20+ years of consulting expertise with proprietary, patent-pending algorithms to deliver actionable insights and transformation strategies.</p>
+            
+            <div class="service-overview">
+                <div class="service-card ai-service">
+                    <h4>🤖 AI Readiness Services</h4>
+                    <p>Specialized assessments for AI transformation in higher education, from quick pulse checks to comprehensive implementation strategies.</p>
+                    <p><strong>4 Service Tiers:</strong> Pulse Check to Enterprise Partnership</p>
+                </div>
+                <div class="service-card org-service">
+                    <h4>🏗️ Organizational Assessments</h4>
+                    <p>Comprehensive organizational diagnostics powered by proprietary algorithms for structural optimization and efficiency gains.</p>
+                    <p><strong>5 Service Tiers:</strong> Express Diagnostic to Enterprise Transformation</p>
+                </div>
+                <div class="service-card">
+                    <h4>🧠 Proprietary Technology</h4>
+                    <p>Patent-pending algorithms including OCI™, HOCI™, JCI™, AIRIX™, DSCH, CRF, and LEI for unmatched analytical depth.</p>
+                    <p><strong>20+ Years:</strong> of consulting data and research</p>
+                </div>
+                <div class="service-card">
+                    <h4>📊 Proven Results</h4>
+                    <p>Board-ready reports, implementation frameworks, and ongoing support to ensure measurable organizational improvements.</p>
+                    <p><strong>90-Day:</strong> implementation methodology</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Complete Services Overview -->
+        <div id="services" class="section">
+            <h2>🛍️ Complete Services Catalog</h2>
+            
+            <h3>AI Readiness & Transformation Services</h3>
+            
+            <div class="tier-comparison">
+                <div class="tier-card">
+                    <h4>AI Pulse Check</h4>
+                    <div class="price">$995</div>
+                    <ul class="features">
+                        <li>15-minute diagnostic</li>
+                        <li>Immediate recommendations</li>
+                        <li>Basic AIRIX™ scoring</li>
+                        <li>Email summary report</li>
+                        <li>Resource library access</li>
+                    </ul>
+                    <a href="https://app.northpathstrategies.org/ai-readiness/start?tier=pulse" class="button">Start Now</a>
+                </div>
+                
+                <div class="tier-card">
+                    <h4>AI Readiness Assessment</h4>
+                    <div class="price">$4,995</div>
+                    <ul class="features">
+                        <li>105-question AIRIX™ survey</li>
+                        <li>12-page detailed report</li>
+                        <li>60-minute strategy debrief</li>
+                        <li>Up to 3 team members</li>
+                        <li>Domain-specific analysis</li>
+                        <li>Policy recommendations</li>
+                    </ul>
+                    <a href="https://app.northpathstrategies.org/ai-readiness/start?tier=readiness" class="button">Start Assessment</a>
+                </div>
+
+                <div class="tier-card premium">
+                    <h4>AI Transformation Blueprint™</h4>
+                    <div class="price">$12,000</div>
+                    <ul class="features">
+                        <li>150-question comprehensive assessment</li>
+                        <li>40-page board-ready narrative</li>
+                        <li>Interactive Power BI dashboard</li>
+                        <li>90-day sprint coaching</li>
+                        <li>Faculty micro-course development</li>
+                        <li>Weekly office hours (3 months)</li>
+                        <li>Policy library & templates</li>
+                        <li>Executive workshop facilitation</li>
+                    </ul>
+                    <a href="https://app.northpathstrategies.org/ai-readiness/start?tier=blueprint" class="button">Start Blueprint</a>
+                </div>
+                
+                <div class="tier-card">
+                    <h4>AI Enterprise Partnership</h4>
+                    <div class="price">Custom</div>
+                    <ul class="features">
+                        <li>All Blueprint™ features</li>
+                        <li>Quarterly reassessments</li>
+                        <li>Slack advisory channel</li>
+                        <li>Custom integration support</li>
+                        <li>White-glove implementation</li>
+                        <li>Unlimited team members</li>
+                        <li>Multi-site coordination</li>
+                        <li>Annual strategy retreats</li>
+                    </ul>
+                    <a href="https://calendly.com/jeremyestrella/30min" class="button">Schedule Consultation</a>
+                </div>
+            </div>
+
+            <h3>Organizational Realignment Services</h3>
+            
+            <div class="tier-comparison">
+                <div class="tier-card premium">
+                    <h4>NorthPath Express Diagnostic</h4>
+                    <div class="price">$2,495</div>
+                    <ul class="features">
+                        <li>60-question smart survey</li>
+                        <li>25-page AI-enhanced analysis</li>
+                        <li>Core index scores: OCI™, HOCI™, JCI™</li>
+                        <li>One-click org chart generator</li>
+                        <li>30-minute debrief call</li>
+                        <li>2-3 immediate action recommendations</li>
+                        <li>Results within 3-5 business days</li>
+                    </ul>
+                    <a href="https://app.northpathstrategies.org/api/stripe/create-tier-checkout?tier=express-diagnostic" class="button">Start Express</a>
+                </div>
+                
+                <div class="tier-card">
+                    <h4>One-Time Diagnostic</h4>
+                    <div class="price">$4,995</div>
+                    <ul class="features">
+                        <li>100-item survey + secure file upload</li>
+                        <li>35-page comprehensive AI-powered analysis</li>
+                        <li>OCI / HOCI / JCI scores + AI analysis</li>
+                        <li>45-minute strategy consultation</li>
+                        <li>One-Click Org-Chart + scenario modeling</li>
+                        <li>AI opportunity assessment</li>
+                    </ul>
+                    <a href="https://app.northpathstrategies.org/api/stripe/create-tier-checkout?tier=one-time-diagnostic" class="button">Start Diagnostic</a>
+                </div>
+
+                <div class="tier-card">
+                    <h4>Monthly Subscription</h4>
+                    <div class="price">$2,995/mo</div>
+                    <ul class="features">
+                        <li>Unlimited assessments each month</li>
+                        <li>CSV dashboard refreshes</li>
+                        <li>60-minute office-hours call/month</li>
+                        <li>One-Click Org-Chart + 3 cost scenarios</li>
+                        <li>Advanced AI analysis</li>
+                        <li>Cancel or upgrade anytime</li>
+                    </ul>
+                    <a href="https://app.northpathstrategies.org/api/stripe/create-tier-checkout?tier=monthly-subscription" class="button">Start Subscription</a>
+                </div>
+
+                <div class="tier-card">
+                    <h4>Comprehensive Package</h4>
+                    <div class="price">$9,900</div>
+                    <ul class="features">
+                        <li>150+ questions + team collaboration</li>
+                        <li>45-page board-ready executive report</li>
+                        <li>Scenario builder with multiple models</li>
+                        <li>90-minute strategy session</li>
+                        <li>Executive presentation slides</li>
+                        <li>30-day email support</li>
+                    </ul>
+                    <a href="https://app.northpathstrategies.org/api/stripe/create-tier-checkout?tier=comprehensive-package" class="button">Start Comprehensive</a>
+                </div>
+
+                <div class="tier-card">
+                    <h4>Enterprise Transformation</h4>
+                    <div class="price">$24,000</div>
+                    <ul class="features">
+                        <li>200+ questions + unlimited team members</li>
+                        <li>55-page enterprise transformation report</li>
+                        <li>Power BI dashboard + API connectors</li>
+                        <li>Real-time collaboration platform</li>
+                        <li>Quarterly progress audits</li>
+                        <li>Unlimited scenario modeling</li>
+                        <li>Monte Carlo simulations</li>
+                        <li>12-month implementation support</li>
+                    </ul>
+                    <a href="https://app.northpathstrategies.org/api/stripe/create-tier-checkout?tier=enterprise-transformation" class="button">Start Enterprise</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proprietary Algorithms -->
+        <div id="algorithms" class="section">
+            <h2>🧠 Proprietary Algorithm Suite</h2>
+            <p>Our patent-pending diagnostic algorithms provide unmatched analytical depth and accuracy, developed over 20+ years of consulting research.</p>
+            
+            <div class="algorithm-grid">
+                <div class="algorithm-card">
+                    <span class="category">AI</span>
+                    <h4>AIRIX™ - AI Readiness Index</h4>
+                    <p>Comprehensive AI readiness assessment across 8 domains including strategic leadership, governance, faculty integration, and infrastructure security.</p>
+                </div>
+                
+                <div class="algorithm-card">
+                    <span class="category">Org</span>
+                    <h4>OCI™ - Organizational Change Index</h4>
+                    <p>Measures organizational readiness for change initiatives and transformation programs with predictive accuracy.</p>
+                </div>
+                
+                <div class="algorithm-card">
+                    <span class="category">Org</span>
+                    <h4>HOCI™ - Higher-Order Complexity Indicator</h4>
+                    <p>Analyzes organizational complexity levels and identifies optimization opportunities for structural efficiency.</p>
+                </div>
+                
+                <div class="algorithm-card">
+                    <span class="category">Org</span>
+                    <h4>JCI™ - Job Clarity Index</h4>
+                    <p>Evaluates role definition, responsibility alignment, and communication clarity across organizational levels.</p>
+                </div>
+                
+                <div class="algorithm-card">
+                    <span class="category">Advanced</span>
+                    <h4>DSCH - Dynamic Systems Change Handler</h4>
+                    <p>Advanced modeling for multi-variable organizational change scenarios with predictive outcome analysis.</p>
+                </div>
+                
+                <div class="algorithm-card">
+                    <span class="category">Advanced</span>
+                    <h4>CRF - Cultural Readiness Factor</h4>
+                    <p>Measures organizational culture alignment with strategic initiatives and change management programs.</p>
+                </div>
+                
+                <div class="algorithm-card">
+                    <span class="category">Advanced</span>
+                    <h4>LEI - Leadership Effectiveness Index</h4>
+                    <p>Comprehensive leadership assessment across strategic vision, communication, and change management capabilities.</p>
+                </div>
+                
+                <div class="algorithm-card">
+                    <span class="category">Enterprise</span>
+                    <h4>Monte Carlo Simulations</h4>
+                    <p>Advanced probabilistic modeling for risk assessment and outcome prediction with 10,000+ scenario iterations.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Getting Started Guide -->
+        <div id="getting-started" class="section">
+            <h2>🚀 Getting Started Guide</h2>
+            <p>Follow these steps to select and begin your assessment journey:</p>
+            
+            <ol class="step-list">
+                <li>
+                    <strong>Choose Your Service Type</strong>
+                    <p>Determine if you need AI readiness assessment, organizational diagnostic, or both. Consider your institution's primary goals and current challenges.</p>
+                </li>
+                <li>
+                    <strong>Select Your Service Tier</strong>
+                    <p>Choose the assessment level that fits your needs and budget. Start with lower tiers and upgrade as needed, or begin with comprehensive tiers for full analysis.</p>
+                </li>
+                <li>
+                    <strong>Gather Your Team</strong>
+                    <p>Involve key stakeholders including academic leadership, IT staff, faculty representatives, and administrative personnel for comprehensive input.</p>
+                </li>
+                <li>
+                    <strong>Prepare Documentation</strong>
+                    <p>Collect relevant institutional documents such as strategic plans, organizational charts, policies, and performance data for enhanced analysis.</p>
+                </li>
+                <li>
+                    <strong>Complete Assessment</strong>
+                    <p>Answer all questions thoughtfully and upload supporting documents. Take advantage of team collaboration features for higher-tier assessments.</p>
+                </li>
+                <li>
+                    <strong>Review Results</strong>
+                    <p>Analyze your comprehensive report, attend strategy sessions, and develop implementation plans based on recommendations.</p>
+                </li>
+                <li>
+                    <strong>Implement & Monitor</strong>
+                    <p>Execute recommended actions with ongoing support, track progress using provided frameworks, and leverage follow-up services as needed.</p>
+                </li>
+            </ol>
+        </div>
+
+        <!-- Implementation Timeline -->
+        <div id="implementation" class="section">
+            <h2>📅 Implementation Timeline</h2>
+            <p>Typical implementation phases for comprehensive services:</p>
+            
+            <div class="implementation-timeline">
+                <div class="timeline-item">
+                    <h4>Week 1-2: Assessment Phase</h4>
+                    <p>Complete comprehensive assessment, upload documents, conduct team collaboration sessions.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Week 3-4: Analysis & Strategy</h4>
+                    <p>Receive detailed reports, attend strategy sessions, review recommendations and implementation frameworks.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Week 5-8: Planning & Preparation</h4>
+                    <p>Develop detailed implementation plans, assign responsibilities, prepare stakeholder communications.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Week 9-12: Initial Implementation</h4>
+                    <p>Begin executing priority recommendations with ongoing coaching and support from North Path team.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Month 4-6: Full Deployment</h4>
+                    <p>Scale implementation across institution, monitor progress, adjust strategies based on outcomes.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Month 7-12: Optimization</h4>
+                    <p>Continuous improvement, quarterly reviews, outcome measurement, and strategic refinements.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div id="best-practices" class="section">
+            <h2>✅ Best Practices for Success</h2>
+            
+            <h3>Assessment Completion Best Practices</h3>
+            <ul>
+                <li><strong>Involve Multiple Stakeholders:</strong> Include representatives from academic affairs, IT, student services, and faculty leadership for comprehensive perspectives</li>
+                <li><strong>Be Honest and Realistic:</strong> Accurate responses lead to more valuable and actionable recommendations</li>
+                <li><strong>Gather Supporting Data:</strong> Have relevant metrics, documents, and institutional information readily available</li>
+                <li><strong>Consider Future Goals:</strong> Think about your institution's strategic direction and 2-3 year objectives</li>
+                <li><strong>Document Current State:</strong> Take detailed notes about current processes, challenges, and initiatives</li>
+                <li><strong>Use Team Features:</strong> For higher-tier assessments, leverage collaboration tools to gather diverse input</li>
+            </ul>
+            
+            <h3>Implementation Success Strategies</h3>
+            <ul>
+                <li><strong>Start with Quick Wins:</strong> Implement easy, high-impact recommendations first to build momentum and demonstrate value</li>
+                <li><strong>Engage Champions:</strong> Identify and support transformation advocates across different stakeholder groups</li>
+                <li><strong>Communicate Clearly:</strong> Develop transparent messaging about changes, benefits, and expectations</li>
+                <li><strong>Pilot Before Scaling:</strong> Test initiatives with small groups before institution-wide deployment</li>
+                <li><strong>Monitor and Adjust:</strong> Regularly assess progress and modify strategies based on outcomes and feedback</li>
+                <li><strong>Leverage Ongoing Support:</strong> Take full advantage of coaching calls, office hours, and advisory services</li>
+            </ul>
+            
+            <div class="alert warning">
+                <h4>⚠️ Common Implementation Pitfalls to Avoid</h4>
+                <p>Avoid these common mistakes: rushing into changes without proper planning, neglecting stakeholder engagement, failing to address cultural resistance, implementing technology without adequate training and support, and not establishing clear success metrics and accountability.</p>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div id="faq" class="section">
+            <h2>❓ Frequently Asked Questions</h2>
+            
+            <div class="faq">
+                <div class="faq-item">
+                    <div class="faq-question">Which service is right for my institution?</div>
+                    <div class="faq-answer">
+                        <p>Choose based on your primary needs:</p>
+                        <ul>
+                            <li><strong>AI-focused institutions:</strong> Start with AI Pulse Check or AI Readiness Assessment</li>
+                            <li><strong>Organizational efficiency focus:</strong> Begin with Express Diagnostic or One-Time Diagnostic</li>
+                            <li><strong>Comprehensive transformation:</strong> Consider AI Blueprint™ or Enterprise Transformation</li>
+                            <li><strong>Budget-conscious:</strong> Start with lower tiers and upgrade as value is demonstrated</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">How long do assessments take to complete?</div>
+                    <div class="faq-answer">
+                        <p>Completion times vary by service tier:</p>
+                        <ul>
+                            <li><strong>AI Pulse Check:</strong> 15 minutes</li>
+                            <li><strong>Express Diagnostic:</strong> 45-60 minutes</li>
+                            <li><strong>Standard Assessments:</strong> 60-90 minutes</li>
+                            <li><strong>Comprehensive Services:</strong> 2-3 hours including team collaboration</li>
+                        </ul>
+                        <p>We recommend scheduling additional time for document preparation and team coordination.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Can multiple team members contribute to assessments?</div>
+                    <div class="faq-answer">Yes! Team collaboration features are available for most service tiers. You can invite colleagues to contribute their expertise to specific sections, ensuring comprehensive and accurate responses across all domains. Team member limits vary by tier.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">How often should we conduct assessments?</div>
+                    <div class="faq-answer">
+                        <p>Recommended frequency depends on your institution's change pace:</p>
+                        <ul>
+                            <li><strong>Annual assessments:</strong> Standard recommendation for most institutions</li>
+                            <li><strong>Semi-annual:</strong> During active transformation periods</li>
+                            <li><strong>Monthly Subscription:</strong> For institutions with ongoing improvement initiatives</li>
+                            <li><strong>Quarterly:</strong> Enterprise clients with continuous optimization programs</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">What makes your algorithms different from other assessment tools?</div>
+                    <div class="faq-answer">Our proprietary, patent-pending algorithms (OCI™, HOCI™, JCI™, AIRIX™, etc.) are specifically developed for higher education and based on 20+ years of consulting data. Unlike generic survey tools or AI chatbots, our algorithms provide statistical benchmarking, predictive modeling, and actionable recommendations tailored to institutional contexts.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">What level of support is included with each service?</div>
+                    <div class="faq-answer">
+                        <p>Support levels vary by tier:</p>
+                        <ul>
+                            <li><strong>Basic tiers:</strong> Email support and resource access</li>
+                            <li><strong>Standard tiers:</strong> Strategy calls and implementation guidance</li>
+                            <li><strong>Premium tiers:</strong> Ongoing coaching, office hours, and advisory support</li>
+                            <li><strong>Enterprise tiers:</strong> Dedicated support, quarterly reviews, and priority response</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support & Contact -->
+        <div id="support" class="section">
+            <h2>📞 Support & Contact Information</h2>
+            
+            <div class="service-overview">
+                <div class="service-card">
+                    <h4>📧 Email Support</h4>
+                    <p>Get help via email at <strong>support@northpathstrategies.org</strong></p>
+                    <p><em>Response time: 24-48 hours for all tiers</em></p>
+                </div>
+                <div class="service-card">
+                    <h4>📞 Strategy Consultations</h4>
+                    <p>Schedule consultation calls for personalized guidance and planning</p>
+                    <p><em>Available for standard and premium service tiers</em></p>
+                    <a href="https://calendly.com/jeremyestrella/30min" class="button">Schedule Call</a>
+                </div>
+                <div class="service-card">
+                    <h4>📚 Resource Library</h4>
+                    <p>Access comprehensive guides, templates, and implementation resources</p>
+                    <p><em>Available in client portal for all assessment tiers</em></p>
+                </div>
+                <div class="service-card">
+                    <h4>🔄 Service Updates</h4>
+                    <p>Receive notifications about new features, algorithm updates, and service enhancements</p>
+                    <p><em>Automatic for all active clients</em></p>
+                </div>
+            </div>
+            
+            <div class="alert">
+                <h4>🎯 Ready to Begin Your Transformation?</h4>
+                <p>Choose your service tier and start your institution's assessment journey today. Our team is ready to support you every step of the way from initial assessment to full implementation.</p>
+            </div>
+            
+            <div style="text-align: center; margin: 40px 0;">
+                <a href="/ai-readiness-services-homepage.html" class="button">View All Services</a>
+                <a href="https://app.northpathstrategies.org/ai-readiness/start?tier=pulse" class="button secondary">Start AI Pulse Check ($995)</a>
+                <a href="https://app.northpathstrategies.org/api/stripe/create-tier-checkout?tier=express-diagnostic" class="button secondary">Start Express Diagnostic ($2,495)</a>
+                <a href="https://calendly.com/jeremyestrella/30min" class="button">Schedule Consultation</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 40px 0; color: #666; border-top: 1px solid #e9ecef; margin-top: 40px;">
+            <p><strong>North Path Strategies</strong> | Complete Assessment & Implementation Services</p>
+            <p>Proprietary algorithms and proven methodologies for institutional transformation</p>
+            <p style="font-size: 0.9em; margin-top: 20px;">
+                © 2025 North Path Strategies. All proprietary algorithms are patent-pending. | 
+                <a href="https://northpathstrategies.org/privacy" style="color: #667eea;">Privacy Policy</a> | 
+                <a href="https://northpathstrategies.org/terms" style="color: #667eea;">Terms of Service</a> | 
+                <a href="mailto:support@northpathstrategies.org" style="color: #667eea;">Contact Support</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // FAQ toggle functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const isVisible = answer.style.display === 'block';
+                
+                // Hide all answers
+                document.querySelectorAll('.faq-answer').forEach(ans => {
+                    ans.style.display = 'none';
+                });
+                
+                // Show clicked answer if it wasn't visible
+                if (!isVisible) {
+                    answer.style.display = 'block';
+                }
+            });
+        });
+
+        // Initialize FAQ (hide all answers)
+        document.querySelectorAll('.faq-answer').forEach(answer => {
+            answer.style.display = 'none';
+        });
+
+        // Highlight current section in navigation
+        window.addEventListener('scroll', function() {
+            const sections = ['overview', 'services', 'algorithms', 'getting-started', 'implementation', 'best-practices', 'faq', 'support'];
+            const scrollPosition = window.scrollY + 100;
+            
+            sections.forEach(sectionId => {
+                const section = document.getElementById(sectionId);
+                const link = document.querySelector(`[href="#${sectionId}"]`);
+                
+                if (section && link) {
+                    const sectionTop = section.offsetTop;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                        document.querySelectorAll('.nav-menu a').forEach(l => l.style.background = '');
+                        link.style.background = '#667eea';
+                        link.style.color = 'white';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

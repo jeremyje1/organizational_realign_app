@@ -1,0 +1,2605 @@
+{
+  "meta": {
+    "title": "Enhanced AI Blueprint Assessment - Multi-Tier Question Bank",
+    "description": "Comprehensive question bank supporting all AI Blueprint tiers with mixed question types, document uploads, and tier-specific filtering",
+    "version": "2.0.0",
+    "supportsTeams": true,
+    "supportsDocumentUploads": true,
+    "totalQuestions": 200,
+    "policyDevelopment": true,
+    "questionTypes": [
+      "multiple_choice",
+      "open_ended",
+      "file_upload",
+      "matrix",
+      "ranking",
+      "likert"
+    ],
+    "tierStructure": {
+      "higher-ed-ai-pulse-check": {
+        "questions": 50,
+        "documentUploads": 0
+      },
+      "ai-readiness-comprehensive": {
+        "questions": 105,
+        "documentUploads": 5
+      },
+      "ai-transformation-blueprint": {
+        "questions": 150,
+        "documentUploads": 10
+      },
+      "ai-enterprise-partnership": {
+        "questions": 200,
+        "documentUploads": 20
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "ai_blueprint_001",
+      "domain": "strategy",
+      "type": "multiple_choice",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[STRATEGY] How would you assess your current strategy readiness?",
+      "options": [
+        {
+          "value": "1",
+          "label": "Not Ready",
+          "score": 1
+        },
+        {
+          "value": "2",
+          "label": "Beginning",
+          "score": 2
+        },
+        {
+          "value": "3",
+          "label": "Developing",
+          "score": 3
+        },
+        {
+          "value": "4",
+          "label": "Advanced",
+          "score": 4
+        },
+        {
+          "value": "5",
+          "label": "Leading",
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "ai_blueprint_002",
+      "domain": "governance",
+      "type": "open_ended",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[GOVERNANCE] How would you assess your current governance readiness?",
+      "maxLength": 500
+    },
+    {
+      "id": "ai_blueprint_003",
+      "domain": "pedagogy",
+      "type": "matrix",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[PEDAGOGY] How would you assess your current pedagogy readiness?"
+    },
+    {
+      "id": "ai_blueprint_004",
+      "domain": "technology",
+      "type": "ranking",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[TECHNOLOGY] How would you assess your current technology readiness?"
+    },
+    {
+      "id": "ai_blueprint_005",
+      "domain": "student_policy",
+      "type": "likert",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[STUDENT_POLICY] How would you assess your current student policy readiness?"
+    },
+    {
+      "id": "ai_blueprint_006",
+      "domain": "employee_policy",
+      "type": "multiple_choice",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[EMPLOYEE_POLICY] How would you assess your current employee policy readiness?",
+      "options": [
+        {
+          "value": "1",
+          "label": "Not Ready",
+          "score": 1
+        },
+        {
+          "value": "2",
+          "label": "Beginning",
+          "score": 2
+        },
+        {
+          "value": "3",
+          "label": "Developing",
+          "score": 3
+        },
+        {
+          "value": "4",
+          "label": "Advanced",
+          "score": 4
+        },
+        {
+          "value": "5",
+          "label": "Leading",
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "ai_blueprint_007",
+      "domain": "culture",
+      "type": "open_ended",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[CULTURE] How would you assess your current culture readiness?",
+      "maxLength": 500
+    },
+    {
+      "id": "ai_blueprint_008",
+      "domain": "alignment",
+      "type": "matrix",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[ALIGNMENT] How would you assess your current alignment readiness?"
+    },
+    {
+      "id": "ai_blueprint_009",
+      "domain": "benchmarking",
+      "type": "ranking",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[BENCHMARKING] How would you assess your current benchmarking readiness?"
+    },
+    {
+      "id": "ai_blueprint_010",
+      "domain": "strategy",
+      "type": "likert",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[STRATEGY] How would you assess your current strategy readiness?"
+    },
+    {
+      "id": "ai_blueprint_011",
+      "domain": "governance",
+      "type": "multiple_choice",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[GOVERNANCE] How would you assess your current governance readiness?",
+      "options": [
+        {
+          "value": "1",
+          "label": "Not Ready",
+          "score": 1
+        },
+        {
+          "value": "2",
+          "label": "Beginning",
+          "score": 2
+        },
+        {
+          "value": "3",
+          "label": "Developing",
+          "score": 3
+        },
+        {
+          "value": "4",
+          "label": "Advanced",
+          "score": 4
+        },
+        {
+          "value": "5",
+          "label": "Leading",
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "ai_blueprint_012",
+      "domain": "pedagogy",
+      "type": "open_ended",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[PEDAGOGY] How would you assess your current pedagogy readiness?",
+      "maxLength": 500
+    },
+    {
+      "id": "ai_blueprint_013",
+      "domain": "technology",
+      "type": "matrix",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[TECHNOLOGY] How would you assess your current technology readiness?"
+    },
+    {
+      "id": "ai_blueprint_014",
+      "domain": "student_policy",
+      "type": "ranking",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[STUDENT_POLICY] How would you assess your current student policy readiness?"
+    },
+    {
+      "id": "ai_blueprint_015",
+      "domain": "employee_policy",
+      "type": "likert",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[EMPLOYEE_POLICY] How would you assess your current employee policy readiness?"
+    },
+    {
+      "id": "ai_blueprint_016",
+      "domain": "culture",
+      "type": "multiple_choice",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[CULTURE] How would you assess your current culture readiness?",
+      "options": [
+        {
+          "value": "1",
+          "label": "Not Ready",
+          "score": 1
+        },
+        {
+          "value": "2",
+          "label": "Beginning",
+          "score": 2
+        },
+        {
+          "value": "3",
+          "label": "Developing",
+          "score": 3
+        },
+        {
+          "value": "4",
+          "label": "Advanced",
+          "score": 4
+        },
+        {
+          "value": "5",
+          "label": "Leading",
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "ai_blueprint_017",
+      "domain": "alignment",
+      "type": "open_ended",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[ALIGNMENT] How would you assess your current alignment readiness?",
+      "maxLength": 500
+    },
+    {
+      "id": "ai_blueprint_018",
+      "domain": "benchmarking",
+      "type": "matrix",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[BENCHMARKING] How would you assess your current benchmarking readiness?"
+    },
+    {
+      "id": "ai_blueprint_019",
+      "domain": "strategy",
+      "type": "ranking",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[STRATEGY] How would you assess your current strategy readiness?"
+    },
+    {
+      "id": "ai_blueprint_020",
+      "domain": "governance",
+      "type": "likert",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[GOVERNANCE] How would you assess your current governance readiness?"
+    },
+    {
+      "id": "ai_blueprint_021",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[PEDAGOGY] How would you assess your current pedagogy readiness?",
+      "options": [
+        {
+          "value": "1",
+          "label": "Not Ready",
+          "score": 1
+        },
+        {
+          "value": "2",
+          "label": "Beginning",
+          "score": 2
+        },
+        {
+          "value": "3",
+          "label": "Developing",
+          "score": 3
+        },
+        {
+          "value": "4",
+          "label": "Advanced",
+          "score": 4
+        },
+        {
+          "value": "5",
+          "label": "Leading",
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "ai_blueprint_022",
+      "domain": "technology",
+      "type": "open_ended",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[TECHNOLOGY] How would you assess your current technology readiness?",
+      "maxLength": 500
+    },
+    {
+      "id": "ai_blueprint_023",
+      "domain": "student_policy",
+      "type": "matrix",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[STUDENT_POLICY] How would you assess your current student policy readiness?"
+    },
+    {
+      "id": "ai_blueprint_024",
+      "domain": "employee_policy",
+      "type": "ranking",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[EMPLOYEE_POLICY] How would you assess your current employee policy readiness?"
+    },
+    {
+      "id": "ai_blueprint_025",
+      "domain": "culture",
+      "type": "likert",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[CULTURE] How would you assess your current culture readiness?"
+    },
+    {
+      "id": "ai_blueprint_026",
+      "domain": "alignment",
+      "type": "multiple_choice",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[ALIGNMENT] How would you assess your current alignment readiness?",
+      "options": [
+        {
+          "value": "1",
+          "label": "Not Ready",
+          "score": 1
+        },
+        {
+          "value": "2",
+          "label": "Beginning",
+          "score": 2
+        },
+        {
+          "value": "3",
+          "label": "Developing",
+          "score": 3
+        },
+        {
+          "value": "4",
+          "label": "Advanced",
+          "score": 4
+        },
+        {
+          "value": "5",
+          "label": "Leading",
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "ai_blueprint_027",
+      "domain": "benchmarking",
+      "type": "open_ended",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[BENCHMARKING] How would you assess your current benchmarking readiness?",
+      "maxLength": 500
+    },
+    {
+      "id": "ai_blueprint_028",
+      "domain": "strategy",
+      "type": "matrix",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[STRATEGY] How would you assess your current strategy readiness?"
+    },
+    {
+      "id": "ai_blueprint_029",
+      "domain": "governance",
+      "type": "ranking",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[GOVERNANCE] How would you assess your current governance readiness?"
+    },
+    {
+      "id": "ai_blueprint_030",
+      "domain": "pedagogy",
+      "type": "likert",
+      "tier": "pulse_check",
+      "priority": "essential",
+      "required": true,
+      "question": "[PEDAGOGY] How would you assess your current pedagogy readiness?"
+    },
+    {
+      "id": "ai_blueprint_031",
+      "domain": "technology",
+      "type": "multiple_choice",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[TECHNOLOGY] How would you assess your current technology readiness?",
+      "options": [
+        {
+          "value": "1",
+          "label": "Not Ready",
+          "score": 1
+        },
+        {
+          "value": "2",
+          "label": "Beginning",
+          "score": 2
+        },
+        {
+          "value": "3",
+          "label": "Developing",
+          "score": 3
+        },
+        {
+          "value": "4",
+          "label": "Advanced",
+          "score": 4
+        },
+        {
+          "value": "5",
+          "label": "Leading",
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "ai_blueprint_032",
+      "domain": "student_policy",
+      "type": "open_ended",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[STUDENT_POLICY] How would you assess your current student policy readiness?",
+      "maxLength": 500
+    },
+    {
+      "id": "ai_blueprint_033",
+      "domain": "employee_policy",
+      "type": "matrix",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY] How would you assess your current employee policy readiness?"
+    },
+    {
+      "id": "ai_blueprint_034",
+      "domain": "culture",
+      "type": "ranking",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[CULTURE] How would you assess your current culture readiness?"
+    },
+    {
+      "id": "ai_blueprint_035",
+      "domain": "alignment",
+      "type": "likert",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[ALIGNMENT] How would you assess your current alignment readiness?"
+    },
+    {
+      "id": "ai_blueprint_036",
+      "domain": "benchmarking",
+      "type": "multiple_choice",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[BENCHMARKING] How would you assess your current benchmarking readiness?",
+      "options": [
+        {
+          "value": "1",
+          "label": "Not Ready",
+          "score": 1
+        },
+        {
+          "value": "2",
+          "label": "Beginning",
+          "score": 2
+        },
+        {
+          "value": "3",
+          "label": "Developing",
+          "score": 3
+        },
+        {
+          "value": "4",
+          "label": "Advanced",
+          "score": 4
+        },
+        {
+          "value": "5",
+          "label": "Leading",
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "ai_blueprint_037",
+      "domain": "strategy",
+      "type": "open_ended",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[STRATEGY] How would you assess your current strategy readiness?",
+      "maxLength": 500
+    },
+    {
+      "id": "ai_blueprint_038",
+      "domain": "governance",
+      "type": "matrix",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[GOVERNANCE] How would you assess your current governance readiness?"
+    },
+    {
+      "id": "ai_blueprint_039",
+      "domain": "pedagogy",
+      "type": "ranking",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[PEDAGOGY] How would you assess your current pedagogy readiness?"
+    },
+    {
+      "id": "ai_blueprint_040",
+      "domain": "technology",
+      "type": "likert",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[TECHNOLOGY] How would you assess your current technology readiness?"
+    },
+    {
+      "id": "ai_blueprint_041",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[STUDENT_POLICY] How would you assess your current student policy readiness?",
+      "options": [
+        {
+          "value": "1",
+          "label": "Not Ready",
+          "score": 1
+        },
+        {
+          "value": "2",
+          "label": "Beginning",
+          "score": 2
+        },
+        {
+          "value": "3",
+          "label": "Developing",
+          "score": 3
+        },
+        {
+          "value": "4",
+          "label": "Advanced",
+          "score": 4
+        },
+        {
+          "value": "5",
+          "label": "Leading",
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "ai_blueprint_042",
+      "domain": "employee_policy",
+      "type": "open_ended",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY] How would you assess your current employee policy readiness?",
+      "maxLength": 500
+    },
+    {
+      "id": "ai_blueprint_043",
+      "domain": "culture",
+      "type": "matrix",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[CULTURE] How would you assess your current culture readiness?"
+    },
+    {
+      "id": "ai_blueprint_044",
+      "domain": "alignment",
+      "type": "ranking",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[ALIGNMENT] How would you assess your current alignment readiness?"
+    },
+    {
+      "id": "ai_blueprint_045",
+      "domain": "benchmarking",
+      "type": "likert",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[BENCHMARKING] How would you assess your current benchmarking readiness?"
+    },
+    {
+      "id": "ai_blueprint_046",
+      "domain": "strategy",
+      "type": "multiple_choice",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[STRATEGY] How would you assess your current strategy readiness?",
+      "options": [
+        {
+          "value": "1",
+          "label": "Not Ready",
+          "score": 1
+        },
+        {
+          "value": "2",
+          "label": "Beginning",
+          "score": 2
+        },
+        {
+          "value": "3",
+          "label": "Developing",
+          "score": 3
+        },
+        {
+          "value": "4",
+          "label": "Advanced",
+          "score": 4
+        },
+        {
+          "value": "5",
+          "label": "Leading",
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "ai_blueprint_047",
+      "domain": "governance",
+      "type": "open_ended",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[GOVERNANCE] How would you assess your current governance readiness?",
+      "maxLength": 500
+    },
+    {
+      "id": "ai_blueprint_048",
+      "domain": "pedagogy",
+      "type": "matrix",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[PEDAGOGY] How would you assess your current pedagogy readiness?"
+    },
+    {
+      "id": "ai_blueprint_049",
+      "domain": "technology",
+      "type": "ranking",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[TECHNOLOGY] How would you assess your current technology readiness?"
+    },
+    {
+      "id": "ai_blueprint_050",
+      "domain": "student_policy",
+      "type": "likert",
+      "tier": "pulse_check",
+      "priority": "high",
+      "required": false,
+      "question": "[STUDENT_POLICY] How would you assess your current student policy readiness?"
+    },
+    {
+      "id": "ai_blueprint_051",
+      "domain": "strategy",
+      "type": "file_upload",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[STRATEGY - COMPREHENSIVE] Provide detailed assessment of strategy capabilities.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx"
+      ],
+      "maxFileSize": "10MB",
+      "maxFiles": 3
+    },
+    {
+      "id": "ai_blueprint_052",
+      "domain": "governance",
+      "type": "file_upload",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[GOVERNANCE - COMPREHENSIVE] Provide detailed assessment of governance capabilities.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx"
+      ],
+      "maxFileSize": "10MB",
+      "maxFiles": 3
+    },
+    {
+      "id": "ai_blueprint_053",
+      "domain": "pedagogy",
+      "type": "file_upload",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[PEDAGOGY - COMPREHENSIVE] Provide detailed assessment of pedagogy capabilities.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx"
+      ],
+      "maxFileSize": "10MB",
+      "maxFiles": 3
+    },
+    {
+      "id": "ai_blueprint_054",
+      "domain": "technology",
+      "type": "file_upload",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[TECHNOLOGY - COMPREHENSIVE] Provide detailed assessment of technology capabilities.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx"
+      ],
+      "maxFileSize": "10MB",
+      "maxFiles": 3
+    },
+    {
+      "id": "ai_blueprint_055",
+      "domain": "student_policy",
+      "type": "file_upload",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[STUDENT_POLICY - COMPREHENSIVE] Provide detailed assessment of student policy capabilities.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx"
+      ],
+      "maxFileSize": "10MB",
+      "maxFiles": 3
+    },
+    {
+      "id": "ai_blueprint_056",
+      "domain": "employee_policy",
+      "type": "file_upload",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[EMPLOYEE_POLICY - COMPREHENSIVE] Provide detailed assessment of employee policy capabilities.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx"
+      ],
+      "maxFileSize": "10MB",
+      "maxFiles": 3
+    },
+    {
+      "id": "ai_blueprint_057",
+      "domain": "culture",
+      "type": "file_upload",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[CULTURE - COMPREHENSIVE] Provide detailed assessment of culture capabilities.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx"
+      ],
+      "maxFileSize": "10MB",
+      "maxFiles": 3
+    },
+    {
+      "id": "ai_blueprint_058",
+      "domain": "alignment",
+      "type": "file_upload",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[ALIGNMENT - COMPREHENSIVE] Provide detailed assessment of alignment capabilities.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx"
+      ],
+      "maxFileSize": "10MB",
+      "maxFiles": 3
+    },
+    {
+      "id": "ai_blueprint_059",
+      "domain": "benchmarking",
+      "type": "file_upload",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[BENCHMARKING - COMPREHENSIVE] Provide detailed assessment of benchmarking capabilities.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx"
+      ],
+      "maxFileSize": "10MB",
+      "maxFiles": 3
+    },
+    {
+      "id": "ai_blueprint_060",
+      "domain": "strategy",
+      "type": "file_upload",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[STRATEGY - COMPREHENSIVE] Provide detailed assessment of strategy capabilities.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx"
+      ],
+      "maxFileSize": "10MB",
+      "maxFiles": 3
+    },
+    {
+      "id": "ai_blueprint_061",
+      "domain": "governance",
+      "type": "multiple_choice",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[GOVERNANCE - COMPREHENSIVE] Provide detailed assessment of governance capabilities."
+    },
+    {
+      "id": "ai_blueprint_062",
+      "domain": "pedagogy",
+      "type": "open_ended",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[PEDAGOGY - COMPREHENSIVE] Provide detailed assessment of pedagogy capabilities.",
+      "maxLength": 1000
+    },
+    {
+      "id": "ai_blueprint_063",
+      "domain": "technology",
+      "type": "matrix",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[TECHNOLOGY - COMPREHENSIVE] Provide detailed assessment of technology capabilities."
+    },
+    {
+      "id": "ai_blueprint_064",
+      "domain": "student_policy",
+      "type": "ranking",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[STUDENT_POLICY - COMPREHENSIVE] Provide detailed assessment of student policy capabilities."
+    },
+    {
+      "id": "ai_blueprint_065",
+      "domain": "employee_policy",
+      "type": "likert",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[EMPLOYEE_POLICY - COMPREHENSIVE] Provide detailed assessment of employee policy capabilities."
+    },
+    {
+      "id": "ai_blueprint_066",
+      "domain": "culture",
+      "type": "multiple_choice",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[CULTURE - COMPREHENSIVE] Provide detailed assessment of culture capabilities."
+    },
+    {
+      "id": "ai_blueprint_067",
+      "domain": "alignment",
+      "type": "open_ended",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[ALIGNMENT - COMPREHENSIVE] Provide detailed assessment of alignment capabilities.",
+      "maxLength": 1000
+    },
+    {
+      "id": "ai_blueprint_068",
+      "domain": "benchmarking",
+      "type": "matrix",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[BENCHMARKING - COMPREHENSIVE] Provide detailed assessment of benchmarking capabilities."
+    },
+    {
+      "id": "ai_blueprint_069",
+      "domain": "strategy",
+      "type": "ranking",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[STRATEGY - COMPREHENSIVE] Provide detailed assessment of strategy capabilities."
+    },
+    {
+      "id": "ai_blueprint_070",
+      "domain": "governance",
+      "type": "likert",
+      "tier": "comprehensive",
+      "priority": "high",
+      "required": true,
+      "question": "[GOVERNANCE - COMPREHENSIVE] Provide detailed assessment of governance capabilities."
+    },
+    {
+      "id": "ai_blueprint_071",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[PEDAGOGY - COMPREHENSIVE] Provide detailed assessment of pedagogy capabilities."
+    },
+    {
+      "id": "ai_blueprint_072",
+      "domain": "technology",
+      "type": "open_ended",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[TECHNOLOGY - COMPREHENSIVE] Provide detailed assessment of technology capabilities.",
+      "maxLength": 1000
+    },
+    {
+      "id": "ai_blueprint_073",
+      "domain": "student_policy",
+      "type": "matrix",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[STUDENT_POLICY - COMPREHENSIVE] Provide detailed assessment of student policy capabilities."
+    },
+    {
+      "id": "ai_blueprint_074",
+      "domain": "employee_policy",
+      "type": "ranking",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - COMPREHENSIVE] Provide detailed assessment of employee policy capabilities."
+    },
+    {
+      "id": "ai_blueprint_075",
+      "domain": "culture",
+      "type": "likert",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[CULTURE - COMPREHENSIVE] Provide detailed assessment of culture capabilities."
+    },
+    {
+      "id": "ai_blueprint_076",
+      "domain": "alignment",
+      "type": "multiple_choice",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[ALIGNMENT - COMPREHENSIVE] Provide detailed assessment of alignment capabilities."
+    },
+    {
+      "id": "ai_blueprint_077",
+      "domain": "benchmarking",
+      "type": "open_ended",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[BENCHMARKING - COMPREHENSIVE] Provide detailed assessment of benchmarking capabilities.",
+      "maxLength": 1000
+    },
+    {
+      "id": "ai_blueprint_078",
+      "domain": "strategy",
+      "type": "matrix",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[STRATEGY - COMPREHENSIVE] Provide detailed assessment of strategy capabilities."
+    },
+    {
+      "id": "ai_blueprint_079",
+      "domain": "governance",
+      "type": "ranking",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[GOVERNANCE - COMPREHENSIVE] Provide detailed assessment of governance capabilities."
+    },
+    {
+      "id": "ai_blueprint_080",
+      "domain": "pedagogy",
+      "type": "likert",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[PEDAGOGY - COMPREHENSIVE] Provide detailed assessment of pedagogy capabilities."
+    },
+    {
+      "id": "ai_blueprint_081",
+      "domain": "technology",
+      "type": "multiple_choice",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[TECHNOLOGY - COMPREHENSIVE] Provide detailed assessment of technology capabilities."
+    },
+    {
+      "id": "ai_blueprint_082",
+      "domain": "student_policy",
+      "type": "open_ended",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[STUDENT_POLICY - COMPREHENSIVE] Provide detailed assessment of student policy capabilities.",
+      "maxLength": 1000
+    },
+    {
+      "id": "ai_blueprint_083",
+      "domain": "employee_policy",
+      "type": "matrix",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - COMPREHENSIVE] Provide detailed assessment of employee policy capabilities."
+    },
+    {
+      "id": "ai_blueprint_084",
+      "domain": "culture",
+      "type": "ranking",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[CULTURE - COMPREHENSIVE] Provide detailed assessment of culture capabilities."
+    },
+    {
+      "id": "ai_blueprint_085",
+      "domain": "alignment",
+      "type": "likert",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[ALIGNMENT - COMPREHENSIVE] Provide detailed assessment of alignment capabilities."
+    },
+    {
+      "id": "ai_blueprint_086",
+      "domain": "benchmarking",
+      "type": "multiple_choice",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[BENCHMARKING - COMPREHENSIVE] Provide detailed assessment of benchmarking capabilities."
+    },
+    {
+      "id": "ai_blueprint_087",
+      "domain": "strategy",
+      "type": "open_ended",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[STRATEGY - COMPREHENSIVE] Provide detailed assessment of strategy capabilities.",
+      "maxLength": 1000
+    },
+    {
+      "id": "ai_blueprint_088",
+      "domain": "governance",
+      "type": "matrix",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[GOVERNANCE - COMPREHENSIVE] Provide detailed assessment of governance capabilities."
+    },
+    {
+      "id": "ai_blueprint_089",
+      "domain": "pedagogy",
+      "type": "ranking",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[PEDAGOGY - COMPREHENSIVE] Provide detailed assessment of pedagogy capabilities."
+    },
+    {
+      "id": "ai_blueprint_090",
+      "domain": "technology",
+      "type": "likert",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[TECHNOLOGY - COMPREHENSIVE] Provide detailed assessment of technology capabilities."
+    },
+    {
+      "id": "ai_blueprint_091",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[STUDENT_POLICY - COMPREHENSIVE] Provide detailed assessment of student policy capabilities."
+    },
+    {
+      "id": "ai_blueprint_092",
+      "domain": "employee_policy",
+      "type": "open_ended",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - COMPREHENSIVE] Provide detailed assessment of employee policy capabilities.",
+      "maxLength": 1000
+    },
+    {
+      "id": "ai_blueprint_093",
+      "domain": "culture",
+      "type": "matrix",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[CULTURE - COMPREHENSIVE] Provide detailed assessment of culture capabilities."
+    },
+    {
+      "id": "ai_blueprint_094",
+      "domain": "alignment",
+      "type": "ranking",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[ALIGNMENT - COMPREHENSIVE] Provide detailed assessment of alignment capabilities."
+    },
+    {
+      "id": "ai_blueprint_095",
+      "domain": "benchmarking",
+      "type": "likert",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[BENCHMARKING - COMPREHENSIVE] Provide detailed assessment of benchmarking capabilities."
+    },
+    {
+      "id": "ai_blueprint_096",
+      "domain": "strategy",
+      "type": "multiple_choice",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[STRATEGY - COMPREHENSIVE] Provide detailed assessment of strategy capabilities."
+    },
+    {
+      "id": "ai_blueprint_097",
+      "domain": "governance",
+      "type": "open_ended",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[GOVERNANCE - COMPREHENSIVE] Provide detailed assessment of governance capabilities.",
+      "maxLength": 1000
+    },
+    {
+      "id": "ai_blueprint_098",
+      "domain": "pedagogy",
+      "type": "matrix",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[PEDAGOGY - COMPREHENSIVE] Provide detailed assessment of pedagogy capabilities."
+    },
+    {
+      "id": "ai_blueprint_099",
+      "domain": "technology",
+      "type": "ranking",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[TECHNOLOGY - COMPREHENSIVE] Provide detailed assessment of technology capabilities."
+    },
+    {
+      "id": "ai_blueprint_100",
+      "domain": "student_policy",
+      "type": "likert",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[STUDENT_POLICY - COMPREHENSIVE] Provide detailed assessment of student policy capabilities."
+    },
+    {
+      "id": "ai_blueprint_101",
+      "domain": "employee_policy",
+      "type": "multiple_choice",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - COMPREHENSIVE] Provide detailed assessment of employee policy capabilities."
+    },
+    {
+      "id": "ai_blueprint_102",
+      "domain": "culture",
+      "type": "open_ended",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[CULTURE - COMPREHENSIVE] Provide detailed assessment of culture capabilities.",
+      "maxLength": 1000
+    },
+    {
+      "id": "ai_blueprint_103",
+      "domain": "alignment",
+      "type": "matrix",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[ALIGNMENT - COMPREHENSIVE] Provide detailed assessment of alignment capabilities."
+    },
+    {
+      "id": "ai_blueprint_104",
+      "domain": "benchmarking",
+      "type": "ranking",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[BENCHMARKING - COMPREHENSIVE] Provide detailed assessment of benchmarking capabilities."
+    },
+    {
+      "id": "ai_blueprint_105",
+      "domain": "strategy",
+      "type": "likert",
+      "tier": "comprehensive",
+      "priority": "medium",
+      "required": false,
+      "question": "[STRATEGY - COMPREHENSIVE] Provide detailed assessment of strategy capabilities."
+    },
+    {
+      "id": "ai_blueprint_106",
+      "domain": "strategy",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[STRATEGY - TRANSFORMATION] Strategic transformation approach for strategy.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_107",
+      "domain": "governance",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[GOVERNANCE - TRANSFORMATION] Strategic transformation approach for governance.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_108",
+      "domain": "pedagogy",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[PEDAGOGY - TRANSFORMATION] Strategic transformation approach for pedagogy.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_109",
+      "domain": "technology",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[TECHNOLOGY - TRANSFORMATION] Strategic transformation approach for technology.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_110",
+      "domain": "student_policy",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[STUDENT_POLICY - TRANSFORMATION] Strategic transformation approach for student policy.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_111",
+      "domain": "employee_policy",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - TRANSFORMATION] Strategic transformation approach for employee policy.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_112",
+      "domain": "culture",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[CULTURE - TRANSFORMATION] Strategic transformation approach for culture.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_113",
+      "domain": "alignment",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[ALIGNMENT - TRANSFORMATION] Strategic transformation approach for alignment.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_114",
+      "domain": "benchmarking",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[BENCHMARKING - TRANSFORMATION] Strategic transformation approach for benchmarking.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_115",
+      "domain": "strategy",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[STRATEGY - TRANSFORMATION] Strategic transformation approach for strategy.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_116",
+      "domain": "governance",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[GOVERNANCE - TRANSFORMATION] Strategic transformation approach for governance.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_117",
+      "domain": "pedagogy",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[PEDAGOGY - TRANSFORMATION] Strategic transformation approach for pedagogy.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_118",
+      "domain": "technology",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[TECHNOLOGY - TRANSFORMATION] Strategic transformation approach for technology.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_119",
+      "domain": "student_policy",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[STUDENT_POLICY - TRANSFORMATION] Strategic transformation approach for student policy.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_120",
+      "domain": "employee_policy",
+      "type": "file_upload",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - TRANSFORMATION] Strategic transformation approach for employee policy.",
+      "context": "Advanced assessment with scenario modeling.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx"
+      ],
+      "maxFileSize": "25MB",
+      "maxFiles": 5
+    },
+    {
+      "id": "ai_blueprint_121",
+      "domain": "culture",
+      "type": "multiple_choice",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[CULTURE - TRANSFORMATION] Strategic transformation approach for culture.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_122",
+      "domain": "alignment",
+      "type": "open_ended",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[ALIGNMENT - TRANSFORMATION] Strategic transformation approach for alignment.",
+      "context": "Advanced assessment with scenario modeling.",
+      "maxLength": 1500
+    },
+    {
+      "id": "ai_blueprint_123",
+      "domain": "benchmarking",
+      "type": "matrix",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[BENCHMARKING - TRANSFORMATION] Strategic transformation approach for benchmarking.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_124",
+      "domain": "strategy",
+      "type": "ranking",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[STRATEGY - TRANSFORMATION] Strategic transformation approach for strategy.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_125",
+      "domain": "governance",
+      "type": "likert",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[GOVERNANCE - TRANSFORMATION] Strategic transformation approach for governance.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_126",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[PEDAGOGY - TRANSFORMATION] Strategic transformation approach for pedagogy.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_127",
+      "domain": "technology",
+      "type": "open_ended",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[TECHNOLOGY - TRANSFORMATION] Strategic transformation approach for technology.",
+      "context": "Advanced assessment with scenario modeling.",
+      "maxLength": 1500
+    },
+    {
+      "id": "ai_blueprint_128",
+      "domain": "student_policy",
+      "type": "matrix",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[STUDENT_POLICY - TRANSFORMATION] Strategic transformation approach for student policy.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_129",
+      "domain": "employee_policy",
+      "type": "ranking",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - TRANSFORMATION] Strategic transformation approach for employee policy.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_130",
+      "domain": "culture",
+      "type": "likert",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[CULTURE - TRANSFORMATION] Strategic transformation approach for culture.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_131",
+      "domain": "alignment",
+      "type": "multiple_choice",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[ALIGNMENT - TRANSFORMATION] Strategic transformation approach for alignment.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_132",
+      "domain": "benchmarking",
+      "type": "open_ended",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[BENCHMARKING - TRANSFORMATION] Strategic transformation approach for benchmarking.",
+      "context": "Advanced assessment with scenario modeling.",
+      "maxLength": 1500
+    },
+    {
+      "id": "ai_blueprint_133",
+      "domain": "strategy",
+      "type": "matrix",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[STRATEGY - TRANSFORMATION] Strategic transformation approach for strategy.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_134",
+      "domain": "governance",
+      "type": "ranking",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[GOVERNANCE - TRANSFORMATION] Strategic transformation approach for governance.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_135",
+      "domain": "pedagogy",
+      "type": "likert",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[PEDAGOGY - TRANSFORMATION] Strategic transformation approach for pedagogy.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_136",
+      "domain": "technology",
+      "type": "multiple_choice",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[TECHNOLOGY - TRANSFORMATION] Strategic transformation approach for technology.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_137",
+      "domain": "student_policy",
+      "type": "open_ended",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[STUDENT_POLICY - TRANSFORMATION] Strategic transformation approach for student policy.",
+      "context": "Advanced assessment with scenario modeling.",
+      "maxLength": 1500
+    },
+    {
+      "id": "ai_blueprint_138",
+      "domain": "employee_policy",
+      "type": "matrix",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - TRANSFORMATION] Strategic transformation approach for employee policy.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_139",
+      "domain": "culture",
+      "type": "ranking",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[CULTURE - TRANSFORMATION] Strategic transformation approach for culture.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_140",
+      "domain": "alignment",
+      "type": "likert",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[ALIGNMENT - TRANSFORMATION] Strategic transformation approach for alignment.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_141",
+      "domain": "benchmarking",
+      "type": "multiple_choice",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[BENCHMARKING - TRANSFORMATION] Strategic transformation approach for benchmarking.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_142",
+      "domain": "strategy",
+      "type": "open_ended",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[STRATEGY - TRANSFORMATION] Strategic transformation approach for strategy.",
+      "context": "Advanced assessment with scenario modeling.",
+      "maxLength": 1500
+    },
+    {
+      "id": "ai_blueprint_143",
+      "domain": "governance",
+      "type": "matrix",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[GOVERNANCE - TRANSFORMATION] Strategic transformation approach for governance.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_144",
+      "domain": "pedagogy",
+      "type": "ranking",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[PEDAGOGY - TRANSFORMATION] Strategic transformation approach for pedagogy.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_145",
+      "domain": "technology",
+      "type": "likert",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[TECHNOLOGY - TRANSFORMATION] Strategic transformation approach for technology.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_146",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[STUDENT_POLICY - TRANSFORMATION] Strategic transformation approach for student policy.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_147",
+      "domain": "employee_policy",
+      "type": "open_ended",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - TRANSFORMATION] Strategic transformation approach for employee policy.",
+      "context": "Advanced assessment with scenario modeling.",
+      "maxLength": 1500
+    },
+    {
+      "id": "ai_blueprint_148",
+      "domain": "culture",
+      "type": "matrix",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[CULTURE - TRANSFORMATION] Strategic transformation approach for culture.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_149",
+      "domain": "alignment",
+      "type": "ranking",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[ALIGNMENT - TRANSFORMATION] Strategic transformation approach for alignment.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_150",
+      "domain": "benchmarking",
+      "type": "likert",
+      "tier": "transformation",
+      "priority": "advanced",
+      "required": false,
+      "question": "[BENCHMARKING - TRANSFORMATION] Strategic transformation approach for benchmarking.",
+      "context": "Advanced assessment with scenario modeling."
+    },
+    {
+      "id": "ai_blueprint_151",
+      "domain": "strategy",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[STRATEGY - ENTERPRISE] Enterprise-level analysis for strategy.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_152",
+      "domain": "governance",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[GOVERNANCE - ENTERPRISE] Enterprise-level analysis for governance.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_153",
+      "domain": "pedagogy",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[PEDAGOGY - ENTERPRISE] Enterprise-level analysis for pedagogy.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_154",
+      "domain": "technology",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[TECHNOLOGY - ENTERPRISE] Enterprise-level analysis for technology.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_155",
+      "domain": "student_policy",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[STUDENT_POLICY - ENTERPRISE] Enterprise-level analysis for student policy.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_156",
+      "domain": "employee_policy",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - ENTERPRISE] Enterprise-level analysis for employee policy.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_157",
+      "domain": "culture",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[CULTURE - ENTERPRISE] Enterprise-level analysis for culture.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_158",
+      "domain": "alignment",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[ALIGNMENT - ENTERPRISE] Enterprise-level analysis for alignment.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_159",
+      "domain": "benchmarking",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[BENCHMARKING - ENTERPRISE] Enterprise-level analysis for benchmarking.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_160",
+      "domain": "strategy",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[STRATEGY - ENTERPRISE] Enterprise-level analysis for strategy.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_161",
+      "domain": "governance",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[GOVERNANCE - ENTERPRISE] Enterprise-level analysis for governance.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_162",
+      "domain": "pedagogy",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[PEDAGOGY - ENTERPRISE] Enterprise-level analysis for pedagogy.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_163",
+      "domain": "technology",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[TECHNOLOGY - ENTERPRISE] Enterprise-level analysis for technology.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_164",
+      "domain": "student_policy",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[STUDENT_POLICY - ENTERPRISE] Enterprise-level analysis for student policy.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_165",
+      "domain": "employee_policy",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - ENTERPRISE] Enterprise-level analysis for employee policy.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_166",
+      "domain": "culture",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[CULTURE - ENTERPRISE] Enterprise-level analysis for culture.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_167",
+      "domain": "alignment",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[ALIGNMENT - ENTERPRISE] Enterprise-level analysis for alignment.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_168",
+      "domain": "benchmarking",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[BENCHMARKING - ENTERPRISE] Enterprise-level analysis for benchmarking.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_169",
+      "domain": "strategy",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[STRATEGY - ENTERPRISE] Enterprise-level analysis for strategy.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_170",
+      "domain": "governance",
+      "type": "file_upload",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[GOVERNANCE - ENTERPRISE] Enterprise-level analysis for governance.",
+      "context": "Enterprise assessment with partnership planning.",
+      "acceptedFormats": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xlsx",
+        ".ppt"
+      ],
+      "maxFileSize": "50MB",
+      "maxFiles": 10
+    },
+    {
+      "id": "ai_blueprint_171",
+      "domain": "pedagogy",
+      "type": "multiple_choice",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[PEDAGOGY - ENTERPRISE] Enterprise-level analysis for pedagogy.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_172",
+      "domain": "technology",
+      "type": "open_ended",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[TECHNOLOGY - ENTERPRISE] Enterprise-level analysis for technology.",
+      "context": "Enterprise assessment with partnership planning.",
+      "maxLength": 2000
+    },
+    {
+      "id": "ai_blueprint_173",
+      "domain": "student_policy",
+      "type": "matrix",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[STUDENT_POLICY - ENTERPRISE] Enterprise-level analysis for student policy.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_174",
+      "domain": "employee_policy",
+      "type": "ranking",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - ENTERPRISE] Enterprise-level analysis for employee policy.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_175",
+      "domain": "culture",
+      "type": "likert",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[CULTURE - ENTERPRISE] Enterprise-level analysis for culture.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_176",
+      "domain": "alignment",
+      "type": "multiple_choice",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[ALIGNMENT - ENTERPRISE] Enterprise-level analysis for alignment.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_177",
+      "domain": "benchmarking",
+      "type": "open_ended",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[BENCHMARKING - ENTERPRISE] Enterprise-level analysis for benchmarking.",
+      "context": "Enterprise assessment with partnership planning.",
+      "maxLength": 2000
+    },
+    {
+      "id": "ai_blueprint_178",
+      "domain": "strategy",
+      "type": "matrix",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[STRATEGY - ENTERPRISE] Enterprise-level analysis for strategy.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_179",
+      "domain": "governance",
+      "type": "ranking",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[GOVERNANCE - ENTERPRISE] Enterprise-level analysis for governance.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_180",
+      "domain": "pedagogy",
+      "type": "likert",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[PEDAGOGY - ENTERPRISE] Enterprise-level analysis for pedagogy.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_181",
+      "domain": "technology",
+      "type": "multiple_choice",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[TECHNOLOGY - ENTERPRISE] Enterprise-level analysis for technology.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_182",
+      "domain": "student_policy",
+      "type": "open_ended",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[STUDENT_POLICY - ENTERPRISE] Enterprise-level analysis for student policy.",
+      "context": "Enterprise assessment with partnership planning.",
+      "maxLength": 2000
+    },
+    {
+      "id": "ai_blueprint_183",
+      "domain": "employee_policy",
+      "type": "matrix",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - ENTERPRISE] Enterprise-level analysis for employee policy.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_184",
+      "domain": "culture",
+      "type": "ranking",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[CULTURE - ENTERPRISE] Enterprise-level analysis for culture.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_185",
+      "domain": "alignment",
+      "type": "likert",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[ALIGNMENT - ENTERPRISE] Enterprise-level analysis for alignment.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_186",
+      "domain": "benchmarking",
+      "type": "multiple_choice",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[BENCHMARKING - ENTERPRISE] Enterprise-level analysis for benchmarking.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_187",
+      "domain": "strategy",
+      "type": "open_ended",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[STRATEGY - ENTERPRISE] Enterprise-level analysis for strategy.",
+      "context": "Enterprise assessment with partnership planning.",
+      "maxLength": 2000
+    },
+    {
+      "id": "ai_blueprint_188",
+      "domain": "governance",
+      "type": "matrix",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[GOVERNANCE - ENTERPRISE] Enterprise-level analysis for governance.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_189",
+      "domain": "pedagogy",
+      "type": "ranking",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[PEDAGOGY - ENTERPRISE] Enterprise-level analysis for pedagogy.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_190",
+      "domain": "technology",
+      "type": "likert",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[TECHNOLOGY - ENTERPRISE] Enterprise-level analysis for technology.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_191",
+      "domain": "student_policy",
+      "type": "multiple_choice",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[STUDENT_POLICY - ENTERPRISE] Enterprise-level analysis for student policy.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_192",
+      "domain": "employee_policy",
+      "type": "open_ended",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[EMPLOYEE_POLICY - ENTERPRISE] Enterprise-level analysis for employee policy.",
+      "context": "Enterprise assessment with partnership planning.",
+      "maxLength": 2000
+    },
+    {
+      "id": "ai_blueprint_193",
+      "domain": "culture",
+      "type": "matrix",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[CULTURE - ENTERPRISE] Enterprise-level analysis for culture.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_194",
+      "domain": "alignment",
+      "type": "ranking",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[ALIGNMENT - ENTERPRISE] Enterprise-level analysis for alignment.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_195",
+      "domain": "benchmarking",
+      "type": "likert",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[BENCHMARKING - ENTERPRISE] Enterprise-level analysis for benchmarking.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_196",
+      "domain": "strategy",
+      "type": "multiple_choice",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[STRATEGY - ENTERPRISE] Enterprise-level analysis for strategy.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_197",
+      "domain": "governance",
+      "type": "open_ended",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[GOVERNANCE - ENTERPRISE] Enterprise-level analysis for governance.",
+      "context": "Enterprise assessment with partnership planning.",
+      "maxLength": 2000
+    },
+    {
+      "id": "ai_blueprint_198",
+      "domain": "pedagogy",
+      "type": "matrix",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[PEDAGOGY - ENTERPRISE] Enterprise-level analysis for pedagogy.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_199",
+      "domain": "technology",
+      "type": "ranking",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[TECHNOLOGY - ENTERPRISE] Enterprise-level analysis for technology.",
+      "context": "Enterprise assessment with partnership planning."
+    },
+    {
+      "id": "ai_blueprint_200",
+      "domain": "student_policy",
+      "type": "likert",
+      "tier": "enterprise",
+      "priority": "enterprise",
+      "required": false,
+      "question": "[STUDENT_POLICY - ENTERPRISE] Enterprise-level analysis for student policy.",
+      "context": "Enterprise assessment with partnership planning."
+    }
+  ]
+}

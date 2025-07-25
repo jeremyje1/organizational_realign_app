@@ -6,7 +6,7 @@
  * @author NorthPath Strategies
  */
 
-export type PricingTier = 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'ai-readiness-basic' | 'ai-readiness-custom' | 'ai-readiness-advanced' | 'ai-readiness-comprehensive';
+export type PricingTier = 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
 
 export interface TierConfiguration {
   name: string;
@@ -44,255 +44,76 @@ export interface TierConfiguration {
 }
 
 export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
-  'express-diagnostic': {
-    name: 'NorthPath Express Diagnostic',
-    price: 2495,
-    targetCustomer: 'Small teams, pilot initiatives, or institutions looking for a quick, budget-friendly assessment',
+  'higher-ed-ai-pulse-check': {
+    name: 'Higher Ed AI Pulse Check',
+    price: 495,
+    targetCustomer: 'Individual departments or small teams wanting a quick AI readiness snapshot',
     coreDeliverables: [
-      '60-question smart survey focused on core functions',
-      'Quick-turnaround organizational snapshot (6-8 page PDF)',
-      'Core index scores: OCI™, HOCI™, JCI™',
-      'One-click org chart generator with efficiency insights',
-      '30-minute debrief call with NorthPath strategist',
-      'Immediate action recommendations (2-3 quick wins)',
-      'Results within 3-5 business days'
+      '50-question streamlined AI readiness assessment',
+      'AI-generated quick insights report (8-10 pages)',
+      'AIRIX™ core algorithm analysis',
+      'Essential AI readiness scoring across 6 domains',
+      'Basic AI implementation recommendations',
+      'Resource library access',
+      'Single assessment access',
+      'Up to 2 users',
+      'Email support',
+      'Results within 2-3 business days'
     ],
     assessmentScope: {
-      questionCount: 60,
+      questionCount: 50,
       sections: [
-        'Leadership Clarity', 
-        'Strategic Alignment',
-        'Communication Efficiency',
-        'Resource Deployment',
-        'Quick AI Opportunities'
+        'Strategic Leadership', 
+        'Governance & Policy', 
+        'Faculty AI Integration', 
+        'Technology Infrastructure', 
+        'Cultural Readiness', 
+        'Mission Alignment'
       ],
-      algorithms: ['OCI', 'HOCI', 'JCI'],
-      reportPages: 25,
-      followUpSupport: '30-min strategy debrief call'
+      algorithms: ['AIRIX'],
+      reportPages: 10,
+      followUpSupport: 'Email support for 30 days + resource library access'
     },
     features: {
-      uploadSupport: true,
+      uploadSupport: false,
       dashboardRefresh: false,
       customReporting: false,
       powerBIEmbedded: false,
       apiConnectors: false,
       onSiteFacilitation: false,
       progressAudits: false,
-      orgChartGenerator: true,
+      orgChartGenerator: false,
       scenarioBuilder: false,
       monteCarloSimulation: false,
       realTimeCollaboration: false,
-      aiOpportunityAssessment: false,
-      aiReadinessScore: false,
-      automationRecommendations: false
+      aiOpportunityAssessment: true,
+      aiReadinessScore: true,
+      automationRecommendations: true
     },
     guardrails: {
       maxAssessments: 1,
       maxUsers: 2,
-      dataRetentionMonths: 3
-    }
-  },
-
-  'one-time-diagnostic': {
-    name: 'One-Time Diagnostic',
-    price: 4995,
-    targetCustomer: 'Single-campus college, small hospital, department pilot',
-    coreDeliverables: [
-      '100+ comprehensive assessment questions (Likert, numeric, text, upload)',
-      'Secure file upload capability',
-      'One-click interactive org chart generator',
-      '15-page comprehensive PDF analysis',
-      'AI opportunity identification and readiness scoring',
-      'Basic automation recommendations',
-      'Scenario cost comparison with ROI projections',
-      'DSCH / CRF / LEI algorithm analysis',
-      '45-min strategy consultation call'
-    ],
-    assessmentScope: {
-      questionCount: 105, // 100 core + 5 contextual questions minimum
-      sections: [
-        'Governance & Leadership', 
-        'Administrative Processes & Communication',
-        'Structure, Capacity & Performance',
-        'Professional Development & Support',
-        'Technology & Digital Infrastructure',
-        'AI & Automation Opportunities',
-        'Organization-Specific Operations (Academic/Clinical/Program/Business/Public Service)'
-      ],
-      algorithms: ['DSCH', 'CRF', 'LEI', 'OREA'],
-      reportPages: 35,
-      followUpSupport: '45-min strategy consultation'
-    },
-    features: {
-      uploadSupport: true,
-      dashboardRefresh: false,
-      customReporting: false,
-      powerBIEmbedded: false,
-      apiConnectors: false,
-      onSiteFacilitation: false,
-      progressAudits: false,
-      orgChartGenerator: true,
-      scenarioBuilder: false,
-      monteCarloSimulation: false,
-      realTimeCollaboration: false,
-      aiOpportunityAssessment: true,
-      aiReadinessScore: true,
-      automationRecommendations: true
-    },
-    guardrails: {
-      maxAssessments: 1,
-      maxUsers: 3,
       dataRetentionMonths: 6
     }
   },
 
-  'monthly-subscription': {
-    name: 'Monthly Subscription',
-    price: 2995,
-    targetCustomer: 'Schools with multiple programs or departments iterating every term',
-    coreDeliverables: [
-      'Unlimited assessments per month',
-      'One-click org chart with advanced analytics',
-      'Dashboard refresh (CSV exports)',
-      'Enhanced AI opportunity analysis with departmental breakdown',
-      'Automation ROI modeling and priority scoring',
-      'Multi-scenario cost modeling',
-      '60-min office-hours call / mo'
-    ],
-    assessmentScope: {
-      questionCount: 120,
-      sections: ['All basic sections plus Faculty & Instructional Support', 'Student Affairs & Success Services'],
-      algorithms: ['OCI', 'HOCI', 'JCI', 'DSCH'],
-      reportPages: 35,
-      followUpSupport: '60-min monthly office hours'
-    },
-    features: {
-      uploadSupport: true,
-      dashboardRefresh: true,
-      customReporting: false,
-      powerBIEmbedded: false,
-      apiConnectors: false,
-      onSiteFacilitation: false,
-      progressAudits: false,
-      orgChartGenerator: true,
-      scenarioBuilder: false,
-      monteCarloSimulation: false,
-      realTimeCollaboration: false,
-      aiOpportunityAssessment: true,
-      aiReadinessScore: true,
-      automationRecommendations: true
-    },
-    guardrails: {
-      maxUsers: 10,
-      maxScenarios: 5,
-      dataRetentionMonths: 12
-    }
-  },
-
-  'comprehensive-package': {
-    name: 'Comprehensive Package',
-    price: 9900,
-    targetCustomer: 'Mid-sized institutions needing board-ready narrative',
-    coreDeliverables: [
-      'Everything in Monthly, plus',
-      'One-click org chart with scenario modeling',
-      '25–30 page PDF w/ AI narrative',
-      'Comprehensive AI transformation roadmap',
-      'Process automation feasibility analysis',
-      'AI readiness maturity model assessment',
-      '90-min strategy session',
-      'Cost-saving ranges (static model)',
-      'Advanced scenario builder'
-    ],
-    assessmentScope: {
-      questionCount: 150,
-      sections: ['All sections including IT & Digital Learning', 'Facilities & Campus Operations', 'Institutional Research'],
-      algorithms: ['OCI', 'HOCI', 'JCI', 'DSCH', 'CRF', 'LEI'],
-      reportPages: 45,
-      followUpSupport: '90-min strategy session'
-    },
-    features: {
-      uploadSupport: true,
-      dashboardRefresh: true,
-      customReporting: true,
-      powerBIEmbedded: false,
-      apiConnectors: false,
-      onSiteFacilitation: false,
-      progressAudits: false,
-      orgChartGenerator: true,
-      scenarioBuilder: true, // Add-on available
-      monteCarloSimulation: false,
-      realTimeCollaboration: false,
-      aiOpportunityAssessment: true,
-      aiReadinessScore: true,
-      automationRecommendations: true
-    },
-    guardrails: {
-      maxUsers: 25,
-      maxScenarios: 15,
-      dataRetentionMonths: 24
-    }
-  },
-
-  'enterprise-transformation': {
-    name: 'Enterprise Transformation',
-    price: 24000,
-    targetCustomer: 'Multi-campus systems, hospital networks, public agencies',
-    coreDeliverables: [
-      'Everything in Comprehensive, plus',
-      'One-click real-time collaborative org charts',
-      'Unlimited scenario builder',
-      'Power BI embedded live dashboard',
-      'API & flat-file connectors',
-      'Advanced AI transformation strategy with predictive modeling',
-      'Real-time automation opportunity detection',
-      'AI-powered workforce planning and optimization',
-      'On-site or virtual facilitation day',
-      'Quarterly progress audits (4)'
-    ],
-    assessmentScope: {
-      questionCount: 200,
-      sections: ['All sections plus specialized industry modules'],
-      algorithms: ['All algorithms including Monte Carlo, Advanced DSCH, Predictive Analytics'],
-      reportPages: 55,
-      followUpSupport: 'Quarterly progress audits + facilitation'
-    },
-    features: {
-      uploadSupport: true,
-      dashboardRefresh: true,
-      customReporting: true,
-      powerBIEmbedded: true,
-      apiConnectors: true,
-      onSiteFacilitation: true,
-      progressAudits: true,
-      orgChartGenerator: true,
-      scenarioBuilder: true,
-      monteCarloSimulation: true,
-      realTimeCollaboration: true,
-      aiOpportunityAssessment: true,
-      aiReadinessScore: true,
-      automationRecommendations: true
-    },
-    guardrails: {
-      dataRetentionMonths: 60
-    }
-  },
-    'ai-readiness-basic': {
-    name: 'AI Readiness Assessment - Advanced',
-    price: 4995,
+  'ai-readiness-comprehensive': {
+    name: 'AI Readiness Comprehensive',
+    price: 2495,
     targetCustomer: 'Higher education institutions seeking comprehensive AI readiness evaluation with advanced analytics',
     coreDeliverables: [
       '105-question comprehensive AI readiness assessment',
       'AI-enhanced analysis and recommendations',
-      '12-page detailed AI readiness report',
+      '25-page detailed AI readiness report',
       'AIRIX™, AIRS™, AICS™ algorithm analysis',
       'Strategic document upload & AI analysis',
       'AI readiness scoring across 8 domains',
-      'AI implementation guidance',
+      'Detailed AI implementation guidance',
       'Team collaboration features',
       'Single assessment access',
-      'Up to 3 users',
-      'Email support'
+      'Up to 5 users',
+      'Priority email support',
+      '30-minute strategy consultation'
     ],
     assessmentScope: {
       questionCount: 105,
@@ -306,9 +127,9 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
         'Cultural Transformation', 
         'Mission Alignment'
       ],
-      algorithms: ['AIRIX', 'AIRS', 'AICS', 'AIMS', 'ai-readiness-scoring', 'maturity-assessment', 'recommendation-engine', 'higher-ed-benchmarking'],
-      reportPages: 12,
-      followUpSupport: 'Email support for 30 days + resource library access'
+      algorithms: ['AIRIX', 'AIRS', 'AICS'],
+      reportPages: 25,
+      followUpSupport: '30-minute strategy consultation + email support for 60 days + resource library access'
     },
     features: {
       uploadSupport: true,
@@ -328,44 +149,46 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
     },
     guardrails: {
       maxAssessments: 1,
-      maxUsers: 3,
+      maxUsers: 5,
       dataRetentionMonths: 12
     }
   },
-  'ai-readiness-custom': {
-    name: 'AI Readiness Assessment - Comprehensive',
-    price: 12000,
+
+  'ai-transformation-blueprint': {
+    name: 'AI Transformation Blueprint',
+    price: 7495,
     targetCustomer: 'Higher education institutions ready for strategic AI implementation with expert guidance and comprehensive analysis',
     coreDeliverables: [
       '150-question in-depth AI assessment',
-      'AI-generated narrative reports',
-      '30-page comprehensive AI analysis',
+      'AI-generated comprehensive narrative reports',
+      '40-page AI Transformation Blueprint™',
+      'AIRIX™, AIRS™, AICS™, AIMS™, AIPS™ algorithm analysis',
       'Advanced AI scenario builder',
       'Custom AI policy recommendations',
       'Strategic AI roadmap development',
       'Team collaboration features',
-      'Up to 25 users',
-      'Up to 15 AI scenarios',
+      'Up to 15 users',
+      'Up to 10 AI scenarios',
       'Priority support',
-      'AI implementation consulting'
+      '60-minute AI implementation consulting session'
     ],
     assessmentScope: {
       questionCount: 150,
       sections: [
-        'Strategic Leadership (18 Questions)', 
-        'Governance & Policy (20 Questions)', 
-        'Faculty AI Integration (18 Questions)', 
-        'Student AI Policy (12 Questions)', 
-        'Employee Integration (10 Questions)', 
-        'Technology Infrastructure (10 Questions)', 
-        'Cultural Transformation (8 Questions)', 
-        'Mission Alignment (4 Questions)',
-        'Advanced AI Strategy (25 Questions)',
-        'Implementation Planning (25 Questions)'
+        'Strategic Leadership', 
+        'Governance & Policy', 
+        'Faculty AI Integration', 
+        'Student AI Policy', 
+        'Employee Integration', 
+        'Technology Infrastructure', 
+        'Cultural Transformation', 
+        'Mission Alignment',
+        'Advanced AI Strategy',
+        'Implementation Planning'
       ],
-      algorithms: ['AIRIX', 'AIRS', 'AICS', 'AIMS', 'AIPS', 'AIBS', 'ai-readiness-scoring', 'maturity-assessment', 'recommendation-engine', 'custom-weighting', 'qep-integration', 'change-management-analysis'],
-      reportPages: 30,
-      followUpSupport: '30-day advisory access + 90-minute strategy session + implementation planning support'
+      algorithms: ['AIRIX', 'AIRS', 'AICS', 'AIMS', 'AIPS'],
+      reportPages: 40,
+      followUpSupport: '60-minute strategy session + 30-day advisory access + implementation planning support'
     },
     features: {
       uploadSupport: true,
@@ -373,136 +196,84 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       customReporting: true,
       powerBIEmbedded: false,
       apiConnectors: false,
-      onSiteFacilitation: true,
-      progressAudits: true,
-      orgChartGenerator: false,
-      scenarioBuilder: true, // Advanced AI scenario builder
-      monteCarloSimulation: false,
-      realTimeCollaboration: true,
-      aiOpportunityAssessment: true,
-      aiReadinessScore: true,
-      automationRecommendations: true
-    },
-    guardrails: {
-      maxAssessments: 3,
-      maxUsers: 25,
-      maxScenarios: 15, // Up to 15 AI scenarios
-      dataRetentionMonths: 24
-    }
-  },
-  'ai-readiness-advanced': {
-    name: 'Advanced AI Assessment',
-    price: 4995,
-    targetCustomer: 'Higher education institutions ready for AI readiness evaluation with comprehensive analysis',
-    coreDeliverables: [
-      '105-question comprehensive AI readiness assessment',
-      'AI-enhanced analysis and recommendations',
-      '12-page detailed AI readiness report',
-      'AIRIX™, AIRS™, AICS™ algorithms',
-      'Strategic document upload & AI analysis',
-      'AI readiness scoring across 8 domains',
-      'AI implementation guidance',
-      'Single assessment access',
-      'Up to 3 users',
-      'Email support'
-    ],
-    assessmentScope: {
-      questionCount: 105,
-      sections: [
-        'Strategic Leadership (18 Questions)', 
-        'Governance & Policy (20 Questions)', 
-        'Faculty AI Integration (18 Questions)', 
-        'Student AI Policy (12 Questions)', 
-        'Employee Integration (10 Questions)', 
-        'Technology Infrastructure (10 Questions)', 
-        'Cultural Transformation (8 Questions)', 
-        'Mission Alignment (4 Questions)',
-        'Implementation Planning (5 Questions)'
-      ],
-      algorithms: ['AIRIX', 'AIRS', 'AICS', 'ai-readiness-scoring', 'maturity-assessment', 'recommendation-engine'],
-      reportPages: 12,
-      followUpSupport: 'Email support for 30 days'
-    },
-    features: {
-      uploadSupport: true,
-      dashboardRefresh: true,
-      customReporting: false,
-      powerBIEmbedded: false,
-      apiConnectors: false,
       onSiteFacilitation: false,
       progressAudits: false,
       orgChartGenerator: false,
-      scenarioBuilder: false,
+      scenarioBuilder: true,
       monteCarloSimulation: false,
-      realTimeCollaboration: false,
+      realTimeCollaboration: true,
       aiOpportunityAssessment: true,
       aiReadinessScore: true,
       automationRecommendations: true
     },
     guardrails: {
       maxAssessments: 1,
-      maxUsers: 3,
-      dataRetentionMonths: 12
+      maxUsers: 15,
+      maxScenarios: 10,
+      dataRetentionMonths: 24
     }
   },
-  'ai-readiness-comprehensive': {
-    name: 'Comprehensive AI Assessment',
-    price: 12000,
-    targetCustomer: 'Higher education institutions ready for strategic AI implementation with expert guidance and comprehensive analysis',
+
+  'ai-enterprise-partnership': {
+    name: 'Enterprise Partnership',
+    price: 24995,
+    targetCustomer: 'Large institutions, multi-campus systems, R1 universities seeking comprehensive AI transformation partnership',
     coreDeliverables: [
-      '150-question in-depth AI assessment',
-      'AI-generated narrative reports',
-      '30-page comprehensive AI analysis',
-      'Advanced AI scenario builder',
-      'Custom AI policy recommendations',
-      'Strategic AI roadmap development',
-      'Team collaboration features',
-      'Up to 25 users',
-      'Up to 15 AI scenarios',
-      'Priority support',
-      'AI implementation consulting'
+      'Full AI Transformation Blueprint™ included',
+      'Quarterly AI readiness re-assessments',
+      'AIRIX™, AIRS™, AICS™, AIMS™, AIPS™, AIBS™ full algorithm suite',
+      'Faculty micro-credential cohort program',
+      'Dedicated Slack advisory channel',
+      'Monthly strategy office hours',
+      'Custom policy development & updates',
+      'Advanced scenario modeling & forecasting',
+      'Executive briefing sessions (quarterly)',
+      'Priority implementation support',
+      'Custom integration development',
+      'White-glove premium support',
+      'Unlimited users and assessments'
     ],
     assessmentScope: {
-      questionCount: 150,
+      questionCount: 200,
       sections: [
-        'Strategic Leadership (18 Questions)', 
-        'Governance & Policy (20 Questions)', 
-        'Faculty AI Integration (18 Questions)', 
-        'Student AI Policy (12 Questions)', 
-        'Employee Integration (10 Questions)', 
-        'Technology Infrastructure (10 Questions)', 
-        'Cultural Transformation (8 Questions)', 
-        'Mission Alignment (4 Questions)',
-        'Advanced AI Strategy (25 Questions)',
-        'Implementation Planning (25 Questions)'
+        'Strategic AI Leadership',
+        'Governance & Policy Framework', 
+        'Technology Infrastructure',
+        'Faculty & Pedagogy Integration',
+        'Student AI Policy', 
+        'Employee Integration', 
+        'Academic Integrity',
+        'Continuous Improvement',
+        'Research Integration',
+        'External Partnerships'
       ],
-      algorithms: ['AIRIX', 'AIRS', 'AICS', 'AIMS', 'AIPS', 'AIBS', 'ai-readiness-scoring', 'maturity-assessment', 'recommendation-engine', 'custom-weighting', 'qep-integration', 'change-management-analysis'],
-      reportPages: 30,
-      followUpSupport: '30-day advisory access + 90-minute strategy session + implementation planning support'
+      algorithms: ['AIRIX', 'AIRS', 'AICS', 'AIMS', 'AIPS', 'AIBS'],
+      reportPages: 50,
+      followUpSupport: 'Annual retainer with dedicated advisory channel and quarterly strategy sessions'
     },
     features: {
       uploadSupport: true,
       dashboardRefresh: true,
       customReporting: true,
-      powerBIEmbedded: false,
-      apiConnectors: false,
+      powerBIEmbedded: true,
+      apiConnectors: true,
       onSiteFacilitation: true,
       progressAudits: true,
       orgChartGenerator: false,
-      scenarioBuilder: true, // Advanced AI scenario builder
-      monteCarloSimulation: false,
+      scenarioBuilder: true,
+      monteCarloSimulation: true,
       realTimeCollaboration: true,
       aiOpportunityAssessment: true,
       aiReadinessScore: true,
       automationRecommendations: true
     },
     guardrails: {
-      maxAssessments: 3,
-      maxUsers: 25,
-      maxScenarios: 15, // Up to 15 AI scenarios
-      dataRetentionMonths: 24
+      maxAssessments: null, // Unlimited
+      maxUsers: null, // Unlimited
+      maxScenarios: null, // Unlimited
+      dataRetentionMonths: null // Permanent retention
     }
-  },
+  }
 };
 
 /**

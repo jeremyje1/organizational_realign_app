@@ -20,95 +20,45 @@ export interface StripeTierMapping {
 }
 
 export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
-  'express-diagnostic': {
-    tierKey: 'express-diagnostic',
-    stripeProductId: 'prod_express_diagnostic',
-    stripePriceId: (process.env.STRIPE_EXPRESS_DIAGNOSTIC_PRICE_ID || 'price_1RmCmsELd2WOuqIWeM0rb7Gx').trim(),
+  'higher-ed-ai-pulse-check': {
+    tierKey: 'higher-ed-ai-pulse-check',
+    stripeProductId: 'prod_ai_readiness_pulse',
+    stripePriceId: 'price_1RomXAELd2WOuqIWUJT4cY29',
     stripeMode: 'payment',
-    successRedirect: '/assessment/tier-based?tier=express-diagnostic',
-    cancelRedirect: '/upgrade?tier=express-diagnostic',
-    tierName: 'NorthPath Express Diagnostic',
-    tierPrice: 2495
-  },
-  'one-time-diagnostic': {
-    tierKey: 'one-time-diagnostic',
-    stripeProductId: 'prod_diagnostic',
-    stripePriceId: (process.env.STRIPE_BASIC_PRICE_ID || 'price_1Rhdf0ELd2WOuqIWwagqCdLa').trim(),
-    stripeMode: 'payment',
-    successRedirect: '/assessment/tier-based?tier=one-time-diagnostic',
-    cancelRedirect: '/upgrade?tier=one-time-diagnostic',
-    tierName: 'One-Time Diagnostic',
-    tierPrice: 4995
-  },
-  'monthly-subscription': {
-    tierKey: 'monthly-subscription',
-    stripeProductId: 'prod_monthly',
-    stripePriceId: (process.env.STRIPE_MONTHLY_SUBSCRIPTION_PRICE_ID || 'price_1RhdgNELd2WOuqIW9HDyggY3').trim(),
-    stripeMode: 'subscription',
-    successRedirect: '/assessment/tier-based?tier=monthly-subscription',
-    cancelRedirect: '/upgrade?tier=monthly-subscription',
-    tierName: 'Monthly Subscription',
-    tierPrice: 2995
-  },
-  'comprehensive-package': {
-    tierKey: 'comprehensive-package',
-    stripeProductId: 'prod_comprehensive',
-    stripePriceId: (process.env.STRIPE_COMPREHENSIVE_PRICE_ID || 'price_1RgUduELd2WOuqIWFHobukeZ').trim(),
-    stripeMode: 'payment',
-    successRedirect: '/assessment/tier-based?tier=comprehensive-package',
-    cancelRedirect: '/upgrade?tier=comprehensive-package',
-    tierName: 'Comprehensive Package',
-    tierPrice: 12000
-  },
-  'enterprise-transformation': {
-    tierKey: 'enterprise-transformation',
-    stripeProductId: 'prod_enterprise',
-    stripePriceId: (process.env.STRIPE_ENTERPRISE_PRICE_ID || 'price_1RgUb8ELd2WOuqIWMxA0mLwz').trim(),
-    stripeMode: 'payment',
-    successRedirect: '/assessment/tier-based?tier=enterprise-transformation',
-    cancelRedirect: '/upgrade?tier=enterprise-transformation',
-    tierName: 'Enterprise Transformation',
-    tierPrice: 24000
-  },
-  'ai-readiness-basic': {
-    tierKey: 'ai-readiness-basic',
-    stripeProductId: 'prod_ai_readiness_assessment',
-    stripePriceId: (process.env.STRIPE_AI_BASIC_PRICE_ID || 'price_1RniBIELd2WOuqIWlSDnbDNn').trim(),
-    stripeMode: 'payment',
-    successRedirect: '/assessment/tier-based?tier=ai-readiness-basic&assessment_type=ai-readiness',
+    successRedirect: '/assessment/tier-based?tier=higher-ed-ai-pulse-check&assessment_type=ai-readiness',
     cancelRedirect: '/ai-readiness/pricing',
-    tierName: 'AI Readiness Assessment - Basic',
-    tierPrice: 2500
-  },
-  'ai-readiness-custom': {
-    tierKey: 'ai-readiness-custom',
-    stripeProductId: 'prod_ai_roadmap_intensive',
-    stripePriceId: (process.env.STRIPE_AI_CUSTOM_PRICE_ID || 'price_1RniD9ELd2WOuqIW2zJKkdEJ').trim(),
-    stripeMode: 'payment',
-    successRedirect: '/assessment/tier-based?tier=ai-readiness-custom&assessment_type=ai-readiness',
-    cancelRedirect: '/ai-readiness/pricing',
-    tierName: 'AI Readiness Assessment - Custom',
-    tierPrice: 12000
-  },
-  'ai-readiness-advanced': {
-    tierKey: 'ai-readiness-advanced',
-    stripeProductId: 'prod_ai_readiness_advanced',
-    stripePriceId: (process.env.STRIPE_AI_ADVANCED_PRICE_ID || 'price_1RniBIELd2WOuqIWlSDnbDNn').trim(),
-    stripeMode: 'payment',
-    successRedirect: '/assessment/tier-based?tier=ai-readiness-advanced&assessment_type=ai-readiness',
-    cancelRedirect: '/ai-readiness/pricing',
-    tierName: 'Advanced AI Assessment',
-    tierPrice: 4995
+    tierName: 'Higher Ed AI Pulse Check',
+    tierPrice: 495
   },
   'ai-readiness-comprehensive': {
     tierKey: 'ai-readiness-comprehensive',
-    stripeProductId: 'prod_ai_readiness_comprehensive',
-    stripePriceId: (process.env.STRIPE_AI_COMPREHENSIVE_PRICE_ID || 'price_1RniD9ELd2WOuqIW2zJKkdEJ').trim(),
+    stripeProductId: 'prod_ai_readiness_assessment',
+    stripePriceId: 'price_1Ro4tAELd2WOuqIWaDPEWxX3',
     stripeMode: 'payment',
     successRedirect: '/assessment/tier-based?tier=ai-readiness-comprehensive&assessment_type=ai-readiness',
     cancelRedirect: '/ai-readiness/pricing',
-    tierName: 'Comprehensive AI Assessment',
-    tierPrice: 12000
+    tierName: 'AI Readiness Comprehensive',
+    tierPrice: 2495
+  },
+  'ai-transformation-blueprint': {
+    tierKey: 'ai-transformation-blueprint',
+    stripeProductId: 'prod_ai_transformation_blueprint',
+    stripePriceId: 'price_1RomY5ELd2WOuqIWd3wUhiQm',
+    stripeMode: 'payment',
+    successRedirect: '/assessment/tier-based?tier=ai-transformation-blueprint&assessment_type=ai-readiness',
+    cancelRedirect: '/ai-readiness/pricing',
+    tierName: 'AI Transformation Blueprint',
+    tierPrice: 7495
+  },
+  'ai-enterprise-partnership': {
+    tierKey: 'ai-enterprise-partnership',
+    stripeProductId: 'prod_ai_enterprise_partnership',
+    stripePriceId: 'price_1RomYtELd2WOuqIWKdsStKyQ',
+    stripeMode: 'payment',
+    successRedirect: '/assessment/tier-based?tier=ai-enterprise-partnership&assessment_type=ai-readiness',
+    cancelRedirect: '/ai-readiness/pricing',
+    tierName: 'Enterprise Partnership',
+    tierPrice: 24995
   }
 };
 
@@ -134,10 +84,10 @@ export function getTierFromStripePriceId(priceId: string): PricingTier | null {
  */
 export function validateTierAccess(userTier: PricingTier, requiredTier: PricingTier): boolean {
   const tierHierarchy: PricingTier[] = [
-    'one-time-diagnostic',
-    'monthly-subscription', 
-    'comprehensive-package',
-    'enterprise-transformation'
+    'higher-ed-ai-pulse-check',
+    'ai-readiness-comprehensive', 
+    'ai-transformation-blueprint',
+    'ai-enterprise-partnership'
   ];
   
   const userTierIndex = tierHierarchy.indexOf(userTier);
