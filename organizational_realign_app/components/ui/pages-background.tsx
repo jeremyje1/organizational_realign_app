@@ -22,7 +22,7 @@ export function PagesBackground({
       {/* Image background overlay */}
       <div className="absolute inset-0 z-0">
         <ResponsiveImage
-          src="/images/northpath_background_opt.jpg"
+          src="/images/northpath_background_opt.svg"
           alt=""
           fill
           className="object-cover"
@@ -52,7 +52,7 @@ export function PagesBackgroundSection({
     <div className={`relative ${className}`}>
       <div className="absolute inset-0 z-0">
         <ResponsiveImage
-          src="/images/northpath_background_opt.jpg"
+          src="/images/northpath_background_opt.svg"
           alt=""
           fill
           className="object-cover"

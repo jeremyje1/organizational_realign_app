@@ -111,7 +111,17 @@ export default function AdminAssessmentViewer() {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('API Error Response:', errorText);
-        throw new Error(`Failed to fetch assessment data: ${response.status} ${response.statusText}`);
+        
+        try {
+          const errorData = JSON.parse(errorText);
+          if (errorData.error === 'AI Readiness Database Connection Issue') {
+            throw new Error(`${errorData.message}\n\nDetails: ${errorData.details}\n\nSuggestion: ${errorData.suggestion}`);
+          } else {
+            throw new Error(`Failed to fetch assessment data: ${response.status} ${response.statusText}\n\nDetails: ${errorData.message || errorText}`);
+          }
+        } catch (parseError) {
+          throw new Error(`Failed to fetch assessment data: ${response.status} ${response.statusText}`);
+        }
       }
 
       const contentType = response.headers.get('content-type');
@@ -128,7 +138,12 @@ export default function AdminAssessmentViewer() {
       parseQuestionDetails(data);
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      console.error('Assessment fetch error:', err);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Unknown error occurred while fetching assessment data');
+      }
     } finally {
       setLoading(false);
     }

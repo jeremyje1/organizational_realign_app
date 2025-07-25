@@ -3,13 +3,13 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// AI Readiness database client
+// AI Readiness database client - using anon key as fallback since service role key is invalid
 const aiReadinessSupabase = createClient(
-  process.env.NEXT_PUBLIC_AI_READINESS_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_AI_READINESS_SUPABASE_ANON_KEY!
+  process.env.AI_READINESS_SUPABASE_URL || process.env.NEXT_PUBLIC_AI_READINESS_SUPABASE_URL!,
+  process.env.AI_READINESS_SUPABASE_SERVICE_ROLE_KEY || process.env.AI_READINESS_SUPABASE_ANON_KEY!
 );
 
 export async function GET(
@@ -35,12 +35,14 @@ export async function GET(
     
     if (isAiReadiness) {
       // Fetch from AI readiness database
+      console.log('Fetching AI readiness assessment:', assessmentId);
       const { data, error: aiError } = await aiReadinessSupabase
         .from('ai_readiness_assessments')
         .select('*')
         .eq('id', assessmentId)
         .single();
       
+      console.log('AI readiness query result:', { data, error: aiError });
       assessment = data;
       error = aiError;
     } else {
@@ -57,8 +59,20 @@ export async function GET(
 
     if (error) {
       console.error('Error fetching assessment:', error);
+      
+      // Special handling for AI readiness database connection issues
+      if (isAiReadiness && error.message?.includes('Invalid API key')) {
+        return NextResponse.json({
+          error: 'AI Readiness Database Connection Issue',
+          message: 'The AI readiness assessment database is currently experiencing connection issues. This may be due to database credentials that need to be refreshed or database configuration changes.',
+          details: 'Please check the AI readiness Supabase configuration and ensure the service role key is valid.',
+          assessmentId: assessmentId,
+          suggestion: 'You can view the assessment list, but individual AI readiness assessment details are temporarily unavailable.'
+        }, { status: 503 });
+      }
+      
       return NextResponse.json(
-        { error: 'Failed to fetch assessment' },
+        { error: 'Failed to fetch assessment', details: error.message },
         { status: 500 }
       );
     }
