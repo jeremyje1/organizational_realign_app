@@ -733,6 +733,13 @@ function AdminTestingPanelContent() {
         {/* Testing Matrix */}
         <div className="mb-8 bg-white rounded-lg shadow p-6">
           <h2 className="text-lg font-medium text-gray-900 mb-4">Testing Matrix</h2>
+          <div className="mb-4 p-4 bg-blue-50 rounded-lg">
+            <h3 className="font-medium text-blue-900 mb-2">Testing Options:</h3>
+            <ul className="text-sm text-blue-800 space-y-1">
+              <li><strong>Auto Test:</strong> Generates synthetic data and runs automated test</li>
+              <li><strong>Manual Test:</strong> Opens assessment in new tab - go through question by question with real data entry</li>
+            </ul>
+          </div>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -760,21 +767,34 @@ function AdminTestingPanelContent() {
                       
                       return (
                         <td key={tier.tier} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          <button
-                            onClick={() => runTierTest(tier.tier, industry.industry)}
-                            disabled={isRunning}
-                            className={`px-3 py-1 rounded text-xs font-medium ${
-                              isRunning 
-                                ? 'bg-yellow-100 text-yellow-800' 
-                                : testResult?.status === 'success'
-                                ? 'bg-green-100 text-green-800 hover:bg-green-200'
-                                : testResult?.status === 'error'
-                                ? 'bg-red-100 text-red-800 hover:bg-red-200'
-                                : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
-                            }`}
-                          >
-                            {isRunning ? 'Testing...' : testResult ? testResult.status : 'Test'}
-                          </button>
+                          <div className="flex flex-col space-y-1">
+                            <button
+                              onClick={() => runTierTest(tier.tier, industry.industry)}
+                              disabled={isRunning}
+                              className={`px-3 py-1 rounded text-xs font-medium ${
+                                isRunning 
+                                  ? 'bg-yellow-100 text-yellow-800' 
+                                  : testResult?.status === 'success'
+                                  ? 'bg-green-100 text-green-800 hover:bg-green-200'
+                                  : testResult?.status === 'error'
+                                  ? 'bg-red-100 text-red-800 hover:bg-red-200'
+                                  : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+                              }`}
+                            >
+                              {isRunning ? 'Testing...' : testResult ? testResult.status : 'Auto Test'}
+                            </button>
+                            <a
+                              href={assessmentType === 'ai-readiness' 
+                                ? `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&assessment_type=ai-readiness&test_mode=admin`
+                                : `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&test_mode=admin`
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-1 rounded text-xs font-medium bg-purple-100 text-purple-800 hover:bg-purple-200 text-center"
+                            >
+                              Manual Test
+                            </a>
+                          </div>
                         </td>
                       );
                     })}
@@ -782,6 +802,59 @@ function AdminTestingPanelContent() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+
+        {/* Quick Manual Testing Links */}
+        <div className="mb-8 bg-white rounded-lg shadow p-6">
+          <h2 className="text-lg font-medium text-gray-900 mb-4">Quick Manual Testing Links</h2>
+          <p className="text-sm text-gray-600 mb-4">
+            Click any link below to open a full assessment in a new tab. Go through each question manually to test the complete user experience.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {TIER_CONFIGS.map((tier) => (
+              <div key={tier.tier} className="border rounded-lg p-4 bg-gray-50">
+                <h3 className="font-medium text-gray-900 mb-2">{tier.displayName}</h3>
+                <p className="text-xs text-gray-600 mb-3">{tier.questionCount} questions</p>
+                <div className="space-y-2">
+                  {INDUSTRY_CONFIGS.slice(0, 3).map((industry) => (
+                    <a
+                      key={industry.industry}
+                      href={assessmentType === 'ai-readiness' 
+                        ? `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&assessment_type=ai-readiness&test_mode=admin`
+                        : `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&test_mode=admin`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full px-3 py-2 text-xs font-medium text-center bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+                    >
+                      {industry.displayName}
+                    </a>
+                  ))}
+                  <details className="mt-2">
+                    <summary className="text-xs text-gray-500 cursor-pointer hover:text-gray-700">
+                      More industries...
+                    </summary>
+                    <div className="mt-2 space-y-2">
+                      {INDUSTRY_CONFIGS.slice(3).map((industry) => (
+                        <a
+                          key={industry.industry}
+                          href={assessmentType === 'ai-readiness' 
+                            ? `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&assessment_type=ai-readiness&test_mode=admin`
+                            : `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&test_mode=admin`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block w-full px-3 py-2 text-xs font-medium text-center bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+                        >
+                          {industry.displayName}
+                        </a>
+                      ))}
+                    </div>
+                  </details>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
