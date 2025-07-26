@@ -43,16 +43,16 @@ export async function GET(request: NextRequest) {
         {
           tier: 'AI Transformation Blueprint™',
           type: 'ai-readiness',
-          completions: 45,
-          revenue: 1102500, // $24,500 × 45
-          avgScore: 82.3,
+          completions: 52,
+          revenue: 389740, // $7,495 × 52
+          avgScore: 81.4,
           conversionRate: 91.2
         },
         {
           tier: 'AI Readiness Comprehensive',
           type: 'ai-readiness',
           completions: 78,
-          revenue: 389610, // $4,995 × 78
+          revenue: 194610, // $2,495 × 78
           avgScore: 75.8,
           conversionRate: 85.4
         },
@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
           tier: 'Higher Ed AI Pulse Check',
           type: 'ai-readiness',
           completions: 124,
-          revenue: 248000, // $2,000 × 124
+          revenue: 61380, // $495 × 124
           avgScore: 68.2,
           conversionRate: 78.9
         },
@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
           tier: 'AI Transformation Blueprint™',
           type: 'ai-readiness',
           completions: 134,
-          revenue: 3283000, // $24,500 × 134
+          revenue: 1004330, // $7,495 × 134
           avgScore: 83.1,
           conversionRate: 92.5
         },
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
           tier: 'AI Readiness Comprehensive',
           type: 'ai-readiness',
           completions: 189,
-          revenue: 944055, // $4,995 × 189
+          revenue: 471555, // $2,495 × 189
           avgScore: 76.3,
           conversionRate: 86.8
         },
@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
           tier: 'Higher Ed AI Pulse Check',
           type: 'ai-readiness',
           completions: 298,
-          revenue: 596000, // $2,000 × 298
+          revenue: 147510, // $495 × 298
           avgScore: 69.8,
           conversionRate: 81.2
         },

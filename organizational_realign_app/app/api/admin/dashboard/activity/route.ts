@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
         type: 'payment_processed',
         description: 'Payment processed for AI Readiness Comprehensive',
         timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-        value: 4995
+        value: 2495
       },
       {
         id: '3',
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
         type: 'payment_processed',
         description: 'AI Transformation Blueprint™ purchase',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
-        value: 24500
+        value: 7495
       },
       {
         id: '6',
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
         type: 'payment_processed',
         description: 'Enterprise Partnership consultation booking',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 18).toISOString(),
-        value: 0 // Contact for pricing
+        value: 24995 // Enterprise Partnership pricing
       },
       {
         id: '9',
