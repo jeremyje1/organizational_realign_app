@@ -87,6 +87,8 @@ declare module 'next/link' {
     children?: React.ReactNode;
     className?: string;
     style?: React.CSSProperties;
+    target?: string;
+    rel?: string;
   }
   
   const Link: ComponentType<LinkProps>;
