@@ -17,31 +17,31 @@ export async function GET(request: NextRequest) {
         totalAssessments: 47,
         completedAssessments: 38,
         activeUsers: 23,
-        revenue: 3750,
+        revenue: 157500, // Higher Ed AI revenue
         conversionRate: 80.8,
-        avgCompletionTime: 28,
-        topTier: 'AI Blueprint Program',
-        growthRate: 15.2
+        avgCompletionTime: 35,
+        topTier: 'AI Transformation Blueprint™',
+        growthRate: 18.2
       },
       '30d': {
-        totalAssessments: 247,
-        completedAssessments: 198,
-        activeUsers: 143,
-        revenue: 18750,
-        conversionRate: 68.2,
-        avgCompletionTime: 32,
-        topTier: 'Comprehensive AI Assessment',
-        growthRate: 23.4
+        totalAssessments: 347,
+        completedAssessments: 285,
+        activeUsers: 198,
+        revenue: 1756209, // Higher revenue reflecting AI Blueprint pricing
+        conversionRate: 82.1,
+        avgCompletionTime: 38,
+        topTier: 'AI Transformation Blueprint™',
+        growthRate: 34.7
       },
       '90d': {
-        totalAssessments: 692,
-        completedAssessments: 534,
-        activeUsers: 387,
-        revenue: 47850,
-        conversionRate: 72.1,
-        avgCompletionTime: 35,
-        topTier: 'AI Blueprint Program',
-        growthRate: 18.7
+        totalAssessments: 892,
+        completedAssessments: 734,
+        activeUsers: 487,
+        revenue: 4285750, // Quarterly AI Blueprint revenue
+        conversionRate: 82.3,
+        avgCompletionTime: 41,
+        topTier: 'AI Transformation Blueprint™',
+        growthRate: 28.9
       }
     };
 

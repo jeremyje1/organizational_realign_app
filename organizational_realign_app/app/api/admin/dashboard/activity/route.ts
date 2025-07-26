@@ -16,16 +16,16 @@ export async function GET(request: NextRequest) {
       {
         id: '1',
         type: 'assessment_completed',
-        description: 'AI Blueprint Program completed by University of California',
+        description: 'AI Transformation Blueprint™ completed by University of California',
         timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-        tier: 'ai-blueprint'
+        tier: 'ai-transformation-blueprint'
       },
       {
         id: '2',
         type: 'payment_processed',
-        description: 'Payment processed for Comprehensive Package',
+        description: 'Payment processed for AI Readiness Comprehensive',
         timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-        value: 2497
+        value: 4995
       },
       {
         id: '3',
@@ -36,23 +36,23 @@ export async function GET(request: NextRequest) {
       {
         id: '4',
         type: 'assessment_completed',
-        description: 'Organizational Diagnostic completed by Stanford University',
+        description: 'Higher Ed AI Pulse Check completed by Stanford University',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(),
-        tier: 'one-time-diagnostic'
+        tier: 'higher-ed-ai-pulse-check'
       },
       {
         id: '5',
         type: 'payment_processed',
-        description: 'Monthly subscription renewal',
+        description: 'AI Transformation Blueprint™ purchase',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
-        value: 99
+        value: 24500
       },
       {
         id: '6',
         type: 'assessment_completed',
-        description: 'AI Pulse Check completed by Harvard Business School',
+        description: 'AI Readiness Comprehensive completed by Harvard University',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(),
-        tier: 'ai-pulse-check'
+        tier: 'ai-readiness-comprehensive'
       },
       {
         id: '7',
@@ -63,16 +63,16 @@ export async function GET(request: NextRequest) {
       {
         id: '8',
         type: 'payment_processed',
-        description: 'Enterprise consultation booking',
+        description: 'Enterprise Partnership consultation booking',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 18).toISOString(),
-        value: 5000
+        value: 0 // Contact for pricing
       },
       {
         id: '9',
         type: 'assessment_completed',
-        description: 'Comprehensive AI Assessment completed by Princeton',
+        description: 'AI Transformation Blueprint™ completed by Princeton',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
-        tier: 'ai-assessment'
+        tier: 'ai-transformation-blueprint'
       },
       {
         id: '10',

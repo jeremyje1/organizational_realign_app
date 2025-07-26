@@ -88,47 +88,84 @@ function BusinessDashboard() {
       
       // Mock data for development
       setStats({
-        totalAssessments: 247,
-        completedAssessments: 198,
-        activeUsers: 143,
-        revenue: 18750,
-        conversionRate: 68.2,
-        avgCompletionTime: 32,
-        topTier: 'Comprehensive AI Assessment',
-        growthRate: 23.4
+        totalAssessments: 347,
+        completedAssessments: 285,
+        activeUsers: 198,
+        revenue: 1756209, // Higher revenue reflecting AI Blueprint pricing
+        conversionRate: 82.1,
+        avgCompletionTime: 38,
+        topTier: 'AI Transformation Blueprint™',
+        growthRate: 34.7
       });
 
       setRecentActivity([
         {
           id: '1',
           type: 'assessment_completed',
-          description: 'AI Blueprint Program completed by University of California',
+          description: 'AI Transformation Blueprint™ completed by University of California',
           timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-          tier: 'ai-blueprint'
+          tier: 'ai-transformation-blueprint'
         },
         {
           id: '2',
           type: 'payment_processed',
-          description: 'Payment processed for Comprehensive Package',
+          description: 'Payment processed for AI Readiness Comprehensive',
           timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-          value: 2497
+          value: 4995
         },
         {
           id: '3',
           type: 'user_registered',
           description: 'New user registered: MIT Administration',
           timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString()
+        },
+        {
+          id: '4',
+          type: 'assessment_completed',
+          description: 'Higher Ed AI Pulse Check completed by Stanford University',
+          timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(),
+          tier: 'higher-ed-ai-pulse-check'
+        },
+        {
+          id: '5',
+          type: 'payment_processed',
+          description: 'Enterprise Partnership consultation booked',
+          timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
+          value: 24500
+        },
+        {
+          id: '6',
+          type: 'assessment_completed',
+          description: 'AI Readiness Comprehensive completed by Harvard University',
+          timestamp: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(),
+          tier: 'ai-readiness-comprehensive'
         }
       ]);
 
       setTierPerformance([
         {
-          tier: 'AI Blueprint Program',
+          tier: 'AI Transformation Blueprint™',
           type: 'ai-readiness',
           completions: 45,
-          revenue: 11250,
-          avgScore: 72.3,
-          conversionRate: 81.2
+          revenue: 1102500, // $24,500 × 45
+          avgScore: 82.3,
+          conversionRate: 91.2
+        },
+        {
+          tier: 'AI Readiness Comprehensive',
+          type: 'ai-readiness',
+          completions: 78,
+          revenue: 389610, // $4,995 × 78
+          avgScore: 75.8,
+          conversionRate: 85.4
+        },
+        {
+          tier: 'Higher Ed AI Pulse Check',
+          type: 'ai-readiness',
+          completions: 124,
+          revenue: 248000, // $2,000 × 124
+          avgScore: 68.2,
+          conversionRate: 78.9
         },
         {
           tier: 'Comprehensive Package',

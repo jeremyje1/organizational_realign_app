@@ -68,36 +68,46 @@ const ASSESSMENT_CONFIGS: TestConfig[] = [
     questionCount: 200,
     features: ['Power BI Dashboard', 'API Connectors', 'Real-time Collaboration', 'Quarterly Audits']
   },
-  // AI Readiness Assessments
+  // AI Blueprint Assessments (Higher Education Only)
   {
     id: 'ai-pulse-check',
-    name: 'AI Pulse Check',
+    name: 'Higher Ed AI Pulse Check',
     type: 'ai-readiness',
     tier: 'higher-ed-ai-pulse-check',
-    description: 'Quick AI readiness assessment for educational institutions',
+    description: 'Quick AI readiness snapshot for higher education institutions ($2,000)',
     estimatedTime: '15-20 minutes',
-    questionCount: 20,
-    features: ['Basic AI Readiness Score', 'Quick Recommendations', 'PDF Summary']
-  },
-  {
-    id: 'ai-assessment',
-    name: 'Comprehensive AI Assessment',
-    type: 'ai-readiness',
-    tier: 'higher-ed-ai-assessment',
-    description: 'Detailed AI readiness with implementation roadmap',
-    estimatedTime: '30-35 minutes',
     questionCount: 50,
-    features: ['Detailed AI Analysis', 'Implementation Roadmap', 'Technology Gap Analysis']
+    features: ['AIRIX™ Core Algorithm', 'AI Readiness Scoring (6 domains)', '8-10 Page Report', 'PDF Delivery', 'Up to 2 Users']
   },
   {
-    id: 'ai-blueprint',
-    name: 'AI Blueprint Program',
+    id: 'ai-comprehensive',
+    name: 'AI Readiness Comprehensive',
     type: 'ai-readiness',
-    tier: 'higher-ed-ai-blueprint',
-    description: 'Complete AI transformation blueprint with strategic planning',
-    estimatedTime: '45-50 minutes',
-    questionCount: 75,
-    features: ['Strategic Planning', 'Custom Recommendations', 'Executive Dashboard', 'Ongoing Support']
+    tier: 'ai-readiness-comprehensive',
+    description: 'Comprehensive assessment & strategy for higher education ($4,995)',
+    estimatedTime: '35-40 minutes',
+    questionCount: 105,
+    features: ['AIRIX™, AIRS™, AICS™ Algorithms', 'AI Readiness Scoring (8 domains)', '25-Page Report', '30-min Strategy Session', 'Up to 5 Users']
+  },
+  {
+    id: 'ai-transformation',
+    name: 'AI Transformation Blueprint™',
+    type: 'ai-readiness',
+    tier: 'ai-transformation-blueprint',
+    description: 'Complete AI transformation roadmap for higher education ($24,500)',
+    estimatedTime: '50-60 minutes',
+    questionCount: 150,
+    features: ['Full Algorithm Suite (AIRIX™, AIRS™, AICS™, AIMS™, AIPS™)', '40-Page Blueprint', 'Power BI Dashboard', 'Executive Workshop', 'Up to 15 Users']
+  },
+  {
+    id: 'enterprise-partnership',
+    name: 'Enterprise Partnership',
+    type: 'ai-readiness',
+    tier: 'enterprise-partnership',
+    description: 'Comprehensive AI transformation partnership for higher education (Contact for Pricing)',
+    estimatedTime: '60+ minutes',
+    questionCount: 200,
+    features: ['Full Algorithm Suite (AIRIX™, AIRS™, AICS™, AIMS™, AIPS™, AIBS™)', 'Quarterly Re-assessments', 'Faculty Cohort Program', 'Dedicated Slack Channel', 'Unlimited Users']
   }
 ];
 
@@ -136,7 +146,17 @@ function UnifiedTestingInterface() {
     if (config.type === 'organizational') {
       assessmentUrl = `${baseUrl}/assessment/start?tier=${config.tier}&test=true`;
     } else {
+      // AI readiness assessments - use the correct tier names
       assessmentUrl = `${baseUrl}/assessment/start?tier=${config.tier}&type=ai-readiness&test=true`;
+      
+      // Handle Enterprise Partnership differently since it goes to Calendly
+      if (config.tier === 'enterprise-partnership') {
+        window.open('https://calendly.com/jeremyestrella/30min?month=2025-07', '_blank');
+        setTimeout(() => {
+          setIsRunningTest(null);
+        }, 2000);
+        return;
+      }
     }
     
     window.open(assessmentUrl, '_blank');
