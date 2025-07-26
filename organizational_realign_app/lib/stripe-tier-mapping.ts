@@ -28,7 +28,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     successRedirect: '/assessment/tier-based?tier=higher-ed-ai-pulse-check&assessment_type=ai-readiness',
     cancelRedirect: '/ai-readiness/pricing',
     tierName: 'Higher Ed AI Pulse Check',
-    tierPrice: 495
+    tierPrice: 2000
   },
   'ai-readiness-comprehensive': {
     tierKey: 'ai-readiness-comprehensive',
@@ -38,7 +38,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     successRedirect: '/assessment/tier-based?tier=ai-readiness-comprehensive&assessment_type=ai-readiness',
     cancelRedirect: '/ai-readiness/pricing',
     tierName: 'AI Readiness Comprehensive',
-    tierPrice: 2495
+    tierPrice: 4995
   },
   'ai-transformation-blueprint': {
     tierKey: 'ai-transformation-blueprint',
@@ -48,7 +48,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     successRedirect: '/assessment/tier-based?tier=ai-transformation-blueprint&assessment_type=ai-readiness',
     cancelRedirect: '/ai-readiness/pricing',
     tierName: 'AI Transformation Blueprint',
-    tierPrice: 7495
+    tierPrice: 24500
   },
   'ai-enterprise-partnership': {
     tierKey: 'ai-enterprise-partnership',
@@ -58,7 +58,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     successRedirect: '/assessment/tier-based?tier=ai-enterprise-partnership&assessment_type=ai-readiness',
     cancelRedirect: '/ai-readiness/pricing',
     tierName: 'Enterprise Partnership',
-    tierPrice: 24995
+    tierPrice: 0 // Contact for pricing
   }
 };
 

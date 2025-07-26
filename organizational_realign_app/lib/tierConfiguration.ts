@@ -46,7 +46,7 @@ export interface TierConfiguration {
 export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
   'higher-ed-ai-pulse-check': {
     name: 'Higher Ed AI Pulse Check',
-    price: 495,
+    price: 2000,
     targetCustomer: 'Individual departments or small teams wanting a quick AI readiness snapshot',
     coreDeliverables: [
       '50-question streamlined AI readiness assessment',
@@ -99,7 +99,7 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
 
   'ai-readiness-comprehensive': {
     name: 'AI Readiness Comprehensive',
-    price: 2495,
+    price: 4995,
     targetCustomer: 'Higher education institutions seeking comprehensive AI readiness evaluation with advanced analytics',
     coreDeliverables: [
       '105-question comprehensive AI readiness assessment',
@@ -156,7 +156,7 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
 
   'ai-transformation-blueprint': {
     name: 'AI Transformation Blueprint',
-    price: 7495,
+    price: 24500,
     targetCustomer: 'Higher education institutions ready for strategic AI implementation with expert guidance and comprehensive analysis',
     coreDeliverables: [
       '150-question in-depth AI assessment',
@@ -216,7 +216,7 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
 
   'ai-enterprise-partnership': {
     name: 'Enterprise Partnership',
-    price: 24995,
+    price: 0, // Contact for pricing
     targetCustomer: 'Large institutions, multi-campus systems, R1 universities seeking comprehensive AI transformation partnership',
     coreDeliverables: [
       'Full AI Transformation Blueprint™ included',

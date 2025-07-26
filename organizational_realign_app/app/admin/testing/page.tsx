@@ -83,7 +83,7 @@ const ORG_TIER_CONFIGS: TierTestConfig[] = [
 const AI_READINESS_TIER_CONFIGS: TierTestConfig[] = [
   {
     tier: 'higher-ed-ai-pulse-check',
-    displayName: 'Higher Ed AI Pulse Check (50 Questions) - $495',
+    displayName: 'Higher Ed AI Pulse Check (50 Questions) - $2,000',
     questionCount: 50,
     algorithms: ['AIRIX™ Core Algorithm'],
     features: ['AI Readiness Scoring (6 domains)', '8-10 Page AI Report', 'PDF Delivery', 'Up to 2 Users'],
@@ -91,7 +91,7 @@ const AI_READINESS_TIER_CONFIGS: TierTestConfig[] = [
   },
   {
     tier: 'ai-readiness-comprehensive',
-    displayName: 'AI Readiness Comprehensive (105 Questions) - $2,495',
+    displayName: 'AI Readiness Comprehensive (105 Questions) - $4,995',
     questionCount: 105,
     algorithms: ['AIRIX™', 'AIRS™', 'AICS™ Algorithms'],
     features: ['AI Readiness Scoring (8 domains)', '25-Page Detailed Report', '30-min Strategy Session', 'Up to 5 Users'],
@@ -99,7 +99,7 @@ const AI_READINESS_TIER_CONFIGS: TierTestConfig[] = [
   },
   {
     tier: 'ai-transformation-blueprint',
-    displayName: 'AI Transformation Blueprint™ (150 Questions) - $7,495',
+    displayName: 'AI Transformation Blueprint™ (150 Questions) - $24,500',
     questionCount: 150,
     algorithms: ['AIRIX™', 'AIRS™', 'AICS™', 'AIMS™', 'AIPS™ Full Suite'],
     features: ['40-Page AI Transformation Blueprint', 'Power BI Dashboard', 'Executive Workshop', 'Up to 15 Users'],
@@ -107,7 +107,7 @@ const AI_READINESS_TIER_CONFIGS: TierTestConfig[] = [
   },
   {
     tier: 'enterprise-partnership',
-    displayName: 'Enterprise Partnership (200 Questions) - $24,995',
+    displayName: 'Enterprise Partnership (200 Questions) - Contact for Pricing',
     questionCount: 200,
     algorithms: ['AIRIX™', 'AIRS™', 'AICS™', 'AIMS™', 'AIPS™', 'AIBS™ Complete Suite'],
     features: ['Quarterly Re-assessments', 'Faculty Cohort Program', 'Dedicated Slack Channel', 'Unlimited Users'],

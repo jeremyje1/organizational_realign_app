@@ -74,7 +74,7 @@ const ASSESSMENT_CONFIGS: TestConfig[] = [
     name: 'Higher Ed AI Pulse Check',
     type: 'ai-readiness',
     tier: 'higher-ed-ai-pulse-check',
-    description: 'Quick AI readiness snapshot for higher education institutions ($495)',
+    description: 'Quick AI readiness snapshot for higher education institutions ($2,000)',
     estimatedTime: '15-20 minutes',
     questionCount: 50,
     features: ['AIRIX™ Core Algorithm', 'AI Readiness Scoring (6 domains)', '8-10 Page Report', 'PDF Delivery', 'Up to 2 Users']
@@ -84,7 +84,7 @@ const ASSESSMENT_CONFIGS: TestConfig[] = [
     name: 'AI Readiness Comprehensive',
     type: 'ai-readiness',
     tier: 'ai-readiness-comprehensive',
-    description: 'Comprehensive assessment & strategy for higher education ($2,495)',
+    description: 'Comprehensive assessment & strategy for higher education ($4,995)',
     estimatedTime: '35-40 minutes',
     questionCount: 105,
     features: ['AIRIX™, AIRS™, AICS™ Algorithms', 'AI Readiness Scoring (8 domains)', '25-Page Report', '30-min Strategy Session', 'Up to 5 Users']
@@ -94,7 +94,7 @@ const ASSESSMENT_CONFIGS: TestConfig[] = [
     name: 'AI Transformation Blueprint™',
     type: 'ai-readiness',
     tier: 'ai-transformation-blueprint',
-    description: 'Complete AI transformation roadmap for higher education ($7,495)',
+    description: 'Complete AI transformation roadmap for higher education ($24,500)',
     estimatedTime: '50-60 minutes',
     questionCount: 150,
     features: ['Full Algorithm Suite (AIRIX™, AIRS™, AICS™, AIMS™, AIPS™)', '40-Page Blueprint', 'Power BI Dashboard', 'Executive Workshop', 'Up to 15 Users']
@@ -104,7 +104,7 @@ const ASSESSMENT_CONFIGS: TestConfig[] = [
     name: 'Enterprise Partnership',
     type: 'ai-readiness',
     tier: 'enterprise-partnership',
-    description: 'Comprehensive AI transformation partnership for higher education ($24,995)',
+    description: 'Comprehensive AI transformation partnership for higher education (Contact for Pricing)',
     estimatedTime: '60+ minutes',
     questionCount: 200,
     features: ['Full Algorithm Suite (AIRIX™, AIRS™, AICS™, AIMS™, AIPS™, AIBS™)', 'Quarterly Re-assessments', 'Faculty Cohort Program', 'Dedicated Slack Channel', 'Unlimited Users']

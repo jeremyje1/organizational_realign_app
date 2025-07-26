@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
         type: 'payment_processed',
         description: 'Payment processed for AI Readiness Comprehensive',
         timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-        value: 2495
+        value: 4995
       },
       {
         id: '3',
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
         type: 'payment_processed',
         description: 'AI Transformation Blueprint™ purchase',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
-        value: 7495
+        value: 24500
       },
       {
         id: '6',
