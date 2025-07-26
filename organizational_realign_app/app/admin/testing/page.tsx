@@ -79,22 +79,38 @@ const ORG_TIER_CONFIGS: TierTestConfig[] = [
   }
 ];
 
-// AI Readiness Assessment Tiers
+// AI Blueprint Assessment Tiers (Higher Education Only)
 const AI_READINESS_TIER_CONFIGS: TierTestConfig[] = [
   {
-    tier: 'ai-readiness-basic',
-    displayName: 'Advanced AI Assessment (105 Questions)',
-    questionCount: 105,
-    algorithms: ['AI Readiness Index', 'Technology Maturity', 'Change Management'],
-    features: ['AI readiness score', 'Technology gaps analysis', 'Implementation roadmap', 'PDF report'],
+    tier: 'higher-ed-ai-pulse-check',
+    displayName: 'Higher Ed AI Pulse Check (50 Questions) - $2,000',
+    questionCount: 50,
+    algorithms: ['AIRIX™ Core Algorithm'],
+    features: ['AI Readiness Scoring (6 domains)', '8-10 Page AI Report', 'PDF Delivery', 'Up to 2 Users'],
     assessmentType: 'ai-readiness'
   },
   {
-    tier: 'ai-readiness-custom',
-    displayName: 'Comprehensive AI Assessment (150 Questions)',
+    tier: 'ai-readiness-comprehensive',
+    displayName: 'AI Readiness Comprehensive (105 Questions) - $4,995',
+    questionCount: 105,
+    algorithms: ['AIRIX™', 'AIRS™', 'AICS™ Algorithms'],
+    features: ['AI Readiness Scoring (8 domains)', '25-Page Detailed Report', '30-min Strategy Session', 'Up to 5 Users'],
+    assessmentType: 'ai-readiness'
+  },
+  {
+    tier: 'ai-transformation-blueprint',
+    displayName: 'AI Transformation Blueprint™ (150 Questions) - $24,500',
     questionCount: 150,
-    algorithms: ['Advanced AI Index', 'Predictive Readiness', 'Risk Assessment', 'ROI Analysis'],
-    features: ['Comprehensive analysis', 'Custom recommendations', 'Strategic planning', 'Executive dashboard', 'Quarterly reviews'],
+    algorithms: ['AIRIX™', 'AIRS™', 'AICS™', 'AIMS™', 'AIPS™ Full Suite'],
+    features: ['40-Page AI Transformation Blueprint', 'Power BI Dashboard', 'Executive Workshop', 'Up to 15 Users'],
+    assessmentType: 'ai-readiness'
+  },
+  {
+    tier: 'enterprise-partnership',
+    displayName: 'Enterprise Partnership (200 Questions) - Contact for Pricing',
+    questionCount: 200,
+    algorithms: ['AIRIX™', 'AIRS™', 'AICS™', 'AIMS™', 'AIPS™', 'AIBS™ Complete Suite'],
+    features: ['Quarterly Re-assessments', 'Faculty Cohort Program', 'Dedicated Slack Channel', 'Unlimited Users'],
     assessmentType: 'ai-readiness'
   }
 ];
@@ -102,33 +118,9 @@ const AI_READINESS_TIER_CONFIGS: TierTestConfig[] = [
 const INDUSTRY_CONFIGS: IndustryTestConfig[] = [
   {
     industry: 'higher-education',
-    displayName: 'Higher Education',
+    displayName: 'Higher Education (Primary Focus)',
     contextualQuestions: 25,
-    specificFeatures: ['Student success metrics', 'Academic program analysis', 'Enrollment optimization']
-  },
-  {
-    industry: 'healthcare',
-    displayName: 'Healthcare',
-    contextualQuestions: 30,
-    specificFeatures: ['Patient care optimization', 'Regulatory compliance', 'Clinical workflow analysis']
-  },
-  {
-    industry: 'nonprofit',
-    displayName: 'Nonprofit',
-    contextualQuestions: 20,
-    specificFeatures: ['Donor engagement', 'Program effectiveness', 'Mission alignment']
-  },
-  {
-    industry: 'corporate',
-    displayName: 'Corporate',
-    contextualQuestions: 25,
-    specificFeatures: ['Operational efficiency', 'Revenue optimization', 'Market positioning']
-  },
-  {
-    industry: 'government',
-    displayName: 'Government',
-    contextualQuestions: 35,
-    specificFeatures: ['Public service delivery', 'Compliance tracking', 'Resource allocation']
+    specificFeatures: ['Student success metrics', 'Academic program analysis', 'Faculty development', 'AI policy frameworks']
   }
 ];
 
@@ -557,8 +549,28 @@ function AdminTestingPanelContent() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Assessment Testing Panel</h1>
           <p className="mt-2 text-sm text-gray-600">
-            Test both organizational and AI readiness assessments across all tiers and industries
+            Test both organizational and AI Blueprint assessments - Higher Education focus
           </p>
+          
+          {/* Notice about unified interface */}
+          <div className="mt-4 bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-indigo-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-indigo-700">
+                  <strong>New:</strong> Try our enhanced{' '}
+                  <a href="/admin/testing/unified" className="font-medium text-indigo-800 underline hover:text-indigo-900">
+                    Unified Testing Interface
+                  </a>{' '}
+                  for a better testing experience with all your actual AI Blueprint assessments!
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Assessment Type Toggle */}

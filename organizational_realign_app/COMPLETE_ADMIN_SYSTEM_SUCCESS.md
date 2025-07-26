@@ -2,7 +2,7 @@
 
 ## 🎉 SUCCESS: Unified Testing & Business Dashboard Live!
 
-**Deployment URL:** https://organizational-realign-2qdsw2cpz-jeremys-projects-73929cad.vercel.app
+**Deployment URL:** https://organizational-realign-ej6qeivuz-jeremys-projects-73929cad.vercel.app
 
 ### 🔐 Admin Access
 
@@ -15,12 +15,12 @@
 
 ✅ **Features:**
 - Test ALL assessments from one place
-- Both Organizational and AI Readiness assessments
+- Both Organizational and AI Blueprint assessments
 - 7 different assessment configurations:
   - **Organizational:** One-Time Diagnostic, Monthly Subscription, Comprehensive Package, Enterprise Transformation
-  - **AI Readiness:** AI Pulse Check, Comprehensive AI Assessment, AI Blueprint Program
+  - **AI Blueprint (Higher Ed Only):** Higher Ed AI Pulse Check ($2K), AI Readiness Comprehensive ($5K), AI Transformation Blueprint™ ($24.5K), Enterprise Partnership
 - Real-time testing with assessment preview
-- Detailed tier configurations with question counts and features
+- Detailed tier configurations with correct question counts and proprietary algorithms
 - Recent test results tracking
 
 ## 2. **Enhanced Business Dashboard**
@@ -62,7 +62,7 @@
 ## 🚀 How to Use Your New Admin System
 
 ### **Step 1: Access Admin**
-1. Go to: `https://organizational-realign-2qdsw2cpz-jeremys-projects-73929cad.vercel.app/admin/login`
+1. Go to: `https://organizational-realign-ej6qeivuz-jeremys-projects-73929cad.vercel.app/admin/login`
 2. Enter password: `stardynamics1124*`
 3. You'll be logged into the admin system with full navigation
 
@@ -70,9 +70,10 @@
 1. Navigate to **"Test Center"** in the admin navigation
 2. Choose from all available assessment types:
    - Filter by "All", "Organizational", or "AI Readiness"
-   - See question counts, estimated time, and key features
+   - See correct question counts, estimated time, and proprietary algorithms
 3. Click **"Start Test"** on any assessment
 4. Assessment opens in new tab for you to experience as your customers do
+5. **Note:** Enterprise Partnership redirects to Calendly for consultation booking
 
 ### **Step 3: Monitor Business Performance**
 1. Go to **"Dashboard"** in admin navigation
@@ -114,19 +115,31 @@
    - Power BI Dashboard, API Connectors
    - Real-time Collaboration, Quarterly Audits
 
-### **AI Readiness Assessments:**
+### **AI Blueprint Assessments (Higher Education Only):**
 
-1. **AI Pulse Check** (20 questions, 15-20 min)
-   - Basic AI Readiness Score
-   - Quick Recommendations, PDF Summary
+1. **Higher Ed AI Pulse Check** (50 questions, 15-20 min) - **$2,000**
+   - AIRIX™ Core Algorithm Analysis
+   - AI Readiness Scoring (6 domains)
+   - 8-10 Page AI-Generated Report
+   - PDF Delivery, Up to 2 Users
 
-2. **Comprehensive AI Assessment** (50 questions, 30-35 min)
-   - Detailed AI Analysis
-   - Implementation Roadmap, Technology Gap Analysis
+2. **AI Readiness Comprehensive** (105 questions, 35-40 min) - **$4,995**
+   - AIRIX™, AIRS™, AICS™ Algorithm Analysis
+   - AI Readiness Scoring (8 domains)
+   - 25-Page Detailed Report
+   - 30-minute Strategy Session, Up to 5 Users
 
-3. **AI Blueprint Program** (75 questions, 45-50 min)
-   - Strategic Planning, Custom Recommendations
-   - Executive Dashboard, Ongoing Support
+3. **AI Transformation Blueprint™** (150 questions, 50-60 min) - **$24,500**
+   - Full Algorithm Suite (AIRIX™, AIRS™, AICS™, AIMS™, AIPS™)
+   - 40-Page AI Transformation Blueprint
+   - Power BI Dashboard, Executive Workshop
+   - Up to 15 Users, Advanced AI Scenario Builder
+
+4. **Enterprise Partnership** (200 questions, 60+ min) - **Contact for Pricing**
+   - Full Algorithm Suite (AIRIX™, AIRS™, AICS™, AIMS™, AIPS™, AIBS™)
+   - Quarterly AI Readiness Re-assessments
+   - Faculty Micro-credential Cohort Program
+   - Dedicated Slack Advisory Channel, Unlimited Users
 
 ---
 
