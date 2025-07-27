@@ -101,8 +101,27 @@ export async function GET(
       });
     }
 
-    // If not found in assessments table, try AI readiness assessments
-    console.log(`[GET /api/assessments/${assessmentId}] Not found in assessments, trying AI readiness...`);
+    // If not found in assessments table, try surveys table
+    console.log(`[GET /api/assessments/${assessmentId}] Not found in assessments, trying surveys...`);
+    
+    const { data: surveyData, error: surveyError } = await supabase
+      .from('surveys')
+      .select('*')
+      .eq('id', assessmentId)
+      .single();
+
+    if (!surveyError && surveyData) {
+      // Found in surveys table
+      return NextResponse.json({ 
+        success: true, 
+        data: surveyData,
+        source: 'surveys',
+        type: 'survey'
+      });
+    }
+
+    // If not found in surveys table, try AI readiness assessments
+    console.log(`[GET /api/assessments/${assessmentId}] Not found in surveys, trying AI readiness...`);
     
     try {
       // Create AI readiness database client
