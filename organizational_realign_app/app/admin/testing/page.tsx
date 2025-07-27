@@ -241,6 +241,26 @@ function AdminTestingPanelContent() {
     setRunningTests(prev => new Set(prev).add(testKey));
 
     try {
+      // Check if AI readiness assessment is being tested on non-higher-ed industry
+      if (assessmentType === 'ai-readiness' && 
+          !['community-college', 'public-university', 'private-university'].includes(industry)) {
+        const newResult: TestResult = {
+          tier,
+          industry,
+          status: 'error',
+          message: `AI readiness assessments are only available for higher education institutions`,
+          assessmentId: `not-available-${Date.now()}`,
+          timestamp: new Date().toISOString()
+        };
+        setTestResults(prev => [...prev, newResult]);
+        setRunningTests(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(testKey);
+          return newSet;
+        });
+        return;
+      }
+
       // Handle "Contact for Pricing" tiers differently
       const isContactForPricing = (
         (tier === 'ai-transformation-blueprint' || tier === 'enterprise-partnership') && 
@@ -812,6 +832,14 @@ function AdminTestingPanelContent() {
               <li><strong>Auto Test:</strong> Generates synthetic data and runs automated test</li>
               <li><strong>Manual Test:</strong> Opens assessment in new tab - go through question by question with real data entry</li>
             </ul>
+            {assessmentType === 'ai-readiness' && (
+              <div className="mt-3 p-3 bg-blue-100 rounded border-l-4 border-blue-400">
+                <p className="text-sm text-blue-900">
+                  <strong>Note:</strong> AI readiness assessments are exclusively designed for higher education institutions 
+                  (Community Colleges, Public Universities, Private Universities). Other industries will show "N/A".
+                </p>
+              </div>
+            )}
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -844,14 +872,20 @@ function AdminTestingPanelContent() {
                         ['community-college', 'public-university', 'private-university'].includes(industry.industry)
                       ) || tier.tier === 'enterprise-transformation';
                       
+                      // Check if AI readiness is being tested on non-higher-ed industry
+                      const isUnavailable = assessmentType === 'ai-readiness' && 
+                        !['community-college', 'public-university', 'private-university'].includes(industry.industry);
+                      
                       return (
                         <td key={tier.tier} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           <div className="flex flex-col space-y-1">
                             <button
                               onClick={() => runTierTest(tier.tier, industry.industry)}
-                              disabled={isRunning}
+                              disabled={isRunning || isUnavailable}
                               className={`px-3 py-1 rounded text-xs font-medium ${
-                                isRunning 
+                                isUnavailable
+                                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                  : isRunning 
                                   ? 'bg-yellow-100 text-yellow-800' 
                                   : testResult?.status === 'success'
                                   ? 'bg-green-100 text-green-800 hover:bg-green-200'
@@ -860,19 +894,31 @@ function AdminTestingPanelContent() {
                                   : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
                               }`}
                             >
-                              {isRunning ? 'Testing...' : testResult ? testResult.status : 'Auto Test'}
+                              {isUnavailable 
+                                ? 'N/A' 
+                                : isRunning 
+                                ? 'Testing...' 
+                                : testResult 
+                                ? testResult.status 
+                                : 'Auto Test'}
                             </button>
-                            <a
-                              href={assessmentType === 'ai-readiness' 
-                                ? `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&assessment_type=ai-readiness&test_mode=admin`
-                                : `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&test_mode=admin`
-                              }
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-1 rounded text-xs font-medium bg-purple-100 text-purple-800 hover:bg-purple-200 text-center"
-                            >
-                              Manual Test
-                            </a>
+                            {isUnavailable ? (
+                              <span className="px-3 py-1 rounded text-xs font-medium bg-gray-100 text-gray-400 text-center">
+                                N/A
+                              </span>
+                            ) : (
+                              <a
+                                href={assessmentType === 'ai-readiness' 
+                                  ? `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&assessment_type=ai-readiness&test_mode=admin`
+                                  : `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&test_mode=admin`
+                                }
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-3 py-1 rounded text-xs font-medium bg-purple-100 text-purple-800 hover:bg-purple-200 text-center"
+                              >
+                                Manual Test
+                              </a>
+                            )}
                           </div>
                         </td>
                       );
