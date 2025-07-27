@@ -6,7 +6,17 @@
  * @author NorthPath Strategies
  */
 
-export type PricingTier = 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
+export type PricingTier = 
+  // AI Readiness Tiers
+  | 'higher-ed-ai-pulse-check' 
+  | 'ai-readiness-comprehensive' 
+  | 'ai-transformation-blueprint' 
+  | 'ai-enterprise-partnership'
+  // Organizational Assessment Tiers
+  | 'one-time-diagnostic'
+  | 'monthly-subscription' 
+  | 'comprehensive-package'
+  | 'enterprise-transformation';
 
 export interface TierConfiguration {
   name: string;
@@ -44,6 +54,7 @@ export interface TierConfiguration {
 }
 
 export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
+  // AI Readiness / Blueprint Tiers (Higher Education Focus)
   'higher-ed-ai-pulse-check': {
     name: 'Higher Ed AI Pulse Check',
     price: 2000,
@@ -273,6 +284,227 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       maxScenarios: null, // Unlimited
       dataRetentionMonths: null // Permanent retention
     }
+  },
+
+  // Organizational Assessment Tiers (All Industries)
+  'one-time-diagnostic': {
+    name: 'One-Time Diagnostic',
+    price: 4995,
+    targetCustomer: 'Organizations seeking comprehensive assessment with foundational analysis',
+    coreDeliverables: [
+      '100-question organizational assessment',
+      'DSCH, CRF, LEI analysis',
+      'Comprehensive PDF report',
+      'Organizational chart generation',
+      'Basic AI opportunity assessment',
+      'Single assessment access',
+      'Up to 2 users',
+      'Email support'
+    ],
+    assessmentScope: {
+      questionCount: 100,
+      sections: [
+        'Leadership & Strategy',
+        'Operations & Processes',
+        'Human Capital',
+        'Technology & Infrastructure',
+        'Culture & Change Management',
+        'Performance Management'
+      ],
+      algorithms: ['DSCH', 'CRF', 'LEI'],
+      reportPages: 15,
+      followUpSupport: 'Email support for 30 days'
+    },
+    features: {
+      uploadSupport: true,
+      dashboardRefresh: false,
+      customReporting: false,
+      powerBIEmbedded: false,
+      apiConnectors: false,
+      onSiteFacilitation: false,
+      progressAudits: false,
+      orgChartGenerator: true,
+      scenarioBuilder: false,
+      monteCarloSimulation: false,
+      realTimeCollaboration: false,
+      aiOpportunityAssessment: true,
+      aiReadinessScore: false,
+      automationRecommendations: true
+    },
+    guardrails: {
+      maxAssessments: 1,
+      maxUsers: 2,
+      dataRetentionMonths: 6
+    }
+  },
+
+  'monthly-subscription': {
+    name: 'Monthly Subscription',
+    price: 2995,
+    targetCustomer: 'Organizations needing ongoing assessment capabilities with advanced features',
+    coreDeliverables: [
+      '120-question comprehensive assessment',
+      'DSCH, CRF, LEI, OCI, HOCI analysis',
+      'Advanced AI-powered analytics',
+      'Dashboard refresh capabilities',
+      'CSV data exports',
+      'Unlimited assessments (monthly)',
+      'Up to 5 users',
+      'Priority email support'
+    ],
+    assessmentScope: {
+      questionCount: 120,
+      sections: [
+        'Strategic Leadership',
+        'Operational Excellence',
+        'Human Capital Development',
+        'Technology Integration',
+        'Cultural Transformation',
+        'Performance Analytics',
+        'Change Management',
+        'Innovation Capacity'
+      ],
+      algorithms: ['DSCH', 'CRF', 'LEI', 'OCI', 'HOCI'],
+      reportPages: 20,
+      followUpSupport: 'Priority email support + monthly check-ins'
+    },
+    features: {
+      uploadSupport: true,
+      dashboardRefresh: true,
+      customReporting: true,
+      powerBIEmbedded: false,
+      apiConnectors: false,
+      onSiteFacilitation: false,
+      progressAudits: false,
+      orgChartGenerator: true,
+      scenarioBuilder: false,
+      monteCarloSimulation: false,
+      realTimeCollaboration: false,
+      aiOpportunityAssessment: true,
+      aiReadinessScore: false,
+      automationRecommendations: true
+    },
+    guardrails: {
+      maxAssessments: null, // Unlimited monthly
+      maxUsers: 5,
+      dataRetentionMonths: 12
+    }
+  },
+
+  'comprehensive-package': {
+    name: 'Comprehensive Package',
+    price: 9900,
+    targetCustomer: 'Organizations seeking complete transformation analysis with scenario planning',
+    coreDeliverables: [
+      '150-question in-depth assessment',
+      'Full algorithm suite analysis',
+      '30-page comprehensive report',
+      'Advanced scenario builder',
+      '60-minute strategy consultation',
+      'Team collaboration features',
+      'Cost-savings analysis',
+      'Up to 10 users',
+      'Priority support'
+    ],
+    assessmentScope: {
+      questionCount: 150,
+      sections: [
+        'Strategic Leadership',
+        'Operational Excellence',
+        'Human Capital Development',
+        'Technology Integration',
+        'Cultural Transformation',
+        'Performance Analytics',
+        'Change Management',
+        'Innovation Capacity',
+        'Financial Performance',
+        'Risk Management'
+      ],
+      algorithms: ['DSCH', 'CRF', 'LEI', 'OCI', 'HOCI', 'Cost-Savings Analysis'],
+      reportPages: 30,
+      followUpSupport: '60-minute strategy session + email support for 90 days'
+    },
+    features: {
+      uploadSupport: true,
+      dashboardRefresh: true,
+      customReporting: true,
+      powerBIEmbedded: false,
+      apiConnectors: false,
+      onSiteFacilitation: false,
+      progressAudits: false,
+      orgChartGenerator: true,
+      scenarioBuilder: true,
+      monteCarloSimulation: false,
+      realTimeCollaboration: true,
+      aiOpportunityAssessment: true,
+      aiReadinessScore: false,
+      automationRecommendations: true
+    },
+    guardrails: {
+      maxAssessments: 1,
+      maxUsers: 10,
+      maxScenarios: 5,
+      dataRetentionMonths: 18
+    }
+  },
+
+  'enterprise-transformation': {
+    name: 'Enterprise Transformation',
+    price: 24000,
+    targetCustomer: 'Large enterprises seeking comprehensive transformation with predictive analytics',
+    coreDeliverables: [
+      '200-question enterprise assessment',
+      'Full algorithm suite + Monte Carlo analysis',
+      'Power BI dashboard integration',
+      'API connectors for data integration',
+      'Real-time collaboration platform',
+      'Quarterly progress audits',
+      'Custom scenario modeling',
+      'Unlimited users and assessments',
+      'Dedicated support channel'
+    ],
+    assessmentScope: {
+      questionCount: 200,
+      sections: [
+        'Executive Leadership',
+        'Strategic Planning',
+        'Operational Excellence',
+        'Human Capital Strategy',
+        'Technology Architecture',
+        'Digital Transformation',
+        'Cultural Evolution',
+        'Performance Management',
+        'Financial Optimization',
+        'Risk & Compliance',
+        'Innovation Management',
+        'Stakeholder Engagement'
+      ],
+      algorithms: ['DSCH', 'CRF', 'LEI', 'OCI', 'HOCI', 'Monte Carlo', 'Predictive Analytics', 'ROI Modeling'],
+      reportPages: 50,
+      followUpSupport: 'Dedicated account manager + quarterly strategy sessions'
+    },
+    features: {
+      uploadSupport: true,
+      dashboardRefresh: true,
+      customReporting: true,
+      powerBIEmbedded: true,
+      apiConnectors: true,
+      onSiteFacilitation: true,
+      progressAudits: true,
+      orgChartGenerator: true,
+      scenarioBuilder: true,
+      monteCarloSimulation: true,
+      realTimeCollaboration: true,
+      aiOpportunityAssessment: true,
+      aiReadinessScore: false,
+      automationRecommendations: true
+    },
+    guardrails: {
+      maxAssessments: null, // Unlimited
+      maxUsers: null, // Unlimited
+      maxScenarios: null, // Unlimited
+      dataRetentionMonths: null // Permanent retention
+    }
   }
 };
 
@@ -351,6 +583,7 @@ export const INDUSTRY_MODULES = {
  * Algorithm Configuration by Tier
  */
 export const TIER_ALGORITHMS = {
+  // Organizational Assessment Algorithms
   'one-time-diagnostic': {
     primary: ['OCI', 'HOCI', 'JCI'],
     advanced: [],
@@ -370,14 +603,40 @@ export const TIER_ALGORITHMS = {
     primary: ['OCI', 'HOCI', 'JCI', 'DSCH', 'CRF', 'LEI'],
     advanced: ['Monte Carlo DSCH', 'Predictive Analytics', 'ROI Modeling'],
     experimental: ['AI-Powered Recommendations', 'Real-time Benchmarking']
+  },
+  // AI Readiness Assessment Algorithms
+  'higher-ed-ai-pulse-check': {
+    primary: ['AIRIX'],
+    advanced: [],
+    experimental: []
+  },
+  'ai-readiness-comprehensive': {
+    primary: ['AIRIX', 'AIRS', 'AICS'],
+    advanced: [],
+    experimental: []
+  },
+  'ai-transformation-blueprint': {
+    primary: ['AIRIX', 'AIRS', 'AICS', 'AIMS', 'AIPS'],
+    advanced: [],
+    experimental: []
+  },
+  'ai-enterprise-partnership': {
+    primary: ['AIRIX', 'AIRS', 'AICS', 'AIMS', 'AIPS', 'AIBS'],
+    advanced: ['Advanced AI Strategy'],
+    experimental: ['Predictive AI Modeling']
   }
 };
 
 /**
  * Get tier configuration based on user subscription
  */
-export function getTierConfiguration(tier: PricingTier): TierConfiguration {
-  return PRICING_TIERS[tier];
+export function getTierConfiguration(tier: PricingTier): TierConfiguration | null {
+  const config = PRICING_TIERS[tier];
+  if (!config) {
+    console.warn(`No configuration found for tier: ${tier}`);
+    return null;
+  }
+  return config;
 }
 
 /**

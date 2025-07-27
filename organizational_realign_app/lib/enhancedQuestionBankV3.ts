@@ -24,7 +24,7 @@ export interface Question {
   required?: boolean;
   helpText?: string;
   validationRules?: ValidationRules;
-  tierMinimum?: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation';
+  tierMinimum?: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
   tags?: string[];
   enableContext?: boolean; // Allows users to provide additional context for richer analysis
   contextPrompt?: string; // Custom prompt for the context field
@@ -1601,47 +1601,12 @@ export const CONTEXTUAL_QUESTIONS: Question[] = [
  * NOW GUARANTEES 100+ QUESTIONS FOR EVERY TIER
  */
 export function getQuestionsForTier(
-  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'ai-readiness-basic' | 'ai-readiness-custom' | 'ai-readiness-advanced' | 'ai-readiness-comprehensive',
+  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
   organizationType: OrganizationType = 'higher-education'
 ): Question[] {
   // Handle AI readiness tiers separately
-  if (tier === 'ai-readiness-basic' || tier === 'ai-readiness-custom' || tier === 'ai-readiness-advanced' || tier === 'ai-readiness-comprehensive') {
+  if (tier === 'higher-ed-ai-pulse-check' || tier === 'ai-readiness-comprehensive' || tier === 'ai-transformation-blueprint' || tier === 'ai-enterprise-partnership') {
     return getAIReadinessQuestions(tier);
-  }
-
-  // Express Diagnostic gets a curated set of 60 core questions
-  if (tier === 'express-diagnostic') {
-    // Strategic selection of the most impactful questions from each core section
-    const essentialQuestions = CORE_QUESTIONS.filter(q => {
-      const questionNumber = parseInt(q.id.split('_')[1]);
-      
-      // Take first 12 from each major section for balanced coverage
-      if (q.section === 'Governance & Leadership' && questionNumber <= 12) return true;
-      if (q.section === 'Administrative Processes & Communication' && questionNumber <= 12) return true;
-      if (q.section === 'Structure, Capacity & Performance' && questionNumber <= 12) return true;
-      if (q.section === 'Professional Development & Support' && questionNumber <= 8) return true;
-      if (q.section === 'Technology & Digital Infrastructure' && questionNumber <= 8) return true;
-      if (q.section === 'AI & Automation Opportunities' && questionNumber <= 8) return true;
-      
-      return false;
-    }).slice(0, 55); // Ensure we don't exceed 55 core questions
-    
-    // Add 5 contextual questions for the specific organization type
-    const contextualQuestions = CONTEXTUAL_QUESTIONS.filter(q => 
-      !q.organizationTypes || q.organizationTypes.includes(organizationType)
-    ).slice(0, 5);
-    
-    const totalQuestions = [...essentialQuestions, ...contextualQuestions];
-    
-    // Ensure exactly 60 questions by padding with additional core questions if needed
-    if (totalQuestions.length < 60) {
-      const additionalQuestions = CORE_QUESTIONS
-        .filter(q => !totalQuestions.some(existing => existing.id === q.id))
-        .slice(0, 60 - totalQuestions.length);
-      totalQuestions.push(...additionalQuestions);
-    }
-    
-    return totalQuestions.slice(0, 60); // Cap at exactly 60 questions
   }
 
   let questions = [...CORE_QUESTIONS]; // Starts with 100 questions
@@ -1670,11 +1635,14 @@ export function getQuestionsForTier(
     if (!q.tierMinimum) return true;
     
     const tierHierarchy = {
-      'express-diagnostic': 0,
       'one-time-diagnostic': 1,
       'monthly-subscription': 2,
       'comprehensive-package': 3,
-      'enterprise-transformation': 4
+      'enterprise-transformation': 4,
+      'higher-ed-ai-pulse-check': 1,
+      'ai-readiness-comprehensive': 2,
+      'ai-transformation-blueprint': 3,
+      'ai-enterprise-partnership': 4
     };
     
     return tierHierarchy[tier] >= tierHierarchy[q.tierMinimum];
@@ -1703,7 +1671,7 @@ export function getSectionsForTier(
  * Get only required questions for a tier and organization type
  */
 export function getRequiredQuestions(
-  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
+  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
   organizationType: OrganizationType = 'higher-education'
 ): Question[] {
   const allQuestions = getQuestionsForTier(tier, organizationType);
@@ -1714,7 +1682,7 @@ export function getRequiredQuestions(
  * Get AI and automation opportunity questions specifically
  */
 export function getAIOpportunityQuestions(
-  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
+  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
   organizationType: OrganizationType = 'higher-education'
 ): Question[] {
   const allQuestions = getQuestionsForTier(tier, organizationType);
@@ -1726,7 +1694,7 @@ export function getAIOpportunityQuestions(
  */
 export function validateAssessmentResponses(
   responses: Record<string, any>,
-  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
+  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
   organizationType: OrganizationType = 'higher-education'
 ): { valid: boolean; missingRequired: string[]; warningOptional: string[]; aiOpportunityScore: number } {
   const requiredQuestions = getRequiredQuestions(tier, organizationType);
@@ -1797,7 +1765,7 @@ export function getQuestionStats(
  */
 export function getAIReadinessAssessment(
   responses: Record<string, any>,
-  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
+  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
   organizationType: OrganizationType = 'higher-education'
 ): {
   readinessScore: number;
@@ -2740,13 +2708,18 @@ export const AI_READINESS_QUESTIONS: Question[] = [
 /**
  * Get AI readiness questions for assessment
  */
-export function getAIReadinessQuestions(tier: 'ai-readiness-basic' | 'ai-readiness-custom' | 'ai-readiness-advanced' | 'ai-readiness-comprehensive'): Question[] {
-  if (tier === 'ai-readiness-basic' || tier === 'ai-readiness-advanced') {
-    // 105 questions for basic/advanced tiers
+export function getAIReadinessQuestions(tier: 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership'): Question[] {
+  if (tier === 'higher-ed-ai-pulse-check') {
+    // 50 questions for pulse check tier
+    return AI_READINESS_QUESTIONS.slice(0, 50);
+  }
+  
+  if (tier === 'ai-readiness-comprehensive') {
+    // 105 questions for comprehensive tier
     return AI_READINESS_QUESTIONS;
   }
   
-  if (tier === 'ai-readiness-custom' || tier === 'ai-readiness-comprehensive') {
+  if (tier === 'ai-transformation-blueprint' || tier === 'ai-enterprise-partnership') {
     // 150 questions for custom/comprehensive tiers - include all questions plus additional context opportunities
     const baseQuestions = AI_READINESS_QUESTIONS.map(q => ({
       ...q,

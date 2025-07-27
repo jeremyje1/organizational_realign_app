@@ -255,10 +255,10 @@ function TierBasedAssessmentContent() {
   // Initialize with URL params immediately to prevent hydration mismatches
   const initialTier = useMemo(() => {
     const tier = searchParams.get('tier');
-    const validTiers: PricingTier[] = ['express-diagnostic', 'one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
-    const aiReadinessTiers: PricingTier[] = ['ai-readiness-basic', 'ai-readiness-custom', 'ai-readiness-advanced', 'ai-readiness-comprehensive'];
+    const validTiers: PricingTier[] = ['one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
+    const aiReadinessTiers: PricingTier[] = ['higher-ed-ai-pulse-check', 'ai-readiness-comprehensive', 'ai-transformation-blueprint', 'ai-enterprise-partnership'];
     const allValidTiers = [...validTiers, ...aiReadinessTiers];
-    return allValidTiers.includes(tier as any) ? tier as PricingTier : 'express-diagnostic';
+    return allValidTiers.includes(tier as any) ? tier as PricingTier : 'one-time-diagnostic';
   }, [searchParams]);
   
   const initialOrgType = useMemo(() => {
@@ -278,10 +278,10 @@ function TierBasedAssessmentContent() {
   
   // Validate URL parameters with fallbacks
   const validateTier = (tier: string | null): PricingTier => {
-    const validTiers: PricingTier[] = ['express-diagnostic', 'one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
-    const aiReadinessTiers: PricingTier[] = ['ai-readiness-basic', 'ai-readiness-custom', 'ai-readiness-advanced', 'ai-readiness-comprehensive'];
+    const validTiers: PricingTier[] = ['one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
+    const aiReadinessTiers: PricingTier[] = ['higher-ed-ai-pulse-check', 'ai-readiness-comprehensive', 'ai-transformation-blueprint', 'ai-enterprise-partnership'];
     const allValidTiers = [...validTiers, ...aiReadinessTiers];
-    return allValidTiers.includes(tier as PricingTier) ? tier as PricingTier : 'express-diagnostic';
+    return allValidTiers.includes(tier as PricingTier) ? tier as PricingTier : 'one-time-diagnostic';
   };
   
   const validateOrgType = (orgType: string | null): OrganizationType => {
@@ -365,15 +365,15 @@ function TierBasedAssessmentContent() {
       if (!config) {
         console.error('Invalid tier configuration for:', assessmentState.tier);
         // Always return a valid config as fallback
-        return getTierConfiguration('express-diagnostic') || {
-          name: 'Express Diagnostic',
-          price: 2495,
+        return getTierConfiguration('higher-ed-ai-pulse-check') || {
+          name: 'Higher Ed AI Pulse Check',
+          price: 2000,
           targetCustomer: 'Default assessment tier',
           coreDeliverables: ['Assessment and analysis'],
           assessmentScope: {
-            questionCount: 60,
+            questionCount: 50,
             sections: ['General Assessment'],
-            algorithms: ['OCI'],
+            algorithms: ['AIRIX'],
             reportPages: 8,
             followUpSupport: '30-min consultation'
           },
@@ -679,8 +679,8 @@ function TierBasedAssessmentContent() {
               <strong>Processing time:</strong> {tierConfig?.assessmentScope?.followUpSupport || '3-5 business days'}
             </p>
             
-            {/* Express Diagnostic Upsell Section */}
-            {assessmentState.tier === 'express-diagnostic' && (
+            {/* One-Time Diagnostic Upsell Section */}
+            {assessmentState.tier === 'one-time-diagnostic' && (
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg border border-blue-200">
                 <h3 className="font-bold text-blue-900 mb-3 text-lg">🚀 Ready to Go Deeper?</h3>
                 <p className="text-blue-800 mb-4">
@@ -744,7 +744,7 @@ function TierBasedAssessmentContent() {
               >
                 Start New Assessment
               </Button>
-              {(assessmentState.tier === 'express-diagnostic' || assessmentState.tier === 'one-time-diagnostic' || assessmentState.tier === 'monthly-subscription') && (
+              {(assessmentState.tier === 'one-time-diagnostic' || assessmentState.tier === 'monthly-subscription') && (
                 <Button
                   onClick={() => window.location.href = `/assessment/tier-based?tier=comprehensive-package&org=${assessmentState.organizationType}`}
                   className="px-6 py-3 bg-green-600 hover:bg-green-700"
