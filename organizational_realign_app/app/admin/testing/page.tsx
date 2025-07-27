@@ -263,9 +263,14 @@ function AdminTestingPanelContent() {
 
       // Handle "Contact for Pricing" tiers differently
       const isContactForPricing = (
+        // AI readiness "Contact for Pricing" tiers (for higher education only)
         (tier === 'ai-transformation-blueprint' || tier === 'enterprise-partnership') && 
-        ['community-college', 'public-university', 'private-university'].includes(industry)
-      ) || tier === 'enterprise-transformation';
+        ['community-college', 'public-university', 'private-university'].includes(industry) &&
+        assessmentType === 'ai-readiness'
+      ) || (
+        // Organizational "Contact for Pricing" tier (for all industries)
+        tier === 'enterprise-transformation' && assessmentType === 'organizational'
+      );
 
       if (isContactForPricing) {
         // For contact-for-pricing tiers, just simulate a successful test
@@ -275,6 +280,28 @@ function AdminTestingPanelContent() {
           status: 'success',
           message: `Contact for pricing tier - Would redirect to consultation booking`,
           assessmentId: `contact-${Date.now()}`,
+          timestamp: new Date().toISOString()
+        };
+        setTestResults(prev => [...prev, newResult]);
+        setRunningTests(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(testKey);
+          return newSet;
+        });
+        return;
+      }
+
+      // For AI readiness assessments on higher education, handle paid tiers
+      if (assessmentType === 'ai-readiness' && 
+          ['community-college', 'public-university', 'private-university'].includes(industry) &&
+          (tier === 'higher-ed-ai-pulse-check' || tier === 'ai-readiness-comprehensive')) {
+        // These are paid tiers that should work with Stripe
+        const newResult: TestResult = {
+          tier,
+          industry,
+          status: 'success',
+          message: `AI readiness paid tier - Would proceed to Stripe checkout`,
+          assessmentId: `ai-paid-${Date.now()}`,
           timestamp: new Date().toISOString()
         };
         setTestResults(prev => [...prev, newResult]);
