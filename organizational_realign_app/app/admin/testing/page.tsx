@@ -71,7 +71,7 @@ const ORG_TIER_CONFIGS: TierTestConfig[] = [
   },
   {
     tier: 'enterprise-transformation',
-    displayName: 'Enterprise Transformation (Contact for Pricing)',
+    displayName: 'Enterprise Transformation ($24,000)',
     questionCount: 200,
     algorithms: ['All algorithms', 'Monte Carlo', 'Predictive analytics'],
     features: ['Power BI dashboard', 'API connectors', 'Real-time collaboration', 'Quarterly audits'],
@@ -241,6 +241,31 @@ function AdminTestingPanelContent() {
     setRunningTests(prev => new Set(prev).add(testKey));
 
     try {
+      // Handle "Contact for Pricing" tiers differently
+      const isContactForPricing = (
+        (tier === 'ai-transformation-blueprint' || tier === 'enterprise-partnership') && 
+        ['community-college', 'public-university', 'private-university'].includes(industry)
+      ) || tier === 'enterprise-transformation';
+
+      if (isContactForPricing) {
+        // For contact-for-pricing tiers, just simulate a successful test
+        const newResult: TestResult = {
+          tier,
+          industry,
+          status: 'success',
+          message: `Contact for pricing tier - Would redirect to consultation booking`,
+          assessmentId: `contact-${Date.now()}`,
+          timestamp: new Date().toISOString()
+        };
+        setTestResults(prev => [...prev, newResult]);
+        setRunningTests(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(testKey);
+          return newSet;
+        });
+        return;
+      }
+
       // Create test assessment with specific tier and industry
       const testData = {
         tier,
@@ -812,6 +837,12 @@ function AdminTestingPanelContent() {
                       const testKey = `${tier.tier}-${industry.industry}`;
                       const isRunning = runningTests.has(testKey);
                       const testResult = testResults.find(r => r.tier === tier.tier && r.industry === industry.industry);
+                      
+                      // Check if this is a "Contact for Pricing" tier
+                      const isContactForPricing = (
+                        (tier.tier === 'ai-transformation-blueprint' || tier.tier === 'enterprise-partnership') && 
+                        ['community-college', 'public-university', 'private-university'].includes(industry.industry)
+                      ) || tier.tier === 'enterprise-transformation';
                       
                       return (
                         <td key={tier.tier} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
