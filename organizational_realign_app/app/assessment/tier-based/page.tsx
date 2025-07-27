@@ -255,10 +255,21 @@ function TierBasedAssessmentContent() {
   // Initialize with URL params immediately to prevent hydration mismatches
   const initialTier = useMemo(() => {
     const tier = searchParams.get('tier');
-    const validTiers: PricingTier[] = ['one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
-    const aiReadinessTiers: PricingTier[] = ['higher-ed-ai-pulse-check', 'ai-readiness-comprehensive', 'ai-transformation-blueprint', 'ai-enterprise-partnership'];
-    const allValidTiers = [...validTiers, ...aiReadinessTiers];
-    return allValidTiers.includes(tier as any) ? tier as PricingTier : 'one-time-diagnostic';
+    const validOrgTiers: PricingTier[] = ['one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
+    const aiReadinessTiers: string[] = ['higher-ed-ai-pulse-check', 'ai-readiness-comprehensive', 'ai-transformation-blueprint', 'ai-enterprise-partnership'];
+    
+    // Check if it's an organizational assessment tier
+    if (validOrgTiers.includes(tier as PricingTier)) {
+      return tier as PricingTier;
+    }
+    
+    // If it's an AI Blueprint tier, return a default organizational tier
+    // (AI Blueprint assessments should use a separate component/page)
+    if (aiReadinessTiers.includes(tier || '')) {
+      return 'one-time-diagnostic'; // Default for mixed access
+    }
+    
+    return 'one-time-diagnostic';
   }, [searchParams]);
   
   const initialOrgType = useMemo(() => {
@@ -278,10 +289,17 @@ function TierBasedAssessmentContent() {
   
   // Validate URL parameters with fallbacks
   const validateTier = (tier: string | null): PricingTier => {
-    const validTiers: PricingTier[] = ['one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
-    const aiReadinessTiers: PricingTier[] = ['higher-ed-ai-pulse-check', 'ai-readiness-comprehensive', 'ai-transformation-blueprint', 'ai-enterprise-partnership'];
-    const allValidTiers = [...validTiers, ...aiReadinessTiers];
-    return allValidTiers.includes(tier as PricingTier) ? tier as PricingTier : 'one-time-diagnostic';
+    const validOrgTiers: PricingTier[] = ['one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
+    const aiReadinessTiers: string[] = ['higher-ed-ai-pulse-check', 'ai-readiness-comprehensive', 'ai-transformation-blueprint', 'ai-enterprise-partnership'];
+    
+    // Only return valid organizational tiers
+    if (validOrgTiers.includes(tier as PricingTier)) {
+      return tier as PricingTier;
+    }
+    
+    // If AI Blueprint tier is requested, default to basic organizational tier
+    // (AI Blueprint should use separate pages)
+    return 'one-time-diagnostic';
   };
   
   const validateOrgType = (orgType: string | null): OrganizationType => {
@@ -365,10 +383,10 @@ function TierBasedAssessmentContent() {
       if (!config) {
         console.error('Invalid tier configuration for:', assessmentState.tier);
         // Always return a valid config as fallback
-        return getTierConfiguration('higher-ed-ai-pulse-check') || {
-          name: 'Higher Ed AI Pulse Check',
-          price: 2000,
-          targetCustomer: 'Default assessment tier',
+        return getTierConfiguration('one-time-diagnostic') || {
+          name: 'One-Time Diagnostic',
+          price: 4995,
+          targetCustomer: 'Default organizational assessment tier',
           coreDeliverables: ['Assessment and analysis'],
           assessmentScope: {
             questionCount: 50,

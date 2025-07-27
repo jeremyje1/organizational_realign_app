@@ -6,7 +6,7 @@ import { PricingTier, PRICING_TIERS } from '@/lib/tierConfiguration';
 import { DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 
 export default function AssessmentOnboardingPage() {
-  const [selectedTier, setSelectedTier] = useState<PricingTier>('higher-ed-ai-pulse-check');
+  const [selectedTier, setSelectedTier] = useState<PricingTier>('one-time-diagnostic');
 
   const tierInfo = PRICING_TIERS[selectedTier];
 
