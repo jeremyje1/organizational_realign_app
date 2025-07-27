@@ -118,9 +118,51 @@ const AI_READINESS_TIER_CONFIGS: TierTestConfig[] = [
 const INDUSTRY_CONFIGS: IndustryTestConfig[] = [
   {
     industry: 'higher-education',
-    displayName: 'Higher Education (Primary Focus)',
+    displayName: 'Higher Education',
     contextualQuestions: 25,
-    specificFeatures: ['Student success metrics', 'Academic program analysis', 'Faculty development', 'AI policy frameworks']
+    specificFeatures: ['Student success metrics', 'Academic program analysis', 'Faculty development', 'Research collaboration']
+  },
+  {
+    industry: 'healthcare',
+    displayName: 'Healthcare',
+    contextualQuestions: 20,
+    specificFeatures: ['Patient care optimization', 'Clinical workflow analysis', 'Regulatory compliance', 'Quality improvement']
+  },
+  {
+    industry: 'manufacturing',
+    displayName: 'Manufacturing',
+    contextualQuestions: 22,
+    specificFeatures: ['Production efficiency', 'Supply chain optimization', 'Quality control', 'Safety protocols']
+  },
+  {
+    industry: 'financial-services',
+    displayName: 'Financial Services',
+    contextualQuestions: 18,
+    specificFeatures: ['Risk management', 'Customer service optimization', 'Regulatory compliance', 'Digital transformation']
+  },
+  {
+    industry: 'technology',
+    displayName: 'Technology',
+    contextualQuestions: 24,
+    specificFeatures: ['Product development', 'Engineering efficiency', 'Innovation processes', 'Scalability planning']
+  },
+  {
+    industry: 'government',
+    displayName: 'Government',
+    contextualQuestions: 19,
+    specificFeatures: ['Public service delivery', 'Policy implementation', 'Citizen engagement', 'Transparency initiatives']
+  },
+  {
+    industry: 'nonprofit',
+    displayName: 'Non-Profit',
+    contextualQuestions: 17,
+    specificFeatures: ['Mission effectiveness', 'Donor engagement', 'Community impact', 'Resource optimization']
+  },
+  {
+    industry: 'retail',
+    displayName: 'Retail',
+    contextualQuestions: 21,
+    specificFeatures: ['Customer experience', 'Inventory management', 'Sales optimization', 'Brand consistency']
   }
 ];
 
@@ -549,7 +591,7 @@ function AdminTestingPanelContent() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Assessment Testing Panel</h1>
           <p className="mt-2 text-sm text-gray-600">
-            Test both organizational and AI Blueprint assessments - Higher Education focus
+            Test organizational assessments (all industries) and AI Blueprint assessments (Higher Education focus)
           </p>
           
           {/* Notice about unified interface */}
