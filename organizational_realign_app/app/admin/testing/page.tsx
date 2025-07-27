@@ -71,7 +71,7 @@ const ORG_TIER_CONFIGS: TierTestConfig[] = [
   },
   {
     tier: 'enterprise-transformation',
-    displayName: 'Enterprise Transformation ($24,000)',
+    displayName: 'Enterprise Transformation (Contact for Pricing)',
     questionCount: 200,
     algorithms: ['All algorithms', 'Monte Carlo', 'Predictive analytics'],
     features: ['Power BI dashboard', 'API connectors', 'Real-time collaboration', 'Quarterly audits'],

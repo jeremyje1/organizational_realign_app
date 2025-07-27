@@ -78,8 +78,9 @@ export const ASSESSMENT_PRODUCTS = [
       'Power BI embedded dashboard + API connectors',
       'On‑site facilitation & quarterly audits'
     ],
-    price: 24000,
+    price: 0, // Contact for pricing
     recommended: false,
-    stripeUrl: 'https://organizational-realign-app.vercel.app/api/stripe/create-tier-checkout?tier=enterprise-transformation'
+    stripeUrl: 'https://calendly.com/jeremyestrella/30min?month=2025-07',
+    contactForPricing: true
   }
 ];

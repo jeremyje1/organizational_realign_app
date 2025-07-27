@@ -19,6 +19,12 @@ import { ASSESSMENT_PRODUCTS } from '@/lib/products';
 
 export default function PricingPage() {
   const handleSelectPlan = (product: any) => {
+    // Handle contact for pricing products
+    if (product.contactForPricing) {
+      window.open(product.stripeUrl, '_blank');
+      return;
+    }
+    
     // Redirect to the actual Stripe checkout URL
     window.location.href = product.stripeUrl;
   };
@@ -120,7 +126,7 @@ export default function PricingPage() {
                     {product.description}
                   </p>
                   <div className="text-4xl font-bold text-slate-900 mb-2">
-                    ${product.price.toLocaleString()}{product.isMonthly ? ' / month' : ''}
+                    {product.contactForPricing ? 'Contact for Pricing' : `$${product.price.toLocaleString()}`}{product.isMonthly ? ' / month' : ''}
                   </div>
                   <p className="text-sm text-slate-500">
                     {product.isMonthly ? 'Monthly subscription' : 'One-time payment'}
@@ -148,7 +154,7 @@ export default function PricingPage() {
                     }`}
                     size="lg"
                   >
-                    {product.isMonthly ? 'Subscribe' : 'Purchase'}
+                    {product.contactForPricing ? 'Contact Us' : (product.isMonthly ? 'Subscribe' : 'Purchase')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardContent>

@@ -146,11 +146,11 @@ function UnifiedTestingInterface() {
     if (config.type === 'organizational') {
       assessmentUrl = `${baseUrl}/assessment/start?tier=${config.tier}&test=true`;
     } else {
-      // AI readiness assessments - use the correct tier names
-      assessmentUrl = `${baseUrl}/assessment/start?tier=${config.tier}&type=ai-readiness&test=true`;
+      // AI Blueprint assessments - use the correct AI blueprint endpoint
+      assessmentUrl = `${baseUrl}/ai-blueprint/assessment?tier=${config.tier}&test=true`;
       
-      // Handle Enterprise Partnership differently since it goes to Calendly
-      if (config.tier === 'enterprise-partnership') {
+      // Handle Enterprise Partnership and AI Transformation Blueprint with Calendly
+      if (config.tier === 'enterprise-partnership' || config.tier === 'ai-transformation-blueprint') {
         window.open('https://calendly.com/jeremyestrella/30min?month=2025-07', '_blank');
         setTimeout(() => {
           setIsRunningTest(null);
