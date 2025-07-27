@@ -20,6 +20,7 @@ export interface StripeTierMapping {
 }
 
 export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
+  // AI Readiness Tiers
   'higher-ed-ai-pulse-check': {
     tierKey: 'higher-ed-ai-pulse-check',
     stripeProductId: 'prod_ai_readiness_pulse',
@@ -59,6 +60,47 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     cancelRedirect: '/ai-readiness/pricing',
     tierName: 'Enterprise Partnership',
     tierPrice: 0 // Contact for pricing
+  },
+  // Organizational Assessment Tiers
+  'one-time-diagnostic': {
+    tierKey: 'one-time-diagnostic',
+    stripeProductId: 'prod_org_diagnostic',
+    stripePriceId: 'price_1Ro4u8ELd2WOuqIWCkJdFbNx',
+    stripeMode: 'payment',
+    successRedirect: '/assessment/tier-based?tier=one-time-diagnostic&assessment_type=organizational',
+    cancelRedirect: '/pricing',
+    tierName: 'One-Time Diagnostic',
+    tierPrice: 4995
+  },
+  'monthly-subscription': {
+    tierKey: 'monthly-subscription',
+    stripeProductId: 'prod_org_monthly',
+    stripePriceId: 'price_1Ro4uTELd2WOuqIWJx8dKp2L',
+    stripeMode: 'subscription',
+    successRedirect: '/assessment/tier-based?tier=monthly-subscription&assessment_type=organizational',
+    cancelRedirect: '/pricing',
+    tierName: 'Monthly Subscription',
+    tierPrice: 2995
+  },
+  'comprehensive-package': {
+    tierKey: 'comprehensive-package',
+    stripeProductId: 'prod_org_comprehensive',
+    stripePriceId: 'price_1Ro4v3ELd2WOuqIWMhNdQx7Y',
+    stripeMode: 'payment',
+    successRedirect: '/assessment/tier-based?tier=comprehensive-package&assessment_type=organizational',
+    cancelRedirect: '/pricing',
+    tierName: 'Comprehensive Package',
+    tierPrice: 9900
+  },
+  'enterprise-transformation': {
+    tierKey: 'enterprise-transformation',
+    stripeProductId: 'prod_org_enterprise',
+    stripePriceId: 'price_1Ro4vNELd2WOuqIWHx9dKp3M',
+    stripeMode: 'payment',
+    successRedirect: '/assessment/tier-based?tier=enterprise-transformation&assessment_type=organizational',
+    cancelRedirect: '/pricing',
+    tierName: 'Enterprise Transformation',
+    tierPrice: 24000
   }
 };
 
@@ -83,17 +125,40 @@ export function getTierFromStripePriceId(priceId: string): PricingTier | null {
  * Validate that user has access to tier-specific features
  */
 export function validateTierAccess(userTier: PricingTier, requiredTier: PricingTier): boolean {
-  const tierHierarchy: PricingTier[] = [
+  // AI Readiness tier hierarchy
+  const aiTierHierarchy: PricingTier[] = [
     'higher-ed-ai-pulse-check',
     'ai-readiness-comprehensive', 
     'ai-transformation-blueprint',
     'ai-enterprise-partnership'
   ];
   
-  const userTierIndex = tierHierarchy.indexOf(userTier);
-  const requiredTierIndex = tierHierarchy.indexOf(requiredTier);
+  // Organizational assessment tier hierarchy
+  const orgTierHierarchy: PricingTier[] = [
+    'one-time-diagnostic',
+    'monthly-subscription',
+    'comprehensive-package',
+    'enterprise-transformation'
+  ];
   
-  return userTierIndex >= requiredTierIndex;
+  // Check if both tiers are in the same category
+  const bothInAI = aiTierHierarchy.includes(userTier) && aiTierHierarchy.includes(requiredTier);
+  const bothInOrg = orgTierHierarchy.includes(userTier) && orgTierHierarchy.includes(requiredTier);
+  
+  if (bothInAI) {
+    const userTierIndex = aiTierHierarchy.indexOf(userTier);
+    const requiredTierIndex = aiTierHierarchy.indexOf(requiredTier);
+    return userTierIndex >= requiredTierIndex;
+  }
+  
+  if (bothInOrg) {
+    const userTierIndex = orgTierHierarchy.indexOf(userTier);
+    const requiredTierIndex = orgTierHierarchy.indexOf(requiredTier);
+    return userTierIndex >= requiredTierIndex;
+  }
+  
+  // If tiers are from different categories, default to false
+  return false;
 }
 
 /**
