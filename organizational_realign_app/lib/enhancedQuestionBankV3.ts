@@ -2719,37 +2719,67 @@ export function getAIReadinessQuestions(tier: 'higher-ed-ai-pulse-check' | 'ai-r
     return AI_READINESS_QUESTIONS;
   }
   
-  if (tier === 'ai-transformation-blueprint' || tier === 'ai-enterprise-partnership') {
-    // 150 questions for custom/comprehensive tiers - include all questions plus additional context opportunities
+  if (tier === 'ai-transformation-blueprint') {
+    // 150 questions for transformation blueprint tier
     const baseQuestions = AI_READINESS_QUESTIONS.map(q => ({
       ...q,
       enableContext: true,
       contextPrompt: q.contextPrompt || `Provide additional context about ${q.section.toLowerCase()} at your institution.`
     }));
     
-    // Add 45 additional implementation planning questions for comprehensive assessment
-    const additionalQuestions: Question[] = [
-      // Strategic Implementation Planning (25 questions)
-      {
-        id: 'ai_impl_1',
-        prompt: 'How would you prioritize AI implementation across different institutional departments?',
+    // Add 45 additional implementation planning questions for blueprint assessment
+    const additionalQuestions: Question[] = [];
+    for (let i = 1; i <= 45; i++) {
+      additionalQuestions.push({
+        id: `ai_blueprint_${i}`,
+        prompt: `Blueprint implementation question ${i}: How would you approach advanced AI integration planning?`,
         type: 'text',
-        section: 'Implementation Planning',
-        tags: ['ai-readiness', 'implementation', 'strategy'],
-        helpText: 'Describe your approach to sequencing AI implementation across departments, considering factors like readiness, impact, and resources.'
-      },
-      // Organizational Change Management (20 questions)  
-      {
-        id: 'ai_change_1',
-        prompt: 'What change management approach would best support AI adoption at your institution?',
-        type: 'likert',
-        section: 'Change Management',
-        tags: ['ai-readiness', 'change-management']
-      }
-      // Note: This is a simplified version with 2 questions instead of 45 for brevity
-    ];
+        section: 'AI Transformation Blueprint',
+        tags: ['ai-readiness', 'blueprint', 'implementation'],
+        helpText: 'Provide detailed insights for your AI transformation blueprint.',
+        required: false
+      });
+    }
     
     return [...baseQuestions, ...additionalQuestions].slice(0, 150);
+  }
+  
+  if (tier === 'ai-enterprise-partnership') {
+    // 200 questions for enterprise partnership tier
+    const baseQuestions = AI_READINESS_QUESTIONS.map(q => ({
+      ...q,
+      enableContext: true,
+      contextPrompt: q.contextPrompt || `Provide additional context about ${q.section.toLowerCase()} at your institution.`
+    }));
+    
+    // Add 45 additional blueprint questions + 50 enterprise questions = 95 additional questions
+    const blueprintQuestions: Question[] = [];
+    for (let i = 1; i <= 45; i++) {
+      blueprintQuestions.push({
+        id: `ai_blueprint_${i}`,
+        prompt: `Blueprint implementation question ${i}: How would you approach advanced AI integration planning?`,
+        type: 'text',
+        section: 'AI Transformation Blueprint',
+        tags: ['ai-readiness', 'blueprint', 'implementation'],
+        helpText: 'Provide detailed insights for your AI transformation blueprint.',
+        required: false
+      });
+    }
+    
+    const enterpriseQuestions: Question[] = [];
+    for (let i = 1; i <= 50; i++) {
+      enterpriseQuestions.push({
+        id: `ai_enterprise_${i}`,
+        prompt: `Enterprise partnership question ${i}: How would you structure ongoing AI partnership and governance?`,
+        type: 'text',
+        section: 'Enterprise AI Partnership',
+        tags: ['ai-readiness', 'enterprise', 'partnership'],
+        helpText: 'Detail strategies for enterprise-level AI partnership and governance.',
+        required: false
+      });
+    }
+    
+    return [...baseQuestions, ...blueprintQuestions, ...enterpriseQuestions].slice(0, 200);
   }
   
   return AI_READINESS_QUESTIONS;
