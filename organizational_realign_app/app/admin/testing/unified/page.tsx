@@ -94,7 +94,7 @@ const ASSESSMENT_CONFIGS: TestConfig[] = [
     name: 'AI Transformation Blueprint™',
     type: 'ai-readiness',
     tier: 'ai-transformation-blueprint',
-    description: 'Complete AI transformation roadmap for higher education ($24,500)',
+    description: 'Complete AI transformation roadmap for higher education (Contact for Pricing)',
     estimatedTime: '50-60 minutes',
     questionCount: 150,
     features: ['Full Algorithm Suite (AIRIX™, AIRS™, AICS™, AIMS™, AIPS™)', '40-Page Blueprint', 'Power BI Dashboard', 'Executive Workshop', 'Up to 15 Users']

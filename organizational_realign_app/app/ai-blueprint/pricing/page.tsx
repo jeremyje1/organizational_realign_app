@@ -7,8 +7,8 @@ import type { AIBlueprintTier } from '@/lib/ai-blueprint-tier-configuration';
 
 export default function AIBlueprintPricingPage() {
   const handleGetStarted = (tier: AIBlueprintTier) => {
-    // Handle Enterprise Partnership with consultation link
-    if (tier === 'ai-enterprise-partnership') {
+    // Handle Enterprise Partnership and AI Transformation Blueprint with consultation link
+    if (tier === 'ai-enterprise-partnership' || tier === 'ai-transformation-blueprint') {
       window.open('https://calendly.com/jeremyestrella/30min?month=2025-07', '_blank');
       return;
     }
@@ -90,7 +90,9 @@ export default function AIBlueprintPricingPage() {
               <div className="text-center mb-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">{config.name}</h3>
                 <div className="text-3xl font-bold text-blue-600 mb-2">
-                  ${config.price.toLocaleString()}
+                  {tierKey === 'ai-transformation-blueprint' || tierKey === 'ai-enterprise-partnership' 
+                    ? 'Contact for Pricing' 
+                    : `$${config.price.toLocaleString()}`}
                 </div>
                 <p className="text-gray-600 text-sm">{config.targetCustomer}</p>
               </div>

@@ -99,7 +99,7 @@ const AI_READINESS_TIER_CONFIGS: TierTestConfig[] = [
   },
   {
     tier: 'ai-transformation-blueprint',
-    displayName: 'AI Transformation Blueprint™ (150 Questions) - $24,500',
+    displayName: 'AI Transformation Blueprint™ (150 Questions) - Contact for Pricing',
     questionCount: 150,
     algorithms: ['AIRIX™', 'AIRS™', 'AICS™', 'AIMS™', 'AIPS™ Full Suite'],
     features: ['40-Page AI Transformation Blueprint', 'Power BI Dashboard', 'Executive Workshop', 'Up to 15 Users'],
