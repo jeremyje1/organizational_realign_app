@@ -44,7 +44,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
   'comprehensive-package': {
     tierKey: 'comprehensive-package',
     stripeProductId: 'prod_org_comprehensive',
-    stripePriceId: 'price_1Ro4v3ELd2WOuqIWMhNdQx7Y',
+    stripePriceId: 'price_1Ro4u8ELd2WOuqIWCkJdFbNx', // Using same as one-time-diagnostic for now
     stripeMode: 'payment',
     successRedirect: '/assessment/tier-based?tier=comprehensive-package&assessment_type=organizational',
     cancelRedirect: '/pricing',
