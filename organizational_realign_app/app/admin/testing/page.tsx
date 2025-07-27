@@ -936,7 +936,7 @@ function AdminTestingPanelContent() {
                             ) : (
                               <a
                                 href={assessmentType === 'ai-readiness' 
-                                  ? `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&assessment_type=ai-readiness&test_mode=admin`
+                                  ? `/ai-blueprint/assessment?tier=${tier.tier}&org=${industry.industry}&test_mode=admin`
                                   : `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&test_mode=admin`
                                 }
                                 target="_blank"
@@ -973,7 +973,7 @@ function AdminTestingPanelContent() {
                     <a
                       key={industry.industry}
                       href={assessmentType === 'ai-readiness' 
-                        ? `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&assessment_type=ai-readiness&test_mode=admin`
+                        ? `/ai-blueprint/assessment?tier=${tier.tier}&org=${industry.industry}&test_mode=admin`
                         : `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&test_mode=admin`
                       }
                       target="_blank"
@@ -992,7 +992,7 @@ function AdminTestingPanelContent() {
                         <a
                           key={industry.industry}
                           href={assessmentType === 'ai-readiness' 
-                            ? `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&assessment_type=ai-readiness&test_mode=admin`
+                            ? `/ai-blueprint/assessment?tier=${tier.tier}&org=${industry.industry}&test_mode=admin`
                             : `/assessment/tier-based?tier=${tier.tier}&org=${industry.industry}&test_mode=admin`
                           }
                           target="_blank"
