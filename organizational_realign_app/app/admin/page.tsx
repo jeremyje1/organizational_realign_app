@@ -372,7 +372,7 @@ function AdminDashboardContent() {
                         className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
                       >
                         <div className="font-medium">Advanced AI Assessment ($4,995)</div>
-                        <div className="text-gray-500">105 questions • 12 page report • <span className="text-blue-600">Test Mode</span></div>
+                        <div className="text-gray-500">105 questions • 25 page report • <span className="text-blue-600">Test Mode</span></div>
                       </Link>
                       
                       <Link
@@ -380,7 +380,7 @@ function AdminDashboardContent() {
                         className="block w-full text-left px-3 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
                       >
                         <div className="font-medium">Comprehensive AI Assessment ($12,000)</div>
-                        <div className="text-gray-500">150 questions • 30 page report • <span className="text-blue-600">Test Mode</span></div>
+                        <div className="text-gray-500">105 questions • 25 page report • <span className="text-blue-600">Test Mode</span></div>
                       </Link>
                     </div>
                   </div>

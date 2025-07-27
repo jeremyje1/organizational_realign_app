@@ -480,7 +480,7 @@ function TierBasedAssessmentContent() {
       } else if (assessmentState.tier === 'comprehensive-package') {
         aiTier = 'ai-transformation-blueprint'; // 150 questions for comprehensive
       } else if (assessmentState.tier === 'enterprise-transformation') {
-        aiTier = 'ai-enterprise-partnership'; // 150 questions for enterprise
+        aiTier = 'ai-enterprise-partnership'; // 200 questions for enterprise
       } else {
         // If already an AI readiness tier, use it directly
         aiTier = assessmentState.tier as 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';

@@ -248,7 +248,7 @@ export default function AIReadinessPricingPage() {
               <h3 className="text-xl font-semibold mb-2">Phase 1: Diagnostic</h3>
               <p className="text-gray-600 text-sm mb-4">Weeks 0-2</p>
               <ul className="text-sm text-gray-600 space-y-2">
-                <li>• 105-Q AIRIX/AIRS diagnostic</li>
+                <li>• Comprehensive AIRIX/AIRS diagnostic</li>
                 <li>• Strategic document harvest</li>
                 <li>• Stakeholder interviews</li>
                 <li>• Baseline dashboard setup</li>
