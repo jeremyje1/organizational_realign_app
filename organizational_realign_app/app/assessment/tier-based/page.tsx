@@ -687,7 +687,7 @@ function TierBasedAssessmentContent() {
             </div>
             
             <div className="bg-green-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-green-900 mb-2">📧 Email Confirmation</h3>
+              <h3 className="font-semibold text-green-900 mb-2">Email Confirmation</h3>
               <p className="text-sm text-green-800">
                 A confirmation email has been sent to <strong>{assessmentState.contactEmail}</strong> with your assessment details and next steps.
               </p>
