@@ -464,7 +464,24 @@ function TierBasedAssessmentContent() {
     if (assessmentType === 'ai-readiness' || assessmentState.tier.startsWith('ai-readiness')) {
       // Import and use AI readiness questions
       const { getAIReadinessQuestions } = require('@/lib/enhancedQuestionBankV3');
-      return getAIReadinessQuestions(assessmentState.tier);
+      
+      // Map the organizational tier to appropriate AI readiness tier
+      let aiTier: 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
+      
+      if (assessmentState.tier === 'one-time-diagnostic') {
+        aiTier = 'ai-readiness-comprehensive'; // 105 questions for diagnostic
+      } else if (assessmentState.tier === 'monthly-subscription') {
+        aiTier = 'higher-ed-ai-pulse-check'; // 50 questions for pulse check
+      } else if (assessmentState.tier === 'comprehensive-package') {
+        aiTier = 'ai-transformation-blueprint'; // 150 questions for comprehensive
+      } else if (assessmentState.tier === 'enterprise-transformation') {
+        aiTier = 'ai-enterprise-partnership'; // 150 questions for enterprise
+      } else {
+        // If already an AI readiness tier, use it directly
+        aiTier = assessmentState.tier as 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
+      }
+      
+      return getAIReadinessQuestions(aiTier);
     }
     
     // For organizational assessments, use the standard questions
@@ -549,8 +566,39 @@ function TierBasedAssessmentContent() {
       validationErrors: []
     }));
     
-    // Validate responses - skip validation for AI readiness assessments for now
-    if (!assessmentState.tier.startsWith('ai-readiness')) {
+    // Validate responses
+    if (assessmentType === 'ai-readiness' || assessmentState.tier.startsWith('ai-readiness')) {
+      // For AI readiness assessments, validate with appropriate AI readiness tier
+      let aiTier: 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
+      
+      if (assessmentState.tier === 'one-time-diagnostic') {
+        aiTier = 'ai-readiness-comprehensive';
+      } else if (assessmentState.tier === 'monthly-subscription') {
+        aiTier = 'higher-ed-ai-pulse-check';
+      } else if (assessmentState.tier === 'comprehensive-package') {
+        aiTier = 'ai-transformation-blueprint';
+      } else if (assessmentState.tier === 'enterprise-transformation') {
+        aiTier = 'ai-enterprise-partnership';
+      } else {
+        aiTier = assessmentState.tier as 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
+      }
+      
+      const validation = validateResponses(
+        assessmentState.responses, 
+        aiTier,
+        assessmentState.organizationType
+      );
+      
+      if (!validation.valid) {
+        setAssessmentState(prev => ({
+          ...prev,
+          validationErrors: [`Missing required responses: ${validation.missingRequired.join(', ')}`]
+        }));
+        setLoading(false);
+        return;
+      }
+    } else {
+      // For organizational assessments, use standard validation
       const validation = validateResponses(
         assessmentState.responses, 
         assessmentState.tier as Exclude<PricingTier, 'ai-readiness-basic' | 'ai-readiness-custom' | 'ai-readiness-advanced' | 'ai-readiness-comprehensive'>, 
