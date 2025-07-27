@@ -468,7 +468,12 @@ function TierBasedAssessmentContent() {
       // Map the organizational tier to appropriate AI readiness tier
       let aiTier: 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
       
-      if (assessmentState.tier === 'one-time-diagnostic') {
+      // Check URL params to determine if this is specifically a pulse check
+      const tierParam = searchParams.get('tier');
+      
+      if (tierParam === 'higher-ed-ai-pulse-check') {
+        aiTier = 'higher-ed-ai-pulse-check'; // 50 questions for pulse check
+      } else if (assessmentState.tier === 'one-time-diagnostic') {
         aiTier = 'ai-readiness-comprehensive'; // 105 questions for diagnostic
       } else if (assessmentState.tier === 'monthly-subscription') {
         aiTier = 'higher-ed-ai-pulse-check'; // 50 questions for pulse check
@@ -571,7 +576,12 @@ function TierBasedAssessmentContent() {
       // For AI readiness assessments, validate with appropriate AI readiness tier
       let aiTier: 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
       
-      if (assessmentState.tier === 'one-time-diagnostic') {
+      // Check URL params to determine if this is specifically a pulse check
+      const tierParam = searchParams.get('tier');
+      
+      if (tierParam === 'higher-ed-ai-pulse-check') {
+        aiTier = 'higher-ed-ai-pulse-check'; // 50 questions for pulse check
+      } else if (assessmentState.tier === 'one-time-diagnostic') {
         aiTier = 'ai-readiness-comprehensive';
       } else if (assessmentState.tier === 'monthly-subscription') {
         aiTier = 'higher-ed-ai-pulse-check';
