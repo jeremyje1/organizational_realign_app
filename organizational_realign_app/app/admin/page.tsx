@@ -275,7 +275,7 @@ function AdminDashboardContent() {
                     <div className="flex items-center">
                       <div className="ml-4">
                         <h4 className="text-lg font-medium text-gray-900">🤖 AI Readiness Testing</h4>
-                        <p className="text-sm text-gray-500">Test AI readiness assessments (105/150 questions)</p>
+                        <p className="text-sm text-gray-500">Test AI readiness assessments (Pulse Check: 50, Comprehensive: 105, Blueprint: 150, Enterprise: 200 questions)</p>
                       </div>
                     </div>
                   </Link>

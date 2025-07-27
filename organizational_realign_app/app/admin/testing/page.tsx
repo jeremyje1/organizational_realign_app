@@ -431,8 +431,11 @@ function AdminTestingPanelContent() {
     if (!tierConfig || !industryConfig) return responses;
 
     if (assessmentType === 'ai-readiness') {
-      // AI Readiness specific questions (105 for basic, 150 for comprehensive)
-      const questionCount = tier === 'ai-readiness-custom' ? 150 : 105;
+      // AI Readiness specific questions - use actual question counts
+      let questionCount = 105; // default comprehensive
+      if (tier === 'higher-ed-ai-pulse-check') questionCount = 50;
+      else if (tier === 'ai-transformation-blueprint') questionCount = 150;
+      else if (tier === 'enterprise-partnership') questionCount = 200;
       
       // Strategic Leadership (18 Questions)
       responses.strategic_leadership_ai_vision = Math.floor(Math.random() * 3) + 3; // 3-5 range
@@ -486,8 +489,8 @@ function AdminTestingPanelContent() {
       responses.ai_implementation_challenges = 'Faculty resistance, infrastructure limitations, policy development needs';
       responses.ai_success_metrics = 'Student learning outcomes, operational efficiency, cost savings, faculty satisfaction';
 
-      // Comprehensive tier additional features (150 questions)
-      if (tier === 'ai-readiness-custom') {
+      // Blueprint tier additional features (150 questions)
+      if (tier === 'ai-transformation-blueprint') {
         // Advanced AI Strategy (25 Questions)
         responses.ai_scenario_modeling = Math.floor(Math.random() * 3) + 3;
         responses.ai_board_readiness = Math.floor(Math.random() * 4) + 2;
