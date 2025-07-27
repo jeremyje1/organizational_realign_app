@@ -7,12 +7,7 @@
  */
 
 export type PricingTier = 
-  // AI Readiness Tiers
-  | 'higher-ed-ai-pulse-check' 
-  | 'ai-readiness-comprehensive' 
-  | 'ai-transformation-blueprint' 
-  | 'ai-enterprise-partnership'
-  // Organizational Assessment Tiers
+  // Organizational Assessment Tiers (AI Blueprint has separate type)
   | 'one-time-diagnostic'
   | 'monthly-subscription' 
   | 'comprehensive-package'
@@ -54,238 +49,6 @@ export interface TierConfiguration {
 }
 
 export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
-  // AI Readiness / Blueprint Tiers (Higher Education Focus)
-  'higher-ed-ai-pulse-check': {
-    name: 'Higher Ed AI Pulse Check',
-    price: 2000,
-    targetCustomer: 'Individual departments or small teams wanting a quick AI readiness snapshot',
-    coreDeliverables: [
-      '50-question streamlined AI readiness assessment',
-      'AI-generated quick insights report (8-10 pages)',
-      'AIRIX™ core algorithm analysis',
-      'Essential AI readiness scoring across 6 domains',
-      'Basic AI implementation recommendations',
-      'Resource library access',
-      'Single assessment access',
-      'Up to 2 users',
-      'Email support',
-      'Results within 2-3 business days'
-    ],
-    assessmentScope: {
-      questionCount: 50,
-      sections: [
-        'Strategic Leadership', 
-        'Governance & Policy', 
-        'Faculty AI Integration', 
-        'Technology Infrastructure', 
-        'Cultural Readiness', 
-        'Mission Alignment'
-      ],
-      algorithms: ['AIRIX'],
-      reportPages: 10,
-      followUpSupport: 'Email support for 30 days + resource library access'
-    },
-    features: {
-      uploadSupport: false,
-      dashboardRefresh: false,
-      customReporting: false,
-      powerBIEmbedded: false,
-      apiConnectors: false,
-      onSiteFacilitation: false,
-      progressAudits: false,
-      orgChartGenerator: false,
-      scenarioBuilder: false,
-      monteCarloSimulation: false,
-      realTimeCollaboration: false,
-      aiOpportunityAssessment: true,
-      aiReadinessScore: true,
-      automationRecommendations: true
-    },
-    guardrails: {
-      maxAssessments: 1,
-      maxUsers: 2,
-      dataRetentionMonths: 6
-    }
-  },
-
-  'ai-readiness-comprehensive': {
-    name: 'AI Readiness Comprehensive',
-    price: 4995,
-    targetCustomer: 'Higher education institutions seeking comprehensive AI readiness evaluation with advanced analytics',
-    coreDeliverables: [
-      '105-question comprehensive AI readiness assessment',
-      'AI-enhanced analysis and recommendations',
-      '25-page detailed AI readiness report',
-      'AIRIX™, AIRS™, AICS™ algorithm analysis',
-      'Strategic document upload & AI analysis',
-      'AI readiness scoring across 8 domains',
-      'Detailed AI implementation guidance',
-      'Team collaboration features',
-      'Single assessment access',
-      'Up to 5 users',
-      'Priority email support',
-      '30-minute strategy consultation'
-    ],
-    assessmentScope: {
-      questionCount: 105,
-      sections: [
-        'Strategic Leadership', 
-        'Governance & Policy', 
-        'Faculty AI Integration', 
-        'Student AI Policy', 
-        'Employee Integration', 
-        'Technology Infrastructure', 
-        'Cultural Transformation', 
-        'Mission Alignment'
-      ],
-      algorithms: ['AIRIX', 'AIRS', 'AICS'],
-      reportPages: 25,
-      followUpSupport: '30-minute strategy consultation + email support for 60 days + resource library access'
-    },
-    features: {
-      uploadSupport: true,
-      dashboardRefresh: false,
-      customReporting: true,
-      powerBIEmbedded: false,
-      apiConnectors: false,
-      onSiteFacilitation: false,
-      progressAudits: false,
-      orgChartGenerator: false,
-      scenarioBuilder: false,
-      monteCarloSimulation: false,
-      realTimeCollaboration: true,
-      aiOpportunityAssessment: true,
-      aiReadinessScore: true,
-      automationRecommendations: true
-    },
-    guardrails: {
-      maxAssessments: 1,
-      maxUsers: 5,
-      dataRetentionMonths: 12
-    }
-  },
-
-  'ai-transformation-blueprint': {
-    name: 'AI Transformation Blueprint',
-    price: 24500,
-    targetCustomer: 'Higher education institutions ready for strategic AI implementation with expert guidance and comprehensive analysis',
-    coreDeliverables: [
-      '150-question in-depth AI assessment',
-      'AI-generated comprehensive narrative reports',
-      '40-page AI Transformation Blueprint™',
-      'AIRIX™, AIRS™, AICS™, AIMS™, AIPS™ algorithm analysis',
-      'Advanced AI scenario builder',
-      'Custom AI policy recommendations',
-      'Strategic AI roadmap development',
-      'Team collaboration features',
-      'Up to 15 users',
-      'Up to 10 AI scenarios',
-      'Priority support',
-      '60-minute AI implementation consulting session'
-    ],
-    assessmentScope: {
-      questionCount: 150,
-      sections: [
-        'Strategic Leadership', 
-        'Governance & Policy', 
-        'Faculty AI Integration', 
-        'Student AI Policy', 
-        'Employee Integration', 
-        'Technology Infrastructure', 
-        'Cultural Transformation', 
-        'Mission Alignment',
-        'Advanced AI Strategy',
-        'Implementation Planning'
-      ],
-      algorithms: ['AIRIX', 'AIRS', 'AICS', 'AIMS', 'AIPS'],
-      reportPages: 40,
-      followUpSupport: '60-minute strategy session + 30-day advisory access + implementation planning support'
-    },
-    features: {
-      uploadSupport: true,
-      dashboardRefresh: true,
-      customReporting: true,
-      powerBIEmbedded: false,
-      apiConnectors: false,
-      onSiteFacilitation: false,
-      progressAudits: false,
-      orgChartGenerator: false,
-      scenarioBuilder: true,
-      monteCarloSimulation: false,
-      realTimeCollaboration: true,
-      aiOpportunityAssessment: true,
-      aiReadinessScore: true,
-      automationRecommendations: true
-    },
-    guardrails: {
-      maxAssessments: 1,
-      maxUsers: 15,
-      maxScenarios: 10,
-      dataRetentionMonths: 24
-    }
-  },
-
-  'ai-enterprise-partnership': {
-    name: 'Enterprise Partnership',
-    price: 0, // Contact for pricing
-    targetCustomer: 'Large institutions, multi-campus systems, R1 universities seeking comprehensive AI transformation partnership',
-    coreDeliverables: [
-      'Full AI Transformation Blueprint™ included',
-      'Quarterly AI readiness re-assessments',
-      'AIRIX™, AIRS™, AICS™, AIMS™, AIPS™, AIBS™ full algorithm suite',
-      'Faculty micro-credential cohort program',
-      'Dedicated Slack advisory channel',
-      'Monthly strategy office hours',
-      'Custom policy development & updates',
-      'Advanced scenario modeling & forecasting',
-      'Executive briefing sessions (quarterly)',
-      'Priority implementation support',
-      'Custom integration development',
-      'White-glove premium support',
-      'Unlimited users and assessments'
-    ],
-    assessmentScope: {
-      questionCount: 200,
-      sections: [
-        'Strategic AI Leadership',
-        'Governance & Policy Framework', 
-        'Technology Infrastructure',
-        'Faculty & Pedagogy Integration',
-        'Student AI Policy', 
-        'Employee Integration', 
-        'Academic Integrity',
-        'Continuous Improvement',
-        'Research Integration',
-        'External Partnerships'
-      ],
-      algorithms: ['AIRIX', 'AIRS', 'AICS', 'AIMS', 'AIPS', 'AIBS'],
-      reportPages: 50,
-      followUpSupport: 'Annual retainer with dedicated advisory channel and quarterly strategy sessions'
-    },
-    features: {
-      uploadSupport: true,
-      dashboardRefresh: true,
-      customReporting: true,
-      powerBIEmbedded: true,
-      apiConnectors: true,
-      onSiteFacilitation: true,
-      progressAudits: true,
-      orgChartGenerator: false,
-      scenarioBuilder: true,
-      monteCarloSimulation: true,
-      realTimeCollaboration: true,
-      aiOpportunityAssessment: true,
-      aiReadinessScore: true,
-      automationRecommendations: true
-    },
-    guardrails: {
-      maxAssessments: null, // Unlimited
-      maxUsers: null, // Unlimited
-      maxScenarios: null, // Unlimited
-      dataRetentionMonths: null // Permanent retention
-    }
-  },
-
   // Organizational Assessment Tiers (All Industries)
   'one-time-diagnostic': {
     name: 'One-Time Diagnostic',
@@ -583,7 +346,7 @@ export const INDUSTRY_MODULES = {
  * Algorithm Configuration by Tier
  */
 export const TIER_ALGORITHMS = {
-  // Organizational Assessment Algorithms
+  // Organizational Assessment Algorithms (AI Blueprint algorithms are separate)
   'one-time-diagnostic': {
     primary: ['OCI', 'HOCI', 'JCI'],
     advanced: [],
@@ -603,27 +366,6 @@ export const TIER_ALGORITHMS = {
     primary: ['OCI', 'HOCI', 'JCI', 'DSCH', 'CRF', 'LEI'],
     advanced: ['Monte Carlo DSCH', 'Predictive Analytics', 'ROI Modeling'],
     experimental: ['AI-Powered Recommendations', 'Real-time Benchmarking']
-  },
-  // AI Readiness Assessment Algorithms
-  'higher-ed-ai-pulse-check': {
-    primary: ['AIRIX'],
-    advanced: [],
-    experimental: []
-  },
-  'ai-readiness-comprehensive': {
-    primary: ['AIRIX', 'AIRS', 'AICS'],
-    advanced: [],
-    experimental: []
-  },
-  'ai-transformation-blueprint': {
-    primary: ['AIRIX', 'AIRS', 'AICS', 'AIMS', 'AIPS'],
-    advanced: [],
-    experimental: []
-  },
-  'ai-enterprise-partnership': {
-    primary: ['AIRIX', 'AIRS', 'AICS', 'AIMS', 'AIPS', 'AIBS'],
-    advanced: ['Advanced AI Strategy'],
-    experimental: ['Predictive AI Modeling']
   }
 };
 
