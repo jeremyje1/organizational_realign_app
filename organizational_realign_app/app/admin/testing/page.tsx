@@ -117,52 +117,46 @@ const AI_READINESS_TIER_CONFIGS: TierTestConfig[] = [
 
 const INDUSTRY_CONFIGS: IndustryTestConfig[] = [
   {
-    industry: 'higher-education',
-    displayName: 'Higher Education',
+    industry: 'community-college',
+    displayName: 'Community College',
     contextualQuestions: 25,
-    specificFeatures: ['Student success metrics', 'Academic program analysis', 'Faculty development', 'Research collaboration']
+    specificFeatures: ['Workforce development', 'Local community partnerships', 'Transfer pathways', 'Adult learner support']
+  },
+  {
+    industry: 'public-university',
+    displayName: 'Public University/State University',
+    contextualQuestions: 30,
+    specificFeatures: ['Research programs', 'State funding compliance', 'Graduate education', 'Athletic programs']
+  },
+  {
+    industry: 'private-university',
+    displayName: 'Private University/College',
+    contextualQuestions: 28,
+    specificFeatures: ['Endowment management', 'Alumni relations', 'Tuition dependency', 'Brand positioning']
   },
   {
     industry: 'healthcare',
-    displayName: 'Healthcare',
-    contextualQuestions: 20,
-    specificFeatures: ['Patient care optimization', 'Clinical workflow analysis', 'Regulatory compliance', 'Quality improvement']
-  },
-  {
-    industry: 'manufacturing',
-    displayName: 'Manufacturing',
-    contextualQuestions: 22,
-    specificFeatures: ['Production efficiency', 'Supply chain optimization', 'Quality control', 'Safety protocols']
-  },
-  {
-    industry: 'financial-services',
-    displayName: 'Financial Services',
-    contextualQuestions: 18,
-    specificFeatures: ['Risk management', 'Customer service optimization', 'Regulatory compliance', 'Digital transformation']
-  },
-  {
-    industry: 'technology',
-    displayName: 'Technology',
-    contextualQuestions: 24,
-    specificFeatures: ['Product development', 'Engineering efficiency', 'Innovation processes', 'Scalability planning']
-  },
-  {
-    industry: 'government',
-    displayName: 'Government',
-    contextualQuestions: 19,
-    specificFeatures: ['Public service delivery', 'Policy implementation', 'Citizen engagement', 'Transparency initiatives']
+    displayName: 'Healthcare Organization/Hospital System',
+    contextualQuestions: 35,
+    specificFeatures: ['Clinical operations', 'Patient safety', 'Regulatory compliance', 'Revenue cycle management']
   },
   {
     industry: 'nonprofit',
-    displayName: 'Non-Profit',
-    contextualQuestions: 17,
-    specificFeatures: ['Mission effectiveness', 'Donor engagement', 'Community impact', 'Resource optimization']
+    displayName: 'Nonprofit Organization',
+    contextualQuestions: 22,
+    specificFeatures: ['Mission effectiveness', 'Donor engagement', 'Community impact', 'Grant management']
   },
   {
-    industry: 'retail',
-    displayName: 'Retail',
-    contextualQuestions: 21,
-    specificFeatures: ['Customer experience', 'Inventory management', 'Sales optimization', 'Brand consistency']
+    industry: 'government',
+    displayName: 'Government Agency',
+    contextualQuestions: 27,
+    specificFeatures: ['Public service delivery', 'Regulatory compliance', 'Citizen engagement', 'Transparency initiatives']
+  },
+  {
+    industry: 'corporate',
+    displayName: 'Corporate/Business Organization',
+    contextualQuestions: 32,
+    specificFeatures: ['Revenue optimization', 'Market competitiveness', 'Operational efficiency', 'Customer satisfaction']
   }
 ];
 
