@@ -2,7 +2,7 @@
  * Stripe Tier Mapping Configuration
  * Maps tier configuration to Stripe pricing and redirects
  * 
- * @version 1.0.0
+ * @version 1.0.3
  * @author NorthPath Strategies
  */
 
@@ -24,7 +24,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
   'one-time-diagnostic': {
     tierKey: 'one-time-diagnostic',
     stripeProductId: 'prod_org_diagnostic',
-    stripePriceId: 'price_1Ro4u8ELd2WOuqIWCkJdFbNx',
+    stripePriceId: 'price_1Rhdf0ELd2WOuqIWwagqCdLa',
     stripeMode: 'payment',
     successRedirect: '/assessment/tier-based?tier=one-time-diagnostic&assessment_type=organizational',
     cancelRedirect: '/pricing',
@@ -44,7 +44,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
   'monthly-subscription': {
     tierKey: 'monthly-subscription',
     stripeProductId: 'prod_org_monthly',
-    stripePriceId: 'price_1Ro4uTELd2WOuqIWJx8dKp2L',
+    stripePriceId: 'price_1RhdgNELd2WOuqIW9HDyggY3',
     stripeMode: 'subscription',
     successRedirect: '/assessment/tier-based?tier=monthly-subscription&assessment_type=organizational',
     cancelRedirect: '/pricing',
@@ -72,6 +72,14 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     tierPrice: 24000
   }
 };
+
+/**
+ * Cache-busting function to ensure Vercel uses the latest file.
+ * @returns {string} The current version of the mapping file.
+ */
+export function getMappingVersion(): string {
+  return '1.0.3';
+}
 
 /**
  * Get Stripe mapping for a specific tier
@@ -141,6 +149,7 @@ export function generateStripeCheckoutUrl(
   if (customerEmail) {
     params.set('customer_email', customerEmail);
   }
-  
-  return `/api/stripe/create-tier-checkout?${params.toString()}`;
+  const checkoutPath = `/api/stripe/create-tier-checkout?${params.toString()}`;
+  console.log('Generated checkout URL:', checkoutPath);
+  return checkoutPath;
 }

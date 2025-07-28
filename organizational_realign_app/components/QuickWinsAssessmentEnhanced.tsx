@@ -83,6 +83,16 @@ export default function QuickWinsAssessmentEnhanced({ onComplete, onUpgrade }: Q
       setIsComplete(true);
       setTimeout(() => setShowResults(true), 500);
       onComplete?.(assessmentResults);
+      // Send results via email if user stored
+      const stored = localStorage.getItem('quickWinsUser');
+      if (stored) {
+        const { email, name } = JSON.parse(stored);
+        fetch('/api/quick-wins/send-report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name, results: assessmentResults }),
+        }).catch(err => console.error('Report send failed:', err));
+      }
     }
   };
 

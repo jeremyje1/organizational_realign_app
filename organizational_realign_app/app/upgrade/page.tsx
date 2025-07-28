@@ -1,12 +1,24 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { PageHero } from '@/components/PageHero';
 import { PricingTier, PRICING_TIERS } from '@/lib/tierConfiguration';
-import { generateStripeCheckoutUrl } from '@/lib/stripe-tier-mapping';
+import { generateStripeCheckoutUrl, getMappingVersion } from '@/lib/stripe-tier-mapping';
 
 function UpgradeContent() {
+  // Force reload on mapping version change to ensure latest price IDs
+  useEffect(() => {
+    const version = getMappingVersion();
+    const prevVersion = sessionStorage.getItem('mappingVersion');
+    if (prevVersion && prevVersion !== version) {
+      sessionStorage.setItem('mappingVersion', version);
+      window.location.reload();
+    } else if (!prevVersion) {
+      sessionStorage.setItem('mappingVersion', version);
+    }
+  }, []);
+
   const searchParams = useSearchParams();
   const requiredTier = searchParams.get('requiredTier') || 'enterprise-transformation';
   const currentTier = searchParams.get('currentTier') || 'one-time-diagnostic';
