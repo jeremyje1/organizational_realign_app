@@ -177,7 +177,7 @@ export default function AssessmentOnboardingPage() {
                 🎯 Not sure where to start? Try our Free Quick Wins Assessment!
               </h3>
               <p className="text-green-700">
-                Get immediate cost-saving recommendations in just 5 minutes. No email required.
+                Get immediate cost-saving recommendations in just 5 minutes. Quick email required for your results.
               </p>
             </div>
             <a 

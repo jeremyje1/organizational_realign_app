@@ -306,7 +306,7 @@ export default function QuickWinsLandingPage() {
                 ✓ 100% Free
               </div>
               <div className="bg-white/10 border border-white/30 rounded-lg px-3 py-1">
-                ✓ No Email Required
+                ✓ Free Assessment
               </div>
               <div className="bg-white/10 border border-white/30 rounded-lg px-3 py-1">
                 ✓ Instant Results
