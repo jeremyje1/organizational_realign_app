@@ -669,10 +669,11 @@ function TierBasedAssessmentContent() {
       if (response.ok) {
         console.log('Assessment submitted successfully:', result);
         clearSavedData(); // Clear auto-saved draft data
-        setAssessmentState(prev => ({ 
-          ...prev, 
+        console.log('Submission result payload:', result);
+        setAssessmentState(prev => ({
+          ...prev,
           isComplete: true,
-          assessmentId: result.assessmentId // Store the assessment ID
+          assessmentId: result.assessmentId || result.id // Store the assessment ID returned as id
         }));
         
         // Remove automatic redirect - let user control their next step
@@ -699,6 +700,28 @@ function TierBasedAssessmentContent() {
   if (assessmentState.isComplete) {
     // Additional safety check for success state
     if (!tierConfig || !tierConfig.name) {
+      // Custom complete UI for AI readiness tiers
+      if (assessmentState.tier.startsWith('ai-readiness')) {
+        return (
+          <div className="max-w-4xl mx-auto p-6">
+            <Card>
+              <CardHeader className="text-center">
+                <div className="text-6xl text-green-500 mx-auto mb-4">✅</div>
+                <CardTitle className="text-2xl text-green-700">AI Readiness Assessment Submitted!</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center space-y-4">
+                <p className="text-gray-600">
+                  Thank you! Your AI Readiness Assessment has been submitted successfully.
+                </p>
+                <p className="text-sm text-gray-500">
+                  You will receive your detailed report at <strong>{assessmentState.contactEmail}</strong> within 3-5 business days.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        );
+      }
+      // Fallback for missing tier config
       return (
         <div className="max-w-4xl mx-auto p-6">
           <Card>
