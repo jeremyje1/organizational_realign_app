@@ -548,68 +548,68 @@ function TierBasedAssessmentContent() {
       validationErrors: []
     }));
     
-    // Validate responses
-    const aiReadinessTiers = [
-      'higher-ed-ai-pulse-check',
-      'ai-readiness-comprehensive',
-      'ai-transformation-blueprint',
-      'ai-enterprise-partnership'
-    ];
-    const isAI = aiReadinessTiers.includes(assessmentState.tier as string);
-    if (isAI) {
-      // For AI readiness assessments, validate with appropriate AI readiness tier
-      let aiTier: 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
-      
-      // Check URL params to determine if this is specifically a pulse check
-      const tierParam = searchParams.get('tier');
-      
-      if (tierParam === 'higher-ed-ai-pulse-check') {
-        aiTier = 'higher-ed-ai-pulse-check'; // 50 questions for pulse check
-      } else if (assessmentState.tier === 'one-time-diagnostic') {
-        aiTier = 'ai-readiness-comprehensive';
-      } else if (assessmentState.tier === 'monthly-subscription') {
-        aiTier = 'higher-ed-ai-pulse-check';
-      } else if (assessmentState.tier === 'comprehensive-package') {
-        aiTier = 'ai-transformation-blueprint';
-      } else if (assessmentState.tier === 'enterprise-transformation') {
-        aiTier = 'ai-enterprise-partnership';
-      } else {
-        aiTier = assessmentState.tier as 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
-      }
-      
-      const validation = validateResponses(
-        assessmentState.responses, 
-        aiTier,
-        assessmentState.organizationType
-      );
-      
-      if (!validation.valid) {
-        setAssessmentState(prev => ({
-          ...prev,
-          validationErrors: [`Missing required responses: ${validation.missingRequired.join(', ')}`]
-        }));
-        setLoading(false);
-        return;
-      }
-    } else {
-      // For organizational assessments, use standard validation
-      const validation = validateResponses(
-        assessmentState.responses, 
-        assessmentState.tier as Exclude<PricingTier, 'ai-readiness-basic' | 'ai-readiness-custom' | 'ai-readiness-advanced' | 'ai-readiness-comprehensive'>, 
-        assessmentState.organizationType
-      );
-      
-      if (!validation.valid) {
-        setAssessmentState(prev => ({
-          ...prev,
-          validationErrors: [`Missing required responses: ${validation.missingRequired.join(', ')}`]
-        }));
-        setLoading(false);
-        return;
-      }
-    }
-
     try {
+      // Validate responses
+      const aiReadinessTiers = [
+        'higher-ed-ai-pulse-check',
+        'ai-readiness-comprehensive',
+        'ai-transformation-blueprint',
+        'ai-enterprise-partnership'
+      ];
+      const isAI = aiReadinessTiers.includes(assessmentState.tier as string);
+      if (isAI) {
+        // For AI readiness assessments, validate with appropriate AI readiness tier
+        let aiTier: 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
+        
+        // Check URL params to determine if this is specifically a pulse check
+        const tierParam = searchParams.get('tier');
+        
+        if (tierParam === 'higher-ed-ai-pulse-check') {
+          aiTier = 'higher-ed-ai-pulse-check'; // 50 questions for pulse check
+        } else if (assessmentState.tier === 'one-time-diagnostic') {
+          aiTier = 'ai-readiness-comprehensive';
+        } else if (assessmentState.tier === 'monthly-subscription') {
+          aiTier = 'higher-ed-ai-pulse-check';
+        } else if (assessmentState.tier === 'comprehensive-package') {
+          aiTier = 'ai-transformation-blueprint';
+        } else if (assessmentState.tier === 'enterprise-transformation') {
+          aiTier = 'ai-enterprise-partnership';
+        } else {
+          aiTier = assessmentState.tier as 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
+        }
+        
+        const validation = validateResponses(
+          assessmentState.responses, 
+          aiTier,
+          assessmentState.organizationType
+        );
+        
+        if (!validation.valid) {
+          setAssessmentState(prev => ({
+            ...prev,
+            validationErrors: [`Missing required responses: ${validation.missingRequired.join(', ')}`]
+          }));
+          setLoading(false);
+          return;
+        }
+      } else {
+        // For organizational assessments, use standard validation
+        const validation = validateResponses(
+          assessmentState.responses, 
+          assessmentState.tier as Exclude<PricingTier, 'ai-readiness-basic' | 'ai-readiness-custom' | 'ai-readiness-advanced' | 'ai-readiness-comprehensive'>, 
+          assessmentState.organizationType
+        );
+        
+        if (!validation.valid) {
+          setAssessmentState(prev => ({
+            ...prev,
+            validationErrors: [`Missing required responses: ${validation.missingRequired.join(', ')}`]
+          }));
+          setLoading(false);
+          return;
+        }
+      }
+
       console.log('Submitting assessment with data:', {
         tier: assessmentState.tier,
         organizationType: assessmentState.organizationType,
@@ -641,33 +641,47 @@ function TierBasedAssessmentContent() {
         uploadedFiles: assessmentState.uploadedFiles.map(f => ({ name: f.name, size: f.size, type: f.type }))
       };
 
-      const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-      });
+      // Use AbortController to handle cleanup if component unmounts
+      const abortController = new AbortController();
+      const timeoutId = setTimeout(() => abortController.abort(), 30000); // 30 second timeout
 
-      const result = await response.json();
-      
-      if (response.ok) {
-        console.log('Assessment submitted successfully:', result);
-        clearSavedData(); // Clear auto-saved draft data
-        console.log('Submission result payload:', result);
-        setAssessmentState(prev => ({
-          ...prev,
-          isComplete: true,
-          assessmentId: result.assessmentId || result.id // Store the assessment ID returned as id
-        }));
+      try {
+        const response = await fetch(apiEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody),
+          signal: abortController.signal
+        });
+
+        clearTimeout(timeoutId);
+        const result = await response.json();
         
-        // Remove automatic redirect - let user control their next step
-        // if (result.redirectUrl) {
-        //   setTimeout(() => {
-        //     window.location.href = result.redirectUrl;
-        //   }, 2000);
-        // }
-      } else {
-        console.error('Assessment submission failed:', result);
-        throw new Error(result.error || 'Assessment submission failed');
+        if (response.ok) {
+          console.log('Assessment submitted successfully:', result);
+          clearSavedData(); // Clear auto-saved draft data
+          console.log('Submission result payload:', result);
+          setAssessmentState(prev => ({
+            ...prev,
+            isComplete: true,
+            assessmentId: result.assessmentId || result.id // Store the assessment ID returned as id
+          }));
+          
+          // Remove automatic redirect - let user control their next step
+          // if (result.redirectUrl) {
+          //   setTimeout(() => {
+          //     window.location.href = result.redirectUrl;
+          //   }, 2000);
+          // }
+        } else {
+          console.error('Assessment submission failed:', result);
+          throw new Error(result.error || 'Assessment submission failed');
+        }
+      } catch (fetchError) {
+        clearTimeout(timeoutId);
+        if (fetchError instanceof Error && fetchError.name === 'AbortError') {
+          throw new Error('Request timed out. Please try again.');
+        }
+        throw fetchError;
       }
     } catch (error) {
       console.error('Error submitting assessment:', error);
