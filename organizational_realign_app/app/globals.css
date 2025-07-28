@@ -74,11 +74,39 @@
 body {
   font-family: "Inter", sans-serif;
   background: linear-gradient(135deg, #F6F8FC 0%, #E0EFFF 30%, #F6F8FC 100%);
-  background-attachment: fixed;
   background-size: 400% 400%;
   animation: gradientShift 10s ease infinite;
   color: hsl(var(--foreground));
   min-height: 100vh;
+}
+
+/* Firefox-specific optimizations */
+@-moz-document url-prefix() {
+  body {
+    background-attachment: scroll;
+    background-size: 100% 100%;
+    animation: none;
+  }
+  
+  /* Disable complex animations in Firefox for better performance */
+  .animate-float,
+  .animate-pulse,
+  .animate-bounce {
+    animation: none !important;
+  }
+  
+  /* Ensure proper form rendering */
+  input[type="email"],
+  input[type="text"],
+  input[type="password"] {
+    -moz-appearance: none;
+    border-radius: var(--radius);
+  }
+  
+  /* Fix button rendering */
+  button {
+    -moz-appearance: none;
+  }
 }
 
 /* Custom animations */

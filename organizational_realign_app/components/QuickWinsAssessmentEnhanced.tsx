@@ -452,11 +452,11 @@ export default function QuickWinsAssessmentEnhanced({ onComplete, onUpgrade }: Q
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
-                  onClick={() => window.location.href = '/api/stripe/create-tier-checkout?tier=express-diagnostic'}
+                  onClick={() => window.location.href = '/api/stripe/create-tier-checkout?tier=one-time-diagnostic'}
                   size="lg"
                   className="bg-yellow-400 text-slate-800 hover:bg-yellow-300 px-8 py-3 text-lg font-semibold"
                 >
-                  Get Full Analysis - $2,495
+                  Get Full Analysis - $49.95
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button

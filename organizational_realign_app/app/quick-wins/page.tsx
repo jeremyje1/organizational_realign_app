@@ -15,14 +15,29 @@ import { PageContainer } from '@/components/ui/page-container';
 import { PageHero } from '@/components/ui/page-hero';
 import { NpsCard } from '@/components/ui/nps-card';
 import { NpsButton } from '@/components/ui/nps-button';
+import { Input } from '@/components/ui/input';
+import { CardContent } from '@/components/ui/card';
 import QuickWinsAssessmentEnhanced from '@/components/QuickWinsAssessmentEnhanced';
 import { QuickWinsResult } from '@/data/quickWinsQuestions';
 
 export default function QuickWinsLandingPage() {
   const [showAssessment, setShowAssessment] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
 
   const handleStartAssessment = () => {
-    setShowAssessment(true);
+    setShowEmailForm(true);
+  };
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email.trim() && name.trim()) {
+      // Store email and name for later use
+      localStorage.setItem('quickWinsUser', JSON.stringify({ email, name }));
+      setShowAssessment(true);
+      setShowEmailForm(false);
+    }
   };
 
   const handleAssessmentComplete = (_results: QuickWinsResult[]) => {
@@ -33,6 +48,71 @@ export default function QuickWinsLandingPage() {
     // Redirect to pricing page where users can choose their assessment plan
     window.location.href = '/pricing';
   };
+
+  if (showEmailForm) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <PageContainer>
+          <div className="max-w-md mx-auto">
+            <NpsCard>
+              <CardContent className="p-8">
+                <div className="text-center mb-6">
+                  <Gift className="h-12 w-12 text-nps-gold mx-auto mb-4" />
+                  <h2 className="text-2xl font-bold mb-2">Get Your Free Report</h2>
+                  <p className="text-nps-slate">Enter your details to receive your personalized quick wins assessment results.</p>
+                </div>
+                
+                <form onSubmit={handleEmailSubmit} className="space-y-4">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium mb-2">
+                      Full Name *
+                    </label>
+                    <Input
+                      id="name"
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Enter your full name"
+                      required
+                      className="w-full"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium mb-2">
+                      Email Address *
+                    </label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email address"
+                      required
+                      className="w-full"
+                    />
+                  </div>
+                  
+                  <NpsButton
+                    type="submit"
+                    size="lg"
+                    className="w-full"
+                  >
+                    Continue to Assessment
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </NpsButton>
+                  
+                  <p className="text-xs text-nps-slate text-center">
+                    We'll use your email to send you the assessment results and occasional updates about organizational improvement strategies.
+                  </p>
+                </form>
+              </CardContent>
+            </NpsCard>
+          </div>
+        </PageContainer>
+      </div>
+    );
+  }
 
   if (showAssessment) {
     return (
@@ -81,7 +161,7 @@ export default function QuickWinsLandingPage() {
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4" />
-                <span>No email required</span>
+                <span>Free assessment</span>
               </div>
               <div className="flex items-center gap-2">
                 <DollarSign className="h-4 w-4" />
