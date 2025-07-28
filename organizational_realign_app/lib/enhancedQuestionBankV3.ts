@@ -2268,7 +2268,7 @@ export const AI_READINESS_QUESTIONS: Question[] = [
     section: "Student AI Policy & Academic Integrity",
     prompt: "Upload your current student AI use policy or academic integrity guidelines.",
     type: "upload",
-    required: true,
+    required: false,  // made optional to allow submission without upload
     helpText: "Share your institution's official policy documents regarding student AI use."
   },
   {
