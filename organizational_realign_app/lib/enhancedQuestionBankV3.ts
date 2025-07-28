@@ -1636,10 +1636,10 @@ export function getQuestionsForTier(
     
     const tierHierarchy = {
       'express-diagnostic': 1,
-      'one-time-diagnostic': 2,
-      'monthly-subscription': 3,
-      'comprehensive-package': 4,
-      'enterprise-transformation': 5,
+      'one-time-diagnostic': 1, // Keep same as express-diagnostic, both are base tiers
+      'monthly-subscription': 2,
+      'comprehensive-package': 3,
+      'enterprise-transformation': 4,
       'higher-ed-ai-pulse-check': 1,
       'ai-readiness-comprehensive': 2,
       'ai-transformation-blueprint': 3,
