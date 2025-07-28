@@ -1701,8 +1701,29 @@ export function validateAssessmentResponses(
   const allQuestions = getQuestionsForTier(tier, organizationType);
   const aiQuestions = getAIOpportunityQuestions(tier, organizationType);
   
+  // Enhanced validation logic that handles different question types properly
   const missingRequired = requiredQuestions
-    .filter(q => !responses[q.id] || responses[q.id] === '')
+    .filter(q => {
+      const response = responses[q.id];
+      
+      // Handle different question types appropriately
+      if (q.type === 'upload') {
+        // For upload questions, check if there are files or if uploads are not required for this tier
+        return !response || (Array.isArray(response) && response.length === 0);
+      } else if (q.type === 'likert' || q.type === 'scale' || q.type === 'multiple-choice') {
+        // For numerical responses, check if it's a valid number
+        return !response || response === '' || (typeof response === 'number' && (response < 1 || response > 5));
+      } else if (q.type === 'text') {
+        // For text responses, check if it's not empty
+        return !response || response === '' || (typeof response === 'string' && response.trim().length === 0);
+      } else if (q.type === 'boolean') {
+        // For boolean responses, check if it's defined
+        return response === undefined || response === null || response === '';
+      } else {
+        // Default validation for other types
+        return !response || response === '';
+      }
+    })
     .map(q => q.id);
   
   const answeredCount = Object.keys(responses).length;
