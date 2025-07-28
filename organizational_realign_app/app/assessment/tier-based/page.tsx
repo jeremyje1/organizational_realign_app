@@ -40,7 +40,7 @@ interface AssessmentState {
   institutionName: string;
   contactEmail: string;
   contactName: string;
-  tier: PricingTier;
+  tier: string;  // Accept both organizational and AI Readiness tiers
   uploadedFiles: File[];
   isComplete: boolean;
   validationErrors: string[];
@@ -251,36 +251,26 @@ function TierBasedAssessmentContent() {
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [dataRestored, setDataRestored] = useState(false);
-  
-  // Initialize with URL params immediately to prevent hydration mismatches
-  const initialTier = useMemo(() => {
-    const tier = searchParams.get('tier');
-    const validOrgTiers: PricingTier[] = ['one-time-diagnostic', 'monthly-subscription', 'comprehensive-package', 'enterprise-transformation'];
-    const aiReadinessTiers: string[] = ['higher-ed-ai-pulse-check', 'ai-readiness-comprehensive', 'ai-transformation-blueprint', 'ai-enterprise-partnership'];
-    
-    // Check if it's an organizational assessment tier
-    if (validOrgTiers.includes(tier as PricingTier)) {
-      return tier as PricingTier;
-    }
-    
-    // If it's an AI Blueprint tier, return a default organizational tier
-    // (AI Blueprint assessments should use a separate component/page)
-    if (aiReadinessTiers.includes(tier || '')) {
-      return 'one-time-diagnostic'; // Default for mixed access
-    }
-    
-    return 'one-time-diagnostic';
-  }, [searchParams]);
-  
-  const initialOrgType = useMemo(() => {
-    const orgType = searchParams.get('org');
-    const validOrgTypes: OrganizationType[] = ['higher-education', 'healthcare', 'nonprofit', 'corporate', 'government'];
-    return validOrgTypes.includes(orgType as OrganizationType) ? orgType as OrganizationType : 'higher-education';
-  }, [searchParams]);
-  
-  const assessmentType = useMemo(() => {
-    return searchParams.get('assessment_type') || 'organizational';
-  }, [searchParams]);
+
+  // Derive tier and organization type from URL params
+  const tierParam = searchParams.get('tier') || 'one-time-diagnostic';
+  const orgParam = (searchParams.get('org') as OrganizationType) || 'higher-education';
+  const aiReadinessTiers = ['higher-ed-ai-pulse-check', 'ai-readiness-comprehensive', 'ai-transformation-blueprint', 'ai-enterprise-partnership'];
+  const assessmentType = aiReadinessTiers.includes(tierParam) ? 'ai-readiness' : 'organizational';
+
+  // Initialize state with URL-derived tier and orgType
+  const [assessmentState, setAssessmentState] = useState<AssessmentState>({
+    currentSection: 0,
+    responses: {},
+    organizationType: orgParam,
+    institutionName: '',
+    contactEmail: '',
+    contactName: '',
+    tier: tierParam,
+    uploadedFiles: [],
+    isComplete: false,
+    validationErrors: []
+  });
   
   // Ensure component is mounted on client to prevent hydration issues
   useEffect(() => {
@@ -306,19 +296,6 @@ function TierBasedAssessmentContent() {
     const validOrgTypes: OrganizationType[] = ['higher-education', 'healthcare', 'nonprofit', 'corporate', 'government'];
     return validOrgTypes.includes(orgType as OrganizationType) ? orgType as OrganizationType : 'higher-education';
   };
-  
-  const [assessmentState, setAssessmentState] = useState<AssessmentState>({
-    currentSection: 0,
-    responses: {},
-    organizationType: initialOrgType,
-    institutionName: '',
-    contactEmail: '',
-    contactName: '',
-    tier: initialTier,
-    uploadedFiles: [],
-    isComplete: false,
-    validationErrors: []
-  });
   
   // Auto-save functionality
   const saveKey = useMemo(() => 
@@ -641,11 +618,11 @@ function TierBasedAssessmentContent() {
         uploadedFileCount: assessmentState.uploadedFiles.length
       });
 
-      // Determine which API endpoint to use based on tier
-      const apiEndpoint = isAI ? '/api/ai-readiness/submit' : '/api/assessment/submit';
+      // Determine API endpoint and request payload based on assessment type
+      const apiEndpoint = assessmentType === 'ai-readiness' ? '/api/ai-readiness/submit' : '/api/assessment/submit';
       
-      // Prepare the request body based on tier
-      const requestBody = isAI ? {
+      // Prepare request body based on assessment type
+      const requestBody = assessmentType === 'ai-readiness' ? {
         responses: assessmentState.responses,
         tier: assessmentState.tier,
         industry: assessmentState.organizationType,
@@ -836,6 +813,28 @@ function TierBasedAssessmentContent() {
                   </Button>
                 </div>
               </div>
+            )}
+            
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+              <Button
+                onClick={() => window.location.href = '/'}
+                variant="outline"
+                className="px-6 py-3"
+              >
+                Return to Home
+              </Button>
+              <Button
+                onClick={() => window.location.href = `/assessment/tier-based?tier=${assessmentState.tier}&org=${assessmentState.organizationType}`}
+                variant="outline"
+                className="px-6 py-3"
+              >
+                Start New Assessment
+              </Button>
+              {(assessmentState.tier === 'one-time-diagnostic' || assessmentState.tier === 'monthly-subscription') && (
+                <Button
+                  onClick={() => window.location.href = `/assessment/tier-based?tier=comprehensive-package&org=${assessmentState.organizationType}`}
+                  className="px-6 py-3 bg-green-600 hover:bg-green-700"
             )}
             
             {/* Action Buttons */}
@@ -1246,7 +1245,9 @@ function TierBasedAssessmentContent() {
       </div>
 
       {/* Tier Features Summary */}
-      <Card className="mt-8">
+      {/* Show package summary only for organizational tiers */}
+      {!aiReadinessTiers.includes(assessmentState.tier) && (
+        <Card className="mt-8">
         <CardHeader>
           <CardTitle className="text-lg">Your {tierConfig?.name || 'Assessment'} Package Includes:</CardTitle>
         </CardHeader>
@@ -1272,8 +1273,8 @@ function TierBasedAssessmentContent() {
             </div>
           </div>
         </CardContent>
-      </Card>
-    </div>
+        </Card>
+      )}
   );
 }
 
