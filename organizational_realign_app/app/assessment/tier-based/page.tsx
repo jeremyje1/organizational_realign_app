@@ -958,15 +958,15 @@ function TierBasedAssessmentContent() {
       <Card className="mb-6">
         <CardContent className="pt-6">
           <div className="flex justify-between items-center mb-4">
-            <span className="text-sm font-medium text-gray-700">Progress: {totalAnswered} of {allQuestions.length} questions</span>
-            <span className="text-sm font-medium text-blue-600">{Math.round((totalAnswered / allQuestions.length) * 100)}% complete</span>
+            <span className="text-sm font-medium text-gray-700">Progress: {answeredQuestions} of {questions.length} questions</span>
+            <span className="text-sm font-medium text-blue-600">{Math.round((answeredQuestions / questions.length) * 100)}% complete</span>
           </div>
-          <Progress value={(totalAnswered / allQuestions.length) * 100} className="w-full" />
+          <Progress value={(answeredQuestions / questions.length) * 100} className="w-full" />
           
           {/* Section completion indicators */}
           <div className="flex flex-wrap gap-2 mt-4">
             {sectionNames.map((section, index) => {
-              const sectionQuestions = allQuestions.filter(q => q.section === section);
+              const sectionQuestions = questions.filter(q => q.section === section);
               const sectionAnswered = sectionQuestions.filter(q => 
                 assessmentState.responses[q.id] !== undefined && assessmentState.responses[q.id] !== ''
               ).length;
