@@ -835,9 +835,426 @@ function TierBasedAssessmentContent() {
                 <Button
                   onClick={() => window.location.href = `/assessment/tier-based?tier=comprehensive-package&org=${assessmentState.organizationType}`}
                   className="px-6 py-3 bg-green-600 hover:bg-green-700"
-            )}
+                >
+                  Upgrade to Comprehensive
+                </Button>
+              )}
+              {assessmentState.tier !== 'enterprise-transformation' && (
+                <Button
+                  onClick={() => window.location.href = `/assessment/tier-based?tier=enterprise-transformation&org=${assessmentState.organizationType}`}
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700"
+                >
+                  Upgrade to Enterprise
+                </Button>
+              )}
+            </div>
             
-            {/* Action Buttons */}
+            <div className="border-t pt-4 mt-6">
+              <p className="text-xs text-gray-500">
+                Need help? Contact us at support@northpathstrategies.com or save your Assessment ID for reference.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (showUpgrade) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center text-amber-600">
+              <span className="text-amber-600 mr-2">⚠️</span>
+              Upgrade Required
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p>The feature you&apos;re trying to access requires a higher service tier.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {Object.entries(getTierConfiguration('comprehensive-package')).slice(0, 2).map(([key, tier]) => (
+                <div key={key} className="p-4 border rounded-lg">
+                  <h3 className="font-semibold">{tier.name}</h3>
+                  <p className="text-2xl font-bold text-green-600">${tier.price.toLocaleString()}</p>
+                  <p className="text-sm text-gray-600">{tier.targetCustomer}</p>
+                </div>
+              ))}
+            </div>
+            <Button onClick={() => setShowUpgrade(false)} variant="outline">
+              Continue with Current Tier
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading assessment...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 bg-gray-50 min-h-screen">
+      {/* Header with tier info - show different info for AI readiness */}
+      <Card className="mb-6">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl text-blue-900">
+            {assessmentType === 'ai-readiness' ? (
+              assessmentState.tier === 'higher-ed-ai-pulse-check' 
+                ? 'AI Readiness Pulse Check - Higher Education'
+                : 'AI Readiness Assessment'
+            ) : (
+              `${tierConfig?.name || 'Assessment'}`
+            )}
+          </CardTitle>
+          <p className="text-gray-600 mt-2">
+            {assessmentType === 'ai-readiness' ? (
+              assessmentState.tier === 'higher-ed-ai-pulse-check'
+                ? 'Quick assessment to evaluate your institution\'s AI readiness and identify key opportunities'
+                : 'Comprehensive AI readiness evaluation with strategic recommendations'
+            ) : (
+              tierConfig?.targetCustomer || 'Organizational assessment and analysis'
+            )}
+          </p>
+          
+          <div className="flex justify-center items-center space-x-6 mt-4">
+            <div className="text-center">
+              <span className="text-3xl font-bold text-green-600">
+                {assessmentType === 'ai-readiness' ? (
+                  assessmentState.tier === 'higher-ed-ai-pulse-check' ? '$1,995' : '$4,995'
+                ) : (
+                  `$${tierConfig?.price?.toLocaleString() || '4,995'}`
+                )}
+              </span>
+              <p className="text-sm text-gray-500">
+                {assessmentType === 'ai-readiness' ? (
+                  assessmentState.tier === 'higher-ed-ai-pulse-check' ? '8 page report' : '15 page report'
+                ) : (
+                  `${tierConfig?.assessmentScope?.reportPages || 15} page report`
+                )}
+              </p>
+            </div>
+          </div>
+        </CardHeader>
+      </Card>
+
+      {/* Progress indicator */}
+      <Card className="mb-6">
+        <CardContent className="pt-6">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-sm font-medium text-gray-700">Progress: {totalAnswered} of {allQuestions.length} questions</span>
+            <span className="text-sm font-medium text-blue-600">{Math.round((totalAnswered / allQuestions.length) * 100)}% complete</span>
+          </div>
+          <Progress value={(totalAnswered / allQuestions.length) * 100} className="w-full" />
+          
+          {/* Section completion indicators */}
+          <div className="flex flex-wrap gap-2 mt-4">
+            {sectionNames.map((section, index) => {
+              const sectionQuestions = allQuestions.filter(q => q.section === section);
+              const sectionAnswered = sectionQuestions.filter(q => 
+                assessmentState.responses[q.id] !== undefined && assessmentState.responses[q.id] !== ''
+              ).length;
+              
+              return (
+                <button
+                  key={section}
+                  onClick={() => setAssessmentState(prev => ({ ...prev, currentSection: index }))}
+                  className={`px-3 py-1 text-xs rounded-full transition-colors ${
+                    index === assessmentState.currentSection
+                      ? 'bg-blue-600 text-white'
+                      : sectionAnswered === sectionQuestions.length
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {section}
+                  {sectionAnswered === sectionQuestions.length && (
+                    <span className="ml-1 inline text-green-600">✓</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Restored Data Notification */}
+      {dataRestored && (
+        <Alert className="mb-6 bg-blue-50 border-blue-200">
+          <span className="text-blue-600 mr-2">🔄</span>
+          <AlertDescription className="text-blue-800">
+            Welcome back! We've restored your previous assessment progress. You can continue where you left off.
+            <button 
+              onClick={() => setDataRestored(false)}
+              className="ml-2 text-blue-600 underline text-sm"
+            >
+              Dismiss
+            </button>
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Error Messages */}
+      {assessmentState.validationErrors.length > 0 && (
+        <Alert className="mb-6">
+          <span className="text-red-600 mr-2">⚠️</span>
+          <AlertDescription>
+            {assessmentState.validationErrors.join('; ')}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Contact Information Section - shown only on first section */}
+      {assessmentState.currentSection === 0 && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="text-lg">Contact Information</CardTitle>
+            <p className="text-sm text-gray-600">
+              We&apos;ll use this information to send you updates about your assessment and results.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <label htmlFor="institutionName" className="block text-sm font-medium text-gray-700 mb-2">
+                Institution/Organization Name *
+              </label>
+              <input
+                id="institutionName"
+                type="text"
+                value={assessmentState.institutionName}
+                onChange={(e) => setAssessmentState(prev => ({ ...prev, institutionName: e.target.value }))}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Enter your institution or organization name"
+                required
+              />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="contactName" className="block text-sm font-medium text-gray-700 mb-2">
+                  Your Name
+                </label>
+                <input
+                  id="contactName"
+                  type="text"
+                  value={assessmentState.contactName}
+                  onChange={(e) => setAssessmentState(prev => ({ ...prev, contactName: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter your full name"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address *
+                </label>
+                <input
+                  id="contactEmail"
+                  type="email"
+                  value={assessmentState.contactEmail}
+                  onChange={(e) => setAssessmentState(prev => ({ ...prev, contactEmail: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter your email address"
+                  required
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Assessment Questions */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="text-xl">{currentSectionName}</CardTitle>
+          <p className="text-sm text-gray-600">
+            Section {assessmentState.currentSection + 1} of {sectionNames.length}
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          {currentQuestions.map((question) => {
+            const response = assessmentState.responses[question.id];
+            const contextResponse = assessmentState.responses[`${question.id}_context`];
+            
+            return (
+              <div key={question.id} className="border-b border-gray-200 pb-6 last:border-b-0">
+                <div className="mb-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    {question.prompt}
+                    {question.required && <span className="text-red-500 ml-1">*</span>}
+                  </h3>
+                  {question.helpText && (
+                    <p className="text-sm text-gray-500 mb-3">{question.helpText}</p>
+                  )}
+                  
+                  {question.type === 'likert' && (
+                    <>
+                      <p className="text-sm text-gray-600 mb-3">
+                        {question.helpText || "Rate your agreement with this statement."}
+                      </p>
+                      <LikertInput
+                        question={question}
+                        value={response as number}
+                        onResponse={handleResponse}
+                      />
+                    </>
+                  )}
+                  
+                  {question.type === 'numeric' && (
+                    <NumericInput
+                      question={question}
+                      value={response as number}
+                      onResponse={handleResponse}
+                    />
+                  )}
+                  
+                  {question.type === 'text' && (
+                    <TextInput
+                      question={question}
+                      value={response as string}
+                      onResponse={handleResponse}
+                    />
+                  )}
+                  
+                  {question.type === 'upload' && (
+                    <FileUpload
+                      question={question}
+                      onFileUpload={handleFileUpload}
+                      uploadedFiles={assessmentState.uploadedFiles}
+                    />
+                  )}
+                  
+                  {question.enableContext && (
+                    <ContextInput
+                      question={question}
+                      value={contextResponse as string}
+                      onResponse={handleResponse}
+                    />
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
+
+      {/* Navigation */}
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center space-x-4">
+          <Button
+            onClick={() => navigateSection('prev')}
+            disabled={assessmentState.currentSection === 0}
+            variant="outline"
+          >
+            Previous Section
+          </Button>
+          
+          {/* Auto-save status */}
+          <div className="text-sm text-gray-500 flex items-center">
+            <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+            Progress auto-saved
+          </div>
+        </div>
+        
+        <div className="space-x-4 flex items-center">
+          {/* Manual save button */}
+          <Button
+            onClick={() => {
+              const dataToSave = {
+                ...assessmentState,
+                lastSaved: new Date().toISOString()
+              };
+              localStorage.setItem(saveKey, JSON.stringify(dataToSave));
+              alert('Assessment progress saved! You can return to complete it later.');
+            }}
+            variant="outline"
+            size="sm"
+          >
+            💾 Save Progress
+          </Button>
+          
+          {assessmentState.currentSection === sectionNames.length - 1 ? (
+            <Button
+              onClick={submitAssessment}
+              disabled={loading}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              {loading ? (
+                <>
+                  <span className="mr-2 animate-spin">⏳</span>
+                  Submitting...
+                </>
+              ) : (
+                'Submit Assessment'
+              )}
+            </Button>
+          ) : (
+            <Button
+              onClick={() => navigateSection('next')}
+              disabled={assessmentState.currentSection === sectionNames.length - 1}
+            >
+              Next Section
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* Show package summary only for organizational tiers */}
+      {assessmentType === 'organizational' && (
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle className="text-lg">Your {tierConfig?.name || 'Assessment'} Package Includes:</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-semibold mb-2">Assessment Scope:</h4>
+                <ul className="text-sm space-y-1">
+                  <li>• {tierConfig?.assessmentScope?.questionCount || 0} targeted questions</li>
+                  <li>• {tierConfig?.assessmentScope?.algorithms?.join(', ') || 'Standard'} analysis algorithms</li>
+                  <li>• {tierConfig?.assessmentScope?.reportPages || 0} page comprehensive report</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-2">Included Features:</h4>
+                <ul className="text-sm space-y-1">
+                  {tierConfig?.features?.uploadSupport && <li>• Secure file upload capability</li>}
+                  {tierConfig?.features?.dashboardRefresh && <li>• Dashboard refresh & CSV exports</li>}
+                  {tierConfig?.features?.powerBIEmbedded && <li>• Power BI embedded dashboards</li>}
+                  {tierConfig?.features?.scenarioBuilder && <li>• Scenario modeling tools</li>}
+                  {tierConfig?.features?.monteCarloSimulation && <li>• Monte Carlo simulations</li>}
+                </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+export default function TierBasedAssessment() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading assessment...</p>
+        </div>
+      </div>
+    }>
+      <TierBasedAssessmentContent />
+    </Suspense>
+  );
+}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
               <Button
                 onClick={() => window.location.href = '/'}
