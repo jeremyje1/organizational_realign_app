@@ -572,7 +572,14 @@ function TierBasedAssessmentContent() {
     }));
     
     // Validate responses
-    if (assessmentType === 'ai-readiness' || assessmentState.tier.startsWith('ai-readiness')) {
+    const aiReadinessTiers = [
+      'higher-ed-ai-pulse-check',
+      'ai-readiness-comprehensive',
+      'ai-transformation-blueprint',
+      'ai-enterprise-partnership'
+    ];
+    const isAI = aiReadinessTiers.includes(assessmentState.tier as string);
+    if (isAI) {
       // For AI readiness assessments, validate with appropriate AI readiness tier
       let aiTier: 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership';
       
@@ -634,12 +641,11 @@ function TierBasedAssessmentContent() {
         uploadedFileCount: assessmentState.uploadedFiles.length
       });
 
-      // Determine which API endpoint to use based on assessment type
-      const isAIReadiness = assessmentType === 'ai-readiness' || assessmentState.tier.startsWith('ai-readiness');
-      const apiEndpoint = isAIReadiness ? '/api/ai-readiness/submit' : '/api/assessment/submit';
+      // Determine which API endpoint to use based on tier
+      const apiEndpoint = isAI ? '/api/ai-readiness/submit' : '/api/assessment/submit';
       
-      // Prepare the request body based on assessment type
-      const requestBody = isAIReadiness ? {
+      // Prepare the request body based on tier
+      const requestBody = isAI ? {
         responses: assessmentState.responses,
         tier: assessmentState.tier,
         industry: assessmentState.organizationType,
@@ -700,8 +706,13 @@ function TierBasedAssessmentContent() {
   if (assessmentState.isComplete) {
     // Additional safety check for success state
     if (!tierConfig || !tierConfig.name) {
-      // Custom complete UI for AI readiness tiers
-      if (assessmentState.tier.startsWith('ai-readiness')) {
+      // Custom complete UI for AI readiness tiers (including pulse check and other AI tiers)
+      if ([
+        'higher-ed-ai-pulse-check',
+        'ai-readiness-comprehensive',
+        'ai-transformation-blueprint',
+        'ai-enterprise-partnership'
+      ].includes(assessmentState.tier)) {
         return (
           <div className="max-w-4xl mx-auto p-6">
             <Card>

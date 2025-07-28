@@ -37,7 +37,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate AI readiness tier
-    const validAITiers = ['ai-readiness-basic', 'ai-readiness-custom'];
+    const validAITiers = [
+      'higher-ed-ai-pulse-check',
+      'ai-readiness-comprehensive',
+      'ai-transformation-blueprint',
+      'ai-enterprise-partnership'
+    ];
     if (!validAITiers.includes(tier)) {
       return NextResponse.json(
         { error: `Invalid AI readiness tier: ${tier}. Valid tiers: ${validAITiers.join(', ')}` },
