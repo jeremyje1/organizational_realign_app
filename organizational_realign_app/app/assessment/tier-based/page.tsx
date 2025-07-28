@@ -1255,49 +1255,6 @@ export default function TierBasedAssessment() {
     </Suspense>
   );
 }
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-              <Button
-                onClick={() => window.location.href = '/'}
-                variant="outline"
-                className="px-6 py-3"
-              >
-                Return to Home
-              </Button>
-              <Button
-                onClick={() => window.location.href = `/assessment/tier-based?tier=${assessmentState.tier}&org=${assessmentState.organizationType}`}
-                variant="outline"
-                className="px-6 py-3"
-              >
-                Start New Assessment
-              </Button>
-              {(assessmentState.tier === 'one-time-diagnostic' || assessmentState.tier === 'monthly-subscription') && (
-                <Button
-                  onClick={() => window.location.href = `/assessment/tier-based?tier=comprehensive-package&org=${assessmentState.organizationType}`}
-                  className="px-6 py-3 bg-green-600 hover:bg-green-700"
-                >
-                  Upgrade to Comprehensive
-                </Button>
-              )}
-              {assessmentState.tier !== 'enterprise-transformation' && (
-                <Button
-                  onClick={() => window.location.href = `/assessment/tier-based?tier=enterprise-transformation&org=${assessmentState.organizationType}`}
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700"
-                >
-                  Upgrade to Enterprise
-                </Button>
-              )}
-            </div>
-            
-            <div className="border-t pt-4 mt-6">
-              <p className="text-xs text-gray-500">
-                Need help? Contact us at support@northpathstrategies.com or save your Assessment ID for reference.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   if (showUpgrade) {
     return (
