@@ -1601,7 +1601,7 @@ export const CONTEXTUAL_QUESTIONS: Question[] = [
  * NOW GUARANTEES 100+ QUESTIONS FOR EVERY TIER
  */
 export function getQuestionsForTier(
-  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
   organizationType: OrganizationType = 'higher-education'
 ): Question[] {
   // Handle AI readiness tiers separately
@@ -1618,7 +1618,7 @@ export function getQuestionsForTier(
   questions.push(...contextualQuestions);
 
   // Add tier-specific questions
-  if (tier !== 'one-time-diagnostic') {
+  if (tier !== 'one-time-diagnostic' && tier !== 'express-diagnostic') {
     questions.push(...MONTHLY_QUESTIONS); // +15 questions
   }
   
@@ -1635,10 +1635,11 @@ export function getQuestionsForTier(
     if (!q.tierMinimum) return true;
     
     const tierHierarchy = {
-      'one-time-diagnostic': 1,
-      'monthly-subscription': 2,
-      'comprehensive-package': 3,
-      'enterprise-transformation': 4,
+      'express-diagnostic': 1,
+      'one-time-diagnostic': 2,
+      'monthly-subscription': 3,
+      'comprehensive-package': 4,
+      'enterprise-transformation': 5,
       'higher-ed-ai-pulse-check': 1,
       'ai-readiness-comprehensive': 2,
       'ai-transformation-blueprint': 3,
@@ -1648,6 +1649,22 @@ export function getQuestionsForTier(
     return tierHierarchy[tier] >= tierHierarchy[q.tierMinimum];
   });
 
+  // Special handling for express-diagnostic to ensure 75 questions
+  if (tier === 'express-diagnostic') {
+    // Take the first 75 questions, prioritizing required questions
+    const requiredQuestions = questions.filter(q => q.required === true);
+    const optionalQuestions = questions.filter(q => q.required !== true);
+    
+    // Ensure we have the right mix for 75 questions
+    const targetCount = 75;
+    if (requiredQuestions.length >= targetCount) {
+      return requiredQuestions.slice(0, targetCount);
+    } else {
+      const remainingSlots = targetCount - requiredQuestions.length;
+      return [...requiredQuestions, ...optionalQuestions.slice(0, remainingSlots)];
+    }
+  }
+
   return questions;
 }
 
@@ -1655,7 +1672,7 @@ export function getQuestionsForTier(
  * Get sections available for a specific tier and organization type
  */
 export function getSectionsForTier(
-  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
   organizationType: OrganizationType = 'higher-education'
 ): string[] {
   const questions = getQuestionsForTier(tier, organizationType);
@@ -1671,7 +1688,7 @@ export function getSectionsForTier(
  * Get only required questions for a tier and organization type
  */
 export function getRequiredQuestions(
-  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
   organizationType: OrganizationType = 'higher-education'
 ): Question[] {
   const allQuestions = getQuestionsForTier(tier, organizationType);
@@ -1682,7 +1699,7 @@ export function getRequiredQuestions(
  * Get AI and automation opportunity questions specifically
  */
 export function getAIOpportunityQuestions(
-  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
   organizationType: OrganizationType = 'higher-education'
 ): Question[] {
   const allQuestions = getQuestionsForTier(tier, organizationType);
@@ -1694,7 +1711,7 @@ export function getAIOpportunityQuestions(
  */
 export function validateAssessmentResponses(
   responses: Record<string, any>,
-  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
   organizationType: OrganizationType = 'higher-education'
 ): { valid: boolean; missingRequired: string[]; warningOptional: string[]; aiOpportunityScore: number } {
   const requiredQuestions = getRequiredQuestions(tier, organizationType);
@@ -1751,7 +1768,7 @@ export function validateAssessmentResponses(
  * Get comprehensive question statistics for a tier and organization type
  */
 export function getQuestionStats(
-  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation',
   organizationType: OrganizationType = 'higher-education'
 ): {
   total: number;
@@ -1786,7 +1803,7 @@ export function getQuestionStats(
  */
 export function getAIReadinessAssessment(
   responses: Record<string, any>,
-  tier: 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
+  tier: 'express-diagnostic' | 'one-time-diagnostic' | 'monthly-subscription' | 'comprehensive-package' | 'enterprise-transformation' | 'higher-ed-ai-pulse-check' | 'ai-readiness-comprehensive' | 'ai-transformation-blueprint' | 'ai-enterprise-partnership',
   organizationType: OrganizationType = 'higher-education'
 ): {
   readinessScore: number;

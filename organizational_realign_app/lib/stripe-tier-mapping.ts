@@ -34,7 +34,7 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
   'express-diagnostic': {
     tierKey: 'express-diagnostic',
     stripeProductId: 'prod_org_express',
-    stripePriceId: 'price_express_diagnostic_2495',
+    stripePriceId: 'price_1RmCmsELd2WOuqIWeM0rb7Gx',
     stripeMode: 'payment',
     successRedirect: '/assessment/tier-based?tier=express-diagnostic&assessment_type=organizational',
     cancelRedirect: '/pricing',
