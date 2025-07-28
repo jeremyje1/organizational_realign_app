@@ -8,6 +8,7 @@
 
 export type PricingTier = 
   // Organizational Assessment Tiers (AI Blueprint has separate type)
+  | 'express-diagnostic'
   | 'one-time-diagnostic'
   | 'monthly-subscription' 
   | 'comprehensive-package'
@@ -98,6 +99,55 @@ export const PRICING_TIERS: Record<PricingTier, TierConfiguration> = {
       maxAssessments: 1,
       maxUsers: 2,
       dataRetentionMonths: 6
+    }
+  },
+
+  'express-diagnostic': {
+    name: 'Express Diagnostic',
+    price: 2495,
+    targetCustomer: 'Organizations seeking quick, focused assessment with essential insights',
+    coreDeliverables: [
+      '75-question focused assessment',
+      'DSCH, CRF analysis',
+      'Essential PDF report',
+      'Basic organizational chart',
+      'Quick AI opportunity assessment',
+      'Single assessment access',
+      'Up to 2 users',
+      'Email support'
+    ],
+    assessmentScope: {
+      questionCount: 75,
+      sections: [
+        'Leadership & Strategy',
+        'Operations & Processes',
+        'Human Capital',
+        'Technology & Infrastructure'
+      ],
+      algorithms: ['DSCH', 'CRF'],
+      reportPages: 10,
+      followUpSupport: 'Email support for 15 days'
+    },
+    features: {
+      uploadSupport: true,
+      dashboardRefresh: false,
+      customReporting: false,
+      powerBIEmbedded: false,
+      apiConnectors: false,
+      onSiteFacilitation: false,
+      progressAudits: false,
+      orgChartGenerator: true,
+      scenarioBuilder: false,
+      monteCarloSimulation: false,
+      realTimeCollaboration: false,
+      aiOpportunityAssessment: true,
+      aiReadinessScore: false,
+      automationRecommendations: false
+    },
+    guardrails: {
+      maxAssessments: 1,
+      maxUsers: 2,
+      dataRetentionMonths: 3
     }
   },
 

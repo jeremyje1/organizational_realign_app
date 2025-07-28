@@ -31,6 +31,16 @@ export const STRIPE_TIER_MAPPINGS: Record<PricingTier, StripeTierMapping> = {
     tierName: 'One-Time Diagnostic',
     tierPrice: 4995
   },
+  'express-diagnostic': {
+    tierKey: 'express-diagnostic',
+    stripeProductId: 'prod_org_express',
+    stripePriceId: 'price_express_diagnostic_2495',
+    stripeMode: 'payment',
+    successRedirect: '/assessment/tier-based?tier=express-diagnostic&assessment_type=organizational',
+    cancelRedirect: '/pricing',
+    tierName: 'Express Diagnostic',
+    tierPrice: 2495
+  },
   'monthly-subscription': {
     tierKey: 'monthly-subscription',
     stripeProductId: 'prod_org_monthly',
