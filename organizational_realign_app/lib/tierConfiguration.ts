@@ -344,6 +344,18 @@ export function getOrgChartCapabilities(tier: PricingTier): {
   maxScenarios?: number;
 } {
   const config = PRICING_TIERS[tier];
+  
+  // Handle case where config doesn't exist (e.g., for AI readiness tiers)
+  if (!config) {
+    console.warn(`No configuration found for tier: ${tier}. Returning default org chart capabilities.`);
+    return {
+      canGenerate: false,
+      canModelScenarios: false,
+      canCollaborate: false,
+      maxScenarios: 0
+    };
+  }
+  
   return {
     canGenerate: config.features.orgChartGenerator,
     canModelScenarios: config.features.scenarioBuilder,
@@ -471,6 +483,13 @@ export function validateTierAccess(
   }
 ): { valid: boolean; message?: string; upgradeRequired?: boolean } {
   const config = getTierConfiguration(tier);
+  
+  // Handle case where config is null (e.g., for AI readiness tiers)
+  if (!config) {
+    console.warn(`No configuration found for tier: ${tier}. Allowing access.`);
+    return { valid: true };
+  }
+  
   const { guardrails } = config;
   
   // Check assessment limits

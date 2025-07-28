@@ -873,13 +873,21 @@ function TierBasedAssessmentContent() {
           <CardContent className="space-y-4">
             <p>The feature you&apos;re trying to access requires a higher service tier.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {Object.entries(getTierConfiguration('comprehensive-package')).slice(0, 2).map(([key, tier]) => (
-                <div key={key} className="p-4 border rounded-lg">
-                  <h3 className="font-semibold">{tier.name}</h3>
-                  <p className="text-2xl font-bold text-green-600">${tier.price.toLocaleString()}</p>
-                  <p className="text-sm text-gray-600">{tier.targetCustomer}</p>
-                </div>
-              ))}
+              {(() => {
+                const comprehensiveConfig = getTierConfiguration('comprehensive-package');
+                const enterpriseConfig = getTierConfiguration('enterprise-transformation');
+                
+                return [
+                  comprehensiveConfig && { key: 'comprehensive', tier: comprehensiveConfig },
+                  enterpriseConfig && { key: 'enterprise', tier: enterpriseConfig }
+                ].filter(Boolean).map(({ key, tier }) => (
+                  <div key={key} className="p-4 border rounded-lg">
+                    <h3 className="font-semibold">{tier.name}</h3>
+                    <p className="text-2xl font-bold text-green-600">${tier.price.toLocaleString()}</p>
+                    <p className="text-sm text-gray-600">{tier.targetCustomer}</p>
+                  </div>
+                ));
+              })()}
             </div>
             <Button onClick={() => setShowUpgrade(false)} variant="outline">
               Continue with Current Tier
